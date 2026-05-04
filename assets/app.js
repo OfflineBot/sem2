@@ -283,8 +283,7 @@ async function loadTab(course, tab) {
         downloadBtn.setAttribute("download", name);
         pillsWrap.querySelectorAll(".pill").forEach(p => p.classList.toggle("active", p === btnEl));
         showPdf(url);
-        // Drawer auf Mobile nach Auswahl schließen
-        if (window.matchMedia("(max-width: 600px)").matches) setSidebarOpen(false);
+        setSidebarOpen(false);
     };
 
     files.forEach((f, idx) => {

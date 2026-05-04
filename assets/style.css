@@ -193,27 +193,32 @@ main {
     font-weight: 600;
 }
 
-/* ---------- Course-Layout: Sidebar + Viewer ---------- */
+/* ---------- Course-Layout: PDF voll, Sidebar als Drawer ---------- */
 .course-body {
-    display: grid;
-    grid-template-columns: 180px minmax(0, 1fr);
-    gap: 1rem;
-    align-items: start;
+    display: block;
 }
 
 .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 280px;
+    max-width: 85vw;
+    z-index: 60;
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
     background: var(--mantle);
     border: 1px solid var(--surface0);
-    border-radius: 12px;
-    padding: 0.6rem;
-    position: sticky;
-    top: calc(var(--header-h) + 0.5rem);
-    max-height: calc(100dvh - var(--header-h) - 1rem);
+    border-radius: 0 14px 14px 0;
+    padding: 1rem 0.75rem 0.75rem;
+    transform: translateX(-105%);
+    transition: transform 0.25s ease;
+    box-shadow: 6px 0 24px rgba(0,0,0,0.45);
     overflow: hidden;
 }
+.sidebar.open { transform: translateX(0); }
 
 .sidebar-pills {
     display: flex;
@@ -292,7 +297,7 @@ main {
 
 /* ---------- Sidebar Toggle (FAB) + Backdrop ---------- */
 .sidebar-toggle {
-    display: none;
+    display: flex;
     position: fixed;
     bottom: 1.25rem;
     left: 1.25rem;
@@ -432,41 +437,21 @@ a:hover { color: var(--lavender); }
         padding: 0 1rem 0.75rem;
     }
 
-    /* Sidebar wird zum Drawer — PDF nimmt volle Breite, niemals stapeln */
-    .course-body {
-        display: block;
-    }
+    /* Sidebar bleibt Drawer (gleich wie Desktop), nur kleine Tweaks */
     .sidebar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        width: 80vw;
+        width: 85vw;
         max-width: 320px;
-        max-height: none;
-        z-index: 60;
-        border-radius: 0 14px 14px 0;
-        padding: 1rem 0.75rem 0.75rem;
-        transform: translateX(-105%);
-        transition: transform 0.25s ease;
-        box-shadow: 6px 0 24px rgba(0,0,0,0.45);
     }
-    .sidebar.open { transform: translateX(0); }
-    .sidebar-toggle { display: flex; }
-
     .pill {
         padding: 0.6rem 0.75rem;
         font-size: 0.95rem;
     }
-    .sidebar-actions { flex-direction: column; }
-
     .viewer-close {
         width: 44px;
         height: 44px;
         top: 0.5rem;
         right: 0.5rem;
     }
-
     .viewer iframe,
     .viewer embed {
         height: calc(100dvh - 180px);
