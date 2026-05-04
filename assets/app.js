@@ -199,20 +199,20 @@ async function loadTab(course, tab) {
         return;
     }
 
-    // Pills + Actions in einer Zeile
+    // Sidebar: Pills (vertikal) + Actions
     const pillsWrap = document.createElement("div");
-    pillsWrap.className = "pills-wrap";
+    pillsWrap.className = "sidebar-pills";
 
     const downloadBtn = document.createElement("a");
-    downloadBtn.className = "btn success action-btn";
+    downloadBtn.className = "btn success";
     downloadBtn.textContent = "↓ Runterladen";
     downloadBtn.setAttribute("download", "");
 
     const fullscreenBtn = document.createElement("button");
-    fullscreenBtn.className = "btn action-btn";
+    fullscreenBtn.className = "btn";
     fullscreenBtn.type = "button";
     fullscreenBtn.textContent = "⛶ Vollbild";
-    fullscreenBtn.addEventListener("click", toggleFullscreen);
+    fullscreenBtn.addEventListener("click", toggleExpanded);
 
     let currentUrl = null;
     const selectFile = (url, name, btnEl) => {
@@ -239,47 +239,42 @@ async function loadTab(course, tab) {
         }
     });
 
+    const actions = document.createElement("div");
+    actions.className = "sidebar-actions";
+    actions.appendChild(fullscreenBtn);
+    actions.appendChild(downloadBtn);
+
     controls.appendChild(pillsWrap);
-    controls.appendChild(fullscreenBtn);
-    controls.appendChild(downloadBtn);
+    controls.appendChild(actions);
 
     showPdf(currentUrl);
 }
 
 function showPdf(url) {
     const viewer = document.getElementById("viewer");
-    viewer.innerHTML = `<iframe src="${url}#view=FitH" title="PDF" allowfullscreen></iframe>`;
+    const wasExpanded = viewer.classList.contains("expanded");
+    viewer.innerHTML = `
+        <button type="button" class="viewer-close" aria-label="Schließen" title="Schließen (Esc)">✕</button>
+        <iframe src="${url}#view=FitH" title="PDF"></iframe>
+    `;
+    viewer.querySelector(".viewer-close").addEventListener("click", exitExpanded);
+    if (wasExpanded) viewer.classList.add("expanded");
 }
 
-function toggleFullscreen() {
-    const fsEl = document.fullscreenElement || document.webkitFullscreenElement;
-    if (fsEl) {
-        (document.exitFullscreen || document.webkitExitFullscreen).call(document);
-        return;
-    }
-    const iframe = document.querySelector("#viewer iframe");
-    if (!iframe) return;
-    const req = iframe.requestFullscreen || iframe.webkitRequestFullscreen;
-    if (!req) {
-        alert("Vollbild wird auf diesem Gerät nicht unterstützt.");
-        return;
-    }
-    req.call(iframe).catch(() => {
-        const viewer = document.getElementById("viewer");
-        const vReq = viewer.requestFullscreen || viewer.webkitRequestFullscreen;
-        if (vReq) vReq.call(viewer);
-        else alert("Vollbild wird auf diesem Gerät nicht unterstützt.");
-    });
+function toggleExpanded() {
+    const viewer = document.getElementById("viewer");
+    if (!viewer) return;
+    const expanded = viewer.classList.toggle("expanded");
+    document.body.classList.toggle("no-scroll", expanded);
 }
 
-document.addEventListener("fullscreenchange", updateFullscreenLabel);
-document.addEventListener("webkitfullscreenchange", updateFullscreenLabel);
-
-function updateFullscreenLabel() {
-    const fsEl = document.fullscreenElement || document.webkitFullscreenElement;
-    document.querySelectorAll(".btn").forEach(b => {
-        if (b.textContent.includes("Vollbild") || b.textContent.includes("Verlassen")) {
-            b.textContent = fsEl ? "⛶ Verlassen" : "⛶ Vollbild";
-        }
-    });
+function exitExpanded() {
+    const viewer = document.getElementById("viewer");
+    if (!viewer) return;
+    viewer.classList.remove("expanded");
+    document.body.classList.remove("no-scroll");
 }
+
+document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") exitExpanded();
+});

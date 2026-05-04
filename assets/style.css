@@ -193,25 +193,47 @@ main {
     font-weight: 600;
 }
 
-/* ---------- File controls (alles in einer Zeile) ---------- */
-.file-controls {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: stretch;
-    gap: 0.6rem;
-    margin-bottom: 1rem;
+/* ---------- Course-Layout: Sidebar + Viewer ---------- */
+.course-body {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 1rem;
+    align-items: start;
 }
 
-.pills-wrap {
-    flex: 1 1 auto;
-    min-width: 0;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+.sidebar {
+    display: flex;
+    flex-direction: column;
     gap: 0.5rem;
     background: var(--mantle);
     border: 1px solid var(--surface0);
     border-radius: 12px;
-    padding: 0.5rem;
+    padding: 0.6rem;
+    position: sticky;
+    top: calc(var(--header-h) + 0.5rem);
+    max-height: calc(100dvh - var(--header-h) - 1rem);
+    overflow: hidden;
+}
+
+.sidebar-pills {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    overflow-y: auto;
+    flex: 1 1 auto;
+    min-height: 0;
+    padding-right: 2px;
+}
+.sidebar-pills::-webkit-scrollbar { width: 6px; }
+.sidebar-pills::-webkit-scrollbar-thumb { background: var(--surface1); border-radius: 3px; }
+
+.sidebar-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--surface0);
+    flex: 0 0 auto;
 }
 
 .pill {
@@ -223,12 +245,13 @@ main {
     cursor: pointer;
     font-family: inherit;
     font-size: 0.95rem;
-    text-align: center;
+    text-align: left;
     transition: all 0.15s ease;
-    min-height: 42px;
+    min-height: 40px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    width: 100%;
 }
 .pill:hover { background: var(--surface1); border-color: var(--lavender); }
 .pill:active { transform: scale(0.97); }
@@ -238,8 +261,6 @@ main {
     border-color: var(--blue);
     font-weight: 600;
 }
-
-.action-btn { flex: 0 0 auto; }
 
 .btn {
     background: var(--surface0);
@@ -276,6 +297,8 @@ main {
     border: 1px solid var(--surface0);
     border-radius: 12px;
     overflow: hidden;
+    position: relative;
+    min-height: 0;
 }
 .viewer iframe,
 .viewer embed {
@@ -291,33 +314,54 @@ main {
     color: var(--subtext0);
 }
 
-.viewer:fullscreen,
-.viewer:-webkit-full-screen {
+.viewer-close {
+    display: none;
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    z-index: 2;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: var(--surface0);
+    color: var(--text);
+    border: 1px solid var(--surface1);
+    font-size: 1.1rem;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    transition: all 0.15s ease;
+}
+.viewer-close:hover {
+    background: var(--red);
+    color: var(--crust);
+    border-color: var(--red);
+}
+
+/* Pseudo-Vollbild: viewer überlagert die Seite */
+.viewer.expanded {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    z-index: 1000;
     border: 0;
     border-radius: 0;
     background: var(--crust);
-    width: 100vw;
-    height: 100vh;
 }
-.viewer:fullscreen iframe,
-.viewer:-webkit-full-screen iframe {
-    width: 100vw !important;
-    height: 100vh !important;
-    height: 100dvh !important;
+.viewer.expanded iframe {
+    width: 100% !important;
+    height: 100% !important;
     min-height: 0 !important;
     max-height: none !important;
+}
+.viewer.expanded .viewer-close {
+    display: flex;
 }
 
-/* Wenn das iframe selbst fullscreen ist (iOS / Safari Fallback) */
-iframe:fullscreen,
-iframe:-webkit-full-screen {
-    width: 100vw !important;
-    height: 100vh !important;
-    height: 100dvh !important;
-    min-height: 0 !important;
-    max-height: none !important;
-    background: var(--crust);
-}
+body.no-scroll { overflow: hidden; }
 
 a { color: var(--blue); }
 a:hover { color: var(--lavender); }
@@ -353,19 +397,30 @@ a:hover { color: var(--lavender); }
         padding: 0 1rem 0.75rem;
     }
 
-    .file-controls { gap: 0.5rem; }
-    .pills-wrap {
-        flex: 1 1 100%;
-        grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
-        gap: 0.4rem;
-        padding: 0.4rem;
+    .course-body {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+    .sidebar {
+        position: static;
+        max-height: none;
+        padding: 0.5rem;
+    }
+    .sidebar-pills {
+        max-height: 35vh;
     }
     .pill {
-        padding: 0.5rem 0.55rem;
-        font-size: 0.9rem;
-        min-height: 40px;
+        padding: 0.55rem 0.7rem;
+        font-size: 0.92rem;
     }
-    .action-btn { flex: 1 1 0; }
+    .sidebar-actions { flex-direction: row; }
+    .sidebar-actions .btn { flex: 1 1 0; }
+    .viewer-close {
+        width: 44px;
+        height: 44px;
+        top: 0.5rem;
+        right: 0.5rem;
+    }
 
     .viewer iframe,
     .viewer embed {
