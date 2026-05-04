@@ -44,19 +44,78 @@ function toPascalSpaced(slug) {
         .join(" ");
 }
 
-async function ghApi(path) {
-    const { owner, repo } = detectRepo();
-    if (!owner || !repo) {
-        throw new Error(
-            "Konnte owner/repo nicht ermitteln. Trage sie in assets/app.js → CONFIG ein."
-        );
+/* ---------- Manifest (statisch) mit GitHub-API-Fallback + Cache ---------- */
+
+let _manifestPromise = null;
+const MANIFEST_CACHE_KEY = "sem2.manifest.v1";
+const MANIFEST_CACHE_TTL_MS = 6 * 60 * 60 * 1000; // 6h
+
+function readManifestCache() {
+    try {
+        const raw = localStorage.getItem(MANIFEST_CACHE_KEY);
+        if (!raw) return null;
+        const { ts, data } = JSON.parse(raw);
+        if (Date.now() - ts > MANIFEST_CACHE_TTL_MS) return null;
+        return data;
+    } catch { return null; }
+}
+
+function writeManifestCache(data) {
+    try {
+        localStorage.setItem(MANIFEST_CACHE_KEY, JSON.stringify({ ts: Date.now(), data }));
+    } catch { /* quota o. private mode */ }
+}
+
+async function loadManifest() {
+    if (_manifestPromise) return _manifestPromise;
+    _manifestPromise = (async () => {
+        // 1) statische manifest.json (vom GitHub-Action generiert)
+        try {
+            const res = await fetch("./manifest.json", { cache: "no-cache" });
+            if (res.ok) {
+                const data = await res.json();
+                writeManifestCache(data);
+                return data;
+            }
+        } catch { /* offline / nicht da */ }
+
+        // 2) Cache (auch abgelaufen = besser als nichts)
+        const cached = readManifestCache();
+        if (cached) return cached;
+
+        // 3) Fallback: GitHub API rekursiv aufbauen
+        const { owner, repo } = detectRepo();
+        if (!owner || !repo) {
+            throw new Error("Keine manifest.json gefunden und owner/repo nicht ermittelbar.");
+        }
+        const built = await buildManifestFromApi(owner, repo);
+        writeManifestCache(built);
+        return built;
+    })();
+    return _manifestPromise;
+}
+
+async function buildManifestFromApi(owner, repo) {
+    const fetchDir = async (path) => {
+        const url = `https://api.github.com/repos/${owner}/${repo}/contents/${path}?ref=${CONFIG.branch}`;
+        const res = await fetch(url, { headers: { Accept: "application/vnd.github+json" } });
+        if (!res.ok) throw new Error(`GitHub API ${res.status}: ${url}`);
+        return res.json();
+    };
+    const out = { courses: {} };
+    const courses = (await fetchDir(CONFIG.zettelDir)).filter(i => i.type === "dir");
+    for (const c of courses) {
+        out.courses[c.name] = {};
+        const subs = (await fetchDir(`${CONFIG.zettelDir}/${c.name}`)).filter(i => i.type === "dir");
+        for (const s of subs) {
+            const files = await fetchDir(`${CONFIG.zettelDir}/${c.name}/${s.name}`);
+            out.courses[c.name][s.name] = files
+                .filter(f => f.type === "file" && /\.pdf$/i.test(f.name))
+                .map(f => f.name)
+                .sort((a, b) => a.localeCompare(b, "de", { numeric: true }));
+        }
     }
-    const url = `https://api.github.com/repos/${owner}/${repo}/contents/${path}?ref=${CONFIG.branch}`;
-    const res = await fetch(url, { headers: { Accept: "application/vnd.github+json" } });
-    if (!res.ok) {
-        throw new Error(`GitHub API ${res.status}: ${url}`);
-    }
-    return res.json();
+    return out;
 }
 
 function setStatus(msg, isError = false) {
@@ -83,25 +142,24 @@ function setRepoInfo() {
 async function renderIndex() {
     setRepoInfo();
     try {
-        const items = await ghApi(CONFIG.zettelDir);
-        const dirs = items
-            .filter(i => i.type === "dir")
-            .sort((a, b) => a.name.localeCompare(b.name, "de"));
+        const manifest = await loadManifest();
+        const courseNames = Object.keys(manifest.courses)
+            .sort((a, b) => a.localeCompare(b, "de"));
 
         const grid = document.getElementById("courses");
         grid.innerHTML = "";
 
-        if (dirs.length === 0) {
+        if (courseNames.length === 0) {
             setStatus("Keine Kurse in ./zettel/ gefunden.");
             return;
         }
 
-        for (const d of dirs) {
+        for (const name of courseNames) {
             const a = document.createElement("a");
             a.className = "card";
-            a.href = `./course.html?course=${encodeURIComponent(d.name)}`;
+            a.href = `./course.html?course=${encodeURIComponent(name)}`;
             a.innerHTML = `
-                <div class="card-title">${toPascalSpaced(d.name)}</div>
+                <div class="card-title">${toPascalSpaced(name)}</div>
             `;
             grid.appendChild(a);
         }
@@ -130,24 +188,27 @@ async function renderCourse() {
     initSidebarDrawer();
 
     setStatus("Lade Inhalte…");
-    let subdirs;
+    let manifest, subdirNames;
     try {
-        const items = await ghApi(`${CONFIG.zettelDir}/${course}`);
-        subdirs = items.filter(i => i.type === "dir");
+        manifest = await loadManifest();
+        if (!manifest.courses[course]) {
+            setStatus(`Kurs „${course}" nicht im Manifest.`, true);
+            return;
+        }
+        subdirNames = Object.keys(manifest.courses[course]);
     } catch (err) {
         setStatus(err.message, true);
         return;
     }
 
-    if (subdirs.length === 0) {
+    if (subdirNames.length === 0) {
         setStatus("Keine Unterordner gefunden.", true);
         return;
     }
 
     // Tabs sortieren: bekannte zuerst (in CONFIG.tabOrder), Rest alphabetisch
-    const known = CONFIG.tabOrder.filter(n => subdirs.some(s => s.name === n));
-    const unknown = subdirs
-        .map(s => s.name)
+    const known = CONFIG.tabOrder.filter(n => subdirNames.includes(n));
+    const unknown = subdirNames
         .filter(n => !CONFIG.tabOrder.includes(n))
         .sort((a, b) => a.localeCompare(b, "de"));
     const tabNames = [...known, ...unknown];
@@ -187,10 +248,9 @@ async function loadTab(course, tab) {
 
     let files;
     try {
-        const items = await ghApi(`${CONFIG.zettelDir}/${course}/${tab}`);
-        files = items
-            .filter(i => i.type === "file" && /\.pdf$/i.test(i.name))
-            .sort((a, b) => a.name.localeCompare(b.name, "de", { numeric: true }));
+        const manifest = await loadManifest();
+        const list = manifest.courses?.[course]?.[tab] || [];
+        files = list.map(name => ({ name }));
     } catch (err) {
         viewer.innerHTML = `<div class="placeholder">Fehler: ${err.message}</div>`;
         return;

@@ -1,0 +1,52 @@
+{
+  "courses": {
+    "analysis_2": {
+      "lernzettel": [
+        "zettel.pdf"
+      ]
+    },
+    "grundlagen_informatik_betriebssysteme": {
+      "klausur": [
+        "exam1.pdf",
+        "exam2.pdf",
+        "exam3.pdf"
+      ],
+      "lernzettel": [
+        "zettel.pdf"
+      ],
+      "openbook": [
+        "openbook.pdf"
+      ],
+      "übungsaufgaben": [
+        "exercise1.pdf",
+        "exercise2.pdf",
+        "exercise3.pdf",
+        "exercise4.pdf",
+        "exercise5.pdf",
+        "exercise6.pdf",
+        "exercise7.pdf",
+        "exercise8.pdf",
+        "exercise9.pdf",
+        "exercise10.pdf",
+        "exercise11.pdf",
+        "exercise12.pdf"
+      ]
+    },
+    "numerische_methoden": {
+      "klausur": [
+        "exam1.pdf"
+      ],
+      "lernzettel": [
+        "zettel.pdf"
+      ],
+      "übungsaufgaben": [
+        "exercise1.pdf"
+      ]
+    },
+    "optimierungsverfahren": {
+      "lernzettel": [
+        "zettel.pdf"
+      ]
+    }
+  }
+}

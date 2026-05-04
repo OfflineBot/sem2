@@ -1,0 +1,54 @@
+name: Generate manifest
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'zettel/**'
+      - '.github/workflows/manifest.yml'
+  workflow_dispatch:
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build manifest.json
+        run: |
+          python3 - <<'EOF'
+          import json, os, re
+          base = 'zettel'
+          out = {'courses': {}}
+          natural = lambda s: [int(t) if t.isdigit() else t.lower() for t in re.split(r'(\d+)', s)]
+          if os.path.isdir(base):
+              for course in sorted(os.listdir(base)):
+                  cp = os.path.join(base, course)
+                  if not os.path.isdir(cp): continue
+                  out['courses'][course] = {}
+                  for cat in sorted(os.listdir(cp)):
+                      catp = os.path.join(cp, cat)
+                      if not os.path.isdir(catp): continue
+                      pdfs = sorted(
+                          [f for f in os.listdir(catp) if f.lower().endswith('.pdf')],
+                          key=natural,
+                      )
+                      out['courses'][course][cat] = pdfs
+          with open('manifest.json', 'w', encoding='utf-8') as f:
+              json.dump(out, f, indent=2, ensure_ascii=False)
+              f.write('\n')
+          EOF
+
+      - name: Commit if changed
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add manifest.json
+          if git diff --staged --quiet; then
+            echo "No changes."
+          else
+            git commit -m "chore: update manifest.json"
+            git push
+          fi
