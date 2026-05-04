@@ -199,17 +199,17 @@ async function loadTab(course, tab) {
         return;
     }
 
-    // Dateiauswahl als Pills
-    const pills = document.createElement("div");
-    pills.className = "file-pills";
+    // Pills + Actions in einer Zeile
+    const pillsWrap = document.createElement("div");
+    pillsWrap.className = "pills-wrap";
 
     const downloadBtn = document.createElement("a");
-    downloadBtn.className = "btn success";
+    downloadBtn.className = "btn success action-btn";
     downloadBtn.textContent = "↓ Runterladen";
     downloadBtn.setAttribute("download", "");
 
     const fullscreenBtn = document.createElement("button");
-    fullscreenBtn.className = "btn";
+    fullscreenBtn.className = "btn action-btn";
     fullscreenBtn.type = "button";
     fullscreenBtn.textContent = "⛶ Vollbild";
     fullscreenBtn.addEventListener("click", toggleFullscreen);
@@ -219,7 +219,7 @@ async function loadTab(course, tab) {
         currentUrl = url;
         downloadBtn.href = url;
         downloadBtn.setAttribute("download", name);
-        pills.querySelectorAll(".pill").forEach(p => p.classList.toggle("active", p === btnEl));
+        pillsWrap.querySelectorAll(".pill").forEach(p => p.classList.toggle("active", p === btnEl));
         showPdf(url);
     };
 
@@ -231,7 +231,7 @@ async function loadTab(course, tab) {
         pill.textContent = f.name.replace(/\.pdf$/i, "");
         pill.title = f.name;
         pill.addEventListener("click", () => selectFile(url, f.name, pill));
-        pills.appendChild(pill);
+        pillsWrap.appendChild(pill);
         if (idx === 0) {
             currentUrl = url;
             downloadBtn.href = url;
@@ -239,13 +239,9 @@ async function loadTab(course, tab) {
         }
     });
 
-    const actions = document.createElement("div");
-    actions.className = "file-actions";
-    actions.appendChild(fullscreenBtn);
-    actions.appendChild(downloadBtn);
-
-    controls.appendChild(pills);
-    controls.appendChild(actions);
+    controls.appendChild(pillsWrap);
+    controls.appendChild(fullscreenBtn);
+    controls.appendChild(downloadBtn);
 
     showPdf(currentUrl);
 }
@@ -256,22 +252,24 @@ function showPdf(url) {
 }
 
 function toggleFullscreen() {
-    const viewer = document.getElementById("viewer");
-    if (!viewer) return;
     const fsEl = document.fullscreenElement || document.webkitFullscreenElement;
     if (fsEl) {
         (document.exitFullscreen || document.webkitExitFullscreen).call(document);
-    } else {
-        const req = viewer.requestFullscreen || viewer.webkitRequestFullscreen;
-        if (req) {
-            req.call(viewer).catch(err => {
-                // iOS Safari erlaubt Fullscreen oft nur auf <video>; Fallback: iframe direkt
-                const iframe = viewer.querySelector("iframe");
-                if (iframe && iframe.requestFullscreen) iframe.requestFullscreen();
-                else alert("Vollbild wird auf diesem Gerät nicht unterstützt.");
-            });
-        }
+        return;
     }
+    const iframe = document.querySelector("#viewer iframe");
+    if (!iframe) return;
+    const req = iframe.requestFullscreen || iframe.webkitRequestFullscreen;
+    if (!req) {
+        alert("Vollbild wird auf diesem Gerät nicht unterstützt.");
+        return;
+    }
+    req.call(iframe).catch(() => {
+        const viewer = document.getElementById("viewer");
+        const vReq = viewer.requestFullscreen || viewer.webkitRequestFullscreen;
+        if (vReq) vReq.call(viewer);
+        else alert("Vollbild wird auf diesem Gerät nicht unterstützt.");
+    });
 }
 
 document.addEventListener("fullscreenchange", updateFullscreenLabel);
