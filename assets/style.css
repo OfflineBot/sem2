@@ -290,6 +290,41 @@ main {
 }
 .btn.success:hover { background: var(--sapphire); border-color: var(--sapphire); }
 
+/* ---------- Sidebar Toggle (FAB) + Backdrop ---------- */
+.sidebar-toggle {
+    display: none;
+    position: fixed;
+    bottom: 1.25rem;
+    left: 1.25rem;
+    z-index: 50;
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    background: var(--mauve);
+    color: var(--crust);
+    border: 0;
+    font-size: 1.4rem;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.5);
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.15s ease, background 0.15s ease;
+}
+.sidebar-toggle:hover { background: var(--lavender); }
+.sidebar-toggle:active { transform: scale(0.94); }
+
+.sidebar-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    z-index: 55;
+    animation: fadeIn 0.15s ease;
+}
+.sidebar-backdrop.open { display: block; }
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
 /* ---------- PDF viewer ---------- */
 .viewer {
     width: 100%;
@@ -397,24 +432,34 @@ a:hover { color: var(--lavender); }
         padding: 0 1rem 0.75rem;
     }
 
+    /* Sidebar wird zum Drawer — PDF nimmt volle Breite, niemals stapeln */
     .course-body {
-        grid-template-columns: 1fr;
-        gap: 0.75rem;
+        display: block;
     }
     .sidebar {
-        position: static;
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 80vw;
+        max-width: 320px;
         max-height: none;
-        padding: 0.5rem;
+        z-index: 60;
+        border-radius: 0 14px 14px 0;
+        padding: 1rem 0.75rem 0.75rem;
+        transform: translateX(-105%);
+        transition: transform 0.25s ease;
+        box-shadow: 6px 0 24px rgba(0,0,0,0.45);
     }
-    .sidebar-pills {
-        max-height: 35vh;
-    }
+    .sidebar.open { transform: translateX(0); }
+    .sidebar-toggle { display: flex; }
+
     .pill {
-        padding: 0.55rem 0.7rem;
-        font-size: 0.92rem;
+        padding: 0.6rem 0.75rem;
+        font-size: 0.95rem;
     }
-    .sidebar-actions { flex-direction: row; }
-    .sidebar-actions .btn { flex: 1 1 0; }
+    .sidebar-actions { flex-direction: column; }
+
     .viewer-close {
         width: 44px;
         height: 44px;
@@ -424,7 +469,7 @@ a:hover { color: var(--lavender); }
 
     .viewer iframe,
     .viewer embed {
-        height: calc(100dvh - 230px);
+        height: calc(100dvh - 180px);
         min-height: 60vh;
     }
 

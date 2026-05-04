@@ -127,6 +127,8 @@ async function renderCourse() {
     document.getElementById("course-title").textContent = toPascalSpaced(course);
     document.title = `${toPascalSpaced(course)} · 2. Semester`;
 
+    initSidebarDrawer();
+
     setStatus("Lade Inhalte…");
     let subdirs;
     try {
@@ -221,6 +223,8 @@ async function loadTab(course, tab) {
         downloadBtn.setAttribute("download", name);
         pillsWrap.querySelectorAll(".pill").forEach(p => p.classList.toggle("active", p === btnEl));
         showPdf(url);
+        // Drawer auf Mobile nach Auswahl schließen
+        if (window.matchMedia("(max-width: 600px)").matches) setSidebarOpen(false);
     };
 
     files.forEach((f, idx) => {
@@ -276,5 +280,28 @@ function exitExpanded() {
 }
 
 document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") exitExpanded();
+    if (e.key === "Escape") {
+        exitExpanded();
+        setSidebarOpen(false);
+    }
 });
+
+function setSidebarOpen(open) {
+    const sidebar = document.getElementById("file-controls");
+    const backdrop = document.getElementById("sidebar-backdrop");
+    if (!sidebar) return;
+    sidebar.classList.toggle("open", open);
+    if (backdrop) backdrop.classList.toggle("open", open);
+}
+
+function initSidebarDrawer() {
+    const toggle = document.getElementById("sidebar-toggle");
+    const backdrop = document.getElementById("sidebar-backdrop");
+    const sidebar = document.getElementById("file-controls");
+    if (!toggle || !sidebar || toggle.dataset.bound) return;
+    toggle.dataset.bound = "1";
+    toggle.addEventListener("click", () => {
+        setSidebarOpen(!sidebar.classList.contains("open"));
+    });
+    if (backdrop) backdrop.addEventListener("click", () => setSidebarOpen(false));
+}
