@@ -102,7 +102,6 @@ async function renderIndex() {
             a.href = `./course.html?course=${encodeURIComponent(d.name)}`;
             a.innerHTML = `
                 <div class="card-title">${toPascalSpaced(d.name)}</div>
-                <div class="card-meta">${d.name}</div>
             `;
             grid.appendChild(a);
         }
@@ -200,42 +199,89 @@ async function loadTab(course, tab) {
         return;
     }
 
-    // Dateiauswahl
-    const select = document.createElement("select");
-    files.forEach(f => {
-        const opt = document.createElement("option");
-        opt.value = `./${CONFIG.zettelDir}/${course}/${tab}/${f.name}`;
-        opt.textContent = f.name;
-        select.appendChild(opt);
-    });
-
-    const viewBtn = document.createElement("button");
-    viewBtn.className = "btn primary";
-    viewBtn.textContent = "Anschauen";
-    viewBtn.addEventListener("click", () => showPdf(select.value));
+    // Dateiauswahl als Pills
+    const pills = document.createElement("div");
+    pills.className = "file-pills";
 
     const downloadBtn = document.createElement("a");
     downloadBtn.className = "btn success";
-    downloadBtn.textContent = "Runterladen";
+    downloadBtn.textContent = "↓ Runterladen";
     downloadBtn.setAttribute("download", "");
-    const updateDownloadHref = () => {
-        downloadBtn.href = select.value;
-        downloadBtn.setAttribute("download", select.options[select.selectedIndex].textContent);
+
+    const fullscreenBtn = document.createElement("button");
+    fullscreenBtn.className = "btn";
+    fullscreenBtn.type = "button";
+    fullscreenBtn.textContent = "⛶ Vollbild";
+    fullscreenBtn.addEventListener("click", toggleFullscreen);
+
+    let currentUrl = null;
+    const selectFile = (url, name, btnEl) => {
+        currentUrl = url;
+        downloadBtn.href = url;
+        downloadBtn.setAttribute("download", name);
+        pills.querySelectorAll(".pill").forEach(p => p.classList.toggle("active", p === btnEl));
+        showPdf(url);
     };
-    select.addEventListener("change", () => {
-        updateDownloadHref();
-        showPdf(select.value);
+
+    files.forEach((f, idx) => {
+        const url = `./${CONFIG.zettelDir}/${course}/${tab}/${f.name}`;
+        const pill = document.createElement("button");
+        pill.type = "button";
+        pill.className = "pill" + (idx === 0 ? " active" : "");
+        pill.textContent = f.name.replace(/\.pdf$/i, "");
+        pill.title = f.name;
+        pill.addEventListener("click", () => selectFile(url, f.name, pill));
+        pills.appendChild(pill);
+        if (idx === 0) {
+            currentUrl = url;
+            downloadBtn.href = url;
+            downloadBtn.setAttribute("download", f.name);
+        }
     });
-    updateDownloadHref();
 
-    controls.appendChild(select);
-    controls.appendChild(viewBtn);
-    controls.appendChild(downloadBtn);
+    const actions = document.createElement("div");
+    actions.className = "file-actions";
+    actions.appendChild(fullscreenBtn);
+    actions.appendChild(downloadBtn);
 
-    showPdf(select.value);
+    controls.appendChild(pills);
+    controls.appendChild(actions);
+
+    showPdf(currentUrl);
 }
 
 function showPdf(url) {
     const viewer = document.getElementById("viewer");
-    viewer.innerHTML = `<iframe src="${url}#view=FitH" title="PDF"></iframe>`;
+    viewer.innerHTML = `<iframe src="${url}#view=FitH" title="PDF" allowfullscreen></iframe>`;
+}
+
+function toggleFullscreen() {
+    const viewer = document.getElementById("viewer");
+    if (!viewer) return;
+    const fsEl = document.fullscreenElement || document.webkitFullscreenElement;
+    if (fsEl) {
+        (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+    } else {
+        const req = viewer.requestFullscreen || viewer.webkitRequestFullscreen;
+        if (req) {
+            req.call(viewer).catch(err => {
+                // iOS Safari erlaubt Fullscreen oft nur auf <video>; Fallback: iframe direkt
+                const iframe = viewer.querySelector("iframe");
+                if (iframe && iframe.requestFullscreen) iframe.requestFullscreen();
+                else alert("Vollbild wird auf diesem Gerät nicht unterstützt.");
+            });
+        }
+    }
+}
+
+document.addEventListener("fullscreenchange", updateFullscreenLabel);
+document.addEventListener("webkitfullscreenchange", updateFullscreenLabel);
+
+function updateFullscreenLabel() {
+    const fsEl = document.fullscreenElement || document.webkitFullscreenElement;
+    document.querySelectorAll(".btn").forEach(b => {
+        if (b.textContent.includes("Vollbild") || b.textContent.includes("Verlassen")) {
+            b.textContent = fsEl ? "⛶ Verlassen" : "⛶ Vollbild";
+        }
+    });
 }
