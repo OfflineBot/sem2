@@ -236,14 +236,17 @@ async function renderCourse() {
 
 async function loadTab(course, tab) {
     // Aktiven Tab markieren
-    document.querySelectorAll(".tab").forEach(t => {
+    document.querySelectorAll(".sidebar-tabs .tab").forEach(t => {
         t.classList.toggle("active", t.dataset.tab === tab);
     });
     history.replaceState(null, "", `?course=${encodeURIComponent(course)}#${encodeURIComponent(tab)}`);
 
-    const controls = document.getElementById("file-controls");
+    const filesLabel = document.getElementById("files-label");
+    if (filesLabel) filesLabel.textContent = toPascalSpaced(tab);
+
+    const pillsWrap = document.getElementById("file-pills");
     const viewer = document.getElementById("viewer");
-    controls.innerHTML = "";
+    pillsWrap.innerHTML = "";
     viewer.innerHTML = `<div class="placeholder">Lade Dateien…</div>`;
 
     let files;
@@ -256,36 +259,32 @@ async function loadTab(course, tab) {
         return;
     }
 
+    const downloadBtn = document.getElementById("download-btn");
+    const topbarFile = document.getElementById("topbar-file");
+    const topbarSep = document.getElementById("topbar-sep");
+
     if (files.length === 0) {
         viewer.innerHTML = `<div class="placeholder">Keine PDFs in „${tab}".</div>`;
+        if (downloadBtn) downloadBtn.hidden = true;
+        if (topbarFile) topbarFile.textContent = "";
+        if (topbarSep) topbarSep.hidden = true;
         return;
     }
 
-    // Sidebar: Pills (vertikal) + Actions
-    const pillsWrap = document.createElement("div");
-    pillsWrap.className = "sidebar-pills";
-
-    const downloadBtn = document.createElement("a");
-    downloadBtn.className = "btn success";
-    downloadBtn.textContent = "↓ Runterladen";
-    downloadBtn.setAttribute("download", "");
-
-    const fullscreenBtn = document.createElement("button");
-    fullscreenBtn.className = "btn";
-    fullscreenBtn.type = "button";
-    fullscreenBtn.textContent = "⛶ Vollbild";
-    fullscreenBtn.addEventListener("click", toggleExpanded);
-
-    let currentUrl = null;
     const selectFile = (url, name, btnEl) => {
-        currentUrl = url;
-        downloadBtn.href = url;
-        downloadBtn.setAttribute("download", name);
+        if (downloadBtn) {
+            downloadBtn.href = url;
+            downloadBtn.setAttribute("download", name);
+            downloadBtn.hidden = false;
+        }
+        if (topbarFile) topbarFile.textContent = name.replace(/\.pdf$/i, "");
+        if (topbarSep) topbarSep.hidden = false;
         pillsWrap.querySelectorAll(".pill").forEach(p => p.classList.toggle("active", p === btnEl));
         showPdf(url);
         setSidebarOpen(false);
     };
 
+    let firstUrl = null, firstName = null;
     files.forEach((f, idx) => {
         const url = `./${CONFIG.zettelDir}/${course}/${tab}/${f.name}`;
         const pill = document.createElement("button");
@@ -295,22 +294,18 @@ async function loadTab(course, tab) {
         pill.title = f.name;
         pill.addEventListener("click", () => selectFile(url, f.name, pill));
         pillsWrap.appendChild(pill);
-        if (idx === 0) {
-            currentUrl = url;
-            downloadBtn.href = url;
-            downloadBtn.setAttribute("download", f.name);
-        }
+        if (idx === 0) { firstUrl = url; firstName = f.name; }
     });
 
-    const actions = document.createElement("div");
-    actions.className = "sidebar-actions";
-    actions.appendChild(fullscreenBtn);
-    actions.appendChild(downloadBtn);
-
-    controls.appendChild(pillsWrap);
-    controls.appendChild(actions);
-
-    showPdf(currentUrl);
+    // Initiale Anzeige (ohne Sidebar zu schließen, da sie eh zu ist)
+    if (downloadBtn) {
+        downloadBtn.href = firstUrl;
+        downloadBtn.setAttribute("download", firstName);
+        downloadBtn.hidden = false;
+    }
+    if (topbarFile) topbarFile.textContent = firstName.replace(/\.pdf$/i, "");
+    if (topbarSep) topbarSep.hidden = false;
+    showPdf(firstUrl);
 }
 
 function showPdf(url) {
@@ -357,10 +352,19 @@ function initSidebarDrawer() {
     const toggle = document.getElementById("sidebar-toggle");
     const backdrop = document.getElementById("sidebar-backdrop");
     const sidebar = document.getElementById("file-controls");
-    if (!toggle || !sidebar || toggle.dataset.bound) return;
-    toggle.dataset.bound = "1";
-    toggle.addEventListener("click", () => {
-        setSidebarOpen(!sidebar.classList.contains("open"));
-    });
-    if (backdrop) backdrop.addEventListener("click", () => setSidebarOpen(false));
+    const fsBtn = document.getElementById("fullscreen-btn");
+    if (toggle && !toggle.dataset.bound) {
+        toggle.dataset.bound = "1";
+        toggle.addEventListener("click", () => {
+            setSidebarOpen(!sidebar.classList.contains("open"));
+        });
+    }
+    if (backdrop && !backdrop.dataset.bound) {
+        backdrop.dataset.bound = "1";
+        backdrop.addEventListener("click", () => setSidebarOpen(false));
+    }
+    if (fsBtn && !fsBtn.dataset.bound) {
+        fsBtn.dataset.bound = "1";
+        fsBtn.addEventListener("click", toggleExpanded);
+    }
 }
