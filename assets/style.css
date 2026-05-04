@@ -44,7 +44,7 @@ body {
 main {
     flex: 1;
     width: 100%;
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
     padding: 1.5rem;
 }
@@ -196,7 +196,7 @@ main {
 /* ---------- Course-Layout: Sidebar + Viewer ---------- */
 .course-body {
     display: grid;
-    grid-template-columns: 220px 1fr;
+    grid-template-columns: 180px minmax(0, 1fr);
     gap: 1rem;
     align-items: start;
 }
@@ -366,8 +366,8 @@ body.no-scroll { overflow: hidden; }
 a { color: var(--blue); }
 a:hover { color: var(--lavender); }
 
-/* ---------- Mobile (≤ 700px) ---------- */
-@media (max-width: 700px) {
+/* ---------- Mobile (≤ 600px) ---------- */
+@media (max-width: 600px) {
     main { padding: 1rem; }
 
     .site-header {
