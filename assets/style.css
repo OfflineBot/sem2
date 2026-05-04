@@ -1,0 +1,254 @@
+/* Catppuccin Mocha */
+:root {
+    --base: #1e1e2e;
+    --mantle: #181825;
+    --crust: #11111b;
+    --text: #cdd6f4;
+    --subtext1: #bac2de;
+    --subtext0: #a6adc8;
+    --overlay0: #6c7086;
+    --surface0: #313244;
+    --surface1: #45475a;
+    --surface2: #585b70;
+    --mauve: #cba6f7;
+    --pink: #f5c2e7;
+    --blue: #89b4fa;
+    --lavender: #b4befe;
+    --green: #a6e3a1;
+    --yellow: #f9e2af;
+    --red: #f38ba8;
+    --sapphire: #74c7ec;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--base);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", system-ui, sans-serif;
+    min-height: 100vh;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+.site-header {
+    background: var(--mantle);
+    border-bottom: 1px solid var(--surface0);
+    padding: 1.75rem 1.5rem;
+    text-align: center;
+    position: relative;
+}
+
+.site-header h1 {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--mauve);
+    letter-spacing: -0.02em;
+}
+
+.subtitle {
+    margin: 0.4rem 0 0;
+    color: var(--subtext0);
+    font-size: 0.95rem;
+}
+
+.back-link {
+    position: absolute;
+    left: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--lavender);
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.4rem 0.8rem;
+    border-radius: 8px;
+    transition: background 0.15s ease;
+}
+.back-link:hover { background: var(--surface0); }
+
+.site-footer {
+    text-align: center;
+    padding: 1rem;
+    color: var(--overlay0);
+    font-size: 0.8rem;
+    border-top: 1px solid var(--surface0);
+    background: var(--mantle);
+}
+
+.status {
+    color: var(--subtext0);
+    font-style: italic;
+    padding: 1rem 0;
+}
+.status.error {
+    color: var(--red);
+    font-style: normal;
+}
+
+/* Index grid */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.25rem;
+}
+
+.card {
+    background: var(--surface0);
+    color: var(--text);
+    text-decoration: none;
+    border-radius: 14px;
+    padding: 1.5rem 1.25rem;
+    border: 1px solid var(--surface1);
+    transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+.card:hover {
+    transform: translateY(-3px);
+    border-color: var(--mauve);
+    background: var(--surface1);
+}
+.card-title {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--lavender);
+}
+.card-meta {
+    font-size: 0.85rem;
+    color: var(--subtext0);
+}
+
+/* Tabs */
+.tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+    border-bottom: 1px solid var(--surface0);
+    padding-bottom: 0.75rem;
+}
+.tab {
+    background: var(--surface0);
+    color: var(--text);
+    border: 1px solid var(--surface1);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-family: inherit;
+    transition: all 0.15s ease;
+}
+.tab:hover { background: var(--surface1); }
+.tab.active {
+    background: var(--mauve);
+    color: var(--crust);
+    border-color: var(--mauve);
+    font-weight: 600;
+}
+
+/* File controls (file selector + actions) */
+.file-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.file-controls select {
+    background: var(--surface0);
+    color: var(--text);
+    border: 1px solid var(--surface1);
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    flex: 1 1 220px;
+    min-width: 200px;
+}
+.file-controls select:focus {
+    outline: none;
+    border-color: var(--mauve);
+}
+
+.btn {
+    background: var(--surface0);
+    color: var(--text);
+    border: 1px solid var(--surface1);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-family: inherit;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: all 0.15s ease;
+}
+.btn:hover { background: var(--surface1); border-color: var(--lavender); }
+.btn.primary {
+    background: var(--blue);
+    color: var(--crust);
+    border-color: var(--blue);
+    font-weight: 600;
+}
+.btn.primary:hover { background: var(--lavender); border-color: var(--lavender); }
+.btn.success {
+    background: var(--green);
+    color: var(--crust);
+    border-color: var(--green);
+    font-weight: 600;
+}
+.btn.success:hover { background: var(--sapphire); border-color: var(--sapphire); }
+
+/* PDF viewer */
+.viewer {
+    width: 100%;
+    min-height: 75vh;
+    background: var(--mantle);
+    border: 1px solid var(--surface0);
+    border-radius: 12px;
+    overflow: hidden;
+}
+.viewer iframe,
+.viewer embed {
+    width: 100%;
+    height: 80vh;
+    border: 0;
+    display: block;
+}
+.viewer .placeholder {
+    padding: 2rem;
+    text-align: center;
+    color: var(--subtext0);
+}
+
+a { color: var(--blue); }
+a:hover { color: var(--lavender); }
+
+@media (max-width: 600px) {
+    .site-header h1 { font-size: 1.5rem; }
+    .back-link {
+        position: static;
+        transform: none;
+        display: inline-block;
+        margin-bottom: 0.5rem;
+    }
+}
