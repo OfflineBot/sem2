@@ -13,7 +13,11 @@ const CONFIG = {
     zettelDir: "zettel",
     defaultTab: "lernzettel",
     // Tab-Reihenfolge (existierende Ordner werden angezeigt; unbekannte ans Ende):
-    tabOrder: ["lernzettel", "openbook", "übungsaufgaben", "klausur"],
+    tabOrder: ["lernzettel", "openbook", "uebungsaufgaben", "klausur"],
+    // Slug → Anzeigename (Override für Pascal-Case-Default).
+    displayNames: {
+        uebungsaufgaben: "Übungsaufgaben",
+    },
 };
 
 /* ============================================================
@@ -37,6 +41,9 @@ function detectRepo() {
 }
 
 function toPascalSpaced(slug) {
+    if (CONFIG.displayNames && CONFIG.displayNames[slug]) {
+        return CONFIG.displayNames[slug];
+    }
     return slug
         .split(/[_\-]+/)
         .filter(Boolean)
@@ -47,7 +54,7 @@ function toPascalSpaced(slug) {
 /* ---------- Manifest (statisch) mit GitHub-API-Fallback + Cache ---------- */
 
 let _manifestPromise = null;
-const MANIFEST_CACHE_KEY = "sem2.manifest.v1";
+const MANIFEST_CACHE_KEY = "sem2.manifest.v2";
 const MANIFEST_CACHE_TTL_MS = 6 * 60 * 60 * 1000; // 6h
 
 function readManifestCache() {
