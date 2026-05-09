@@ -1,8 +1,27 @@
 {
   "courses": {
     "analysis_2": {
+      "klausur": [
+        "exam1.pdf",
+        "exam2.pdf",
+        "exam3.pdf"
+      ],
       "lernzettel": [
         "zettel.pdf"
+      ],
+      "openbook": [
+        "openbook.pdf"
+      ],
+      "uebungsaufgaben": [
+        "exercise1.pdf",
+        "exercise2.pdf",
+        "exercise3.pdf",
+        "exercise4.pdf",
+        "exercise5.pdf",
+        "exercise6.pdf",
+        "exercise7.pdf",
+        "exercise8.pdf",
+        "exercise9.pdf"
       ]
     },
     "grundlagen_informatik_betriebssysteme": {
@@ -39,13 +58,33 @@
       "lernzettel": [
         "zettel.pdf"
       ],
+      "openbook": [
+        "openbook.pdf"
+      ],
       "uebungsaufgaben": [
         "exercise1.pdf"
       ]
     },
     "optimierungsverfahren": {
+      "klausur": [
+        "exam1.pdf",
+        "exam2.pdf"
+      ],
       "lernzettel": [
         "zettel.pdf"
+      ],
+      "openbook": [
+        "openbook.pdf"
+      ],
+      "uebungsaufgaben": [
+        "exercise1.pdf",
+        "exercise2.pdf",
+        "exercise3.pdf",
+        "exercise4.pdf",
+        "exercise5.pdf",
+        "exercise6.pdf",
+        "exercise7.pdf",
+        "exercise8.pdf"
       ]
     },
     "relationen_algebra_diskrete_mathematik": {
