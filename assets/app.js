@@ -1,49 +1,75 @@
 /* ============================================================
- * Konfiguration
+ * DHBW Lernzettel — Single-Page Frontend
  * ============================================================
- * Auto-Erkennung von owner/repo aus der GitHub-Pages-URL.
- * Falls du auf einer Custom-Domain hostest oder lokal testen
- * willst, trage owner/repo unten manuell ein.
- * Default-Tab und Reihenfolge der Tabs ebenfalls hier.
+ *
+ * Reads zettel/<course>/<category>/<file>.pdf via manifest.json
+ * (built by .github/workflows/manifest.yml on every push).
+ *
+ * Top-level state:
+ *   - semester collapsibles (default: most recent open)
+ *   - course click → modal listing files with [Ansehen][Download][Prompt kopieren]
+ *   - viewer overlay uses history.pushState so browser-back closes it
+ *   - prompt template editor with placeholder highlighting
+ *   - theme switcher: catppuccin-mocha (default) | gruvbox
  */
+
 const CONFIG = {
-    owner: null,            // z.B. "lukascvitanovic" — null = auto
-    repo: null,             // z.B. "sem2"             — null = auto
     branch: "main",
     zettelDir: "zettel",
-    defaultTab: "lernzettel",
-    // Tab-Reihenfolge (existierende Ordner werden angezeigt; unbekannte ans Ende):
+    // Tab order within a course modal (known first, unknown alphabetic at end).
     tabOrder: ["lernzettel", "openbook", "uebungsaufgaben", "klausur"],
-    // Slug → Anzeigename (Override für Pascal-Case-Default).
+    // Slug → display name override (Pascal-Case-default for the rest).
     displayNames: {
         uebungsaufgaben: "Übungsaufgaben",
+        openbook: "Open-Book",
+        klausur: "Klausuren",
+        lernzettel: "Lernzettel",
     },
+    // Course slug → semester. Default is `defaultSemester`.
+    courseSemester: {
+        grundlagen_informatik_betriebssysteme: 1,
+    },
+    defaultSemester: 2,
+    semesterTitles: {
+        1: "1. Semester",
+        2: "2. Semester",
+    },
+};
+
+const DEFAULT_PROMPT = [
+    "Ich habe ein Dokument aus meinem DHBW-Studium.",
+    "Bitte lade und analysiere das folgende PDF vollständig:",
+    "",
+    "{PDF_URL}",
+    "",
+    "Dokumentname: {DISPLAY_NAME}",
+    "",
+    "Bitte gehe folgendermaßen vor:",
+    "",
+    "1. Lies das gesamte Dokument sorgfältig und vollständig durch.",
+    "2. Erstelle eine kurze strukturierte Zusammenfassung (max. 10 Stichpunkte)",
+    "   der wichtigsten Themen und Konzepte.",
+    "3. Identifiziere die Kernbegriffe und ihre Definitionen.",
+    "4. Warte danach auf meine Fragen — ich werde dich zu bestimmten Themen,",
+    "   Aufgaben oder Konzepten aus dem Dokument befragen.",
+    "",
+    "Wichtig: Beziehe dich in deinen Antworten immer konkret auf die Inhalte",
+    "des Dokuments. Wenn du eine Stelle zitierst, gib an, in welchem Abschnitt",
+    "oder auf welcher Seite sie sich befindet.",
+].join("\n");
+
+const LS = {
+    promptKey: "sem2.customPrompt",
+    themeKey: "sem2.theme",
+    semesterOpenKey: "sem2.semesterOpen",
 };
 
 /* ============================================================
  * Helpers
  * ============================================================ */
 
-function detectRepo() {
-    if (CONFIG.owner && CONFIG.repo) {
-        return { owner: CONFIG.owner, repo: CONFIG.repo };
-    }
-    const host = window.location.hostname;
-    const parts = window.location.pathname.split("/").filter(Boolean);
-
-    // username.github.io/repo/...
-    if (host.endsWith(".github.io")) {
-        const owner = host.split(".")[0];
-        const repo = parts[0] || owner + ".github.io";
-        return { owner, repo };
-    }
-    return { owner: null, repo: null };
-}
-
-function toPascalSpaced(slug) {
-    if (CONFIG.displayNames && CONFIG.displayNames[slug]) {
-        return CONFIG.displayNames[slug];
-    }
+function pascalSpaced(slug) {
+    if (CONFIG.displayNames[slug]) return CONFIG.displayNames[slug];
     return slug
         .split(/[_\-]+/)
         .filter(Boolean)
@@ -51,327 +77,438 @@ function toPascalSpaced(slug) {
         .join(" ");
 }
 
-/* ---------- Manifest (statisch) mit GitHub-API-Fallback + Cache ---------- */
+function semesterFor(slug) {
+    return CONFIG.courseSemester[slug] || CONFIG.defaultSemester;
+}
 
-let _manifestPromise = null;
-const MANIFEST_CACHE_KEY = "sem2.manifest.v2";
-const MANIFEST_CACHE_TTL_MS = 6 * 60 * 60 * 1000; // 6h
+function escapeHtml(s) {
+    return s.replace(/[&<>"']/g, ch => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
+    })[ch]);
+}
 
-function readManifestCache() {
+function naturalSort(a, b) {
+    const ax = String(a).split(/(\d+)/).map(p => /^\d+$/.test(p) ? parseInt(p, 10) : p.toLowerCase());
+    const bx = String(b).split(/(\d+)/).map(p => /^\d+$/.test(p) ? parseInt(p, 10) : p.toLowerCase());
+    for (let i = 0; i < Math.min(ax.length, bx.length); i++) {
+        if (ax[i] === bx[i]) continue;
+        return ax[i] < bx[i] ? -1 : 1;
+    }
+    return ax.length - bx.length;
+}
+
+/* ============================================================
+ * Theme
+ * ============================================================ */
+
+function applyTheme(name) {
+    document.documentElement.setAttribute("data-theme", name);
+    try { localStorage.setItem(LS.themeKey, name); } catch {}
+    const sel = document.getElementById("theme-select-input");
+    if (sel) sel.value = name;
+}
+
+function initTheme() {
+    let stored = "mocha";
+    try { stored = localStorage.getItem(LS.themeKey) || "mocha"; } catch {}
+    applyTheme(stored);
+    document.getElementById("theme-select-input").addEventListener("change", e => {
+        applyTheme(e.target.value);
+    });
+}
+
+/* ============================================================
+ * Manifest (static file, with cache)
+ * ============================================================ */
+
+let _manifest = null;
+
+async function loadManifest() {
+    if (_manifest) return _manifest;
+    const res = await fetch("./manifest.json", { cache: "no-cache" });
+    if (!res.ok) throw new Error("manifest.json nicht gefunden (HTTP " + res.status + ")");
+    _manifest = await res.json();
+    return _manifest;
+}
+
+/* ============================================================
+ * Semester groupings
+ * ============================================================ */
+
+function groupBySemester(courses) {
+    const groups = new Map();
+    for (const slug of Object.keys(courses)) {
+        const sem = semesterFor(slug);
+        if (!groups.has(sem)) groups.set(sem, []);
+        groups.get(sem).push(slug);
+    }
+    for (const list of groups.values()) {
+        list.sort((a, b) => pascalSpaced(a).localeCompare(pascalSpaced(b), "de"));
+    }
+    return [...groups.entries()].sort((a, b) => b[0] - a[0]); // newest first
+}
+
+function readSemesterOpenState() {
     try {
-        const raw = localStorage.getItem(MANIFEST_CACHE_KEY);
+        const raw = localStorage.getItem(LS.semesterOpenKey);
         if (!raw) return null;
-        const { ts, data } = JSON.parse(raw);
-        if (Date.now() - ts > MANIFEST_CACHE_TTL_MS) return null;
-        return data;
+        return JSON.parse(raw);
     } catch { return null; }
 }
 
-function writeManifestCache(data) {
-    try {
-        localStorage.setItem(MANIFEST_CACHE_KEY, JSON.stringify({ ts: Date.now(), data }));
-    } catch { /* quota o. private mode */ }
+function writeSemesterOpenState(map) {
+    try { localStorage.setItem(LS.semesterOpenKey, JSON.stringify(map)); } catch {}
 }
 
-async function loadManifest() {
-    if (_manifestPromise) return _manifestPromise;
-    _manifestPromise = (async () => {
-        // 1) statische manifest.json (vom GitHub-Action generiert)
-        try {
-            const res = await fetch("./manifest.json", { cache: "no-cache" });
-            if (res.ok) {
-                const data = await res.json();
-                writeManifestCache(data);
-                return data;
-            }
-        } catch { /* offline / nicht da */ }
-
-        // 2) Cache (auch abgelaufen = besser als nichts)
-        const cached = readManifestCache();
-        if (cached) return cached;
-
-        // 3) Fallback: GitHub API rekursiv aufbauen
-        const { owner, repo } = detectRepo();
-        if (!owner || !repo) {
-            throw new Error("Keine manifest.json gefunden und owner/repo nicht ermittelbar.");
-        }
-        const built = await buildManifestFromApi(owner, repo);
-        writeManifestCache(built);
-        return built;
-    })();
-    return _manifestPromise;
+function countFiles(courseObj) {
+    let n = 0;
+    for (const cat of Object.keys(courseObj)) n += (courseObj[cat] || []).length;
+    return n;
 }
-
-async function buildManifestFromApi(owner, repo) {
-    const fetchDir = async (path) => {
-        const url = `https://api.github.com/repos/${owner}/${repo}/contents/${path}?ref=${CONFIG.branch}`;
-        const res = await fetch(url, { headers: { Accept: "application/vnd.github+json" } });
-        if (!res.ok) throw new Error(`GitHub API ${res.status}: ${url}`);
-        return res.json();
-    };
-    const out = { courses: {} };
-    const courses = (await fetchDir(CONFIG.zettelDir)).filter(i => i.type === "dir");
-    for (const c of courses) {
-        out.courses[c.name] = {};
-        const subs = (await fetchDir(`${CONFIG.zettelDir}/${c.name}`)).filter(i => i.type === "dir");
-        for (const s of subs) {
-            const files = await fetchDir(`${CONFIG.zettelDir}/${c.name}/${s.name}`);
-            out.courses[c.name][s.name] = files
-                .filter(f => f.type === "file" && /\.pdf$/i.test(f.name))
-                .map(f => f.name)
-                .sort((a, b) => a.localeCompare(b, "de", { numeric: true }));
-        }
-    }
-    return out;
-}
-
-function setStatus(msg, isError = false) {
-    const el = document.getElementById("status");
-    if (!el) return;
-    el.textContent = msg || "";
-    el.classList.toggle("error", !!isError);
-    el.style.display = msg ? "block" : "none";
-}
-
-function setRepoInfo() {
-    const el = document.getElementById("repo-info");
-    if (!el) return;
-    const { owner, repo } = detectRepo();
-    if (owner && repo) {
-        el.innerHTML = `Quelle: <a href="https://github.com/${owner}/${repo}" target="_blank" rel="noopener">${owner}/${repo}</a>`;
-    }
-}
-
-/* ============================================================
- * Index-Seite: Kurse aus ./zettel/* listen
- * ============================================================ */
 
 async function renderIndex() {
-    setRepoInfo();
+    const status = document.getElementById("status");
+    const root = document.getElementById("semesters");
     try {
         const manifest = await loadManifest();
-        const courseNames = Object.keys(manifest.courses)
-            .sort((a, b) => a.localeCompare(b, "de"));
+        const courses = manifest.courses || {};
+        const groups = groupBySemester(courses);
 
-        const grid = document.getElementById("courses");
-        grid.innerHTML = "";
+        status.style.display = "none";
+        root.innerHTML = "";
 
-        if (courseNames.length === 0) {
-            setStatus("Keine Kurse in ./zettel/ gefunden.");
-            return;
-        }
+        const openState = readSemesterOpenState() || {};
 
-        for (const name of courseNames) {
-            const a = document.createElement("a");
-            a.className = "card";
-            a.href = `./course.html?course=${encodeURIComponent(name)}`;
-            a.innerHTML = `
-                <div class="card-title">${toPascalSpaced(name)}</div>
+        for (const [sem, slugs] of groups) {
+            const det = document.createElement("details");
+            det.className = "semester";
+            const isOpen = openState.hasOwnProperty(sem) ? !!openState[sem] : sem === groups[0][0];
+            det.open = isOpen;
+            det.addEventListener("toggle", () => {
+                openState[sem] = det.open;
+                writeSemesterOpenState(openState);
+            });
+
+            const sum = document.createElement("summary");
+            sum.className = "semester-summary";
+            sum.innerHTML = `
+                <span class="semester-title">${escapeHtml(CONFIG.semesterTitles[sem] || (sem + ". Semester"))}</span>
+                <span class="semester-count">${slugs.length} ${slugs.length === 1 ? "Kurs" : "Kurse"}</span>
+                <span class="chevron" aria-hidden="true">▾</span>
             `;
-            grid.appendChild(a);
+            det.appendChild(sum);
+
+            const grid = document.createElement("div");
+            grid.className = "course-grid";
+            for (const slug of slugs) {
+                grid.appendChild(courseCard(slug, courses[slug]));
+            }
+            det.appendChild(grid);
+
+            root.appendChild(det);
         }
-        setStatus("");
+
+        document.getElementById("repo-info").textContent =
+            "OfflineBot/sem2 · " + Object.keys(courses).length + " Kurse";
     } catch (err) {
-        setStatus(err.message, true);
+        status.textContent = "Fehler: " + err.message;
+        status.classList.add("error");
+    }
+}
+
+function courseCard(slug, courseObj) {
+    const card = document.createElement("button");
+    card.type = "button";
+    card.className = "course-card";
+    const total = countFiles(courseObj);
+    card.innerHTML = `
+        <h3>${escapeHtml(pascalSpaced(slug))}</h3>
+        <p class="file-count">${total} ${total === 1 ? "Datei" : "Dateien"}</p>
+    `;
+    card.addEventListener("click", () => openCourseModal(slug, courseObj));
+    return card;
+}
+
+/* ============================================================
+ * Course modal
+ * ============================================================ */
+
+function openCourseModal(slug, courseObj) {
+    document.getElementById("course-modal-title").textContent = pascalSpaced(slug);
+    const body = document.getElementById("course-modal-body");
+    body.innerHTML = "";
+
+    const cats = orderedCategories(Object.keys(courseObj));
+    for (const cat of cats) {
+        const files = (courseObj[cat] || []).slice().sort(naturalSort);
+        if (!files.length) continue;
+        const section = document.createElement("section");
+        section.className = "cat-section";
+        const h = document.createElement("h4");
+        h.textContent = pascalSpaced(cat);
+        section.appendChild(h);
+
+        const list = document.createElement("ul");
+        list.className = "file-list";
+        for (const fname of files) {
+            list.appendChild(fileRow(slug, cat, fname));
+        }
+        section.appendChild(list);
+        body.appendChild(section);
+    }
+
+    if (!body.children.length) {
+        body.innerHTML = `<p class="hint">Keine Dateien.</p>`;
+    }
+
+    showModal("course");
+}
+
+function orderedCategories(cats) {
+    const seen = new Set(cats);
+    const ordered = [];
+    for (const c of CONFIG.tabOrder) if (seen.has(c)) { ordered.push(c); seen.delete(c); }
+    return ordered.concat([...seen].sort());
+}
+
+function pdfUrl(slug, cat, fname) {
+    return `./${CONFIG.zettelDir}/${slug}/${cat}/${encodeURIComponent(fname)}`;
+}
+
+function pdfAbsoluteUrl(slug, cat, fname) {
+    const rel = pdfUrl(slug, cat, fname);
+    return new URL(rel, window.location.href).toString();
+}
+
+function fileRow(slug, cat, fname) {
+    const li = document.createElement("li");
+    li.className = "file-row";
+
+    const name = document.createElement("span");
+    name.className = "file-name";
+    name.textContent = fname.replace(/\.pdf$/i, "");
+    li.appendChild(name);
+
+    const actions = document.createElement("div");
+    actions.className = "file-actions";
+
+    const url = pdfUrl(slug, cat, fname);
+    const displayName = pascalSpaced(slug) + " — " + pascalSpaced(cat) + " · " + fname.replace(/\.pdf$/i, "");
+
+    const view = document.createElement("button");
+    view.type = "button";
+    view.className = "btn btn-primary";
+    view.textContent = "Ansehen";
+    view.addEventListener("click", () => {
+        closeModal("course", { silent: true });
+        openViewer(url, displayName);
+    });
+    actions.appendChild(view);
+
+    const dl = document.createElement("a");
+    dl.className = "btn btn-secondary";
+    dl.href = url;
+    dl.download = fname;
+    dl.textContent = "Download";
+    actions.appendChild(dl);
+
+    const copy = document.createElement("button");
+    copy.type = "button";
+    copy.className = "btn btn-ghost";
+    copy.textContent = "Prompt kopieren";
+    copy.addEventListener("click", () => {
+        copyPrompt(pdfAbsoluteUrl(slug, cat, fname), displayName, copy);
+    });
+    actions.appendChild(copy);
+
+    li.appendChild(actions);
+    return li;
+}
+
+/* ============================================================
+ * Modal mechanics
+ * ============================================================ */
+
+function showModal(kind) {
+    const m = document.getElementById(kind + "-modal");
+    m.classList.add("active");
+    m.setAttribute("aria-hidden", "false");
+    document.body.classList.add("no-scroll");
+}
+
+function closeModal(kind, opts = {}) {
+    const m = document.getElementById(kind + "-modal");
+    m.classList.remove("active");
+    m.setAttribute("aria-hidden", "true");
+    if (!document.querySelector(".modal.active") && !document.getElementById("viewer").classList.contains("active")) {
+        document.body.classList.remove("no-scroll");
+    }
+}
+
+function wireModals() {
+    document.querySelectorAll("[data-close]").forEach(el => {
+        el.addEventListener("click", () => closeModal(el.getAttribute("data-close")));
+    });
+    document.addEventListener("keydown", e => {
+        if (e.key === "Escape") {
+            const open = document.querySelector(".modal.active");
+            if (open) closeModal(open.id.replace(/-modal$/, ""));
+            else if (document.getElementById("viewer").classList.contains("active")) closeViewer();
+        }
+    });
+}
+
+/* ============================================================
+ * Viewer (full-screen, browser-back closes it)
+ * ============================================================ */
+
+const VIEWER_STATE = "sem2-viewer";
+
+function openViewer(url, title) {
+    const v = document.getElementById("viewer");
+    document.getElementById("viewer-title").textContent = title || "PDF";
+    document.getElementById("viewer-frame").src = url;
+    v.classList.add("active");
+    v.setAttribute("aria-hidden", "false");
+    document.body.classList.add("no-scroll");
+    // Push a state so the browser back-button closes the viewer
+    // instead of leaving the page.
+    if (history.state?.kind !== VIEWER_STATE) {
+        history.pushState({ kind: VIEWER_STATE }, "", "#viewer");
+    }
+}
+
+function closeViewer({ fromPopstate = false } = {}) {
+    const v = document.getElementById("viewer");
+    if (!v.classList.contains("active")) return;
+    v.classList.remove("active");
+    v.setAttribute("aria-hidden", "true");
+    document.getElementById("viewer-frame").src = "";
+    if (!document.querySelector(".modal.active")) {
+        document.body.classList.remove("no-scroll");
+    }
+    if (!fromPopstate && history.state?.kind === VIEWER_STATE) {
+        history.back();
+    }
+}
+
+function wireViewer() {
+    document.getElementById("viewer-close").addEventListener("click", () => closeViewer());
+    window.addEventListener("popstate", () => {
+        const v = document.getElementById("viewer");
+        if (v.classList.contains("active")) closeViewer({ fromPopstate: true });
+    });
+    if (location.hash === "#viewer") {
+        // Stale hash on load — strip it.
+        history.replaceState(null, "", location.pathname + location.search);
     }
 }
 
 /* ============================================================
- * Kurs-Seite: Tabs (Unterordner) + PDF-Viewer
+ * Prompt template editor (with placeholder highlighting)
  * ============================================================ */
 
-async function renderCourse() {
-    setRepoInfo();
-    const params = new URLSearchParams(window.location.search);
-    const course = params.get("course");
-    if (!course) {
-        setStatus("Kein Kurs angegeben.", true);
-        return;
-    }
-
-    document.getElementById("course-title").textContent = toPascalSpaced(course);
-    document.title = `${toPascalSpaced(course)} · 2. Semester`;
-
-    initSidebarDrawer();
-
-    setStatus("Lade Inhalte…");
-    let manifest, subdirNames;
+function loadPromptTemplate() {
     try {
-        manifest = await loadManifest();
-        if (!manifest.courses[course]) {
-            setStatus(`Kurs „${course}" nicht im Manifest.`, true);
-            return;
-        }
-        subdirNames = Object.keys(manifest.courses[course]);
-    } catch (err) {
-        setStatus(err.message, true);
-        return;
+        return localStorage.getItem(LS.promptKey) || DEFAULT_PROMPT;
+    } catch {
+        return DEFAULT_PROMPT;
     }
-
-    if (subdirNames.length === 0) {
-        setStatus("Keine Unterordner gefunden.", true);
-        return;
-    }
-
-    // Tabs sortieren: bekannte zuerst (in CONFIG.tabOrder), Rest alphabetisch
-    const known = CONFIG.tabOrder.filter(n => subdirNames.includes(n));
-    const unknown = subdirNames
-        .filter(n => !CONFIG.tabOrder.includes(n))
-        .sort((a, b) => a.localeCompare(b, "de"));
-    const tabNames = [...known, ...unknown];
-
-    // Default-Tab aus URL-Hash oder CONFIG
-    const wanted = decodeURIComponent((window.location.hash || "").replace(/^#/, ""));
-    const initialTab = tabNames.includes(wanted)
-        ? wanted
-        : (tabNames.includes(CONFIG.defaultTab) ? CONFIG.defaultTab : tabNames[0]);
-
-    const tabsEl = document.getElementById("tabs");
-    tabsEl.innerHTML = "";
-    for (const name of tabNames) {
-        const btn = document.createElement("button");
-        btn.className = "tab" + (name === initialTab ? " active" : "");
-        btn.textContent = toPascalSpaced(name);
-        btn.dataset.tab = name;
-        btn.addEventListener("click", () => loadTab(course, name));
-        tabsEl.appendChild(btn);
-    }
-
-    setStatus("");
-    loadTab(course, initialTab);
 }
 
-async function loadTab(course, tab) {
-    // Aktiven Tab markieren
-    document.querySelectorAll(".sidebar-tabs .tab").forEach(t => {
-        t.classList.toggle("active", t.dataset.tab === tab);
+function savePromptTemplate(s) {
+    try { localStorage.setItem(LS.promptKey, s); } catch {}
+}
+
+function resetPromptTemplate() {
+    try { localStorage.removeItem(LS.promptKey); } catch {}
+}
+
+function renderHighlight(text) {
+    const escaped = escapeHtml(text);
+    return escaped
+        .replace(/\{PDF_URL\}/g, '<span class="ph ph-pdf">{PDF_URL}</span>')
+        .replace(/\{DISPLAY_NAME\}/g, '<span class="ph ph-name">{DISPLAY_NAME}</span>')
+        // Keep the trailing newline visible in the <pre>.
+        + "\n";
+}
+
+function syncHighlight() {
+    const ta = document.getElementById("prompt-editor");
+    const hl = document.getElementById("prompt-highlight");
+    hl.innerHTML = renderHighlight(ta.value);
+    hl.scrollTop = ta.scrollTop;
+    hl.scrollLeft = ta.scrollLeft;
+}
+
+function wirePromptEditor() {
+    const ta = document.getElementById("prompt-editor");
+    document.getElementById("prompt-edit-btn").addEventListener("click", () => {
+        ta.value = loadPromptTemplate();
+        syncHighlight();
+        showModal("prompt");
+        // focus after the show transition begins
+        setTimeout(() => ta.focus(), 50);
     });
-    history.replaceState(null, "", `?course=${encodeURIComponent(course)}#${encodeURIComponent(tab)}`);
+    ta.addEventListener("input", syncHighlight);
+    ta.addEventListener("scroll", syncHighlight);
+    document.getElementById("prompt-save").addEventListener("click", () => {
+        savePromptTemplate(ta.value);
+        closeModal("prompt");
+    });
+    document.getElementById("prompt-reset").addEventListener("click", () => {
+        ta.value = DEFAULT_PROMPT;
+        syncHighlight();
+        resetPromptTemplate();
+    });
+}
 
-    const filesLabel = document.getElementById("files-label");
-    if (filesLabel) filesLabel.textContent = toPascalSpaced(tab);
+/* ============================================================
+ * Copy prompt to clipboard
+ * ============================================================ */
 
-    const pillsWrap = document.getElementById("file-pills");
-    const viewer = document.getElementById("viewer");
-    pillsWrap.innerHTML = "";
-    viewer.innerHTML = `<div class="placeholder">Lade Dateien…</div>`;
-
-    let files;
-    try {
-        const manifest = await loadManifest();
-        const list = manifest.courses?.[course]?.[tab] || [];
-        files = list.map(name => ({ name }));
-    } catch (err) {
-        viewer.innerHTML = `<div class="placeholder">Fehler: ${err.message}</div>`;
-        return;
-    }
-
-    const downloadBtn = document.getElementById("download-btn");
-    const topbarFile = document.getElementById("topbar-file");
-    const topbarSep = document.getElementById("topbar-sep");
-
-    if (files.length === 0) {
-        viewer.innerHTML = `<div class="placeholder">Keine PDFs in „${tab}".</div>`;
-        if (downloadBtn) downloadBtn.hidden = true;
-        if (topbarFile) topbarFile.textContent = "";
-        if (topbarSep) topbarSep.hidden = true;
-        return;
-    }
-
-    const selectFile = (url, name, btnEl) => {
-        if (downloadBtn) {
-            downloadBtn.href = url;
-            downloadBtn.setAttribute("download", name);
-            downloadBtn.hidden = false;
-        }
-        if (topbarFile) topbarFile.textContent = name.replace(/\.pdf$/i, "");
-        if (topbarSep) topbarSep.hidden = false;
-        pillsWrap.querySelectorAll(".pill").forEach(p => p.classList.toggle("active", p === btnEl));
-        showPdf(url);
-        setSidebarOpen(false);
+function copyPrompt(url, displayName, btn) {
+    const tpl = loadPromptTemplate();
+    const out = tpl
+        .replace(/\{PDF_URL\}/g, url)
+        .replace(/\{DISPLAY_NAME\}/g, displayName);
+    const done = ok => {
+        const orig = btn.textContent;
+        btn.textContent = ok ? "Kopiert!" : "Fehler";
+        btn.classList.toggle("copied", ok);
+        setTimeout(() => {
+            btn.textContent = orig;
+            btn.classList.remove("copied");
+        }, 1500);
     };
-
-    let firstUrl = null, firstName = null;
-    files.forEach((f, idx) => {
-        const url = `./${CONFIG.zettelDir}/${course}/${tab}/${f.name}`;
-        const pill = document.createElement("button");
-        pill.type = "button";
-        pill.className = "pill" + (idx === 0 ? " active" : "");
-        pill.textContent = f.name.replace(/\.pdf$/i, "");
-        pill.title = f.name;
-        pill.addEventListener("click", () => selectFile(url, f.name, pill));
-        pillsWrap.appendChild(pill);
-        if (idx === 0) { firstUrl = url; firstName = f.name; }
-    });
-
-    // Initiale Anzeige (ohne Sidebar zu schließen, da sie eh zu ist)
-    if (downloadBtn) {
-        downloadBtn.href = firstUrl;
-        downloadBtn.setAttribute("download", firstName);
-        downloadBtn.hidden = false;
+    if (navigator.clipboard?.writeText) {
+        navigator.clipboard.writeText(out).then(() => done(true), () => fallbackCopy(out, done));
+    } else {
+        fallbackCopy(out, done);
     }
-    if (topbarFile) topbarFile.textContent = firstName.replace(/\.pdf$/i, "");
-    if (topbarSep) topbarSep.hidden = false;
-    showPdf(firstUrl);
 }
 
-function showPdf(url) {
-    const viewer = document.getElementById("viewer");
-    const wasExpanded = viewer.classList.contains("expanded");
-    viewer.innerHTML = `
-        <button type="button" class="viewer-close" aria-label="Schließen" title="Schließen (Esc)">✕</button>
-        <iframe src="${url}#view=FitH" title="PDF"></iframe>
-    `;
-    viewer.querySelector(".viewer-close").addEventListener("click", exitExpanded);
-    if (wasExpanded) viewer.classList.add("expanded");
+function fallbackCopy(text, done) {
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    let ok = false;
+    try { ok = document.execCommand("copy"); } catch {}
+    document.body.removeChild(ta);
+    done(ok);
 }
 
-function toggleExpanded() {
-    const viewer = document.getElementById("viewer");
-    if (!viewer) return;
-    const expanded = viewer.classList.toggle("expanded");
-    document.body.classList.toggle("no-scroll", expanded);
-}
+/* ============================================================
+ * Init
+ * ============================================================ */
 
-function exitExpanded() {
-    const viewer = document.getElementById("viewer");
-    if (!viewer) return;
-    viewer.classList.remove("expanded");
-    document.body.classList.remove("no-scroll");
-}
-
-document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") {
-        exitExpanded();
-        setSidebarOpen(false);
-    }
+document.addEventListener("DOMContentLoaded", () => {
+    initTheme();
+    wireModals();
+    wireViewer();
+    wirePromptEditor();
+    renderIndex();
 });
-
-function setSidebarOpen(open) {
-    const sidebar = document.getElementById("file-controls");
-    const backdrop = document.getElementById("sidebar-backdrop");
-    if (!sidebar) return;
-    sidebar.classList.toggle("open", open);
-    if (backdrop) backdrop.classList.toggle("open", open);
-}
-
-function initSidebarDrawer() {
-    const toggle = document.getElementById("sidebar-toggle");
-    const backdrop = document.getElementById("sidebar-backdrop");
-    const sidebar = document.getElementById("file-controls");
-    const fsBtn = document.getElementById("fullscreen-btn");
-    if (toggle && !toggle.dataset.bound) {
-        toggle.dataset.bound = "1";
-        toggle.addEventListener("click", () => {
-            setSidebarOpen(!sidebar.classList.contains("open"));
-        });
-    }
-    if (backdrop && !backdrop.dataset.bound) {
-        backdrop.dataset.bound = "1";
-        backdrop.addEventListener("click", () => setSidebarOpen(false));
-    }
-    if (fsBtn && !fsBtn.dataset.bound) {
-        fsBtn.dataset.bound = "1";
-        fsBtn.addEventListener("click", toggleExpanded);
-    }
-}

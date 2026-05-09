@@ -1,24 +1,85 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="de" data-theme="mocha">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2. Semester</title>
-    <link rel="stylesheet" href="./assets/style.css?v=9">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>DHBW Lernzettel</title>
+    <link rel="stylesheet" href="./assets/style.css?v=10">
 </head>
 <body>
     <header class="site-header">
-        <h1>2. Semester</h1>
-        <p class="subtitle">Lernzettel, Übungen & Klausuren</p>
+        <div class="header-row">
+            <h1>DHBW Lernzettel</h1>
+            <div class="header-actions">
+                <button id="prompt-edit-btn" class="btn btn-ghost" type="button">Prompt bearbeiten</button>
+                <label class="theme-select" for="theme-select-input">
+                    <span>Theme</span>
+                    <select id="theme-select-input">
+                        <option value="mocha">Catppuccin Mocha</option>
+                        <option value="gruvbox">Gruvbox</option>
+                    </select>
+                </label>
+            </div>
+        </div>
+        <p class="subtitle">Lernzettel, Open-Book, Übungen & Klausuren</p>
     </header>
+
     <main>
         <div id="status" class="status">Lade Kurse…</div>
-        <section id="courses" class="grid"></section>
+        <section id="semesters" class="semesters"></section>
     </main>
-    <footer class="site-footer">
-        <span id="repo-info"></span>
-    </footer>
-    <script src="./assets/app.js?v=9"></script>
-    <script>renderIndex();</script>
+
+    <footer class="site-footer"><span id="repo-info"></span></footer>
+
+    <!-- Course modal -->
+    <div id="course-modal" class="modal" aria-hidden="true">
+        <div class="modal-backdrop" data-close="course"></div>
+        <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="course-modal-title">
+            <div class="modal-header">
+                <h2 id="course-modal-title"></h2>
+                <button class="modal-close" data-close="course" aria-label="Schließen">&times;</button>
+            </div>
+            <div class="modal-body" id="course-modal-body"></div>
+        </div>
+    </div>
+
+    <!-- Prompt editor modal -->
+    <div id="prompt-modal" class="modal" aria-hidden="true">
+        <div class="modal-backdrop" data-close="prompt"></div>
+        <div class="modal-card prompt-card" role="dialog" aria-modal="true" aria-labelledby="prompt-modal-title">
+            <div class="modal-header">
+                <h2 id="prompt-modal-title">Prompt bearbeiten</h2>
+                <button class="modal-close" data-close="prompt" aria-label="Schließen">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p class="hint">
+                    Verwende
+                    <code class="ph-pdf">{PDF_URL}</code>
+                    und
+                    <code class="ph-name">{DISPLAY_NAME}</code>
+                    als Platzhalter — sie werden beim Kopieren automatisch ersetzt.
+                </p>
+                <div class="prompt-editor-wrap">
+                    <pre id="prompt-highlight" class="prompt-highlight" aria-hidden="true"></pre>
+                    <textarea id="prompt-editor" spellcheck="false" autocapitalize="off" autocomplete="off"></textarea>
+                </div>
+                <div class="prompt-buttons">
+                    <button class="btn btn-danger" id="prompt-reset" type="button">Zurücksetzen</button>
+                    <button class="btn btn-primary" id="prompt-save" type="button">Speichern</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PDF viewer (full-screen, browser-back closes it) -->
+    <div id="viewer" class="viewer" aria-hidden="true">
+        <div class="viewer-header">
+            <span id="viewer-title" class="viewer-title"></span>
+            <button id="viewer-close" class="viewer-close" type="button" aria-label="Schließen">&times;</button>
+        </div>
+        <iframe id="viewer-frame" title="PDF-Vorschau"></iframe>
+    </div>
+
+    <script src="./assets/app.js?v=10"></script>
 </body>
 </html>
