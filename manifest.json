@@ -1,5 +1,19 @@
 {
   "courses": {
+    "analysis": {
+      "klausur": [
+        "klausur_a.pdf",
+        "klausur_a_loesung.pdf",
+        "klausur_b.pdf",
+        "klausur_b_loesung.pdf",
+        "klausur_c.pdf",
+        "klausur_c_loesung.pdf"
+      ],
+      "lernzettel": [
+        "analysis.pdf",
+        "formelsammlung.pdf"
+      ]
+    },
     "analysis_2": {
       "klausur": [
         "exam1.pdf",
@@ -22,6 +36,52 @@
         "exercise7.pdf",
         "exercise8.pdf",
         "exercise9.pdf"
+      ]
+    },
+    "digitale_betriebswirtschaftslehre": {
+      "klausur": [
+        "exam1.pdf"
+      ],
+      "lernzettel": [
+        "zettel.pdf"
+      ],
+      "openbook": [
+        "openbook.pdf"
+      ],
+      "uebungsaufgaben": [
+        "exercise1.pdf"
+      ]
+    },
+    "dski-dataviz": {
+      "lernzettel": [
+        "dski-dataviz.pdf"
+      ],
+      "uebungsaufgaben": [
+        "uebung_01_python_pandas_matplotlib.pdf",
+        "uebung_03_data_exploration.pdf",
+        "uebung_04_predictive_modelling.pdf"
+      ]
+    },
+    "dski-intro": {
+      "klausur": [
+        "klausur_a.pdf",
+        "klausur_a_loesung.pdf",
+        "klausur_b.pdf",
+        "klausur_b_loesung.pdf",
+        "klausur_c.pdf",
+        "klausur_c_loesung.pdf"
+      ],
+      "lernzettel": [
+        "dski-intro.pdf"
+      ],
+      "uebungsaufgaben": [
+        "uebung_01_grundlagen_ds.pdf",
+        "uebung_02_prozessmodelle.pdf",
+        "uebung_03_deskriptive_statistik.pdf",
+        "uebung_04_ml_methoden.pdf",
+        "uebung_05_baeume_neuronale_netze.pdf",
+        "uebung_06_modellevaluation.pdf",
+        "uebung_07_ethik_nlp_strategie.pdf"
       ]
     },
     "grundlagen_informatik_betriebssysteme": {
@@ -49,6 +109,67 @@
         "exercise10.pdf",
         "exercise11.pdf",
         "exercise12.pdf"
+      ]
+    },
+    "informatik": {
+      "klausur": [
+        "klausur_a.pdf",
+        "klausur_a_loesung.pdf",
+        "klausur_b.pdf",
+        "klausur_b_loesung.pdf",
+        "klausur_c.pdf",
+        "klausur_c_loesung.pdf"
+      ],
+      "lernzettel": [
+        "informatik.pdf"
+      ],
+      "uebungsaufgaben": [
+        "uebung_01_stellenwertsysteme.pdf",
+        "uebung_02_zahlendarstellung.pdf",
+        "uebung_03_arithmetik.pdf",
+        "uebung_04_boolesche_algebra.pdf",
+        "uebung_05_speicher_architektur.pdf"
+      ]
+    },
+    "kommsysteme": {
+      "klausur": [
+        "klausur_a.pdf",
+        "klausur_a_loesung.pdf",
+        "klausur_b.pdf",
+        "klausur_b_loesung.pdf",
+        "klausur_c.pdf",
+        "klausur_c_loesung.pdf"
+      ],
+      "lernzettel": [
+        "kommsysteme.pdf"
+      ],
+      "uebungsaufgaben": [
+        "uebung_01_grundlagen_schichtenmodell.pdf",
+        "uebung_02_sicherungsschicht_ethernet.pdf",
+        "uebung_03_wlan_mobilfunk.pdf",
+        "uebung_04_ipv4.pdf",
+        "uebung_05_ipv6_routing.pdf",
+        "uebung_06_transportschicht.pdf",
+        "uebung_07_anwendungsschicht_hex.pdf"
+      ]
+    },
+    "lineare-algebra": {
+      "klausur": [
+        "probeklausur_02.pdf",
+        "probeklausur_03.pdf",
+        "probeklausur_04.pdf"
+      ],
+      "lernzettel": [
+        "formelsammlung.pdf",
+        "lineare-algebra.pdf"
+      ],
+      "uebungsaufgaben": [
+        "uebung_01_vektoren.pdf",
+        "uebung_02_matrizen.pdf",
+        "uebung_03_lgs.pdf",
+        "uebung_04_lineare_regression.pdf",
+        "uebung_05_eigenwerte.pdf",
+        "uebung_06_vektorraeume.pdf"
       ]
     },
     "numerische_methoden": {

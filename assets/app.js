@@ -24,10 +24,21 @@ const CONFIG = {
         openbook: "Open-Book",
         klausur: "Klausuren",
         lernzettel: "Lernzettel",
+        "dski-dataviz": "DSKI – Data Visualization",
+        "dski-intro": "DSKI – Einführung",
+        kommsysteme: "Kommunikationssysteme",
+        "lineare-algebra": "Lineare Algebra",
+        digitale_betriebswirtschaftslehre: "Digitale BWL (DOL)",
     },
     // Course slug → semester. Default is `defaultSemester`.
     courseSemester: {
         grundlagen_informatik_betriebssysteme: 1,
+        analysis: 1,
+        "dski-dataviz": 1,
+        "dski-intro": 1,
+        informatik: 1,
+        kommsysteme: 1,
+        "lineare-algebra": 1,
     },
     defaultSemester: 2,
     semesterTitles: {
