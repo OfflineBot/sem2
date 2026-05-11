@@ -14,6 +14,14 @@
  */
 
 const CONFIG = {
+    // Repo coordinates — used to build the `raw.githubusercontent.com` URL
+    // that goes into the copied prompt template. We deliberately *don't*
+    // use the live site URL there: AI tools (Claude, ChatGPT, …) fetch
+    // GitHub-raw URLs reliably because the host sets `Access-Control-
+    // Allow-Origin: *` and never proxies through Cloudflare custom-domain
+    // rules.
+    repoOwner: "OfflineBot",
+    repoName: "sem2",
     branch: "main",
     zettelDir: "zettel",
     // Tab order within a course modal (known first, unknown alphabetic at end).
@@ -291,6 +299,35 @@ function pdfAbsoluteUrl(slug, cat, fname) {
     return new URL(rel, window.location.href).toString();
 }
 
+/**
+ * Returns the raw.githubusercontent.com URL for a PDF. This is what we
+ * paste into the prompt template — AI tools fetch GitHub-raw URLs
+ * reliably (proper CORS, no custom-domain routing, no Cloudflare gate),
+ * whereas the host site URL can fail behind some proxies.
+ */
+function pdfRawGithubUrl(slug, cat, fname) {
+    const { repoOwner, repoName, branch, zettelDir } = CONFIG;
+    return `https://raw.githubusercontent.com/${repoOwner}/${repoName}/${branch}/${zettelDir}/${encodeURIComponent(slug)}/${encodeURIComponent(cat)}/${encodeURIComponent(fname)}`;
+}
+
+/**
+ * iOS / iPadOS detection. We need this because Mobile Safari refuses to
+ * render PDFs inside <iframe> elements — the user sees the first page or
+ * a blank box and has to tap "Open in Files" to read anything else. On
+ * those devices we bail out of the overlay and let Safari open the file
+ * in its native viewer (full multi-page UI, search, share, …).
+ *
+ * iPadOS reports itself as MacIntel since iOS 13, so we also check
+ * `maxTouchPoints` to catch that disguise.
+ */
+function isIosSafari() {
+    if (typeof navigator === "undefined") return false;
+    const ua = navigator.userAgent || "";
+    if (/iPad|iPhone|iPod/.test(ua)) return true;
+    if (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1) return true;
+    return false;
+}
+
 function fileRow(slug, cat, fname) {
     const li = document.createElement("li");
     li.className = "file-row";
@@ -328,7 +365,10 @@ function fileRow(slug, cat, fname) {
     copy.className = "btn btn-ghost";
     copy.textContent = "Prompt kopieren";
     copy.addEventListener("click", () => {
-        copyPrompt(pdfAbsoluteUrl(slug, cat, fname), displayName, copy);
+        // Use the GitHub-raw URL here, not the host-site URL: AI tools
+        // resolve raw.githubusercontent.com reliably regardless of where
+        // the page itself is being served from.
+        copyPrompt(pdfRawGithubUrl(slug, cat, fname), displayName, copy);
     });
     actions.appendChild(copy);
 
@@ -376,6 +416,14 @@ function wireModals() {
 const VIEWER_STATE = "sem2-viewer";
 
 function openViewer(url, title) {
+    // iOS Safari can't render PDFs in an <iframe> — the user only sees
+    // the first page or a blank box. Hand the URL off to the OS-native
+    // viewer instead so iPhone/iPad users can actually read the document.
+    if (isIosSafari()) {
+        window.open(url, "_blank", "noopener");
+        return;
+    }
+
     const v = document.getElementById("viewer");
     document.getElementById("viewer-title").textContent = title || "PDF";
     document.getElementById("viewer-frame").src = url;

@@ -291,6 +291,11 @@ details.semester[open] .semester-summary {
     line-height: 1.2;
     transition: background 0.15s, color 0.15s, border-color 0.15s;
     white-space: nowrap;
+    /* Floor every button at the WCAG 2.5.5 / Apple HIG minimum touch
+       target (44 px). Without this the file-row actions render as 32 px
+       on mobile and are easy to mis-tap, especially next to each other. */
+    min-height: 44px;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .btn-primary {
@@ -350,7 +355,9 @@ details.semester[open] .semester-summary {
     margin: 4vh auto;
     max-width: 720px;
     width: calc(100% - 2rem);
-    max-height: 92vh;
+    /* `dvh` so the modal doesn't push past the visible viewport on
+       phones (the iOS URL bar steals ~60 px of `vh`). */
+    max-height: 92dvh;
     background: var(--mantle);
     border: 1px solid var(--surface0);
     border-radius: 12px;
@@ -533,6 +540,11 @@ code.ph-name { background: var(--ph-name-bg); color: var(--ph-name-fg); }
     display: none;
     flex-direction: column;
     z-index: 200;
+    /* `dvh` tracks the visible viewport (excludes mobile browser chrome),
+       so the close button doesn't disappear behind the iOS URL bar. The
+       inset:0 above already covers desktop; this just pins the height
+       precisely on phones. */
+    height: 100dvh;
 }
 
 .viewer.active { display: flex; }
@@ -597,10 +609,55 @@ code.ph-name { background: var(--ph-name-bg); color: var(--ph-name-fg); }
  * ============================================================ */
 
 @media (max-width: 600px) {
+    .site-header { padding: 1.1rem 1rem 0.9rem; }
     .site-header h1 { font-size: 1.25rem; }
     .header-actions { width: 100%; justify-content: space-between; }
-    .course-grid { grid-template-columns: 1fr; }
-    .file-row { flex-direction: column; align-items: stretch; }
-    .file-actions { justify-content: flex-end; }
-    .modal-card { margin: 2vh auto; max-height: 96vh; width: calc(100% - 1rem); }
+
+    main { padding: 1rem; }
+
+    .course-grid { grid-template-columns: 1fr; padding: 0.75rem; gap: 0.6rem; }
+    .course-card { padding: 0.85rem; }
+
+    /* File rows stack: name on top, buttons in a row below. Buttons
+       grow to share width equally so tap targets stay generous and the
+       row never overflows horizontally. */
+    .file-row {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 0.75rem;
+    }
+    .file-actions {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.4rem;
+        width: 100%;
+    }
+    .file-actions .btn { width: 100%; padding: 0.55rem 0.5rem; }
+
+    /* Modal: snug margins on phones so the card claims more of the
+       screen, but the close button stays in reach. */
+    .modal-card { margin: 1.5vh auto; max-height: 96dvh; width: calc(100% - 0.75rem); }
+    .modal-header { padding: 0.85rem 1rem; }
+    .modal-body { padding: 1rem; }
+
+    /* Viewer: fatter close button on touch, account for the iOS
+       home-indicator strip at the bottom. */
+    .viewer-header {
+        padding: 0.6rem 0.85rem;
+        padding-left: max(0.85rem, env(safe-area-inset-left));
+        padding-right: max(0.85rem, env(safe-area-inset-right));
+        padding-top: max(0.6rem, env(safe-area-inset-top));
+    }
+    .viewer-close { width: 44px; height: 44px; font-size: 1.5rem; }
+    .viewer-title { font-size: 0.9rem; }
+
+    .prompt-buttons { gap: 0.4rem; }
+    .prompt-buttons .btn { flex: 1 1 auto; }
+}
+
+/* Very narrow (≤ 360 px) — file-actions become 2 cols + wrap so labels
+   don't get squashed below readability. */
+@media (max-width: 360px) {
+    .file-actions { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .file-actions .btn:nth-child(3) { grid-column: span 2; }
 }
