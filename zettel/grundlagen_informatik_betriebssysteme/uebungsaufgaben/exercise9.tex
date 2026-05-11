@@ -1,0 +1,505 @@
+% ============================================================
+%  Übungsaufgaben Template (my_dhbw Stil, uebung_*.tex)
+%  Header "Übungsblatt", grün eingefärbte <details>-Lösungen.
+%  Renderer: pdflatex (zweimal)
+% ============================================================
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+\usepackage[top=2cm, bottom=2cm, left=2.4cm, right=2.4cm, footskip=1cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{ltablex}
+\keepXColumns
+\usepackage{colortbl}
+\usepackage[most,breakable]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{pdflscape}
+\usepackage{titlesec}
+\usepackage[colorlinks=true, linkcolor=accent, urlcolor=accent]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme ─────────────────────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{loesung}{RGB}{0, 100, 0}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{240, 252, 240}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer ─────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\footnotesize\color{accent}\nichttitle}
+\fancyhead[R]{\footnotesize\color{accent}\nichtsubtitle}
+\fancyfoot[R]{\footnotesize\color{accent}Blatt \thepage\,/\,\pageref{LastPage}}
+
+% ── Typografie ────────────────────────────────────────────────
+\titleformat{\section}
+    {\color{accent}\large\bfseries}{}{0pt}{}
+    [\vspace{-4pt}\color{accent}\rule{\linewidth}{1.5pt}]
+\titleformat{\subsection}
+    {\normalsize\bfseries\color{accent!85!black}}{}{0pt}{}{}
+\titleformat{\subsubsection}
+    {\small\bfseries\color{accent!70!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{10pt}{3pt}
+\titlespacing*{\subsection}{0pt}{6pt}{2pt}
+\titlespacing*{\subsubsection}{0pt}{4pt}{1pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\renewcommand{\arraystretch}{1.2}
+\setlist[itemize]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.4em}
+\setlist[enumerate]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.6em}
+
+% ── Boxen: solutionbox = Lösungsbox in grün ──────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={Abbildung: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={Tabelle: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{solutionbox}[1]{
+  enhanced,
+  colback=solutionbg, colframe=loesung,
+  title={#1}, fonttitle=\small\bfseries,
+  coltitle=white, colbacktitle=loesung,
+  breakable, before skip=8pt, after skip=8pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=single, framerule=0pt,
+  xleftmargin=4pt, xrightmargin=4pt,
+  aboveskip=6pt, belowskip=6pt,
+  keepspaces=true
+}
+
+\providecommand{\nichttitle}{Übungsblatt}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Betriebssysteme}
+\renewcommand{\nichtsubtitle}{Übungsblatt 9}
+
+
+\begin{document}
+
+\begin{center}
+{\Large\bfseries\color{accent}\nichttitle}
+\ifx\nichtsubtitle\empty\else
+  \\[2pt]{\normalsize\color{accent!80!black}\nichtsubtitle}
+\fi
+\\[2pt]
+\color{accent}\rule{0.4\linewidth}{0.8pt}\color{black}
+\end{center}
+\vspace{4pt}
+
+% ── BODY ──────────────────────────────────────────────────────
+
+\section{Übungsblatt 9 — Synchronisation}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 1 — Race Condition im Kontostand \textit{(12 Punkte)}}\mbox{}\\[2pt]
+
+Zwei Threads \texttt{T1} und \texttt{T2} bearbeiten ein gemeinsames Konto mit Startwert \texttt{saldo = 100}. Beide führen folgenden Pseudocode aus:
+
+
+\begin{lstlisting}
+1: tmp = saldo
+2: tmp = tmp + 50
+3: saldo = tmp
+\end{lstlisting}
+
+
+a) Definiere \textbf{Race Condition} und \textbf{Lost Update}. Nenne die zwei Voraussetzungen, unter denen eine Race Condition überhaupt entstehen kann. \textit{(3 P)}
+
+
+b) Konstruiere eine Verschränkung der Befehle 1–3 von \texttt{T1} und \texttt{T2}, bei der am Ende \texttt{saldo = 150} ist (statt der erwarteten 200). Stelle den Ablauf in einer Tabelle mit den Spalten \textit{Schritt | T1 | T2 | tmp\_T1 | tmp\_T2 | saldo} dar. \textit{(5 P)}
+
+
+c) Begründe, warum das Sperren der Interrupts auf einem Einkernsystem das Problem löst, auf einem Mehrkernsystem aber nicht ausreicht. \textit{(4 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Eine \textbf{Race Condition} liegt vor, wenn das Ergebnis einer Berechnung von der zeitlichen Reihenfolge der Zugriffe nebenläufiger Aktivitäten abhängt. Voraussetzungen: (1) \textbf{Nebenläufigkeit} (mind. zwei quasi- oder echt-parallel laufende Aktivitäten) und (2) \textbf{gemeinsame Betriebsmittel} (hier \texttt{saldo}). Ein \textbf{Lost Update} ist der Spezialfall, dass Prozess A zuerst liest, B liest denselben alten Wert, beide schreiben zurück und das Update von A überschrieben (verloren) wird.
+
+
+b) Verschränkung mit Lost Update:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Schritt}} & {\color{white}\textbf{T1}} & {\color{white}\textbf{T2}} & {\color{white}\textbf{tmp\_T1}} & {\color{white}\textbf{tmp\_T2}} & {\color{white}\textbf{saldo}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+0 & – & – & – & – & 100 \\
+1 & tmp = saldo & – & 100 & – & 100 \\
+2 & tmp = tmp+50 & – & 150 & – & 100 \\
+3 & – & tmp = saldo & 150 & 100 & 100 \\
+4 & saldo = tmp & – & 150 & 100 & 150 \\
+5 & – & tmp = tmp+50 & 150 & 150 & 150 \\
+6 & – & saldo = tmp & 150 & 150 & \textbf{150} \\
+\end{tabularx}
+}
+
+
+T2 hat den vor seiner Schreiboperation aktuellen Wert (150) überschrieben mit seinem auf veraltetem Lesen basierenden Ergebnis (150) — das Update von T1 ist verloren.
+
+
+c) Auf einem \textbf{Einkernsystem} wird Nebenläufigkeit ausschließlich durch Interrupts (Timer-Interrupt für Kontextwechsel) erzeugt. Maskiert man Interrupts während der drei Befehle, kann kein anderer Thread dazwischen zur CPU kommen — der Block wird atomar. Auf einem \textbf{Mehrkernsystem} läuft \texttt{T2} jedoch \textit{echt-parallel} auf einem zweiten Kern; das Maskieren der Interrupts auf dem eigenen Kern hindert den anderen Kern nicht am Zugriff auf \texttt{saldo}. Das Race Condition bleibt bestehen — daher braucht man hier hardwaregestützte atomare Befehle (TSL/TAS), die den Speicherbus während Test+Set blockieren.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 — TSL-Spinlock korrekt einsetzen \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben sei der Maschinenbefehl \texttt{TSL reg, addr}, der den Wert an \texttt{addr} in \texttt{reg} lädt und gleichzeitig (im selben Buszyklus) \texttt{addr := 1} setzt.
+
+
+Ein Studierender schlägt folgenden Code für \texttt{enter\_region} und \texttt{leave\_region} vor:
+
+
+\begin{lstlisting}
+enter_region:
+    MOV reg, #1
+    XCHG reg, lock     ; tauscht reg <-> lock atomar
+    CMP reg, #0
+    JNE enter_region
+    RET
+
+leave_region:
+    MOV lock, #0
+    RET
+\end{lstlisting}
+
+
+a) Erkläre, warum der Befehl TSL für die Mutual-Exclusion-Bedingung \textit{zwingend} in einer einzigen, ununterbrechbaren Operation ausgeführt werden muss. Was würde passieren, wenn er aus zwei separaten Maschinenbefehlen (Lesen, Schreiben) bestünde? \textit{(4 P)}
+
+
+b) Prüfe, ob der oben angegebene Code korrekt ist. Argumentiere für jede der vier Mutex-Bedingungen (Mutual Exclusion, Unabhängigkeit von Geschwindigkeit/CPU-Anzahl, kein Blockieren außerhalb, Fairness) ob sie erfüllt ist. \textit{(7 P)}
+
+
+c) Nenne \textit{einen} konkreten Anwendungsfall, in dem ein Spinlock einem Semaphor vorzuziehen ist, sowie \textit{einen}, in dem das Gegenteil gilt. Begründe jeweils anhand von Wartezeit und CPU-Auslastung. \textit{(4 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Wäre TSL aus zwei Befehlen (Schritt 1: lesen, Schritt 2: schreiben) zusammengesetzt, könnte zwischen ihnen ein Kontextwechsel oder ein paralleler Zugriff eines anderen Kerns stattfinden. Beispiel: Prozess A liest \texttt{lock = 0}, bevor er schreiben kann unterbricht ihn Prozess B, der ebenfalls \texttt{lock = 0} liest, beide setzen anschließend \texttt{lock = 1} und beide betreten den kritischen Abschnitt — Mutual Exclusion ist verletzt. Daher muss Test+Set in \textit{einem Speicherzugriffszyklus} ablaufen; die CPU blockiert dafür den Bus, sodass kein anderer Kern in dieser Zeit auf \texttt{lock} zugreifen kann.
+
+
+b) Bewertung der vier Bedingungen:
+
+
+\begin{itemize}
+  \item \textbf{Mutual Exclusion} ✓: \texttt{XCHG} ist atomar; nur der Prozess, der vom alten \texttt{lock} den Wert 0 lädt (also \texttt{reg = 0} nach dem Tausch), verlässt die Schleife. Alle anderen sehen \texttt{reg = 1} und drehen weiter.
+  \item \textbf{Unabhängigkeit von Geschwindigkeit / Anzahl Prozessoren} ✓: TSL/XCHG nutzt eine Bus-Sperre und funktioniert auf Einkern wie auf Mehrkernsystemen, unabhängig von Taktfrequenzen.
+  \item \textbf{Kein Blockieren außerhalb} ✓: Außerhalb des kritischen Abschnitts ist \texttt{lock = 0}, jeder Wartende kann eintreten.
+  \item \textbf{Fairness} ✗: Es gibt keine Warteschlange. Wer den Bus zuerst „erwischt", bekommt den Lock — ein Prozess kann theoretisch beliebig oft erfolglos spinnen, während andere ihn überholen (\textbf{Starvation/Verhungern} möglich). Diese Bedingung ist \textit{nicht} erfüllt.
+\end{itemize}
+
+c) \textbf{Spinlock vorzuziehen}: kurze, vorhersehbare Wartezeit (z. B. ein paar Instruktionen im Kernel zur Aktualisierung einer Statistik) auf einem Mehrkernsystem — der Aufwand für Kontextwechsel + Aufwecken (Semaphor) wäre teurer als kurze Busy-Wait-Zyklen. \textbf{Semaphor vorzuziehen}: lange oder unbekannte Wartezeit (z. B. Warten auf I/O oder einen vollen Drucker-Puffer) — Spinning würde die CPU verschwenden; ein Semaphor suspendiert den Prozess und gibt die CPU frei.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 — Erzeuger-Verbraucher mit Zählsemaphoren \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+Ein Ringpuffer fasst \texttt{N = 4} Slots. Es laufen \texttt{2} Erzeuger und \texttt{3} Verbraucher nebenläufig. Jeder Erzeuger-Aufruf legt ein Element ab, jeder Verbraucher-Aufruf entnimmt eines.
+
+
+a) Initialisiere drei Semaphore \texttt{mutex}, \texttt{empty}, \texttt{full} mit den korrekten Startwerten und erkläre die Rolle jedes einzelnen. \textit{(5 P)}
+
+
+b) Schreibe den Pseudocode für \texttt{produce()} und \texttt{consume()} unter Verwendung der Semaphore. Achte auf die Reihenfolge der \texttt{P()}-Operationen. \textit{(7 P)}
+
+
+c) Ein Studierender vertauscht in \texttt{produce()} die ersten beiden \texttt{P()}-Operationen: erst \texttt{P(mutex)}, dann \texttt{P(empty)}. Konstruiere ein Szenario, in dem dadurch eine \textbf{Verklemmung} entsteht. Stelle den Zustand der drei Zähler und die Wartelisten dar. \textit{(8 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Initialisierung:
+
+
+\begin{itemize}
+  \item \texttt{mutex = 1} (binäres Semaphor) — schützt den kritischen Abschnitt um die Pufferdatenstruktur (Schreib-/Lesezeiger), damit nicht zwei Erzeuger gleichzeitig in dieselbe Zelle schreiben.
+  \item \texttt{empty = 4} (Zählsemaphor) — zählt freie Slots. Erzeuger müssen \texttt{P(empty)} machen; sind keine frei (Zähler 0), werden sie suspendiert.
+  \item \texttt{full = 0} (Zählsemaphor) — zählt belegte Slots. Verbraucher machen \texttt{P(full)}; ist nichts da, werden sie suspendiert.
+\end{itemize}
+
+b) Pseudocode:
+
+
+\begin{lstlisting}
+produce():
+    P(empty)        // freien Slot reservieren
+    P(mutex)        // KA betreten
+    buffer[in] = item; in = (in+1) % N
+    V(mutex)        // KA verlassen
+    V(full)         // einen belegten Slot signalisieren
+
+consume():
+    P(full)
+    P(mutex)
+    item = buffer[out]; out = (out+1) % N
+    V(mutex)
+    V(full ? nein → empty)   // einen freien Slot freigeben
+    V(empty)
+\end{lstlisting}
+
+
+Wichtig: Die Reihenfolge \texttt{P(empty)} \textit{vor} \texttt{P(mutex)} ist zwingend — andernfalls sperrt ein blockierender Erzeuger den Mutex und verklemmt alle Verbraucher.
+
+
+c) Verklemmungsszenario bei vertauschter Reihenfolge in \texttt{produce()}:
+
+
+\begin{lstlisting}
+produce_falsch():
+    P(mutex)        // <-- vertauscht
+    P(empty)
+    ...
+\end{lstlisting}
+
+
+Ablauf, Startzustand \texttt{mutex=1, empty=0, full=4} (Puffer komplett voll):
+
+
+
+{\footnotesize
+\begin{tabularx}{\linewidth}{XXXXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Schritt}} & {\color{white}\textbf{Aktion}} & {\color{white}\textbf{mutex}} & {\color{white}\textbf{empty}} & {\color{white}\textbf{full}} & {\color{white}\textbf{Wartend auf empty}} & {\color{white}\textbf{Wartend auf mutex}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+0 & Start (Puffer voll) & 1 & 0 & 4 & – & – \\
+1 & Erzeuger E1 ruft \texttt{produce\_falsch()}: \texttt{P(mutex)} → mutex=0 & 0 & 0 & 4 & – & – \\
+2 & E1: \texttt{P(empty)} → suspendiert (empty=0) & 0 & 0 & 4 & E1 & – \\
+3 & Verbraucher V1 ruft \texttt{consume()}: \texttt{P(full)} → full=3 & 0 & 0 & 3 & E1 & – \\
+4 & V1: \texttt{P(mutex)} → suspendiert (mutex=0) & 0 & 0 & 3 & E1 & V1 \\
+5 & V2 analog & 0 & 0 & 2 & E1 & V1, V2 \\
+6 & V3 analog & 0 & 0 & 1 & E1 & V1, V2, V3 \\
+\end{tabularx}
+}
+
+
+\textbf{Verklemmung}: E1 hält \texttt{mutex} und wartet auf \texttt{empty}. Nur ein Verbraucher könnte \texttt{empty} erhöhen — alle Verbraucher hängen aber an \texttt{P(mutex)}, weil E1 ihn nie freigibt. Klassischer Deadlock: zyklische Wartebeziehung E1 → empty → V\_i → mutex → E1.
+
+
+In der korrekten Variante (b) hätte E1 zuerst \texttt{P(empty)} ausgeführt, ohne \texttt{mutex} zu halten — die Verbraucher hätten den \texttt{mutex} problemlos bekommen, Slots geleert und \texttt{V(empty)} aufgerufen.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 — Monitor: Mesa vs. Hoare \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Ein bounded buffer wird als Monitor implementiert. Beim Entnehmen wartet ein Konsument auf der Bedingung \texttt{notEmpty}:
+
+
+\begin{lstlisting}
+procedure get():
+    if (count == 0) wait(notEmpty);
+    item = buffer[out]; out = (out+1) % N; count--;
+    signal(notFull);
+    return item;
+\end{lstlisting}
+
+
+a) Erkläre die Aufgabe des „Türstehers" eines Monitors und worin der Unterschied zur Verwendung eines Semaphors besteht. \textit{(4 P)}
+
+
+b) Ein Konsument K1 wartet in \texttt{wait(notEmpty)}. Produzent P1 legt ein Element ab und ruft \texttt{signal(notEmpty)}. Beschreibe den weiteren Ablauf jeweils unter \textbf{Signal-and-Continue (Mesa)} und unter \textbf{Signal-and-Wait (Hoare)}. \textit{(5 P)}
+
+
+c) Begründe, warum unter Mesa-Semantik das \texttt{if} in \texttt{get()} durch ein \texttt{while} ersetzt werden \textbf{muss}, unter Hoare-Semantik aber \texttt{if} korrekt bleibt. Konstruiere ein Szenario mit einem zweiten Konsumenten K2, das die Notwendigkeit zeigt. \textit{(6 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Der \textbf{Türsteher} stellt sicher, dass zu jedem Zeitpunkt höchstens ein Prozess innerhalb des Monitors aktiv ist — die Synchronisation wird vom Compiler automatisch um die Monitorprozeduren herum erzeugt, der Programmierer muss sie \textit{nicht} explizit codieren. Beim Semaphor hingegen ist der Programmierer selbst dafür verantwortlich, jedes \texttt{P()} mit dem passenden \texttt{V()} zu paaren — vergisst er ein \texttt{V()} oder verschachtelt fehlerhaft, droht Deadlock oder Lost Wakeup. Monitore verlagern Korrektheit von Laufzeit auf Übersetzungszeit.
+
+
+b) Ablauf nach \texttt{signal(notEmpty)} durch P1:
+
+
+\begin{itemize}
+  \item \textbf{Mesa (Signal-and-Continue)}: P1 läuft im Monitor weiter, beendet seine Prozedur und verlässt den Monitor. K1 wird aus der Warteschlange auf \texttt{notEmpty} in die Eintritts-Warteschlange des Monitors verschoben, bekommt den Monitor irgendwann später und setzt seine Ausführung \textit{nach} \texttt{wait(notEmpty)} fort. Zwischen Signal und Wiederaufnahme können andere Monitor-Aufrufe stattfinden.
+  \item \textbf{Hoare (Signal-and-Wait)}: P1 wird sofort suspendiert (und in eine spezielle „signaler"-Warteschlange gestellt), K1 erhält den Monitor unmittelbar nach \texttt{signal} und setzt nach \texttt{wait(notEmpty)} fort. Wenn K1 den Monitor verlässt, wird P1 reaktiviert.
+\end{itemize}
+
+c) Mesa-Szenario, das ein \texttt{while} erzwingt — Puffer leer, Konsumenten K1, K2 warten auf \texttt{notEmpty}:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Schritt}} & {\color{white}\textbf{Akteur}} & {\color{white}\textbf{Aktion}} & {\color{white}\textbf{count}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+1 & P1 & betritt Monitor, legt Item ab, count=1 & 1 \\
+2 & P1 & \texttt{signal(notEmpty)} — K1 wechselt in Eintritts-Queue (Mesa: P1 läuft weiter) & 1 \\
+3 & P1 & verlässt Monitor & 1 \\
+4 & K2 & tritt vor K1 in den Monitor ein, prüft count==0 → falsch, entnimmt Item, count=0 & 0 \\
+5 & K2 & verlässt Monitor & 0 \\
+6 & K1 & tritt ein, setzt nach \texttt{wait} fort — bei \texttt{if} läuft K1 ohne erneute Prüfung weiter und greift auf einen leeren Puffer zu! & 0 \\
+\end{tabularx}
+}
+
+
+Mit \texttt{while (count == 0) wait(notEmpty);} würde K1 in Schritt 6 die Bedingung erneut testen, sehen, dass der Puffer wieder leer ist, und sich wieder in \texttt{wait} legen. Korrekt.
+
+
+Unter \textbf{Hoare} kann zwischen \texttt{signal} und der Wiederaufnahme von K1 \textit{kein} anderer Prozess in den Monitor — K2 hätte keine Chance, sich vorzudrängen. Sobald K1 nach \texttt{wait} weiterläuft, ist der Zustand garantiert exakt der, den P1 hergestellt hat (\texttt{count == 1}). Daher genügt \texttt{if}. Die Schwäche von Mesa ist also der Preis für die einfachere Implementierung (kein Übergeben des Monitors, keine Signaler-Queue).
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 — Transfer: Lese-/Schreibsperre selbst gebaut \textit{(18 Punkte)}}\mbox{}\\[2pt]
+
+Im Kapitel ist nur der einfache Mutex behandelt. Übertrage das Konzept auf eine \textbf{Reader-Writer-Sperre}: beliebig viele Leser dürfen gleichzeitig im kritischen Abschnitt sein, aber wenn ein Schreiber schreibt, ist niemand anderes drin.
+
+
+a) Welcher Mutex-Bedingung (1–4 aus dem Kapitel) widerspricht es zunächst, mehrere Leser gleichzeitig in den KA zu lassen? Argumentiere, warum die Reader-Writer-Sperre dennoch \textit{nicht} die Korrektheit der Anwendung gefährdet. \textit{(4 P)}
+
+
+b) Skizziere die Implementierung der Operationen \texttt{acquire\_read()}, \texttt{release\_read()}, \texttt{acquire\_write()}, \texttt{release\_write()} mithilfe eines Zählers \texttt{readers} (geschützt durch \texttt{mutex}) und eines binären Semaphors \texttt{wrt}. \textit{(8 P)}
+
+
+c) Zeige, dass deine Lösung einen Schreiber \textbf{verhungern} lassen kann. Konstruiere eine Folge von Reader-/Writer-Aufrufen und zeige, welche Mutex-Bedingung verletzt wird. Wie würdest du das beheben (Skizze, kein Code)? \textit{(6 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Es widerspricht der \textbf{Mutual-Exclusion}-Bedingung (Bedingung 1: „nie zwei gleichzeitig drin"). Die Anwendung bleibt aber korrekt, weil das Mutex-Modell ME zum Schutz \textit{gegen Race Conditions auf Schreibzugriffe} fordert. Race Conditions entstehen nur, wenn mindestens \textit{ein} Zugriff schreibt — gleichzeitige Lesezugriffe können einen konsistenten Zustand nicht zerstören. Die Bedingung wird also abgeschwächt: ME gilt zwischen \textit{Schreiber–Schreiber} und \textit{Schreiber–Leser}, nicht zwischen \textit{Leser–Leser}.
+
+
+b) Implementierung mit \texttt{mutex = 1} (binär), \texttt{wrt = 1} (binär), \texttt{readers = 0}:
+
+
+\begin{lstlisting}
+acquire_read():
+    P(mutex)
+    readers++
+    if (readers == 1) P(wrt)   // erster Leser sperrt Schreiber aus
+    V(mutex)
+
+release_read():
+    P(mutex)
+    readers--
+    if (readers == 0) V(wrt)   // letzter Leser gibt frei
+    V(mutex)
+
+acquire_write():
+    P(wrt)
+
+release_write():
+    V(wrt)
+\end{lstlisting}
+
+
+Begründung: \texttt{wrt} wird vom \textit{ersten} Leser angefordert und vom \textit{letzten} freigegeben. Solange mindestens ein Leser drin ist, hält die Lesergruppe \texttt{wrt}, und kein Schreiber kommt durch. \texttt{mutex} schützt nur den Zähler \texttt{readers} selbst.
+
+
+c) \textbf{Verhungerungsszenario} (Reader-Preference):
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Zeit}} & {\color{white}\textbf{Aktion}} & {\color{white}\textbf{readers}} & {\color{white}\textbf{wrt-Status}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+t1 & R1 acquire\_read & 1 & belegt (von R1) \\
+t2 & W1 acquire\_write — wartet auf wrt & 1 & belegt \\
+t3 & R2 acquire\_read (mutex frei → readers=2) & 2 & weiterhin belegt \\
+t4 & R3 acquire\_read & 3 & belegt \\
+t5 & R1 release\_read & 2 & belegt \\
+t6 & R4 acquire\_read & 3 & belegt \\
+… & beliebig viele Leser kommen und gehen, \texttt{readers} sinkt nie auf 0 & ≥1 & belegt \\
+\end{tabularx}
+}
+
+
+Solange ständig neue Leser eintreffen, bevor \texttt{readers} auf 0 sinkt, wird \texttt{V(wrt)} nie ausgeführt — W1 wartet endlos. Verletzt ist die \textbf{Fairness-Bedingung} (Bedingung 4): jeder Wartende muss \textit{irgendwann} eintreten dürfen.
+
+
+\textbf{Behebung (Skizze)}: Eine zusätzliche Vorrang-Sperre einführen, die neue Leser blockiert, sobald ein Schreiber wartet — z. B. eine \texttt{turnstile}-Semaphore, die jeder Leser kurz \texttt{P()}/\texttt{V()}t, und die ein wartender Schreiber zu Beginn von \texttt{acquire\_write} \texttt{P()}t. Dadurch läuft jeder neue Leser in die Sperre, bis der Schreiber fertig ist (Writer-Preference). Alternativ: FIFO-Warteschlange statt Semaphor — Leser und Schreiber werden in Eintreffreihenfolge bedient.
+
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{document}

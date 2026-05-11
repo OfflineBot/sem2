@@ -1,0 +1,786 @@
+% ============================================================
+%  Probeklausur Template (my_dhbw Stil, klausur_*.tex)
+%  Formell mit Deckblatt-Header; Lösungen als grüne tcolorbox.
+%  Renderer: pdflatex (zweimal)
+% ============================================================
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+\usepackage[top=2cm, bottom=2cm, left=2.4cm, right=2.4cm, footskip=1cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{ltablex}
+\keepXColumns
+\usepackage{colortbl}
+\usepackage[most,breakable]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{pdflscape}
+\usepackage{titlesec}
+\usepackage[colorlinks=true, linkcolor=accent, urlcolor=accent]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme ─────────────────────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{loesung}{RGB}{0, 100, 0}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{240, 252, 240}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer ─────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\footnotesize\color{accent}Modulprüfung -- \nichttitle}
+\fancyhead[R]{\footnotesize\color{accent}\nichtsubtitle}
+\fancyfoot[L]{\footnotesize\color{accent}Matrikelnr.: \rule{3cm}{0.4pt}}
+\fancyfoot[R]{\footnotesize\color{accent}Blatt \thepage\,/\,\pageref{LastPage}}
+
+% ── Typografie ────────────────────────────────────────────────
+\titleformat{\section}
+    {\color{accent}\large\bfseries}{}{0pt}{}
+    [\vspace{-4pt}\color{accent}\rule{\linewidth}{1.5pt}]
+\titleformat{\subsection}
+    {\normalsize\bfseries\color{accent!85!black}}{}{0pt}{}{}
+\titleformat{\subsubsection}
+    {\small\bfseries\color{accent!70!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{12pt}{4pt}
+\titlespacing*{\subsection}{0pt}{8pt}{2pt}
+\titlespacing*{\subsubsection}{0pt}{6pt}{1pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\renewcommand{\arraystretch}{1.25}
+\setlist[itemize]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.4em}
+\setlist[enumerate]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.6em}
+
+% ── Boxen ─────────────────────────────────────────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={Abbildung: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={Tabelle: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{solutionbox}[1]{
+  enhanced,
+  colback=solutionbg, colframe=loesung,
+  title={#1}, fonttitle=\small\bfseries,
+  coltitle=white, colbacktitle=loesung,
+  breakable, before skip=8pt, after skip=8pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=single, framerule=0pt,
+  xleftmargin=4pt, xrightmargin=4pt,
+  aboveskip=6pt, belowskip=6pt,
+  keepspaces=true
+}
+
+\providecommand{\nichttitle}{Probeklausur}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Optimierungsverfahren}
+\renewcommand{\nichtsubtitle}{Probeklausur 1}
+
+
+\begin{document}
+
+% Deckblatt
+\thispagestyle{empty}
+\begin{center}
+\vspace*{1cm}
+{\Huge\bfseries\color{accent}Probeklausur}\\[8pt]
+{\Large\color{accent}\nichttitle}\\[4pt]
+\ifx\nichtsubtitle\empty\else
+  {\large\color{accent!80!black}\nichtsubtitle}\\[6pt]
+\fi
+\color{accent}\rule{0.5\linewidth}{1pt}\color{black}
+\end{center}
+
+\vspace{1cm}
+\begin{tabularx}{\textwidth}{@{}l X@{}}
+\textbf{Studiengang:}      & \rule{6cm}{0.4pt} \\[6pt]
+\textbf{Matrikelnummer:}    & \rule{6cm}{0.4pt} \\[6pt]
+\textbf{Name, Vorname:}    & \rule{6cm}{0.4pt} \\[6pt]
+\textbf{Datum:}             & \rule{6cm}{0.4pt} \\[6pt]
+\textbf{Bearbeitungszeit:}  & 60 Minuten \\[6pt]
+\textbf{Hilfsmittel:}       & Taschenrechner (nicht programmierbar) \\
+\end{tabularx}
+
+\vspace{2cm}
+\begin{center}
+{\large\itshape Viel Erfolg!}
+\end{center}
+
+\newpage
+
+% ── BODY ──────────────────────────────────────────────────────
+
+\section{Probeklausur 1 — Optimierungsverfahren}
+
+\textbf{Bearbeitungszeit}: 60 Minuten | \textbf{Hilfsmittel}: keine | \textbf{Punkte}: 100
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 1 — Stationäre Punkte und Hesse-Analyse \textit{(18 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben sei die Funktion
+
+
+\[
+f(x_1, x_2) = x_1^4 - 8x_1^2 + x_2^2 - 2x_2 + 10
+\]
+
+
+a) \textit{(3 P)} Definiere den Begriff "stationärer Punkt" und erläutere, warum die Bedingung ∇f(x⃗) = 0⃗ zwar \textbf{notwendig}, aber \textbf{nicht ausreichend} für ein lokales Extremum ist. Gib die Konsequenz für ein gradientenbasiertes Verfahren an, das nur diese Bedingung prüft.
+
+
+b) \textit{(7 P)} Bestimme \textbf{alle} stationären Punkte von f. Zeige den Lösungsweg über ∇f.
+
+
+c) \textit{(6 P)} Stelle die Hessematrix H(x⃗) auf und klassifiziere jeden gefundenen stationären Punkt (lokales Min, lokales Max, Sattel) anhand der Eigenwerte. Gib jeweils den Funktionswert an.
+
+
+d) \textit{(2 P)} Begründe anhand deiner Klassifikation, ob f \textbf{unimodal} oder \textbf{multimodal} ist. Welche Konsequenz hat das für die Wahl zwischen einem lokalen und einem globalen Lösungsverfahren?
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 — Gradient Descent in der Anwendung \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Betrachte die quadratische Funktion
+
+
+\[
+f(x_1, x_2) = x_1^2 + x_2^2
+\]
+
+
+mit Startpunkt x⃗₀ = (3, 2)ᵀ und Schrittweite c = 0.2.
+
+
+a) \textit{(2 P)} Bestimme den allgemeinen Gradienten ∇f(x⃗).
+
+
+b) \textit{(7 P)} Führe \textbf{drei} Iterationen des Gradient-Descent-Verfahrens durch. Gib für jede Iteration x⃗ᵢ, ∇f(x⃗ᵢ), den Schritt c·∇f(x⃗ᵢ) und f(x⃗ᵢ) tabellarisch an.
+
+
+c) \textit{(4 P)} Untersuche das Verhalten des Verfahrens für die alternativen Schrittweiten c = 2 und c = 0.01. Begründe rechnerisch (über den Faktor (1 − 2c) pro Komponente), welches Problem jeweils auftritt.
+
+
+d) \textit{(2 P)} Welche der im Lernzettel genannten Alternativen (Momentum, ADAM, BFGS, Quasi-Newton) würdest du wählen, um das c = 2-Problem zu mildern, ohne die Schrittweite manuell anzupassen? Begründe in einem Satz.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 — LP: Standardform und grafische Lösung \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+Eine Lackiererei plant die tägliche Produktionsmenge zweier Lacksorten x₁ und x₂. Es gilt:
+
+
+\$\$\textbackslash{}begin\{aligned\}
+
+\textbackslash{}text\{maximiere \} \&\textbackslash{}; 3x\_1 + 5x\_2 \textbackslash{}\textbackslash{}
+
+\textbackslash{}text\{u.B.v. \} \&\textbackslash{}; x\_1 \textbackslash{}le 4 \textbackslash{}quad (\textbackslash{}text\{Trockenofen-Stunden\}) \textbackslash{}\textbackslash{}
+
+\&\textbackslash{}; 2x\_2 \textbackslash{}le 12 \textbackslash{}quad (\textbackslash{}text\{Pigmentvorrat\}) \textbackslash{}\textbackslash{}
+
+\&\textbackslash{}; 3x\_1 + 2x\_2 \textbackslash{}le 18 \textbackslash{}quad (\textbackslash{}text\{Mischer-Stunden\}) \textbackslash{}\textbackslash{}
+
+\&\textbackslash{}; x\_1, x\_2 \textbackslash{}ge 0
+
+\textbackslash{}end\{aligned\}\$\$
+
+
+a) \textit{(7 P)} Wandle das Problem \textbf{vollständig} in das Standardformat aus dem Lernzettel um (Minimierung, alle NB als Gleichungen, alle Variablen ≥ 0). Führe die nötigen Slack-Variablen s₁, s₂, s₃ explizit ein und gib auch die Matrixform min cᵀx; Ax = b; x ≥ 0 mit konkreten c, A, b an.
+
+
+b) \textit{(8 P)} Löse das Problem \textbf{grafisch}. Beschreibe die Vorgehensweise gemäß dem 5-Schritte-Schema des Lernzettels, identifiziere alle Eckpunkte des zulässigen Bereichs (im x₁-x₂-Raum, ohne Slacks) mit ihren Zielfunktionswerten und gib das Optimum (x₁\textit{, x₂}) sowie f* an.
+
+
+c) \textit{(5 P)} Welche Nebenbedingungen sind im Optimum \textbf{bindend}, welche nicht? Begründe mithilfe der Slack-Werte aus a) und interpretiere ein nicht-bindendes Slack ökonomisch (1 Satz).
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 — Integer LP, Runden vs. Cutting Plane \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben sei das ganzzahlige Problem
+
+
+\$\$\textbackslash{}begin\{aligned\}
+
+\textbackslash{}text\{maximiere \} \&\textbackslash{}; 4x\_1 + 3x\_2 \textbackslash{}\textbackslash{}
+
+\textbackslash{}text\{u.B.v. \} \&\textbackslash{}; x\_1 + x\_2 \textbackslash{}le 4.5 \textbackslash{}\textbackslash{}
+
+\&\textbackslash{}; 2x\_1 + x\_2 \textbackslash{}le 6 \textbackslash{}\textbackslash{}
+
+\&\textbackslash{}; x\_1, x\_2 \textbackslash{}in \textbackslash{}mathbb\{Z\}\_\{\textbackslash{}ge 0\}
+
+\textbackslash{}end\{aligned\}\$\$
+
+
+Die LP-Relaxation (ohne Ganzzahligkeit) liefert das Optimum x⃗\textit{ = (1.5, 3)ᵀ mit f} = 15.
+
+
+a) \textit{(5 P)} Prüfe \textbf{alle vier Rundungs-Kombinationen} (⌊·⌋ und ⌈·⌉ je Komponente) der LP-Lösung. Gib für jeden Kandidaten in einer Tabelle an: (i) Wert beider Nebenbedingungen, (ii) zulässig ja/nein, (iii) Zielfunktionswert.
+
+
+b) \textit{(4 P)} Welcher Kandidat liefert nach naivem Runden die beste \textbf{zulässige} Lösung? Bestimme nun zusätzlich durch direktes Prüfen der Integer-Punkte (0,4), (3,0) und weiterer Kandidaten das \textbf{echte} Integer-Optimum. Wie groß ist die Lücke f\textit{\_LP − f}\_int?
+
+
+c) \textit{(3 P)} Nenne die \textbf{zwei} Risiken, die das einfache Runden einer LP-Lösung in dieser Aufgabe konkret demonstriert hat. Beziehe dich auf je einen deiner Tabelleneinträge aus a).
+
+
+d) \textit{(3 P)} Beschreibe in eigenen Worten die Grundidee des \textbf{Cutting-Plane-Verfahrens} (4 Schritte). Welche \textbf{zwei Eigenschaften} muss ein gültiger Cut zwingend erfüllen?
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 — Transportproblem: NWER vs. Vogel-Methode \textit{(22 Punkte)}}\mbox{}\\[2pt]
+
+Eine Brauerei beliefert von drei Lagern A1, A2, A3 drei Kunden N1, N2, N3. Kostenmatrix (in €/HL), Angebote aᵢ und Bedarfe bⱼ:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{}} & {\color{white}\textbf{N1}} & {\color{white}\textbf{N2}} & {\color{white}\textbf{N3}} & {\color{white}\textbf{aᵢ}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+\textbf{A1} & 7 & 5 & 8 & 10 \\
+\textbf{A2} & 3 & 4 & 7 & 20 \\
+\textbf{A3} & 4 & 6 & 2 & 30 \\
+\textbf{bⱼ} & 15 & 20 & 25 &  \\
+\end{tabularx}
+}
+
+
+a) \textit{(2 P)} Prüfe die Voraussetzung des Transportproblems aus dem Lernzettel und gib an, warum sie hier erfüllt ist.
+
+
+b) \textit{(6 P)} Bestimme eine Startlösung mit der \textbf{Nord-West-Ecken-Regel (NWER)}. Stelle die Belegungsmatrix dar und berechne die Gesamtkosten f(X)\_NWER.
+
+
+c) \textit{(10 P)} Bestimme eine Startlösung mit der \textbf{Vogel-Methode}. Gib für \textbf{jeden} Schritt an: (i) die aktuellen Opportunitätskosten (OK) je verbleibender Zeile/Spalte, (ii) welche Zeile/Spalte gewählt wird und warum, (iii) welche Zelle und welche Menge belegt wird. Berechne abschließend f(X)\_VM.
+
+
+d) \textit{(4 P)} Vergleiche f(X)\_NWER und f(X)\_VM zahlenmäßig. Erkläre anhand des Verfahrens-Konzepts, warum die Vogel-Methode die Kosten typischerweise stärker drückt als die NWER, und nenne \textbf{eine} Situation, in der trotzdem ein nachgelagertes Optimierungsverfahren (Stepping-Stone, MODI) nötig sein kann.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 6 — Code-Analyse: fehlerhafter Gradient Descent \textit{(10 Punkte)}}\mbox{}\\[2pt]
+
+Ein Kommilitone implementiert Gradient Descent in folgendem Pseudocode:
+
+
+\begin{lstlisting}
+function gradient_descent(grad_f, x_start, c, eps):
+    x ← x_start
+    repeat
+        g ← grad_f(x)
+        if g == 0 then
+            return x
+        x ← x + c * g
+    end repeat
+\end{lstlisting}
+
+
+a) \textit{(5 P)} Identifiziere \textbf{drei} unterschiedliche Fehler/Probleme in diesem Pseudocode (ein konzeptioneller Vorzeichenfehler, ein numerisches Problem, ein Terminationsproblem). Beschreibe für jedes, \textbf{wie} sich der Fehler im Lauf des Algorithmus äußern würde.
+
+
+b) \textit{(3 P)} Schreibe den korrigierten Pseudocode auf, der alle drei Probleme behebt. Verwende eine sinnvolle Stoppbedingung gemäß Lernzettel.
+
+
+c) \textit{(2 P)} Der Kollege stellt fest, dass sein (korrigierter) Algorithmus auf der Funktion f(x₁,x₂) = 2x₁² − 1.05x₁⁴ + x₁⁶/6 + x₁x₂ + x₂² je nach Startpunkt unterschiedliche Endwerte liefert. Erkläre die Ursache mithilfe der im Lernzettel verwendeten Begriffe und schlage \textbf{eine} konkrete algorithmische Anpassung vor, die die Wahrscheinlichkeit erhöht, das globale Optimum zu finden.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+
+\section{Musterlösung Klausur 1}
+
+\paragraph{Aufgabe 1 \textit{(18 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a) (3 P)} Ein stationärer Punkt (SP) x⃗\_SP ist ein Punkt mit ∇f(x⃗\_SP) = 0⃗. \textit{(1 P)} Die Bedingung ist notwendig, weil \textbf{jedes} lokale Extremum einer differenzierbaren Funktion einen verschwindenden Gradienten hat — sie ist aber nicht ausreichend, weil auch \textbf{Sattelpunkte} ∇f = 0⃗ erfüllen, ohne Extremum zu sein. \textit{(1 P)} Konsequenz: Ein gradientenbasierter Algorithmus, der nur ∇f ≈ 0⃗ als Stopp-Kriterium nutzt, kann an einem Sattel "hängenbleiben" und einen Nicht-Extremalpunkt als Lösung melden. \textit{(1 P)}
+
+
+\textbf{b) (7 P)}
+
+∂f/∂x₁ = 4x₁³ − 16x₁ = 4x₁(x₁² − 4) = 0  →  x₁ ∈ \{0, +2, −2\} \textit{(3 P)}
+
+∂f/∂x₂ = 2x₂ − 2 = 0  →  x₂ = 1 \textit{(2 P)}
+
+Stationäre Punkte: \textbf{(0, 1), (2, 1), (−2, 1)} \textit{(2 P)}
+
+
+\textbf{c) (6 P)}
+
+
+\[
+H(x_1,x_2) = \begin{pmatrix} 12x_1^2 - 16 & 0 \\ 0 & 2 \end{pmatrix}
+\]
+
+
+Die Matrix ist diagonal, Eigenwerte sind die Diagonaleinträge. \textit{(1 P)}
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Punkt}} & {\color{white}\textbf{EW₁ = 12x₁²−16}} & {\color{white}\textbf{EW₂}} & {\color{white}\textbf{Definitheit}} & {\color{white}\textbf{Klassifikation}} & {\color{white}\textbf{f-Wert}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+(0, 1) & −16 & 2 & indefinit & \textbf{Sattel} & f = 0 − 0 + 1 − 2 + 10 = \textbf{9} \\
+(2, 1) & +32 & 2 & pos. def. & \textbf{lok. Min} & f = 16 − 32 + 1 − 2 + 10 = \textbf{−7} \\
+(−2, 1) & +32 & 2 & pos. def. & \textbf{lok. Min} & f = 16 − 32 + 1 − 2 + 10 = \textbf{−7} \\
+\end{tabularx}
+}
+
+
+\textit{(je 1.5 P pro Punkt; Punktabzug bei fehlender Definitheit oder f-Wert)}
+
+
+\textbf{d) (2 P)} f hat \textbf{zwei} lokale Minima → die Funktion ist \textbf{multimodal}. \textit{(1 P)} Ein \textbf{lokales} Verfahren (z.B. einfacher Gradient Descent) findet je nach Startpunkt nur eines der beiden Minima; um das globale Optimum sicher zu erreichen, ist ein \textbf{globales} Verfahren (oder Multistart) erforderlich. \textit{(1 P)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a) (2 P)} ∇f(x⃗) = (2x₁, 2x₂)ᵀ.
+
+
+\textbf{b) (7 P)}
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{i}} & {\color{white}\textbf{x⃗ᵢ}} & {\color{white}\textbf{∇f(x⃗ᵢ)}} & {\color{white}\textbf{c·∇f}} & {\color{white}\textbf{x⃗ᵢ₊₁}} & {\color{white}\textbf{f(x⃗ᵢ)}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+0 & (3.000, 2.000) & (6.000, 4.000) & (1.200, 0.800) & (1.800, 1.200) & 13.000 \\
+1 & (1.800, 1.200) & (3.600, 2.400) & (0.720, 0.480) & (1.080, 0.720) & 4.680 \\
+2 & (1.080, 0.720) & (2.160, 1.440) & (0.432, 0.288) & (0.648, 0.432) & 1.685 \\
+\end{tabularx}
+}
+
+
+\textit{(je Iteration 2 P; korrekte f-Spalte 1 P)}
+
+
+Konvergenz erkennbar: jeder Schritt skaliert x⃗ um den Faktor (1 − 2c) = 0.6, f um 0.36.
+
+
+\textbf{c) (4 P)}
+
+\begin{itemize}
+  \item \textbf{c = 2}: Faktor (1 − 4) = \textbf{−3}. |−3| > 1 → \textbf{divergente Oszillation}: x springt mit wechselndem Vorzeichen und wachsendem Betrag (3 → −9 → 27 → −81 …). \textit{(2 P)}
+  \item \textbf{c = 0.01}: Faktor 0.98 < 1, aber sehr nahe an 1 → \textbf{extrem langsame Konvergenz}; selbst nach 100 Iterationen ist x⃗ nur etwa 0.98¹⁰⁰ ≈ 0.13-mal der Startwert, also noch deutlich vom Optimum entfernt. \textit{(2 P)}
+\end{itemize}
+
+\textbf{d) (2 P)} \textbf{Quasi-Newton / BFGS} (oder Truncated Newton): nutzt eine Approximation der inversen Hesse, dadurch wird die Schrittlänge automatisch an die Krümmung angepasst — bei zu großer manueller Schrittweite würde reines Momentum/ADAM die Divergenz nicht zuverlässig verhindern. \textit{(Punkt für jede sinnvolle Wahl mit korrekter Begründung; Momentum/ADAM auch akzeptabel mit Hinweis auf Glättung statt echte Krümmungsschätzung.)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a) (7 P)} Schritte gemäß Lernzettel:
+
+\begin{enumerate}
+  \item \textbf{Maximierung → Minimierung}: min f̃ = −3x₁ − 5x₂ \textit{(1 P)}
+  \item \textbf{Slack-Variablen} s₁, s₂, s₃ ≥ 0 für die drei ≤-Ungleichungen \textit{(3 P)}:
+\begin{itemize}
+  \item x₁ + s₁ = 4
+  \item 2x₂ + s₂ = 12
+  \item 3x₁ + 2x₂ + s₃ = 18
+\end{itemize}
+  \item xᵢ ≥ 0 ist bereits gegeben; alle bⱼ = 4, 12, 18 ≥ 0 → keine Vorzeichen-Anpassung nötig. \textit{(1 P)}
+\end{enumerate}
+
+\textbf{Matrixform} \textit{(2 P)}:
+
+
+\$\$c = \textbackslash{}begin\{pmatrix\}-3\textbackslash{}\textbackslash{}-5\textbackslash{}\textbackslash{}0\textbackslash{}\textbackslash{}0\textbackslash{}\textbackslash{}0\textbackslash{}end\{pmatrix\},\textbackslash{}quad
+
+A = \textbackslash{}begin\{pmatrix\}1 \& 0 \& 1 \& 0 \& 0\textbackslash{}\textbackslash{} 0 \& 2 \& 0 \& 1 \& 0\textbackslash{}\textbackslash{} 3 \& 2 \& 0 \& 0 \& 1\textbackslash{}end\{pmatrix\},\textbackslash{}quad
+
+b = \textbackslash{}begin\{pmatrix\}4\textbackslash{}\textbackslash{}12\textbackslash{}\textbackslash{}18\textbackslash{}end\{pmatrix\},\textbackslash{}quad x = (x\_1,x\_2,s\_1,s\_2,s\_3)\textasciicircum{}T \textbackslash{}ge 0\$\$
+
+
+\textbf{b) (8 P)} Vorgehen: (1) Isolinien 3x₁ + 5x₂ = const skizzieren; (2) drei Geraden x₁=4, x₂=6, 3x₁+2x₂=18 sowie Achsen einzeichnen; (3) zulässigen Bereich (Polygon) markieren; (4) Isolinie nach Nordosten verschieben, bis nur noch ein Eckpunkt berührt wird. \textit{(2 P für korrektes Vorgehen)}
+
+
+Eckpunkte des zulässigen Bereichs:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Eckpunkt}} & {\color{white}\textbf{f = 3x₁ + 5x₂}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+(0, 0) & 0 \\
+(4, 0) & 12 \\
+(4, 3)  \textit{(Schnitt x₁=4 und 3x₁+2x₂=18)} & 27 \\
+\textbf{(2, 6)} \textit{(Schnitt 2x₂=12 und 3x₁+2x₂=18)} & \textbf{36} \\
+(0, 6) & 30 \\
+\end{tabularx}
+}
+
+
+\textit{(je Eckpunkt 1 P, max 5 P; Optimum hervorheben 1 P)}
+
+
+→ \textbf{Optimum: x₁\textit{ = 2, x₂} = 6, f* = 36.}
+
+
+\textbf{c) (5 P)} Slack-Werte im Optimum:
+
+\begin{itemize}
+  \item s₁ = 4 − 2 = \textbf{2} → g₁ (Trockenofen) \textbf{nicht bindend} \textit{(1 P)}
+  \item s₂ = 12 − 12 = \textbf{0} → g₂ (Pigment) \textbf{bindend} \textit{(1 P)}
+  \item s₃ = 18 − (6 + 12) = \textbf{0} → g₃ (Mischer) \textbf{bindend} \textit{(1 P)}
+\end{itemize}
+
+Bindende NB werden im Optimum exakt ausgeschöpft (Engpässe). \textit{(1 P)} Ökonomische Interpretation s₁ = 2: 2 Trockenofen-Stunden bleiben täglich ungenutzt — eine Erhöhung der Trockenofen-Kapazität würde den Gewinn nicht weiter steigern; sinnvoll wäre stattdessen Investition in Pigment- oder Mischer-Kapazität. \textit{(1 P)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a) (5 P)} Tabelle der vier Rundungs-Kombinationen von (1.5, 3):
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Kandidat}} & {\color{white}\textbf{x₁+x₂ ≤ 4.5}} & {\color{white}\textbf{2x₁+x₂ ≤ 6}} & {\color{white}\textbf{zulässig?}} & {\color{white}\textbf{f = 4x₁+3x₂}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+(1, 3) & 4 ≤ 4.5 ✓ & 5 ≤ 6 ✓ & \textbf{ja} & 13 \\
+(2, 3) & 5 > 4.5 ✗ & 7 > 6 ✗ & \textbf{nein} & (15) \\
+(1, 2) & 3 ≤ 4.5 ✓ & 4 ≤ 6 ✓ & \textbf{ja} & 10 \\
+(2, 2) & 4 ≤ 4.5 ✓ & 6 ≤ 6 ✓ & \textbf{ja} & \textbf{14} \\
+\end{tabularx}
+}
+
+
+\textit{(je 1 P pro Zeile; korrekte Spaltenwerte erforderlich)}
+
+
+\textbf{b) (4 P)} Beste zulässige naiv-gerundete Lösung: \textbf{(2, 2) mit f = 14}. \textit{(1 P)}
+
+Weitere Integer-Kandidaten: (0, 4): zulässig, f = 12; (3, 0): 2·3 = 6, zulässig, f = 12; (1, 4): 5 > 4.5 ✗; (0, 3): f = 9. \textit{(1 P)}
+
+→ Echtes Integer-Optimum: \textbf{(2, 2), f*\_int = 14}. \textit{(1 P)}
+
+Lücke: f\textit{\_LP − f}\_int = 15 − 14 = \textbf{1}. \textit{(1 P)}
+
+
+\textbf{c) (3 P)}
+
+\begin{itemize}
+  \item \textbf{Risiko 1 — Unzulässigkeit}: Aufrunden nach (2, 3) verletzt \textbf{beide} NB. Naives Runden zur "nächsten ganzen Zahl" hätte hier zu einer unzulässigen Lösung geführt. \textit{(1.5 P)}
+  \item \textbf{Risiko 2 — Suboptimalität}: Abrunden auf (1, 2) ergibt nur f = 10, also einen Gewinneinbruch von 4 gegenüber dem echten Integer-Optimum 14. Komponentenweises Runden ohne Vergleich aller Kombinationen liefert keine Garantie für Optimalität. \textit{(1.5 P)}
+\end{itemize}
+
+\textbf{d) (3 P)} Cutting-Plane-Idee: (1) Löse das LP ohne Integer-Bedingung. (2) Ist die Lösung ganzzahlig → fertig. (3) Sonst füge eine zusätzliche lineare Nebenbedingung ("Cut") hinzu. (4) Wiederhole ab (1). \textit{(2 P)}
+
+
+Eigenschaften eines gültigen Cuts: \textit{(1 P, beide nötig)}
+
+\begin{itemize}
+  \item \textbf{Schneidet die aktuelle (nicht-ganzzahlige) LP-Lösung ab} (verletzt sie).
+  \item \textbf{Erhält alle ganzzahlig zulässigen Lösungen} (verletzt keine davon).
+\end{itemize}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 \textit{(22 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a) (2 P)} Voraussetzung: ∑aᵢ = ∑bⱼ. Hier 10 + 20 + 30 = \textbf{60} und 15 + 20 + 25 = \textbf{60} ✓. \textit{(2 P)}
+
+
+\textbf{b) (6 P) NWER}
+
+Schritte (Nordwest-leerste Zelle füllen mit min(aᵢ, bⱼ)):
+
+
+\begin{enumerate}
+  \item (A1, N1): min(10, 15) = 10 → a₁ = 0, b₁ = 5
+  \item (A2, N1): min(20, 5) = 5 → a₂ = 15, b₁ = 0
+  \item (A2, N2): min(15, 20) = 15 → a₂ = 0, b₂ = 5
+  \item (A3, N2): min(30, 5) = 5 → a₃ = 25, b₂ = 0
+  \item (A3, N3): min(25, 25) = 25 → fertig
+\end{enumerate}
+
+\textit{(4 P für die Belegung)}
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{}} & {\color{white}\textbf{N1}} & {\color{white}\textbf{N2}} & {\color{white}\textbf{N3}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+A1 & \textbf{10} & 0 & 0 \\
+A2 & \textbf{5} & \textbf{15} & 0 \\
+A3 & 0 & \textbf{5} & \textbf{25} \\
+\end{tabularx}
+}
+
+
+f(X)\_NWER = 10·7 + 5·3 + 15·4 + 5·6 + 25·2 = 70 + 15 + 60 + 30 + 50 = \textbf{225 €} \textit{(2 P)}
+
+
+\textbf{c) (10 P) Vogel-Methode}
+
+
+\textbf{Schritt 1} — OK über alle Zeilen/Spalten:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{}} & {\color{white}\textbf{OK}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+A1: 5,7,8 & 7−5 = 2 \\
+A2: 3,4,7 & 4−3 = 1 \\
+A3: 2,4,6 & 4−2 = 2 \\
+N1: 3,4,7 & 4−3 = 1 \\
+N2: 4,5,6 & 5−4 = 1 \\
+\textbf{N3: 2,7,8} & \textbf{7−2 = 5} ← max \\
+\end{tabularx}
+}
+
+
+Wähle N3 → günstigste Zelle (A3, N3) mit Kosten 2; Menge min(30, 25) = \textbf{25}. a₃ = 5, b₃ = 0. Spalte N3 erschöpft. \textit{(2 P)}
+
+
+\textbf{Schritt 2} — OK ohne N3:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{}} & {\color{white}\textbf{OK}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+A1: 5,7 & 2 \\
+A2: 3,4 & 1 \\
+A3: 4,6 & 2 \\
+N1: 3,4,7 & 1 \\
+N2: 4,5,6 & 1 \\
+\end{tabularx}
+}
+
+
+Höchste OK = 2 (A1 und A3 gleichauf). Tie-Break z.B. A1: günstigste Zelle (A1, N2) mit 5; Menge min(10, 20) = \textbf{10}. a₁ = 0, b₂ = 10. Zeile A1 erschöpft. \textit{(2 P; Tie-Break-Wahl auch mit A3 zulässig, solange konsistent durchgerechnet)}
+
+
+\textbf{Schritt 3} — OK auf \{A2, A3\} × \{N1, N2\}:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{}} & {\color{white}\textbf{OK}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+A2: 3,4 & 1 \\
+\textbf{A3: 4,6} & \textbf{2} ← max (Tie mit N2) \\
+N1: 3,4 & 1 \\
+N2: 4,6 & 2 \\
+\end{tabularx}
+}
+
+
+Wähle A3 (oder N2 mit gleichem Ergebnis). In A3 günstigste Zelle (A3, N1) mit 4; Menge min(5, 15) = \textbf{5}. a₃ = 0, b₁ = 10. Zeile A3 erschöpft. \textit{(2 P)}
+
+
+\textbf{Schritt 4} — nur A2 mit a₂ = 20; b₁ = 10, b₂ = 10. Zwangsbelegung:
+
+\begin{itemize}
+  \item (A2, N1) = 10, (A2, N2) = 10 \textit{(1 P)}
+\end{itemize}
+
+\textbf{Belegungsmatrix} \textit{(1 P)}:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{}} & {\color{white}\textbf{N1}} & {\color{white}\textbf{N2}} & {\color{white}\textbf{N3}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+A1 & 0 & \textbf{10} & 0 \\
+A2 & \textbf{10} & \textbf{10} & 0 \\
+A3 & \textbf{5} & 0 & \textbf{25} \\
+\end{tabularx}
+}
+
+
+f(X)\_VM = 10·5 + 10·3 + 10·4 + 5·4 + 25·2 = 50 + 30 + 40 + 20 + 50 = \textbf{190 €} \textit{(2 P)}
+
+
+\textbf{d) (4 P)} Differenz: 225 − 190 = \textbf{35 €}, d.h. ≈ 15.6 \% Einsparung der VM gegenüber NWER. \textit{(1 P)}
+
+
+Begründung: NWER ignoriert Kosten vollständig und folgt nur einer geometrischen Regel — sie kann teure Zellen genau dort belegen, wo Angebot/Bedarf schnell aufeinandertreffen. VM nutzt dagegen \textbf{Opportunitätskosten}: in Zeilen/Spalten mit großem OK ist es besonders teuer, die günstigste Zelle zu \textbf{verfehlen}, also wird sie zuerst belegt. So werden teure Belegungen systematisch vermieden. \textit{(2 P)}
+
+
+Trotzdem ist VM nur eine \textbf{Heuristik} für die Startlösung — sie liefert nicht zwingend das Optimum (im Beispiel des Lernzettels MMM = VM = 7000, im Allgemeinen kann das echte Optimum darunterliegen). In solchen Fällen muss anschließend ein Optimierungsverfahren wie \textbf{Stepping-Stone} oder \textbf{MODI} angewendet werden, das die Startlösung lokal verbessert, bis kein Tausch mehr lohnt. \textit{(1 P)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 6 \textit{(10 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a) (5 P)} Drei Fehler:
+
+
+\begin{enumerate}
+  \item \textbf{Vorzeichenfehler (konzeptionell)}: \texttt{x ← x + c·g} bewegt sich in Richtung \textbf{stärksten Anstiegs} statt Abstiegs. Statt einer Minimierung führt der Algorithmus eine Maximierung durch — Wert von f wächst bzw. divergiert ggf. ins Unendliche. \textit{(2 P)}
+  \item \textbf{\texttt{g == 0} (numerisch)}: exakte Gleichheit eines Gleitkommavektors mit 0⃗ tritt in der Praxis fast nie ein → die Schleife terminiert nicht. Korrekt wäre \textbf{‖g‖ < eps}. \textit{(1.5 P)}
+  \item \textbf{Keine Iterationsobergrenze (Termination)}: das \texttt{repeat … end repeat} ohne \texttt{max\_iter} läuft potenziell endlos, etwa wenn der Algorithmus oszilliert (Schrittweite zu groß) oder wegen Fehler 1 sogar divergiert. \textit{(1.5 P)}
+\end{enumerate}
+
+\textbf{b) (3 P)}
+
+\begin{lstlisting}
+function gradient_descent(grad_f, x_start, c, eps, max_iter):
+    x ← x_start
+    for i ← 1 to max_iter:
+        g ← grad_f(x)
+        if ||g|| < eps then
+            return x
+        x ← x − c * g          // Vorzeichen korrigiert
+    return x                   // sicherer Ausstieg nach max_iter
+\end{lstlisting}
+
+\textit{(je 1 P für: korrektes Minus, Norm-Stoppkriterium, Iterationsobergrenze)}
+
+
+\textbf{c) (2 P)} Die 3-Hump-Camel-Funktion ist \textbf{multimodal} — sie besitzt mehrere lokale Minima. Gradient Descent ist ein \textbf{lokales} Verfahren und konvergiert in das Minimum, das in der "Talsohle" des Startpunkts liegt; je nach Initialisierung werden verschiedene lokale Minima gefunden. \textit{(1 P)}
+
+
+Anpassung: \textbf{Multistart} (mehrere zufällige Startpunkte, bestes Ergebnis behalten) oder Wechsel zu einem \textbf{stochastischen / globalen} Verfahren wie einem \textbf{Evolutionären Algorithmus} bzw. DIRECT, das nicht ausschließlich dem Gradienten folgt und so ganze Bereiche des Suchraums erkunden kann. \textit{(1 P)}
+
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{document}

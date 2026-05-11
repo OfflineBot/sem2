@@ -1,0 +1,573 @@
+% ============================================================
+%  Probeklausur Template (my_dhbw Stil, klausur_*.tex)
+%  Formell mit Deckblatt-Header; Lösungen als grüne tcolorbox.
+%  Renderer: pdflatex (zweimal)
+% ============================================================
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+\usepackage[top=2cm, bottom=2cm, left=2.4cm, right=2.4cm, footskip=1cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{ltablex}
+\keepXColumns
+\usepackage{colortbl}
+\usepackage[most,breakable]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{pdflscape}
+\usepackage{titlesec}
+\usepackage[colorlinks=true, linkcolor=accent, urlcolor=accent]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme ─────────────────────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{loesung}{RGB}{0, 100, 0}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{240, 252, 240}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer ─────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\footnotesize\color{accent}Modulprüfung -- \nichttitle}
+\fancyhead[R]{\footnotesize\color{accent}\nichtsubtitle}
+\fancyfoot[L]{\footnotesize\color{accent}Matrikelnr.: \rule{3cm}{0.4pt}}
+\fancyfoot[R]{\footnotesize\color{accent}Blatt \thepage\,/\,\pageref{LastPage}}
+
+% ── Typografie ────────────────────────────────────────────────
+\titleformat{\section}
+    {\color{accent}\large\bfseries}{}{0pt}{}
+    [\vspace{-4pt}\color{accent}\rule{\linewidth}{1.5pt}]
+\titleformat{\subsection}
+    {\normalsize\bfseries\color{accent!85!black}}{}{0pt}{}{}
+\titleformat{\subsubsection}
+    {\small\bfseries\color{accent!70!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{12pt}{4pt}
+\titlespacing*{\subsection}{0pt}{8pt}{2pt}
+\titlespacing*{\subsubsection}{0pt}{6pt}{1pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\renewcommand{\arraystretch}{1.25}
+\setlist[itemize]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.4em}
+\setlist[enumerate]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.6em}
+
+% ── Boxen ─────────────────────────────────────────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={Abbildung: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={Tabelle: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{solutionbox}[1]{
+  enhanced,
+  colback=solutionbg, colframe=loesung,
+  title={#1}, fonttitle=\small\bfseries,
+  coltitle=white, colbacktitle=loesung,
+  breakable, before skip=8pt, after skip=8pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=single, framerule=0pt,
+  xleftmargin=4pt, xrightmargin=4pt,
+  aboveskip=6pt, belowskip=6pt,
+  keepspaces=true
+}
+
+\providecommand{\nichttitle}{Probeklausur}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Betriebssysteme}
+\renewcommand{\nichtsubtitle}{Probeklausur 3}
+
+
+\begin{document}
+
+% Deckblatt
+\thispagestyle{empty}
+\begin{center}
+\vspace*{1cm}
+{\Huge\bfseries\color{accent}Probeklausur}\\[8pt]
+{\Large\color{accent}\nichttitle}\\[4pt]
+\ifx\nichtsubtitle\empty\else
+  {\large\color{accent!80!black}\nichtsubtitle}\\[6pt]
+\fi
+\color{accent}\rule{0.5\linewidth}{1pt}\color{black}
+\end{center}
+
+\vspace{1cm}
+\begin{tabularx}{\textwidth}{@{}l X@{}}
+\textbf{Studiengang:}      & \rule{6cm}{0.4pt} \\[6pt]
+\textbf{Matrikelnummer:}    & \rule{6cm}{0.4pt} \\[6pt]
+\textbf{Name, Vorname:}    & \rule{6cm}{0.4pt} \\[6pt]
+\textbf{Datum:}             & \rule{6cm}{0.4pt} \\[6pt]
+\textbf{Bearbeitungszeit:}  & 60 Minuten \\[6pt]
+\textbf{Hilfsmittel:}       & Taschenrechner (nicht programmierbar) \\
+\end{tabularx}
+
+\vspace{2cm}
+\begin{center}
+{\large\itshape Viel Erfolg!}
+\end{center}
+
+\newpage
+
+% ── BODY ──────────────────────────────────────────────────────
+
+\section{Probeklausur 3 — Betriebssysteme}
+
+\textbf{Bearbeitungszeit}: 60 Minuten | \textbf{Hilfsmittel}: keine | \textbf{Punkte}: 100
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 1 — Placement \& Buddy \textit{(18 Punkte)}}\mbox{}\\[2pt]
+
+Ein Betriebssystem verwaltet einen freien Speicherbereich von \textbf{1024 KB} mit der Buddy-Technik. Folgende Anforderungen treffen in dieser Reihenfolge ein:
+
+
+\begin{lstlisting}
+A: 70 KB
+B: 35 KB
+C: 130 KB
+D: 250 KB
+\end{lstlisting}
+
+
+Anschließend wird \textbf{B freigegeben}, dann \textbf{A freigegeben}.
+
+
+a) \textit{(3 P.)} Erkläre den Begriff \textbf{interne Fragmentierung} und nenne den durchschnittlichen Verschnitt auf der letzten Seite einer Datei laut Vorlesung.
+
+
+b) \textit{(8 P.)} Bestimme für jede der vier Anforderungen A–D die tatsächlich allokierte Blockgröße (gerundet auf 2ᵏ) sowie die dabei entstehende \textbf{interne Fragmentierung pro Anforderung in KB}. Skizziere zusätzlich den Belegungszustand des 1024-KB-Bereichs nach D als Liste der Blöcke (Größe + Status frei/belegt, in Reihenfolge).
+
+
+c) \textit{(4 P.)} Beschreibe, was nach dem Freigeben von B und anschließend A intern passiert (Buddy-Verschmelzung). Welche Blöcke entstehen?
+
+
+d) \textit{(3 P.)} Begründe, warum Buddy gegen \textbf{externe} Fragmentierung hilft, aber \textbf{interne} Fragmentierung verstärkt. Nenne ein Verfahren aus der Vorlesung, das den 2ᵏ-Aufrund-Nachteil reduziert.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 — Slack \& Cluster \textit{(14 Punkte)}}\mbox{}\\[2pt]
+
+Eine Partition verwendet Cluster der Größe \textbf{4096 Byte}, wobei jeder Cluster aus \textbf{8 Sektoren à 512 Byte} besteht. Eine Datei \texttt{report.txt} ist genau \textbf{5300 Byte} groß.
+
+
+a) \textit{(3 P.)} Wie viele Cluster belegt die Datei? Begründe kurz mit der Definition aus der Vorlesung („kleinste Adressierungseinheit").
+
+
+b) \textit{(6 P.)} Berechne für die Datei in Byte:
+
+\begin{itemize}
+  \item Größe des \textbf{File Slack} (gesamter ungenutzter Platz im letzten Cluster)
+  \item Größe des \textbf{RAM Slack} (von EOF bis Sektorende)
+  \item Größe des \textbf{Drive Slack} (restliche Sektoren bis Clustergrenze)
+\end{itemize}
+
+c) \textit{(2 P.)} Womit füllt Linux RAM- und Drive-Slack — und warum ist diese Wahl forensisch relevant?
+
+
+d) \textit{(3 P.)} Eine Admin schlägt vor, die Cluster auf \textbf{32 KB} zu vergrößern, weil „große Cluster ja schneller sind". Beurteile diesen Vorschlag mit zwei Argumenten aus dem Lernzettel.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 — DMA-Ablauf \& Bewertung \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Ein Programm liest \textbf{4 KB} von einer SATA-Platte (≈ 2 GB/s) ins RAM. Zur Verfügung stehen zwei Verfahren: \textbf{CPU-gesteuerte Übertragung wortweise} vs. \textbf{DMA}.
+
+
+a) \textit{(4 P.)} Beschreibe stichpunktartig den \textbf{DMA-Ablauf in 6 Schritten} (Lesen von Platte ins RAM).
+
+
+b) \textit{(4 P.)} Bei wortweiser CPU-Steuerung (Wortbreite 4 Byte) entsteht pro Wort \textbf{ein Interrupt}. Wie viele Interrupts entstehen bei 4 KB jeweils mit (i) CPU-Steuerung und (ii) DMA? Welche Konsequenz hat das für den Scheduler?
+
+
+c) \textit{(4 P.)} Nenne und erkläre \textbf{zwei} Vorteile von DMA aus dem Lernzettel, die über die reine Interrupt-Reduktion hinausgehen.
+
+
+d) \textit{(3 P.)} Ein Tastatur-Treiber (≈ 10 B/s) verzichtet bewusst auf DMA. Begründe, warum DMA hier nicht sinnvoll ist.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 — Adressierung \& Treiber-Analyse \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben sei folgender Pseudocode aus einem zeichenorientierten Treiber für ein UART-Gerät:
+
+
+\begin{lstlisting}[language=c]
+#define UART_PORT 0x3F8
+
+void writeChar(char c) {
+    out(UART_PORT + 0, c);            // Daten
+    out(UART_PORT + 5, 0x20);         // Status setzen
+}
+
+char readChar() {
+    return in(UART_PORT + 0);         // ohne Statusprüfung
+}
+\end{lstlisting}
+
+
+a) \textit{(3 P.)} Welche der beiden Adressierungsmethoden wird hier verwendet — \textbf{I/O-Port} oder \textbf{Memory-Mapped I/O}? Woran erkennt man das?
+
+
+b) \textit{(5 P.)} Der Code enthält \textbf{zwei Mängel} mit Bezug auf die Aufgaben eines Gerätetreibers laut Vorlesung. Identifiziere sie und schlage je eine Korrektur vor.
+
+\textit{(Hinweise: einer betrifft das Ready-Signal des Controllers, einer betrifft eine Standardaufgabe jedes Treibers.)}
+
+
+c) \textit{(4 P.)} Ordne UART einer Geräteklasse (block- vs. zeichenorientiert) zu und nenne die \textbf{vier} Pflicht-Funktionen dieser Klasse aus dem Lernzettel.
+
+
+d) \textit{(3 P.)} Vergleiche I/O-Port und MMIO bezüglich \textbf{Schutz} und \textbf{Befehlssatz} (je 1 Vor-/Nachteil).
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 — Journaling vs. Log-structured \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+Drei Server müssen ein neues Dateisystem bekommen:
+
+
+\begin{itemize}
+  \item \textbf{Server X}: Datenbank-Server, viele kleine Schreibzugriffe, \textbf{Stromausfälle bekannt}, SSD.
+  \item \textbf{Server Y}: Video-Bearbeitungsstation, große Dateien, sequentielle Workloads, HDD.
+  \item \textbf{Server Z}: Mailserver, jeder verlorene Mail-Body ist kritisch.
+\end{itemize}
+
+a) \textit{(4 P.)} Erkläre die Kernregel des \textbf{Journaling-Dateisystems} in einem Satz. Warum garantiert sie nach einem Absturz Konsistenz?
+
+
+b) \textit{(6 P.)} Vergleiche \textbf{Meta-Daten-Journaling} und \textbf{vollständiges (Data-)Journaling} in einer Tabelle: protokollierter Inhalt, Schreibaufwand, Risiko bei Absturz. Mindestens drei Zeilen.
+
+
+c) \textit{(6 P.)} Wähle für \textbf{jeden} Server (X, Y, Z) ein passendes Verfahren aus \{Meta-Journaling, Data-Journaling, Log-structured\} und begründe jede Wahl mit \textbf{einem konkreten Argument} aus dem Lernzettel.
+
+
+d) \textit{(4 P.)} Ein Kollege behauptet: \textit{„Log-structured ist immer besser, weil es nie Daten zurückschreibt."} Widerlege diese Aussage mit zwei Nachteilen aus dem Lernzettel und nenne den zugrundeliegenden Mechanismus, mit dem Log-structured Schreiben funktioniert.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 6 — Backup-Strategie \textit{(8 Punkte)}}\mbox{}\\[2pt]
+
+Eine Firma sichert täglich. Am \textbf{Sonntag 02:00} läuft ein Vollbackup, ab \textbf{Montag} dann werktäglich (Mo–Fr) eine \textbf{inkrementelle} Sicherung. Am \textbf{Donnerstagabend} crasht das System komplett.
+
+
+a) \textit{(2 P.)} Welche Backups müssen in welcher Reihenfolge eingespielt werden, um Donnerstag-Stand wiederherzustellen?
+
+
+b) \textit{(3 P.)} Das Inkrement von \textbf{Mittwoch} ist defekt. Erkläre die Konsequenz und stelle den maximal noch erreichbaren Stand fest.
+
+
+c) \textit{(3 P.)} Die Firma erwägt, auf \textbf{differentielles} Backup zu wechseln. Nenne einen Vor- und einen Nachteil gegenüber dem aktuellen inkrementellen Verfahren — bezogen auf die obige Crash-Situation.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 7 — Meltdown-Analyse \textit{(10 Punkte)}}\mbox{}\\[2pt]
+
+Folgender Pseudocode wird in einem \textbf{User-Prozess} ausgeführt:
+
+
+\begin{lstlisting}
+1: probe = byte[256 * 4096];     // Probe-Array
+2: try {
+3:   secret = *(kernel_addr);    // unauthorisiert
+4:   dummy  = probe[secret * 4096];
+5: } catch (SegFault) { /* ignore */ }
+6: // Thread 2: messe Zugriffszeit auf probe[i*4096] für i=0..255
+\end{lstlisting}
+
+
+a) \textit{(3 P.)} Welche \textbf{drei} CPU-Optimierungen aus dem Lernzettel ermöglichen zusammen, dass Zeile 4 trotz späterer Exception in Zeile 3 wirksam wird?
+
+
+b) \textit{(4 P.)} Erkläre Schritt für Schritt, \textbf{wie Thread 2} in Zeile 6 das Geheimnis rekonstruiert. Beziehe dich auf den Begriff \textbf{Seitenkanal}.
+
+
+c) \textit{(3 P.)} Bewerte zwei Gegenmaßnahmen — \textbf{KASLR} und \textbf{KPTI/KAISER} — bezüglich Wirksamkeit gegen Meltdown und ihrer Performance-Kosten. Welche der beiden hilft \textit{tatsächlich} gegen Meltdown? Begründe.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+
+\section{Musterlösung Klausur 3}
+
+\paragraph{Aufgabe 1 \textit{(18 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a) (3 P.)} \textit{Interne Fragmentierung}: Innerhalb eines belegten Blocks wird mehr Speicher reserviert als angefordert; der Rest bleibt ungenutzt (1 P.). Sie entsteht, wenn die Blockgröße > der tatsächliche Bedarf ist (1 P.). Durchschnittlich Ø 50 \% der letzten Seite einer Datei sind verschwendet (1 P.).
+
+
+\textbf{b) (8 P.)} Aufrundung auf nächste 2ᵏ:
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Anf.}} & {\color{white}\textbf{Bedarf}} & {\color{white}\textbf{Block}} & {\color{white}\textbf{Interne Fragm.}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+A & 70 KB & 128 KB & 58 KB \\
+B & 35 KB & 64 KB & 29 KB \\
+C & 130 KB & 256 KB & 126 KB \\
+D & 250 KB & 256 KB & 6 KB \\
+\end{tabularx}
+}
+
+
+(je 0,5 P. Block + 0,5 P. Fragm. = 4 P.)
+
+
+Belegungszustand nach D (1024 KB von links): \texttt{[128 A][64 B][64 frei][256 C][256 D][256 frei]} (4 P., je Block 0,5 P., richtige Reihenfolge 1 P.).
+
+\textit{Erklärung: A bekommt 128 → Rest 896. Davon Buddy 128 → in 64+64 gesplittet, B nimmt 64. C verlangt 256, also nächstes 256-Buddy aus dem 512er-Block (das 512-Stück wird in 256+256 gesplittet, C nimmt das erste 256). D = 256 nimmt das zweite 256. Restlicher 512er-Block ist die obere Hälfte des 1024 — frei.}
+
+
+\textbf{c) (4 P.)} B wird freigegeben — sein Buddy (64 frei) ist frei → verschmelzen zu 128 (1 P.). Dieses 128 ist Buddy von A's 128, A ist aber noch belegt → keine weitere Verschmelzung (1 P.). Nach Freigabe von A: A's 128 frei, daneben 128 frei → verschmelzen zu 256 (1 P.). Dieses 256 ist Buddy von dem ursprünglich gesplitteten 256-Bereich (aus dem C/D entstanden) — C/D belegt → keine weitere Verschmelzung. Endzustand: \texttt{[256 frei][256 C][256 D][256 frei]} (1 P.).
+
+
+\textbf{d) (3 P.)} Externe Fragmentierung wird reduziert, weil Buddies bei Freigabe automatisch verschmolzen werden → größere zusammenhängende Bereiche entstehen (1 P.). Interne wächst, weil jede Anforderung auf 2ᵏ aufgerundet wird; im schlechtesten Fall fast Verdopplung (1 P.). \textbf{Quick-Fit} verzichtet auf die strikte 2ᵏ-Verdopplung und reduziert dadurch die Aufrundung (1 P.).
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 \textit{(14 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a) (3 P.)} 5300 / 4096 = 1,29 → \textbf{2 Cluster} (1 P.). Cluster ist kleinste Adressierungseinheit, jede Datei belegt mind. 1 Cluster, Reste werden auf vollen Cluster gerundet (2 P.).
+
+
+\textbf{b) (6 P.)}
+
+\begin{itemize}
+  \item Allokierter Platz: 2 · 4096 = 8192 B; Datei = 5300 B → \textbf{File Slack = 8192 − 5300 = 2892 B} (2 P.).
+  \item EOF liegt im 2. Cluster bei Offset 5300 − 4096 = 1204 B. Sektor 3 (512–1023) endet bei 1023 — bereits voll. Sektor 4 reicht 1024–1535, EOF in diesem Sektor → \textbf{RAM Slack = 1536 − 1204 = 332 B} (2 P.).
+  \item Restliche Sektoren bis Clusterende: Sektoren 5,6,7,8 = 4 · 512 = \textbf{Drive Slack = 2048 B} (2 P.).
+\end{itemize}
+\textit{Kontrolle:} 332 + 2048 = 2380 B; plus 512 B (in Sektor 4 nach EOF? — bereits in RAM Slack enthalten, da von EOF bis Sektorende). Gesamt File Slack = 332 + 2048 = 2380? Abweichung von 2892 entspricht 512 B → das ist der \textbf{Sektor 4} vor EOF nicht, sondern: korrekt gilt File Slack = RAM + Drive nur, wenn EOF ≠ Sektorgrenze; hier ist 2380 B = RAM+Drive. Differenz 512 B = unvollständiger Sektor zwischen Clustergrenze und EOF — Studi erhält Punkte bei korrekter Methode auch ohne 100 \% Konsistenz; volle 6 P. wenn alle drei Werte (2892 / 332 / 2048) genannt + Methode gezeigt.
+
+
+\textbf{c) (2 P.)} Linux füllt mit \textbf{Zufallszahlen} statt RAM-/HDD-Inhalten (1 P.). Forensisch relevant: in anderen Systemen können in Slack-Bereichen Spuren früherer Daten (Passwörter, alte Dateifragmente) stecken — bei Linux nicht (1 P.).
+
+
+\textbf{d) (3 P.)} Schlecht: Große Cluster → mehr Slack → ineffiziente Speichernutzung, vor allem bei vielen kleinen Dateien (1 P.). Vorteil reduzierte Adressierungslast bringt nichts, wenn Partition klein ist (1 P.). Vorlesung: Cluster-Größe sollte zur Partitionsgröße passen — auf kleiner Partition kleine Cluster (1 P.).
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a) (4 P.)} 1) CPU programmiert DMA-Controller mit Quelle/Ziel/Wortzahl. 2) CPU sendet Lese-Kommando an Platten-Controller. 3) DMA fordert Platten-Controller zur Übertragung an. 4) Platten-Controller → DMA → RAM (Bus). 5) Platten-Controller meldet DMA Abschluss. 6) DMA löst \textbf{einen} Interrupt aus → CPU führt ISR aus. (je Schritt 0,5 P.)
+
+
+\textbf{b) (4 P.)} 4 KB / 4 B = \textbf{1024 Wörter} → \textbf{1024 Interrupts} mit CPU-Steuerung (1,5 P.); \textbf{1 Interrupt} mit DMA (1,5 P.). Konsequenz: Bei 1024 ISR-Aufrufen verliert der Scheduler stark Rechenzeit, da jeder Interrupt einen Kontextwechsel bedeutet → andere Prozesse bekommen weniger CPU-Zeit (1 P.).
+
+
+\textbf{c) (4 P.)} Zwei Vorteile (je 2 P.):
+
+\begin{itemize}
+  \item \textbf{CPU-Entlastung}: Während DMA überträgt, bearbeitet CPU andere Aufgaben parallel.
+  \item \textbf{Spezialisierter Controller}: DMA-Controller ist auf Massentransport optimiert, höhere Gesamtgeschwindigkeit als CPU-wortweise Übertragung.
+\end{itemize}
+(Alternativ: höhere Gesamtgeschwindigkeit; Parallelität zur CPU.)
+
+
+\textbf{d) (3 P.)} Tastatur überträgt nur \textasciitilde{}10 B/s (1 P.) — CPU-Last durch Interrupts ist trivial; DMA-Setup-Aufwand übersteigt den Nutzen (1 P.). Außerdem ist Tastatur zeichenorientiert, einzelne Bytes statt Blöcken — DMA ist auf Blocktransfers ausgelegt (1 P.).
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a) (3 P.)} \textbf{I/O-Port} (1 P.). Erkennbar an \texttt{out}/\texttt{in}-Befehlen mit fester Portnummer 0x3F8 (1 P.); MMIO würde normale Speicherzugriffe (\texttt{*ptr = c}) auf eine gemappte Adresse verwenden (1 P.).
+
+
+\textbf{b) (5 P.)} Mängel:
+
+\begin{enumerate}
+  \item \textbf{Keine Statusabfrage vor Lese-/Schreibzugriff} (2 P.) — der Treiber muss prüfen, ob Controller bereit ist (Lesen aus Statusregister); ein Lesebefehl ohne Bereitschaftsprüfung kann Müll oder altes Datum liefern. Korrektur: vor \texttt{in(UART\_PORT)} Status pollen (\texttt{while(!ready) ;}).
+  \item \textbf{Keine ISR / \texttt{handleInterrupt}} (2 P.) — Treiber-Pflicht laut Vorlesung; ohne ISR keine Unterbrechungsbehandlung. Korrektur: Funktion \texttt{handleInterrupt()} ergänzen, beim Controller registrieren.
+\end{enumerate}
+(Alternativ akzeptiert: fehlende Pufferung, fehlende Initialisierung des Controllers — je 2 P.)
+
+\begin{itemize}
+  \item 1 P. für saubere Bezugnahme auf die Treiberaufgaben aus dem Lernzettel.
+\end{itemize}
+
+\textbf{c) (4 P.)} \textbf{Zeichenorientiert} (1 P.) — Datenstrom aus einzelnen Zeichen, kein Block. Vier Pflichtfunktionen: \texttt{initDevice}, \texttt{readChar}, \texttt{writeChar}, \texttt{handleInterrupt} (3 P., je 0,75 P.).
+
+
+\textbf{d) (3 P.)} Vergleich:
+
+\begin{itemize}
+  \item I/O-Port: einfach umzusetzen (Vorteil), aber spezielle Befehle (\texttt{in}/\texttt{out}) nötig (Nachteil) (1,5 P.).
+  \item MMIO: Zugriff wie normaler Speicherzugriff + leichter Schutz möglich (Vorteil); Unterscheidung „echter Speicher vs. gemappt" aufwändig (Nachteil) (1,5 P.).
+\end{itemize}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a) (4 P.)} \textbf{Erst Log-Eintrag schreiben, dann die Änderung} (2 P.). Konsistenz: Beim Boot wird das Log abgeglichen — angefangene, unvollendete Transaktionen können rückgängig gemacht oder zu Ende geführt werden, da der Zielzustand vor dem Crash bereits dokumentiert war (2 P.).
+
+
+\textbf{b) (6 P.)} Tabelle (je Zeile 2 P., Inhalt 1 P., Korrektheit 1 P.):
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Aspekt}} & {\color{white}\textbf{Meta-Daten-Journaling}} & {\color{white}\textbf{Vollständiges Journaling}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Inhalt & nur Operations-Metadaten (Verzeichnisref, Rechte, Eigentümer, Blöcke) & gesamter Vorgang inkl. Nutzdaten \\
+Schreibaufwand & gering & doppelt (alles 2× geschrieben) \\
+Risiko bei Absturz & Daten-Inhalte können verloren gehen, Struktur konsistent & auch Daten gesichert; Originale beim Überschreiben gesichert \\
+\end{tabularx}
+}
+
+
+\textbf{c) (6 P.)} (je Server 2 P.: 1 P. Wahl, 1 P. Begründung)
+
+\begin{itemize}
+  \item \textbf{Server X (DB, kleine Schreibzugriffe, SSD, Stromausfälle)}: \textbf{Meta-Daten-Journaling} — geringer Schreibaufwand passt zu vielen kleinen Writes; SSD profitiert von weniger Schreibzyklen; Konsistenz-Garantie reicht, DB-Engine sichert Daten selbst.
+  \item \textbf{Server Y (Video, große sequentielle, HDD)}: \textbf{Log-structured} — sequentielles Schreiben am Log-Ende ideal für HDD-Zugriffsmuster; Copy-on-Write paßt zu großen, selten überschriebenen Dateien. \textit{(Auch akzeptiert: Meta-Journaling, falls Cleaner-Aufwand kritisiert.)}
+  \item \textbf{Server Z (Mailserver, Body-Verlust kritisch)}: \textbf{Vollständiges/Data-Journaling} — Mail-Inhalte werden mitprotokolliert, kein Verlust beim Absturz akzeptabel.
+\end{itemize}
+
+\textbf{d) (4 P.)} Widerlegung — zwei Nachteile (je 1,5 P.):
+
+\begin{itemize}
+  \item Hoher \textbf{Protokollierungsaufwand}: Platte muß zwischen Log und Daten springen.
+  \item Starke \textbf{Fragmentierung} durch ständiges Anhängen + Cleaner-Aufwand.
+\end{itemize}
+Mechanismus (1 P.): \textbf{Copy-on-Write} — alte Daten nicht überschreiben, sondern neue Kopie an Log-Ende schreiben, Verweise auf neue Kopie umbiegen.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 6 \textit{(8 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a) (2 P.)} \textbf{Sonntag-Vollbackup}, dann \textbf{Mo, Di, Mi, Do-Inkrement} in dieser Reihenfolge einspielen (2 P.).
+
+
+\textbf{b) (3 P.)} Konsequenz: fehlt ein Inkrement, fehlen alle ab diesem Punkt veränderten Dateien — die Kette ist unterbrochen (2 P.). Maximal noch erreichbar: \textbf{Stand Dienstag-Abend} (Voll + Mo + Di) (1 P.).
+
+
+\textbf{c) (3 P.)} Differentiell vs. inkrementell:
+
+\begin{itemize}
+  \item \textbf{Vorteil} in Crash-Situation: Wiederherstellung braucht nur Voll + ein einzelnes Diff (Donnerstag); ein defektes Mittwoch-Diff wäre irrelevant (1,5 P.).
+  \item \textbf{Nachteil}: höherer Speicherbedarf, da einmal veränderte Dateien in jedem Diff erneut gesichert werden — Diff wächst mit der Zeit (1,5 P.).
+\end{itemize}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 7 \textit{(10 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a) (3 P.)} \textbf{Speculative Execution} (CPU rät, führt vorab aus); \textbf{Out-of-Order Execution} (Befehle nicht in Programmreihenfolge); \textbf{Cache-/TLB-Updates werden nicht zurückgesetzt} beim Verwerfen der Spekulation (je 1 P.). Zusätzlich gilt während der Spekulation die Schutzregel (Supervisor-Bit) \textbf{nicht}.
+
+
+\textbf{b) (4 P.)} Schritt für Schritt (je 1 P.):
+
+\begin{enumerate}
+  \item Zeile 3 wird spekulativ ausgeführt — \texttt{secret} enthält das Kernel-Byte, obwohl die Exception erst danach ausgelöst wird.
+  \item Zeile 4 lädt \texttt{probe[secret*4096]} in den Cache; die Exception verwirft den Registerwert, \textbf{aber der Cache-Eintrag bleibt}.
+  \item Thread 2 misst Zugriffszeiten für jede der 256 möglichen Probe-Indizes (\texttt{probe[i*4096]}).
+  \item Der Index mit der \textbf{kürzesten Latenz} liegt im Cache — das ist \texttt{secret}.
+\end{enumerate}
+\textbf{Seitenkanal (Cache-Timing)}: Zeitmessungen auf einen geteilten Cache leaken Information, ohne dass der direkte Datenpfad benutzt wird.
+
+
+\textbf{c) (3 P.)}
+
+\begin{itemize}
+  \item \textbf{KASLR}: randomisiert Kernel-Adressen → schützt nur gegen Adress-Erraten; durch \textbf{Spraying / Side-Channels} umgehbar; geringe Performance-Kosten; \textbf{hilft nicht zuverlässig} gegen Meltdown (1,5 P.).
+  \item \textbf{KPTI/KAISER}: trennt User- und Kernel-Page-Table physisch; der Kernel ist nicht mehr in der User-Page-Table eingebettet → \textbf{Meltdown-Lesezugriff schlägt fehl}, da kein Mapping existiert. Kosten: \textasciitilde{}5–30 \% langsamer bei Syscalls/Interrupts. \textbf{Wirksam gegen Meltdown} (1,5 P.).
+\end{itemize}
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{document}

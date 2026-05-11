@@ -1,0 +1,589 @@
+% ============================================================
+%  Übungsaufgaben Template (my_dhbw Stil, uebung_*.tex)
+%  Header "Übungsblatt", grün eingefärbte <details>-Lösungen.
+%  Renderer: pdflatex (zweimal)
+% ============================================================
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+\usepackage[top=2cm, bottom=2cm, left=2.4cm, right=2.4cm, footskip=1cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{ltablex}
+\keepXColumns
+\usepackage{colortbl}
+\usepackage[most,breakable]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{pdflscape}
+\usepackage{titlesec}
+\usepackage[colorlinks=true, linkcolor=accent, urlcolor=accent]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme ─────────────────────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{loesung}{RGB}{0, 100, 0}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{240, 252, 240}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer ─────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\footnotesize\color{accent}\nichttitle}
+\fancyhead[R]{\footnotesize\color{accent}\nichtsubtitle}
+\fancyfoot[R]{\footnotesize\color{accent}Blatt \thepage\,/\,\pageref{LastPage}}
+
+% ── Typografie ────────────────────────────────────────────────
+\titleformat{\section}
+    {\color{accent}\large\bfseries}{}{0pt}{}
+    [\vspace{-4pt}\color{accent}\rule{\linewidth}{1.5pt}]
+\titleformat{\subsection}
+    {\normalsize\bfseries\color{accent!85!black}}{}{0pt}{}{}
+\titleformat{\subsubsection}
+    {\small\bfseries\color{accent!70!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{10pt}{3pt}
+\titlespacing*{\subsection}{0pt}{6pt}{2pt}
+\titlespacing*{\subsubsection}{0pt}{4pt}{1pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\renewcommand{\arraystretch}{1.2}
+\setlist[itemize]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.4em}
+\setlist[enumerate]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.6em}
+
+% ── Boxen: solutionbox = Lösungsbox in grün ──────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={Abbildung: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={Tabelle: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{solutionbox}[1]{
+  enhanced,
+  colback=solutionbg, colframe=loesung,
+  title={#1}, fonttitle=\small\bfseries,
+  coltitle=white, colbacktitle=loesung,
+  breakable, before skip=8pt, after skip=8pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=single, framerule=0pt,
+  xleftmargin=4pt, xrightmargin=4pt,
+  aboveskip=6pt, belowskip=6pt,
+  keepspaces=true
+}
+
+\providecommand{\nichttitle}{Übungsblatt}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Relationen, Algebra, Diskrete Mathematik}
+\renewcommand{\nichtsubtitle}{Übungsblatt 10}
+
+
+\begin{document}
+
+\begin{center}
+{\Large\bfseries\color{accent}\nichttitle}
+\ifx\nichtsubtitle\empty\else
+  \\[2pt]{\normalsize\color{accent!80!black}\nichtsubtitle}
+\fi
+\\[2pt]
+\color{accent}\rule{0.4\linewidth}{0.8pt}\color{black}
+\end{center}
+\vspace{4pt}
+
+% ── BODY ──────────────────────────────────────────────────────
+
+\section{Übungsblatt 10 — Kürzeste Pfade}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 1 — Greedy vs. optimaler Pfad \textit{(10 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben sei der ungerichtete, gewichtete Graph mit Knoten $\{A, B, C, D, E\}$ und folgenden Kanten:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Kante}} & {\color{white}\textbf{Gewicht}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+A–B & 2 \\
+A–C & 5 \\
+B–D & 9 \\
+B–E & 4 \\
+C–D & 1 \\
+D–E & 2 \\
+\end{tabularx}
+}
+
+
+a) Definiere kurz die Greedy/Best-first-Strategie zur Pfadsuche und nenne eine Konsequenz dieser Strategie. \textit{(3 P.)}
+
+
+b) Bestimme, welchen Pfad von $A$ nach $E$ ein reiner Greedy-Algorithmus liefert (jeweils nächste zulässige Kante mit kleinstem Gewicht, keine Knoten doppelt). Gib Pfad und Gesamtgewicht an. \textit{(3 P.)}
+
+
+c) Bestimme den tatsächlich kürzesten Pfad von $A$ nach $E$ und vergleiche mit (b). Welche Folgerung ergibt sich für die praktische Verwendbarkeit von Greedy? \textit{(4 P.)}
+
+
+\textbf{Lösung:}
+
+
+a) Greedy/Best-first wählt in jedem Schritt aus der aktuellen Position heraus die zulässige Kante mit dem geringsten Gewicht. Konsequenz: Lokale Optimalität führt nicht zwingend zu globaler Optimalität — Sackgassen oder erzwungene teure Folgekanten können entstehen, der gefundene Pfad ist häufig suboptimal.
+
+
+b) Schrittweise:
+
+\begin{itemize}
+  \item Start $A$. Kanten: A–B(2), A–C(5). Wähle $B$.
+  \item Von $B$: B–E(4), B–D(9), B–A(zurück, nicht zulässig). Wähle $E$.
+  \item Pfad: $A \to B \to E$, Gesamtgewicht $2 + 4 = 6$.
+\end{itemize}
+
+c) Alle einfachen Pfade $A \to E$ und ihre Kosten:
+
+\begin{itemize}
+  \item $A\to B\to E$: $2+4=6$
+  \item $A\to B\to D\to E$: $2+9+2=13$
+  \item $A\to C\to D\to E$: $5+1+2=8$
+  \item $A\to B\to D\to C\to \dots$: führt nicht weiter zu $E$ ohne Wiederholung relevant.
+\end{itemize}
+
+Kürzester Pfad: $A\to B\to E$ mit Kosten 6. In diesem Beispiel liefert Greedy zufällig den optimalen Pfad. Folgerung: Greedy kann optimal sein, ist aber im Allgemeinen unzuverlässig — die Korrektheit ist nicht garantiert, deshalb braucht man systematische Verfahren wie Dijkstra.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 — Dijkstra durchspielen \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben sei der gerichtete, gewichtete Graph mit Knoten $\{1,2,3,4,5,6\}$ und Adjazenzmatrix (Zeile = von, Spalte = zu, 0 = keine Kante):
+
+
+
+{\footnotesize
+\begin{tabularx}{\linewidth}{XXXXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{}} & {\color{white}\textbf{1}} & {\color{white}\textbf{2}} & {\color{white}\textbf{3}} & {\color{white}\textbf{4}} & {\color{white}\textbf{5}} & {\color{white}\textbf{6}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+1 & 0 & 7 & 9 & 0 & 0 & 14 \\
+2 & 0 & 0 & 10 & 15 & 0 & 0 \\
+3 & 0 & 0 & 0 & 11 & 0 & 2 \\
+4 & 0 & 0 & 0 & 0 & 6 & 0 \\
+5 & 0 & 0 & 0 & 0 & 0 & 0 \\
+6 & 0 & 0 & 0 & 0 & 9 & 0 \\
+\end{tabularx}
+}
+
+
+a) Führe Dijkstra mit Startknoten $s=1$ aus. Erstelle eine Tabelle mit den Spalten \textit{Iteration}, \textit{gewählter Knoten $u$}, \textit{aktualisierte Distanzen $d[1..6]$}, \textit{Vorgänger $\alpha[1..6]$} nach jeder Iteration. \textit{(12 P.)}
+
+
+b) Rekonstruiere mit \texttt{getpath} den kürzesten Pfad von 1 nach 5 aus dem Vorgänger-Array. Zeige die Iterationen der Schleife \texttt{while(i != 0)}. \textit{(4 P.)}
+
+
+c) Erkläre, weshalb Dijkstra hier korrekt arbeitet, obwohl der Graph gerichtet ist. Ändere genau eine Kante so ab, dass Dijkstra ein falsches Ergebnis liefern würde, und begründe. \textit{(4 P.)}
+
+
+\textbf{Lösung:}
+
+
+a) Initialisierung: $d=(0,\infty,\infty,\infty,\infty,\infty)$, $\alpha=(0,\text{NA},\dots,\text{NA})$, alle unvisited.
+
+
+
+\begin{landscape}
+
+{\footnotesize
+\begin{tabularx}{\linewidth}{XXXXXXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{It.}} & {\color{white}\textbf{$u$}} & {\color{white}\textbf{$d[1]$}} & {\color{white}\textbf{$d[2]$}} & {\color{white}\textbf{$d[3]$}} & {\color{white}\textbf{$d[4]$}} & {\color{white}\textbf{$d[5]$}} & {\color{white}\textbf{$d[6]$}} & {\color{white}\textbf{$\alpha$}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+1 & 1 & 0 & 7 & 9 & $\infty$ & $\infty$ & 14 & $(0,1,1,\text{NA},\text{NA},1)$ \\
+2 & 2 & 0 & 7 & 9 & 22 & $\infty$ & 14 & $(0,1,1,2,\text{NA},1)$ \\
+3 & 3 & 0 & 7 & 9 & 20 & $\infty$ & 11 & $(0,1,1,3,\text{NA},3)$ \\
+4 & 6 & 0 & 7 & 9 & 20 & 20 & 11 & $(0,1,1,3,6,3)$ \\
+5 & 4 & 0 & 7 & 9 & 20 & 20 & 11 & unverändert (4→5 ergäbe 26, schlechter) \\
+6 & 5 & 0 & 7 & 9 & 20 & 20 & 11 & fertig \\
+\end{tabularx}
+}
+\end{landscape}
+
+
+Endergebnis: $d=(0,7,9,20,20,11)$, $\alpha=(0,1,1,3,6,3)$.
+
+
+Erläuterungen:
+
+\begin{itemize}
+  \item It. 2: aus den unvisited mit minimalem $d$ ist Knoten 2 ($d=7$). Update über 2: $d[3]=\min(9,7+10)=9$, $d[4]=7+15=22$.
+  \item It. 3: Knoten 3 ($d=9$). Update: $d[4]=\min(22,9+11)=20$, $d[6]=\min(14,9+2)=11$.
+  \item It. 4: Knoten 6 ($d=11$). Update: $d[5]=11+9=20$.
+  \item It. 5: Knoten 4 ($d=20$). Update über 4 nach 5: $20+6=26 > 20$, kein Update.
+  \item It. 6: Knoten 5 ($d=20$), keine ausgehenden Kanten.
+\end{itemize}
+
+b) \texttt{getpath(previous, start=1, end=5)}:
+
+\begin{itemize}
+  \item $i=5$, $\text{path}=(5)$. $\text{ii}=\alpha[5]=6$, $i=6$, $i\neq 0 \Rightarrow \text{path}=(6,5)$.
+  \item $i=6$, $\text{ii}=\alpha[6]=3$, $i=3$, $\text{path}=(3,6,5)$.
+  \item $i=3$, $\text{ii}=\alpha[3]=1$, $i=1$, $\text{path}=(1,3,6,5)$.
+  \item $i=1$, $\text{ii}=\alpha[1]=0$, $i=0$, Schleife endet.
+\end{itemize}
+
+Pfad: $1 \to 3 \to 6 \to 5$, Kosten $9+2+9 = 20$. ✓
+
+
+c) Dijkstra ist auf gerichteten \textbf{und} ungerichteten Graphen korrekt, solange alle Kantengewichte nicht-negativ sind — die Korrektheit beruht darauf, dass beim Festlegen eines Knotens als visited keine spätere Kombination diesen Wert mehr unterbieten kann. Genau diese Invariante gilt nur bei $w \geq 0$.
+
+
+Modifikation: Setze die Kante $3\to 6$ auf Gewicht -5 statt 2. Dann gilt nach It. 3: $d[6]=9+(-5)=4$. Aber wenn Knoten 6 später als visited markiert ist, kann sein $d$ nicht mehr verbessert werden — und über Knoten 4 oder andere negative Pfadkonstellationen könnte sich ein noch kleinerer Wert ergeben. Negative Gewichte verletzen die Annahme „bereits besuchte Knoten sind final" → Dijkstra ist nicht mehr korrekt.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 — A\textit{ mit Heuristik }(18 Punkte)*}\mbox{}\\[2pt]
+
+Du suchst den kürzesten Pfad in einem ungerichteten Straßennetz von $s=A$ nach $z=Z$. Es gilt:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Kante}} & {\color{white}\textbf{Gewicht}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+A–B & 4 \\
+A–C & 2 \\
+B–Z & 3 \\
+C–B & 5 \\
+C–D & 4 \\
+D–Z & 3 \\
+\end{tabularx}
+}
+
+
+Heuristik (Luftlinie zu $Z$): $h(A)=6$, $h(B)=3$, $h(C)=4$, $h(D)=2$, $h(Z)=0$.
+
+
+a) Führe A\textit{ mit Startknoten $A$ und Ziel $Z$ aus. Trage in einer Tabelle pro Iteration den gewählten Knoten $u$, $d[v]$ und $p[v]=d[v]+h(v)$ aller Knoten ein. Brich ab, sobald $z.\pi=\text{visited}$ gesetzt würde — A}-Loop endet, sobald $z$ aus der Open-Wahl stammt. \textit{(10 P.)}
+
+
+b) Gib den Pfad und seine Kosten an. \textit{(2 P.)}
+
+
+c) Ersetze $h(C)$ durch $h'(C)=10$ (überschätzend). Zeige, dass A\textit{ dann einen suboptimalen Pfad liefern kann, indem du den ersten Schritt erneut durchführst und das Resultat begründest. }(6 P.)*
+
+
+\textbf{Lösung:}
+
+
+a) Initialisierung: $d[A]=0$, sonst $\infty$; $p[A]=0+6=6$, sonst $\infty$. $u=A$.
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{It.}} & {\color{white}\textbf{$u$}} & {\color{white}\textbf{$d$ nach Update}} & {\color{white}\textbf{$p$ nach Update}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+1 & $A$ & $A{=}0,B{=}4,C{=}2,D{=}\infty,Z{=}\infty$ & $A{=}6,B{=}7,C{=}6,D{=}\infty,Z{=}\infty$ \\
+2 & $C$ ($p=6$) & $B$: $\min(4, 2+5)=4$ unverändert; $D$: $2+4=6$ & $B{=}7,D{=}6+2=8$ \\
+3 & $B$ ($p=7$) & $Z$: $4+3=7$ & $Z{=}7+0=7$ \\
+4 & $Z$ ($p=7$) & Schleifenende (z visited / aus Wahl) & – \\
+\end{tabularx}
+}
+
+
+Anmerkung It. 2: Wahl unter unvisited $\{B(p=7), C(p=6)\}$: $C$. Anmerkung It. 3: unvisited $\{B(7), D(8), Z(\infty)\}$: $B$.
+
+
+Endwerte: $d[A]=0$, $d[B]=4$, $d[C]=2$, $d[D]=6$, $d[Z]=7$. $\alpha[Z]=B$, $\alpha[B]=A$.
+
+
+b) Pfad: $A \to B \to Z$ mit Kosten $4+3=7$.
+
+
+c) Mit $h'(C)=10$: Initial $p[A]=6$. Iteration 1 ($u=A$) liefert $p[B]=4+3=7$, $p[C]=2+10=12$. Wahl in Iteration 2: $\min p$ unter unvisited ist $B$ (statt $C$). Über $B$: $p[Z]=7+0=7$. In Iteration 3 wird $Z$ gewählt — und der gefundene Pfad ist $A\to B\to Z=7$. Hier wäre er zwar zufällig immer noch optimal, doch wenn man zusätzlich $w(B{-}Z)=10$ setzt, würde A* trotzdem $A\to B\to Z=14$ liefern (weil $C$ aufgrund der Überschätzung dauerhaft hinten landet), während der Pfad $A\to C\to D\to Z=2+4+3=9$ besser wäre.
+
+
+Begründung: A\textit{ garantiert Optimalität nur, wenn $h$ }\textit{zulässig}* (nicht überschätzend) ist. Eine überschätzende Heuristik kann den eigentlich optimalen Knoten so weit nach hinten priorisieren, dass das Ziel über einen teureren Pfad zuerst erreicht wird — die Lösung wird suboptimal.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 — Algorithmen-Wahl \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Für die folgenden vier Szenarien sollst du das \textbf{am besten geeignete} Verfahren aus der Vergleichstabelle des Kapitels (Dijkstra, Bellman–Ford, A*, Floyd–Warshall, Johnson) wählen. Begründe jeweils unter Bezug auf die Eigenschaften aus der Tabelle.
+
+
+a) Routenplaner-App: User gibt Start- \textbf{und} Zieladresse ein, Straßennetz mit Luftlinien-Schätzung verfügbar, alle Distanzen positiv. \textit{(3 P.)}
+
+
+b) Wechselkurs-Arbitrage: Knoten = Währungen, Kanten = Logarithmen von Wechselkursen — können negativ sein. Du suchst den günstigsten Tausch von EUR in JPY. \textit{(4 P.)}
+
+
+c) Eine \textbf{dichte} Distanzmatrix von 200 Flughäfen, alle Flugzeiten positiv. Gesucht: alle paarweisen kürzesten Flugzeiten als Vorberechnung für eine Webanwendung. \textit{(4 P.)}
+
+
+d) Soziales Netzwerk mit 10 Mio. Nutzern (sehr \textbf{spärlich}), Kantengewichte = Interaktionskosten ≥ 0, gesucht: kürzeste Distanz zwischen allen Nutzerpaaren. \textit{(4 P.)}
+
+
+\textbf{Lösung:}
+
+
+a) \textbf{A}\textit{. Begründung: Start + Ziel sind beide bekannt → Punkt-zu-Punkt-Anfrage; Heuristik (Luftlinie) ist verfügbar und zulässig (Luftlinie unterschätzt die Straßendistanz). Dijkstra würde unnötig in alle Richtungen expandieren; A} lenkt die Suche zielgerichtet.
+
+
+b) \textbf{Bellman–Ford}. Begründung: Negative Kantengewichte sind möglich (Logarithmen von Kursen < 1 sind negativ). Dijkstra/A\textit{ sind ausgeschlossen, weil sie negative Gewichte nicht zulassen. Bellman–Ford liefert für }\textit{einen}* Startknoten (EUR) korrekte Distanzen auch bei negativen Gewichten und erkennt obendrein negative Zyklen — was hier zur Arbitrage-Erkennung sogar erwünscht ist.
+
+
+c) \textbf{Floyd–Warshall}. Begründung: Alle-Paare-Problem auf einem \textbf{dichten} Graphen mit nur 200 Knoten. Floyd–Warshall ist explizit für dichte Graphen ausgelegt. Bei nur $200^3 = 8\cdot10^6$ Operationen praktikabel, einfacher als Johnson und benötigt keine Reweighting-Phase, da alle Gewichte positiv.
+
+
+d) \textbf{Johnson}. Begründung: Alle-Paare auf einem \textbf{spärlichen} Graphen — laut Tabelle genau Johnsons Anwendungsfall. Bei 10 Mio. Knoten ist Floyd–Warshall mit $\Theta(n^3)$ unmöglich, während Johnson $n$ Dijkstra-Läufe macht und so von der geringen Kantenzahl profitiert. (Für nicht-negative Gewichte könnte man auch direkt $n$-mal Dijkstra wie im Wrapper \texttt{allpaths} nutzen — Johnson wird erst durch das Reweighting bei eventuellen Negativkanten unverzichtbar; der Wrapper ist hier eine zulässige, einfachere Variante.)
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 — Fehler im R-Pseudocode \textit{(12 Punkte)}}\mbox{}\\[2pt]
+
+Ein Kommilitone hat die Dijkstra-Implementation modifiziert. Sein Code lautet (verändert gegenüber der Vorlage):
+
+
+\begin{lstlisting}
+dijkstra_buggy <- function(graph, start, end=FALSE) {
+  n = nrow(graph)
+  distances = rep(Inf, n); visited = rep(FALSE, n); previous = rep(NA, n)
+  distances[start] = 0
+  current = start
+  while(any(!visited)) {
+    visited[current] = TRUE
+    if(current == end) break
+    for(i in 1:n) {
+      if(graph[current,i] != 0 &&
+         distances[i] > distances[current] + graph[current,i]) {
+        distances[i] = distances[current] + graph[current,i]
+        previous[i] = current
+      }
+    }
+    candidates = which(!visited)
+    current = candidates[which.min(distances[candidates])]
+  }
+  list(distances=distances, previous=previous)
+}
+\end{lstlisting}
+
+
+a) Identifiziere \textbf{zwei} funktionale Abweichungen gegenüber der korrekten Vorlage aus dem Kapitel. \textit{(6 P.)}
+
+
+b) Konstruiere einen kleinen Graphen (≤ 4 Knoten), bei dem mindestens eine dieser Abweichungen ein \textbf{falsches} Ergebnis erzeugt. Zeige Erwartung vs. Ausgabe. \textit{(4 P.)}
+
+
+c) Was passiert mit \texttt{getpath} aus dem Kapitel, wenn man dieses fehlerhafte \texttt{previous} einspeist? \textit{(2 P.)}
+
+
+\textbf{Lösung:}
+
+
+a) Zwei Abweichungen:
+
+
+\begin{enumerate}
+  \item \textbf{Fehlende \texttt{!visited[i]}-Bedingung in der Update-Prüfung.} Die Vorlage updatet nur unbesuchte Nachbarn (\texttt{!visited[i]}). Hier wird die Bedingung weggelassen. Folge: Bei nicht-negativen Gewichten bleibt das Endergebnis zwar oft korrekt (eine bereits visited gesetzte Distanz kann ohnehin nicht unterboten werden), die Robustheit gegenüber Ausnahmefällen sinkt aber, und auf gerichteten Graphen mit Mehrkanten kann es zu unsinnigen Vorgänger-Updates kommen.
+\end{enumerate}
+
+\begin{enumerate}
+  \item \textbf{\texttt{previous[start]} wird nicht auf 0 gesetzt.} Die Vorlage setzt explizit \texttt{previous[start] = 0} als \textbf{Termination-Marker} für \texttt{getpath}. Im Buggy-Code bleibt \texttt{previous[start] = NA}. Die Schleife \texttt{while(i != 0)} in \texttt{getpath} testet auf 0 — \texttt{NA != 0} ergibt in R \texttt{NA}, und \texttt{while(NA)} wirft einen Fehler („missing value where TRUE/FALSE needed").
+\end{enumerate}
+
+(Eine dritte mögliche Beobachtung: Bei isolierten Komponenten kann \texttt{which.min} von einem Vektor mit lauter \texttt{Inf} einen Index zurückgeben, der wieder \texttt{current} setzt — aber das ist auch in der Vorlage so, nicht buggy-spezifisch.)
+
+
+b) Graph (gerichtet, 3 Knoten):
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{}} & {\color{white}\textbf{1}} & {\color{white}\textbf{2}} & {\color{white}\textbf{3}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+1 & 0 & 1 & 0 \\
+2 & 0 & 0 & 1 \\
+3 & 0 & 0 & 0 \\
+\end{tabularx}
+}
+
+
+Aufruf \texttt{dijkstra\_buggy(graph, start=1)}. Erwartung: $d=(0,1,2)$, Pfad $1\to 2\to 3$. Distanzen werden korrekt berechnet, $\text{previous}=(\text{NA},1,2)$.
+
+
+\texttt{getpath(previous, start=1, end=3)}: $i=3 \to \text{previous}[3]=2 \to i=2 \to \text{previous}[2]=1 \to i=1 \to \text{previous}[1]=\text{NA}$. Schleifenbedingung \texttt{while(i != 0)} mit $i=\text{NA}$: R-Fehler bzw. Endlosverhalten. Erwartet wäre saubere Termination und Pfad $(1,2,3)$.
+
+
+c) \texttt{getpath} benötigt \texttt{previous[start] = 0} als Stopp-Bedingung. Mit \texttt{previous[start] = NA} schlägt der Schleifentest \texttt{i != 0} fehl, weil \texttt{NA != 0} zu \texttt{NA} evaluiert. R quittiert mit „missing value where TRUE/FALSE needed". Die Pfadrekonstruktion ist nicht durchführbar — der Bug zeigt sich erst beim Aufruf von \texttt{getpath}, nicht in der Distanztabelle.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 6 — Allpaths anwenden \textit{(10 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben sei der ungerichtete Graph aus dem Vorlesungsbeispiel Ravensburg–Immenstaad (Kapitel-Tabelle, 6 Knoten).
+
+
+a) Erkläre, warum der Wrapper \texttt{allpaths(graph)} mit \texttt{n} Dijkstra-Aufrufen auskommt, obwohl es $n^2$ geordnete Knotenpaare gibt. \textit{(3 P.)}
+
+
+b) Berechne $d$ und $\alpha$ für den Aufruf \texttt{dijkstra(graph, start=2, end=FALSE)} per Hand. Trage die Endwerte in eine Tabelle ein. \textit{(5 P.)}
+
+
+c) Lies aus dem Ergebnis von (b) den kürzesten Pfad von Knoten 2 nach Knoten 6 ab — analog zu \texttt{getpath}. \textit{(2 P.)}
+
+
+\textbf{Lösung:}
+
+
+a) Ein Dijkstra-Lauf von Startknoten $s$ liefert die kürzesten Distanzen \textbf{und} Vorgänger zu allen anderen Knoten gleichzeitig. Damit deckt ein Aufruf bereits $n-1$ Paare $(s, v)$ ab. $n$ Aufrufe — einer pro möglichem Startknoten — ergeben somit alle $n(n-1)$ geordneten Paare. Das spart einen Faktor $n$ gegenüber einem naiven Punkt-zu-Punkt-Aufruf pro Paar.
+
+
+b) Initial: $d=(\infty,0,\infty,\infty,\infty,\infty)$, $\alpha=(\text{NA},0,\text{NA},\text{NA},\text{NA},\text{NA})$, alle unvisited.
+
+
+Ablauf (ungerichtet, Adjazenz aus der Kapitel-Tabelle):
+
+
+
+\begin{landscape}
+
+{\footnotesize
+\begin{tabularx}{\linewidth}{XXXXXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{It.}} & {\color{white}\textbf{$u$}} & {\color{white}\textbf{$d[1]$}} & {\color{white}\textbf{$d[2]$}} & {\color{white}\textbf{$d[3]$}} & {\color{white}\textbf{$d[4]$}} & {\color{white}\textbf{$d[5]$}} & {\color{white}\textbf{$d[6]$}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Init & – & $\infty$ & 0 & $\infty$ & $\infty$ & $\infty$ & $\infty$ \\
+1 & 2 & 1 & 0 & 1 & $\infty$ & 1 & $\infty$ \\
+2 & 1 & 1 & 0 & 1 & $\infty$ & 1 & $\infty$ \\
+3 & 3 & 1 & 0 & 1 & 2 & 1 & $\infty$ \\
+4 & 5 & 1 & 0 & 1 & 2 & 1 & $\infty$ ($5\to 4$: $1+6=7>2$) \\
+5 & 4 & 1 & 0 & 1 & 2 & 1 & 3 \\
+6 & 6 & 1 & 0 & 1 & 2 & 1 & 3 \\
+\end{tabularx}
+}
+\end{landscape}
+
+
+Erläuterung Wahl: Nach It. 1 sind \$1, 3, 5$ alle mit $d=1\$ unvisited — die Reihenfolge ist implementationsabhängig (R: kleinster Index via \texttt{which.min}), Endergebnis ist invariant.
+
+
+Endwerte:
+
+
+
+{\footnotesize
+\begin{tabularx}{\linewidth}{XXXXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Knoten}} & {\color{white}\textbf{1}} & {\color{white}\textbf{2}} & {\color{white}\textbf{3}} & {\color{white}\textbf{4}} & {\color{white}\textbf{5}} & {\color{white}\textbf{6}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+$d$ & 1 & 0 & 1 & 2 & 1 & 3 \\
+$\alpha$ & 2 & 0 & 2 & 3 & 2 & 4 \\
+\end{tabularx}
+}
+
+
+c) Rekonstruktion $2 \to 6$: $i=6 \to \alpha[6]=4 \to \alpha[4]=3 \to \alpha[3]=2 \to \alpha[2]=0$. Pfad: $2 \to 3 \to 4 \to 6$ mit Kosten $1+1+1=3$. ✓
+
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{document}

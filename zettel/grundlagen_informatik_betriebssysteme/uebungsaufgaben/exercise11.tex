@@ -1,0 +1,509 @@
+% ============================================================
+%  Übungsaufgaben Template (my_dhbw Stil, uebung_*.tex)
+%  Header "Übungsblatt", grün eingefärbte <details>-Lösungen.
+%  Renderer: pdflatex (zweimal)
+% ============================================================
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+\usepackage[top=2cm, bottom=2cm, left=2.4cm, right=2.4cm, footskip=1cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{ltablex}
+\keepXColumns
+\usepackage{colortbl}
+\usepackage[most,breakable]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{pdflscape}
+\usepackage{titlesec}
+\usepackage[colorlinks=true, linkcolor=accent, urlcolor=accent]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme ─────────────────────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{loesung}{RGB}{0, 100, 0}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{240, 252, 240}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer ─────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\footnotesize\color{accent}\nichttitle}
+\fancyhead[R]{\footnotesize\color{accent}\nichtsubtitle}
+\fancyfoot[R]{\footnotesize\color{accent}Blatt \thepage\,/\,\pageref{LastPage}}
+
+% ── Typografie ────────────────────────────────────────────────
+\titleformat{\section}
+    {\color{accent}\large\bfseries}{}{0pt}{}
+    [\vspace{-4pt}\color{accent}\rule{\linewidth}{1.5pt}]
+\titleformat{\subsection}
+    {\normalsize\bfseries\color{accent!85!black}}{}{0pt}{}{}
+\titleformat{\subsubsection}
+    {\small\bfseries\color{accent!70!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{10pt}{3pt}
+\titlespacing*{\subsection}{0pt}{6pt}{2pt}
+\titlespacing*{\subsubsection}{0pt}{4pt}{1pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\renewcommand{\arraystretch}{1.2}
+\setlist[itemize]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.4em}
+\setlist[enumerate]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.6em}
+
+% ── Boxen: solutionbox = Lösungsbox in grün ──────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={Abbildung: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={Tabelle: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{solutionbox}[1]{
+  enhanced,
+  colback=solutionbg, colframe=loesung,
+  title={#1}, fonttitle=\small\bfseries,
+  coltitle=white, colbacktitle=loesung,
+  breakable, before skip=8pt, after skip=8pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=single, framerule=0pt,
+  xleftmargin=4pt, xrightmargin=4pt,
+  aboveskip=6pt, belowskip=6pt,
+  keepspaces=true
+}
+
+\providecommand{\nichttitle}{Übungsblatt}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Betriebssysteme}
+\renewcommand{\nichtsubtitle}{Übungsblatt 11}
+
+
+\begin{document}
+
+\begin{center}
+{\Large\bfseries\color{accent}\nichttitle}
+\ifx\nichtsubtitle\empty\else
+  \\[2pt]{\normalsize\color{accent!80!black}\nichtsubtitle}
+\fi
+\\[2pt]
+\color{accent}\rule{0.4\linewidth}{0.8pt}\color{black}
+\end{center}
+\vspace{4pt}
+
+% ── BODY ──────────────────────────────────────────────────────
+
+\section{Übungsblatt 11 — Speicherverwaltung — Grundlagen}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 1 — Adressraum \& Speicherinhalte \textit{(10 Punkte)}}\mbox{}\\[2pt]
+
+a) Erkläre kurz den Unterschied zwischen \textit{Adressraum} und \textit{physikalischer Speicheradresse}. \textit{(3 P)}
+
+
+b) Ein 32-Bit-System soll genutzt werden. Wie groß ist der theoretisch adressierbare Adressraum (in Byte und in GB)? Zeige den Rechenweg. \textit{(3 P)}
+
+
+c) Ein Programm enthält die folgenden Bestandteile. Ordne jeden Eintrag der Kategorie \textbf{statisch} oder \textbf{dynamisch} zu und begründe in einem Satz, warum: \textit{(4 P)}
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{\#}} & {\color{white}\textbf{Bestandteil}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+1 & \texttt{const double PI = 3.14159;} \\
+2 & Rückkehradresse eines Funktionsaufrufs \\
+3 & \texttt{int counter = 0;} (globale Variable) \\
+4 & Ergebnis von \texttt{malloc(1024)} \\
+\end{tabularx}
+}
+
+
+\textbf{Lösung:}
+
+
+a) Der \textbf{Adressraum} ist die \textit{Menge aller möglichen Adressen}, die ein System (oder Prozess) ansprechen kann — also ein abstrakter Wertebereich, z. B. \{0 … 2³²−1\}. Eine \textbf{physikalische Speicheradresse} ist dagegen eine \textit{konkrete} Adresse im real verbauten RAM, an die ein Wort tatsächlich geschrieben oder von der gelesen wird. Adressraum ist also "Möglichkeit", physikalische Adresse "Realität".
+
+
+b) Bei 32 Adressbits gibt es 2³² verschiedene Adressen:
+
+
+\[
+2^{32} = 4\,294\,967\,296 \text{ Byte} = 4 \cdot 2^{30} \text{ Byte} = 4 \text{ GiB}
+\]
+
+
+Das entspricht in Dezimalpräfixen ≈ 4,295 GB; der Adressraum umfasst \{0 … 2³²−1\}.
+
+
+c)
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{\#}} & {\color{white}\textbf{Bestandteil}} & {\color{white}\textbf{Zuordnung}} & {\color{white}\textbf{Begründung}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+1 & \texttt{const PI} & statisch (Konstante) & Wert steht beim Linken fest, wird direkt aus der exe geladen. \\
+2 & Rückkehradresse & dynamisch (Stack) & Entsteht erst zur Laufzeit beim Funktionsaufruf. \\
+3 & \texttt{int counter = 0} global & statisch (initialisierte Daten) & Wert ist im Binary hinterlegt, wird beim Laden in den Datenbereich kopiert. \\
+4 & \texttt{malloc(1024)} & dynamisch (Heap) & Speicher wird zur Laufzeit angefordert, Größe muss zur Compile-Zeit nicht bekannt sein. \\
+\end{tabularx}
+}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 — Speicherlayout \& Stack/Heap-Kollision \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Ein Prozess hat einen Adressraum von \textbf{0x0000} bis \textbf{0xFFFF} (64 KiB). Das Layout folgt dem im Kapitel vorgestellten Schema (Code/Konstanten unten, Heap wächst nach oben, Stack wächst von oben nach unten). Folgende Bereiche sind beim Start belegt:
+
+
+\begin{itemize}
+  \item Code + Konstanten: 0x0000 – 0x1FFF
+  \item Initialisierte + uninitialisierte Daten: 0x2000 – 0x2FFF
+  \item Heap-Anfang: 0x3000 (zunächst leer)
+  \item Stack-Anfang: 0xFFFF (wächst Richtung kleinere Adressen)
+\end{itemize}
+
+a) Skizziere das Layout als Tabelle (Adressbereich → Inhalt) und markiere die Wachstumsrichtungen von Heap und Stack. \textit{(4 P)}
+
+
+b) Während der Laufzeit werden 12 KiB auf dem Heap allokiert und der Stack belegt 8 KiB. An welchen Adressen liegen jeweils der aktuelle Heap-Top und der aktuelle Stack-Top (= unterste belegte Stack-Adresse)? \textit{(4 P)}
+
+
+c) Wie viele Bytes freier Speicher liegen jetzt noch zwischen Heap-Top und Stack-Top? \textit{(2 P)}
+
+
+d) Was passiert konzeptionell, wenn der Heap weiterwächst und/oder der Stack weiter belegt wird, bis sich beide Bereiche treffen? Wie verhindert das Betriebssystem in der hier behandelten Modellwelt (ohne virtuellen Speicher) systematisch eine \textit{unbemerkte} Überlappung zweier Prozesse? \textit{(5 P)}
+
+
+\textbf{Lösung:}
+
+
+a)
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Adressbereich}} & {\color{white}\textbf{Inhalt}} & {\color{white}\textbf{Hinweis}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+0x0000 – 0x1FFF & Code + Konstanten & statisch, fix \\
+0x2000 – 0x2FFF & Daten (init/uninit) & statisch \\
+0x3000 → … & \textbf{Heap} & wächst ↑ (Richtung höhere Adressen) \\
+… ← 0xFFFF & \textbf{Stack} & wächst ↓ (Richtung kleinere Adressen) \\
+\end{tabularx}
+}
+
+
+Zwischen Heap-Top und Stack-Top liegt der freie Bereich, der von beiden Seiten "aufgefressen" wird.
+
+
+b) 12 KiB = 0x3000 Byte, 8 KiB = 0x2000 Byte.
+
+
+\begin{itemize}
+  \item Heap-Top = 0x3000 + 0x3000 = \textbf{0x6000} (nächste freie Adresse oberhalb des Heaps).
+  \item Stack belegt 0xFFFF abwärts, der oberste Stack-Eintrag liegt bei 0xFFFF, der unterste belegte bei 0xFFFF − 0x2000 + 1 = \textbf{0xE000}.
+\end{itemize}
+
+c) Frei: von 0x6000 (inkl.) bis 0xDFFF (inkl., also bis unmittelbar vor 0xE000):
+
+
+\[
+0xE000 - 0x6000 = 0x8000 = 32\,768 \text{ Byte} = 32 \text{ KiB}
+\]
+
+
+d) Treffen sich Heap und Stack, ist der Prozess "out of memory" — Schreibzugriffe auf Stack oder Heap überschreiben den jeweils anderen, was zu undefiniertem Verhalten führt (z. B. zerstörte Rückkehradressen → Crash).
+
+In der Modellwelt \textbf{ohne virtuellen Speicher} verhindert das Betriebssystem eine \textit{prozessübergreifende} Kollision durch \textbf{feste oder variable Partitionen mit Bereichsgrenzen (Basis/Limit-Register)}: Jede Adresse, die der Prozess erzeugt, wird gegen das Limit geprüft; ein Überschreiten löst einen Trap aus, bevor fremder Speicher überschrieben werden kann. Innerhalb des eigenen Adressraums kollidieren Stack und Heap aber prinzipiell ungebremst — diesen Konflikt löst erst das Paging-Modell durch nicht-zusammenhängende Zuordnung.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 — Vergleich der vier Techniken \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+Das Kapitel nennt vier Speicherverwaltungs-Techniken:
+
+
+\begin{enumerate}
+  \item Monoprogramming
+  \item Multiprogramming mit festen Partitionen
+  \item Multiprogramming mit variablen Partitionen + Swapping
+  \item Multiprogramming + virtueller Speicher + Paging
+\end{enumerate}
+
+a) Fülle die folgende Tabelle aus. Trage in jede Zelle eine Kurzantwort (1 Stichpunkt) ein. \textit{(12 P)}
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Eigenschaft}} & {\color{white}\textbf{Mono}} & {\color{white}\textbf{Feste Part.}} & {\color{white}\textbf{Var. Part. + Swap}} & {\color{white}\textbf{Paging}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Anzahl Prozesse gleichzeitig im RAM &  &  &  &  \\
+Externe Fragmentierung &  &  &  &  \\
+Interne Fragmentierung &  &  &  &  \\
+\end{tabularx}
+}
+
+
+b) Du sollst ein Embedded-System mit 64 KiB RAM und genau \textbf{einer} ständig laufenden Steuerungs-Anwendung entwerfen. Welche der vier Techniken ist passend? Begründe in 2–3 Sätzen. \textit{(3 P)}
+
+
+c) Auf einem Mehrbenutzer-Server starten und beenden Prozesse stark unterschiedlicher Größe in unvorhersehbarer Reihenfolge. Begründe, warum \textbf{feste Partitionen} hier eine schlechte Wahl sind, und warum \textbf{variable Partitionen mit Swapping} zwar besser, aber langfristig immer noch unbefriedigend ist. \textit{(5 P)}
+
+
+\textbf{Lösung:}
+
+
+a)
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Eigenschaft}} & {\color{white}\textbf{Mono}} & {\color{white}\textbf{Feste Part.}} & {\color{white}\textbf{Var. Part. + Swap}} & {\color{white}\textbf{Paging}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Anzahl Prozesse gleichzeitig im RAM & genau 1 & n (Anzahl Partitionen) & mehrere, dynamisch & viele, dynamisch \\
+Externe Fragmentierung & nein (nur 1 Prozess) & nein (Partitionen fix) & \textbf{ja}, entsteht durch Lücken zwischen freigegebenen Bereichen & nein (gleich große Frames) \\
+Interne Fragmentierung & nein bzw. unbenutzter Rest-RAM & \textbf{ja}, Prozess kleiner als Partition & gering / keine (Partition wird passend zugeschnitten) & \textbf{ja}, letzte Page meist nicht voll \\
+\end{tabularx}
+}
+
+
+b) Geeignet ist \textbf{Monoprogramming}. Begründung: Es läuft sowieso nur ein Prozess, dadurch entfallen Schutz- und Verdrängungsmechanismen vollständig, und die einfache Implementierung passt zu einem ressourcenarmen Embedded-Kontext. Das einzige Konzept, das überhaupt nötig wäre — Trennung von Code/Konstanten, Daten, Heap und Stack innerhalb des einen Adressraums — bekommt man "geschenkt" durch das im Kapitel beschriebene Standard-Layout.
+
+
+c) Feste Partitionen sind hier schlecht, weil ihre Größe \textbf{zur Konfigurationszeit} fixiert wird: Ein 200-MiB-Prozess passt nicht in eine 100-MiB-Partition (auch wenn anderswo Platz frei wäre), und ein 10-MiB-Prozess belegt eine 100-MiB-Partition komplett — \textbf{interne Fragmentierung} verschwendet RAM systematisch.
+
+Variable Partitionen schneiden den Bereich passend zu, was die interne Fragmentierung beseitigt; durch ständiges Allokieren und Freigeben unterschiedlich großer Bereiche entstehen aber Lücken zwischen belegten Regionen → \textbf{externe Fragmentierung}. Selbst wenn die Summe der Lücken groß genug wäre, kann ein neu startender Prozess nicht hineinpassen, weil sein zusammenhängender Bedarf in keinem einzelnen Loch liegt. Swapping verschiebt das Problem nur teilweise (Kompaktifizierung ist teuer). Erst Paging löst den Konflikt strukturell, weil es die Forderung nach \textit{zusammenhängender} physischer Allokation aufgibt.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 — Pseudocode-Analyse: Layout-Bug \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Ein Werkstudent schreibt folgenden C-ähnlichen Pseudocode für eine eingebettete Plattform \textbf{ohne virtuellen Speicher}, mit dem im Kapitel beschriebenen Layout (Code unten, Heap wächst hoch, Stack wächst runter):
+
+
+\begin{lstlisting}
+char* make_greeting() {
+    char buf[16];                  // (1)
+    strcpy(buf, "Hallo Welt!");
+    return buf;                    // (2)
+}
+
+int main() {
+    char* g = make_greeting();
+    char* h = malloc(1024);        // (3)
+    strcpy(h, g);                  // (4)
+    print(h);
+    return 0;
+}
+\end{lstlisting}
+
+
+a) In welchem Speicherbereich (Code/Konstanten, Daten, Heap, Stack) liegt jeder der folgenden Werte unmittelbar nach Zeile (1) bzw. (3): das Array \texttt{buf}, das String-Literal \texttt{"Hallo Welt!"}, der von \texttt{malloc} zurückgegebene Block? \textit{(4 P)}
+
+
+b) Erkläre mit dem Layout-Wissen aus dem Kapitel, was \textbf{konkret} schief geht zwischen den Zeilen (2), (3) und (4). Beziehe dich auf die Wachstumsrichtung des Stacks. \textit{(7 P)}
+
+
+c) Schlage \textbf{eine} minimale Korrektur vor, die das Problem beseitigt, ohne die Funktionssignatur sinnlos aufzublähen. \textit{(4 P)}
+
+
+\textbf{Lösung:}
+
+
+a)
+
+\begin{itemize}
+  \item \texttt{buf[16]}: liegt auf dem \textbf{Stack} — lokales Array in \texttt{make\_greeting}, beim Funktionseintritt im Stack-Frame angelegt.
+  \item \texttt{"Hallo Welt!"}: String-Literal, liegt im \textbf{Code-/Konstanten-Bereich} unten im Layout (statisch, schreibgeschützt).
+  \item \texttt{malloc(1024)}-Block: liegt auf dem \textbf{Heap}, irgendwo oberhalb der statischen Daten und unterhalb des aktuellen Heap-Top.
+\end{itemize}
+
+b) Der Bug ist eine klassische \textbf{dangling pointer} auf Stack-Speicher.
+
+Während \texttt{make\_greeting} läuft, existiert der Frame mit \texttt{buf} an der jeweils niedrigsten Stack-Adresse (Stack wächst von hohen zu niedrigen Adressen). In Zeile (2) wird die Adresse von \texttt{buf} zurückgegeben — aber mit dem Verlassen der Funktion wird der Frame \textbf{abgebaut}: der Stack-Pointer wandert wieder nach oben, der Speicher unterhalb (kleinere Adressen) gilt als frei. \texttt{g} zeigt damit auf einen Bereich, der jederzeit überschrieben werden kann.
+
+Spätestens beim nächsten Funktionsaufruf — z. B. dem \texttt{malloc}-Aufruf in Zeile (3) — wird ein \textbf{neuer Stack-Frame} an genau derselben Stelle angelegt; lokale Variablen / Argumente / Rücksprungadressen von \texttt{malloc} überschreiben den Inhalt von \texttt{buf}. In Zeile (4) liest \texttt{strcpy} also keine "Hallo Welt!"-Bytes mehr, sondern Stack-Müll, schreibt diesen auf den Heap und gibt ihn aus → undefinierte Ausgabe / möglicher Crash. Heap und Stack kollidieren hier \textit{zeitlich} (gleicher Adressbereich nacheinander), nicht räumlich.
+
+
+c) Den String \textbf{direkt auf dem Heap} anlegen, dessen Lebensdauer nicht an den Funktionsrücksprung gebunden ist:
+
+
+\begin{lstlisting}
+char* make_greeting() {
+    char* buf = malloc(16);
+    strcpy(buf, "Hallo Welt!");
+    return buf;
+}
+\end{lstlisting}
+
+
+Damit überlebt \texttt{buf} den Funktionsausstieg, weil der Heap-Bereich erst durch ein explizites \texttt{free} freigegeben wird. (Alternativ wäre ein \texttt{static char buf[16]} im Datensegment — funktioniert ebenfalls, ist aber bei mehrfachem Aufruf nicht thread-/wiedereintrittssicher.)
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 — Transfer: Adressraum auf einem 16-Bit-Mikrocontroller \textit{(12 Punkte)}}\mbox{}\\[2pt]
+
+Ein Mikrocontroller habe \textbf{16-Bit-Adressen} und insgesamt \textbf{48 KiB physikalisch verbauten RAM} (also weniger RAM als der Adressraum theoretisch erlaubt). Es kommt \textbf{Multiprogramming mit festen Partitionen} zum Einsatz; der Speicher wird in \textbf{drei gleich große Partitionen} zu je 16 KiB aufgeteilt, die jeweils einen Prozess inkl. Code, Daten, Heap und Stack im Standard-Layout aufnehmen.
+
+
+a) Wie groß ist der theoretische Adressraum in Byte? Wie verhält sich diese Zahl zum tatsächlich verbauten RAM, und welche Konsequenz hat das für die Speicherverwaltung? \textit{(3 P)}
+
+
+b) Drei Prozesse mit folgendem \textbf{Speicherbedarf} sollen laufen:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Prozess}} & {\color{white}\textbf{Code+Daten}} & {\color{white}\textbf{benötigter Heap+Stack}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+P1 & 4 KiB & 8 KiB \\
+P2 & 10 KiB & 4 KiB \\
+P3 & 2 KiB & 2 KiB \\
+\end{tabularx}
+}
+
+
+Berechne für jeden Prozess die \textbf{interne Fragmentierung} (ungenutzte Bytes innerhalb seiner Partition) und die \textbf{gesamte interne Fragmentierung} über alle drei Partitionen. \textit{(5 P)}
+
+
+c) Begründe, ob ein vierter Prozess mit Code+Daten = 5 KiB und Heap+Stack = 6 KiB nach Beendigung von P3 sofort startfähig wäre, und warum \textbf{variable Partitionen} in genau diesem Szenario \textit{keinen} Vorteil bringen würden. \textit{(4 P)}
+
+
+\textbf{Lösung:}
+
+
+a) 16 Adressbits ⇒ 2¹⁶ = \textbf{65 536 Byte = 64 KiB} theoretisch. Verbaut sind nur 48 KiB, der Adressraum ist also größer als der reale Speicher; Adressen oberhalb von 48 KiB zeigen auf nichts Reales und müssten von der MMU/dem OS abgefangen werden. Konsequenz: Die Partitionierung darf \textbf{maximal 48 KiB} vergeben (hier exakt: 3 × 16 KiB), nicht den vollen Adressraum.
+
+
+b) Jede Partition fasst 16 KiB = 16 384 Byte. Bedarf je Prozess = Code+Daten + Heap+Stack:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Prozess}} & {\color{white}\textbf{Bedarf}} & {\color{white}\textbf{Partition}} & {\color{white}\textbf{Interne Fragmentierung}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+P1 & 4 + 8 = 12 KiB & 16 KiB & 16 − 12 = \textbf{4 KiB} \\
+P2 & 10 + 4 = 14 KiB & 16 KiB & 16 − 14 = \textbf{2 KiB} \\
+P3 & 2 + 2 = 4 KiB & 16 KiB & 16 − 4 = \textbf{12 KiB} \\
+\end{tabularx}
+}
+
+
+Summe interne Fragmentierung: 4 + 2 + 12 = \textbf{18 KiB} — also über ein Drittel des realen RAM ist faktisch verschwendet, obwohl alles "passt".
+
+
+c) Bedarf P4 = 5 + 6 = 11 KiB ≤ 16 KiB → P4 passt nach P3-Ende \textbf{sofort} in die freie Partition.
+
+Variable Partitionen würden in diesem konkreten Fall \textbf{keinen Vorteil} bringen, weil:
+
+\begin{itemize}
+  \item Der Bedarf jedes Prozesses ohnehin kleiner als die feste Partitionsgröße ist (alles passt rein).
+  \item Externe Fragmentierung kann nicht entstehen, da nur drei feste Slots existieren und diese komplett wiederverwendet werden.
+  \item Der Vorteil variabler Partitionen — passgenaues Zuschneiden zur Reduktion \textit{interner} Fragmentierung — wäre zwar theoretisch da (P3 würde dann nur 4 KiB statt 16 KiB belegen), bringt P4 aber \textbf{nicht zum Laufen, sondern macht nur Platz für Prozesse > 16 KiB}, von denen es im Szenario keinen gibt. Der Engpass dieses Systems ist die \textit{Adressraum-/RAM-Gesamtgröße} (48 KiB), nicht die Partitionierungsstrategie. Ein echter Sprung käme erst durch Swapping oder Paging.
+\end{itemize}
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{document}

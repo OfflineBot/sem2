@@ -1,0 +1,480 @@
+% ============================================================
+%  Übungsaufgaben Template (my_dhbw Stil, uebung_*.tex)
+%  Header "Übungsblatt", grün eingefärbte <details>-Lösungen.
+%  Renderer: pdflatex (zweimal)
+% ============================================================
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+\usepackage[top=2cm, bottom=2cm, left=2.4cm, right=2.4cm, footskip=1cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{ltablex}
+\keepXColumns
+\usepackage{colortbl}
+\usepackage[most,breakable]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{pdflscape}
+\usepackage{titlesec}
+\usepackage[colorlinks=true, linkcolor=accent, urlcolor=accent]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme ─────────────────────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{loesung}{RGB}{0, 100, 0}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{240, 252, 240}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer ─────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\footnotesize\color{accent}\nichttitle}
+\fancyhead[R]{\footnotesize\color{accent}\nichtsubtitle}
+\fancyfoot[R]{\footnotesize\color{accent}Blatt \thepage\,/\,\pageref{LastPage}}
+
+% ── Typografie ────────────────────────────────────────────────
+\titleformat{\section}
+    {\color{accent}\large\bfseries}{}{0pt}{}
+    [\vspace{-4pt}\color{accent}\rule{\linewidth}{1.5pt}]
+\titleformat{\subsection}
+    {\normalsize\bfseries\color{accent!85!black}}{}{0pt}{}{}
+\titleformat{\subsubsection}
+    {\small\bfseries\color{accent!70!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{10pt}{3pt}
+\titlespacing*{\subsection}{0pt}{6pt}{2pt}
+\titlespacing*{\subsubsection}{0pt}{4pt}{1pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\renewcommand{\arraystretch}{1.2}
+\setlist[itemize]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.4em}
+\setlist[enumerate]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.6em}
+
+% ── Boxen: solutionbox = Lösungsbox in grün ──────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={Abbildung: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={Tabelle: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{solutionbox}[1]{
+  enhanced,
+  colback=solutionbg, colframe=loesung,
+  title={#1}, fonttitle=\small\bfseries,
+  coltitle=white, colbacktitle=loesung,
+  breakable, before skip=8pt, after skip=8pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=single, framerule=0pt,
+  xleftmargin=4pt, xrightmargin=4pt,
+  aboveskip=6pt, belowskip=6pt,
+  keepspaces=true
+}
+
+\providecommand{\nichttitle}{Übungsblatt}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Betriebssysteme}
+\renewcommand{\nichtsubtitle}{Übungsblatt 3}
+
+
+\begin{document}
+
+\begin{center}
+{\Large\bfseries\color{accent}\nichttitle}
+\ifx\nichtsubtitle\empty\else
+  \\[2pt]{\normalsize\color{accent!80!black}\nichtsubtitle}
+\fi
+\\[2pt]
+\color{accent}\rule{0.4\linewidth}{0.8pt}\color{black}
+\end{center}
+\vspace{4pt}
+
+% ── BODY ──────────────────────────────────────────────────────
+
+\section{Übungsblatt 3 — Rechnerarchitektur}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 1 — CPU-Register und Befehlsausführung \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Die CPU verwendet die Register \textbf{IR}, \textbf{MBR}, \textbf{PC} und \textbf{MAR}, um Befehle aus dem Hauptspeicher zu laden und auszuführen.
+
+
+a) Erklären Sie die Aufgabe jedes der vier Register in einem Satz. \textit{(4 P)}
+
+
+b) Gegeben sei folgender Speicherauszug (Adressen hexadezimal, Inhalt jeweils ein Befehl bzw. Operand):
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Adresse}} & {\color{white}\textbf{Inhalt}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+0x100 & LOAD 0x200 \\
+0x101 & ADD  0x201 \\
+0x102 & STORE 0x202 \\
+0x200 & 7 \\
+0x201 & 12 \\
+0x202 & 0 \\
+\end{tabularx}
+}
+
+
+Vor dem ersten Takt gilt PC = 0x100, Akkumulator = 0. Tragen Sie für jeden der drei Befehlsausführungen die Werte von \textbf{PC}, \textbf{MAR}, \textbf{MBR}, \textbf{IR} und \textbf{Akku} unmittelbar nach der Ausführung in eine Tabelle ein. \textit{(8 P)}
+
+
+c) Begründen Sie, warum die Trennung zwischen MAR und MBR sinnvoll ist, obwohl beide nur "Hilfsregister" sind. \textit{(3 P)}
+
+
+\textbf{Lösung:}
+
+
+a)
+
+\begin{itemize}
+  \item \textbf{PC (Program Counter)}: enthält die Adresse des nächsten auszuführenden Befehls.
+  \item \textbf{MAR (Memory Address Register)}: nimmt die Adresse auf, die als Nächstes über den Adressbus auf den Speicher gelegt wird.
+  \item \textbf{MBR (Memory Buffer Register)}: puffert den vom/zum Speicher über den Datenbus übertragenen Wert (Befehl oder Datum).
+  \item \textbf{IR (Instruction Register)}: enthält den aktuell decodierten Befehl, den das Steuerwerk ausführt.
+\end{itemize}
+
+b)
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Schritt}} & {\color{white}\textbf{PC}} & {\color{white}\textbf{MAR}} & {\color{white}\textbf{MBR}} & {\color{white}\textbf{IR}} & {\color{white}\textbf{Akku}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+nach LOAD 0x200 & 0x101 & 0x200 & 7 & LOAD 0x200 & 7 \\
+nach ADD  0x201 & 0x102 & 0x201 & 12 & ADD 0x201 & 19 \\
+nach STORE 0x202 & 0x103 & 0x202 & 19 & STORE 0x202 & 19 \\
+\end{tabularx}
+}
+
+
+Erläuterung: PC wird nach dem Holen jedes Befehls inkrementiert. MAR enthält zuletzt die Operand-Adresse; MBR den zuletzt über den Datenbus transportierten Wert; IR den decodierten Befehl. Bei STORE wandert der Akku-Wert über MBR nach 0x202.
+
+
+c) MAR liegt am Adressbus, MBR am Datenbus — beide Busse arbeiten unabhängig und können unterschiedlich breit sein. Eine Trennung erlaubt dem Steuerwerk, die Adresse stabil auf dem Adressbus zu halten, während ein Datentransport noch läuft (z. B. bei Lese-/Schreibzyklen mit Wartezuständen). Ein einziges kombiniertes Register würde diese Entkopplung verhindern.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 — Adressraum und Registerbreite \textit{(10 Punkte)}}\mbox{}\\[2pt]
+
+Ein Hersteller wirbt für eine neue Embedded-CPU mit "echter 32-Bit-Architektur, voll kompatibel zu unseren 16-Bit-Vorgängern".
+
+
+a) Wie viele unterschiedliche Speichereinheiten kann eine 32-Bit-CPU theoretisch adressieren? Wie viele eine 16-Bit-CPU? Geben Sie beide Werte als Zweierpotenz und als Dezimalzahl an. \textit{(3 P)}
+
+
+b) Begründen Sie quantitativ, um welchen Faktor sich der adressierbare Speicher beim Wechsel 16-Bit → 32-Bit → 64-Bit jeweils vergrößert. \textit{(3 P)}
+
+
+c) Ein Kollege behauptet: "Wenn die Registerbreite verdoppelt wird, verdoppelt sich auch der adressierbare Speicher." Widerlegen Sie diese Aussage präzise. \textit{(4 P)}
+
+
+\textbf{Lösung:}
+
+
+a)
+
+\begin{itemize}
+  \item 32-Bit: 2³² = 4 294 967 296 Speichereinheiten (≈ 4,29 · 10⁹).
+  \item 16-Bit: 2¹⁶ = 65 536 Speichereinheiten.
+\end{itemize}
+
+b) Der Adressraum wächst exponentiell mit der Registerbreite \textit{n}: |A| = 2ⁿ.
+
+\begin{itemize}
+  \item 16 → 32 Bit: Faktor 2³² / 2¹⁶ = 2¹⁶ = 65 536.
+  \item 32 → 64 Bit: Faktor 2⁶⁴ / 2³² = 2³² ≈ 4,29 · 10⁹.
+\end{itemize}
+Jede Verdopplung der Bitbreite quadriert also den vorherigen Adressraum.
+
+
+c) Falsch. Der adressierbare Speicher ist 2ⁿ, nicht \textit{n}. Eine Verdopplung der Registerbreite (z. B. 16 → 32) führt zu 2³² statt 2 · 2¹⁶, also einer Quadrierung des bisherigen Adressraums (Faktor 2¹⁶ = 65 536), nicht zu einer Verdopplung. Der Kollege verwechselt linearen mit exponentiellem Zuwachs.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 — Speicherhierarchie \& Trade-offs \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+In der Vorlesung wurde die Speicherhierarchie \textbf{Register → Cache → Hauptspeicher (RAM/ROM) → Sekundärspeicher} behandelt, mit der Aussage: "Geschwindigkeit nimmt nach unten ab, Kapazität nimmt nach unten zu."
+
+
+a) Erklären Sie kurz den physikalisch-ökonomischen Grund, warum schnelle Speicherstufen klein und langsame Stufen groß sind. \textit{(4 P)}
+
+
+b) Gegeben seien folgende Annahmen für ein System:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Stufe}} & {\color{white}\textbf{Zugriffszeit}} & {\color{white}\textbf{Kapazität}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Register & 1 ns & 1 KB \\
+Cache & 5 ns & 8 MB \\
+Hauptspeicher & 80 ns & 16 GB \\
+Sekundär (SSD) & 100 000 ns & 1 TB \\
+\end{tabularx}
+}
+
+
+Ein Programm liest 1 000 000 Datenwerte. 70 \% befinden sich bereits im Cache, 28 \% im Hauptspeicher, 2 \% auf der SSD (Register-Treffer werden vernachlässigt). Berechnen Sie die mittlere Zugriffszeit pro Wert sowie die Gesamtdauer aller Zugriffe. \textit{(8 P)}
+
+
+c) Der Cache wird verdoppelt, sodass nun 95 \% der Zugriffe Cache-Treffer sind, 4 \% Hauptspeicher, 1 \% SSD. Berechnen Sie die neue mittlere Zugriffszeit und den prozentualen Speedup gegenüber b). \textit{(5 P)}
+
+
+d) Bewerten Sie: Lohnt sich eine \textit{weitere} Cache-Verdopplung in einem System, in dem die SSD durch eine NVMe ersetzt wurde, deren Zugriffszeit nur noch 20 000 ns beträgt? Begründen Sie qualitativ. \textit{(3 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Schnelle Speichertechnologien (SRAM für Register/Cache) benötigen pro Bit deutlich mehr Transistoren (typ. 6T-Zellen) und damit Chipfläche, kosten also pro Bit mehr und erzeugen mehr Wärme. Große Kapazitäten in dieser Technologie wären unbezahlbar und thermisch nicht handhabbar. Daher wird Speicher hierarchisch organisiert: viel kleiner, schneller Speicher nahe der CPU, viel langsamer, billiger Massenspeicher weiter entfernt.
+
+
+b) Mittlere Zugriffszeit:
+
+t̄ = 0,70 · 5 ns + 0,28 · 80 ns + 0,02 · 100 000 ns
+
+= 3,5 + 22,4 + 2 000
+
+= \textbf{2 025,9 ns} pro Zugriff.
+
+
+Gesamtdauer für 10⁶ Zugriffe:
+
+T = 10⁶ · 2 025,9 ns = 2,0259 · 10⁹ ns ≈ \textbf{2,026 s}.
+
+
+c) Neue mittlere Zugriffszeit:
+
+t̄' = 0,95 · 5 ns + 0,04 · 80 ns + 0,01 · 100 000 ns
+
+= 4,75 + 3,2 + 1 000
+
+= \textbf{1 007,95 ns}.
+
+
+Speedup:
+
+S = t̄ / t̄' = 2 025,9 / 1 007,95 ≈ 2,01 ⇒ Beschleunigung ≈ \textbf{101 \%} (also etwa Faktor 2).
+
+
+Bemerkung: Auch bei sehr hoher Cache-Trefferquote dominiert der seltene SSD-Zugriff den Mittelwert.
+
+
+d) Mit der NVMe (20 000 ns) sinkt der "Strafterm" für SSD-Misses um Faktor 5. Eine zusätzliche Cache-Verdopplung würde die ohnehin schon kleinen Anteile (Hauptspeicher 4 \%, SSD 1 \%) nur noch geringfügig reduzieren — der Gewinn wird also klein. Investitionen in noch schnellere Hintergrundspeicher oder bessere Hauptspeichertechnik lohnen sich hier mehr als immer größerer Cache (Amdahl-Argument: der seltene Pfad ist bereits gut abgesichert).
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 — Systembus auslegen \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Sie entwerfen eine kleine 16-Bit-CPU. Der \textbf{Systembus} besteht aus Adress-, Daten- und Steuerbus.
+
+
+a) Erläutern Sie die Funktion jedes der drei Teilbusse jeweils in einem Satz. \textit{(3 P)}
+
+
+b) Die CPU soll 1 MiB Hauptspeicher byteweise adressieren können und in einem einzigen Buszyklus ein 16-Bit-Wort übertragen. Wie breit müssen Adress- bzw. Datenbus mindestens sein? \textit{(4 P)}
+
+
+c) Auf dem Steuerbus liegen u. a. die Signale \texttt{READ}, \texttt{WRITE}, \texttt{CLK} und \texttt{READY}. Geben Sie für einen Lesezyklus die korrekte zeitliche Reihenfolge der folgenden Mikroaktionen an und erklären Sie kurz jede:
+
+\begin{enumerate}
+  \item CPU legt Adresse aus MAR auf Adressbus,
+\begin{enumerate}
+  \item CPU aktiviert \texttt{READ},
+  \item Speicher legt Datum auf Datenbus,
+  \item Speicher signalisiert \texttt{READY},
+  \item CPU übernimmt Datum in MBR,
+  \item CPU deaktiviert \texttt{READ}. \textit{(5 P)}
+\end{enumerate}
+\end{enumerate}
+
+d) Was ändert sich an Ihrer Antwort aus b), wenn die CPU in einem Buszyklus stattdessen 4 Byte gleichzeitig übertragen soll, der Speicher aber weiter byteweise adressierbar bleibt? \textit{(3 P)}
+
+
+\textbf{Lösung:}
+
+
+a)
+
+\begin{itemize}
+  \item \textbf{Adressbus}: trägt die Speicher-/E-A-Adresse, die die CPU ansprechen will (unidirektional von CPU).
+  \item \textbf{Datenbus}: überträgt die eigentlichen Nutzdaten zwischen CPU, Speicher und E/A (bidirektional).
+  \item \textbf{Steuerbus}: führt Steuersignale wie Lese-/Schreibanforderung, Takt, Quittierungen etc. (gemischt gerichtet).
+\end{itemize}
+
+b)
+
+\begin{itemize}
+  \item Adressbus: 1 MiB = 2²⁰ Byte ⇒ mindestens \textbf{20 Adressleitungen}.
+  \item Datenbus: 16 Bit pro Übertragung ⇒ \textbf{16 Datenleitungen}.
+\end{itemize}
+
+c) Reihenfolge: \textbf{1 → 2 → 3 → 4 → 5 → 6}.
+
+\begin{enumerate}
+  \item Adresse aus MAR auf Adressbus: das Ziel der Anfrage liegt stabil an.
+  \item \texttt{READ} aktivieren: Speicher erkennt, dass eine Leseanfrage vorliegt.
+  \item Speicher decodiert Adresse, holt das Wort und legt es auf den Datenbus.
+  \item \texttt{READY} setzt der Speicher, sobald die Daten gültig anliegen — synchronisiert langsame Bausteine.
+  \item CPU übernimmt das Datum vom Datenbus in MBR.
+  \item \texttt{READ} wird deaktiviert, der Bus ist wieder frei für den nächsten Zyklus.
+\end{enumerate}
+
+d) Der Datenbus muss \textbf{32 Bit} breit werden (4 Byte gleichzeitig). Der Adressbus bleibt 20 Bit, allerdings adressiert die CPU dann nur noch 4-Byte-ausgerichtete Wörter direkt (die unteren 2 Adressbits können typischerweise zur Byte-Auswahl/Maskierung im Speicherinterface genutzt werden). Die Gesamtgröße des adressierbaren Bereichs (1 MiB) ändert sich nicht.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 — Fehleranalyse: Mikroarchitektur-Skizze \textit{(12 Punkte)}}\mbox{}\\[2pt]
+
+Ein Studierender skizziert den Datenpfad einer einfachen CPU wie folgt (Pseudocode des Steuerwerks für einen Befehl \texttt{ADD addr}, der \texttt{Akku ← Akku + Mem[addr]}):
+
+
+\begin{lstlisting}
+1: MAR ← IR.address
+2: MBR ← Adressbus
+3: ALU.A ← Akku
+4: ALU.B ← MAR
+5: Akku  ← ALU.result   // Operation: ADD, Flags werden ignoriert
+6: PC   ← PC            // unverändert
+\end{lstlisting}
+
+
+Identifizieren Sie \textbf{mindestens drei} fachliche Fehler in dieser Sequenz und korrigieren Sie sie. Begründen Sie jeweils kurz mit Bezug auf die Rolle der beteiligten Register/Busse.
+
+
+\textbf{Lösung:}
+
+
+Fehler und Korrekturen:
+
+
+\begin{enumerate}
+  \item \textbf{Zeile 2 — falscher Bus / falsche Quelle.} MBR wird über den \textbf{Datenbus} versorgt, nicht über den Adressbus. Außerdem fehlt davor das Anlegen von MAR an den Adressbus und die \texttt{READ}-Aktivierung. Korrektur:
+\end{enumerate}
+\begin{lstlisting}
+   2a: Adressbus ← MAR; Steuerbus.READ ← 1
+   2b: warte auf READY
+   2c: MBR ← Datenbus
+\end{lstlisting}
+
+
+\begin{enumerate}
+  \item \textbf{Zeile 4 — falscher Operand.} Die ALU soll mit dem \textbf{gelesenen Datum}, nicht mit der Adresse rechnen. MAR enthält eine Adresse, kein Operand. Korrektur:
+\end{enumerate}
+\begin{lstlisting}
+   4: ALU.B ← MBR
+\end{lstlisting}
+
+
+\begin{enumerate}
+  \item \textbf{Zeile 5 — Flags dürfen nicht "ignoriert" werden.} Die ALU/Rechenwerk muss Status-/Flagbits (z. B. Zero, Carry, Overflow, Sign) setzen, da nachfolgende Befehle (z. B. bedingte Sprünge) darauf reagieren. Korrektur: \texttt{Statusregister ← ALU.flags}.
+\end{enumerate}
+
+\begin{enumerate}
+  \item \textbf{Zeile 6 — PC bleibt nicht "unverändert".} Nach dem Holen eines Befehls muss PC inkrementiert worden sein, damit der nächste Fetch-Zyklus den Folgebefehl liest. Üblicherweise geschieht das bereits in der Fetch-Phase (\texttt{PC ← PC + 1} direkt nach dem IR-Laden). Korrektur: \texttt{PC ← PC + 1} in der Fetch-Phase, nicht in der Execute-Phase.
+\end{enumerate}
+
+\begin{enumerate}
+  \item \textit{(Optional, weiterer Fehler)} \textbf{Zeile 1 setzt voraus, dass IR den Befehl bereits enthält.} Im gezeigten Ausschnitt fehlt die komplette Fetch-Phase (PC → MAR, READ, MBR → IR). Ohne sie ist \texttt{IR.address} undefiniert.
+\end{enumerate}
+
+Damit ist die korrigierte, vollständige Sequenz für \texttt{ADD addr}:
+
+\begin{lstlisting}
+F1: MAR ← PC
+F2: Adressbus ← MAR; READ
+F3: MBR ← Datenbus; IR ← MBR; PC ← PC + 1
+E1: MAR ← IR.address
+E2: Adressbus ← MAR; READ
+E3: MBR ← Datenbus
+E4: ALU.A ← Akku;  ALU.B ← MBR;  ALU.op ← ADD
+E5: Akku ← ALU.result;  Statusregister ← ALU.flags
+\end{lstlisting}
+
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{document}

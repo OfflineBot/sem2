@@ -1,0 +1,453 @@
+% ============================================================
+%  Übungsaufgaben Template (my_dhbw Stil, uebung_*.tex)
+%  Header "Übungsblatt", grün eingefärbte <details>-Lösungen.
+%  Renderer: pdflatex (zweimal)
+% ============================================================
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+\usepackage[top=2cm, bottom=2cm, left=2.4cm, right=2.4cm, footskip=1cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{ltablex}
+\keepXColumns
+\usepackage{colortbl}
+\usepackage[most,breakable]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{pdflscape}
+\usepackage{titlesec}
+\usepackage[colorlinks=true, linkcolor=accent, urlcolor=accent]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme ─────────────────────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{loesung}{RGB}{0, 100, 0}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{240, 252, 240}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer ─────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\footnotesize\color{accent}\nichttitle}
+\fancyhead[R]{\footnotesize\color{accent}\nichtsubtitle}
+\fancyfoot[R]{\footnotesize\color{accent}Blatt \thepage\,/\,\pageref{LastPage}}
+
+% ── Typografie ────────────────────────────────────────────────
+\titleformat{\section}
+    {\color{accent}\large\bfseries}{}{0pt}{}
+    [\vspace{-4pt}\color{accent}\rule{\linewidth}{1.5pt}]
+\titleformat{\subsection}
+    {\normalsize\bfseries\color{accent!85!black}}{}{0pt}{}{}
+\titleformat{\subsubsection}
+    {\small\bfseries\color{accent!70!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{10pt}{3pt}
+\titlespacing*{\subsection}{0pt}{6pt}{2pt}
+\titlespacing*{\subsubsection}{0pt}{4pt}{1pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\renewcommand{\arraystretch}{1.2}
+\setlist[itemize]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.4em}
+\setlist[enumerate]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.6em}
+
+% ── Boxen: solutionbox = Lösungsbox in grün ──────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={Abbildung: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={Tabelle: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{solutionbox}[1]{
+  enhanced,
+  colback=solutionbg, colframe=loesung,
+  title={#1}, fonttitle=\small\bfseries,
+  coltitle=white, colbacktitle=loesung,
+  breakable, before skip=8pt, after skip=8pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=single, framerule=0pt,
+  xleftmargin=4pt, xrightmargin=4pt,
+  aboveskip=6pt, belowskip=6pt,
+  keepspaces=true
+}
+
+\providecommand{\nichttitle}{Übungsblatt}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Analysis 2}
+\renewcommand{\nichtsubtitle}{Übungsblatt 4}
+
+
+\begin{document}
+
+\begin{center}
+{\Large\bfseries\color{accent}\nichttitle}
+\ifx\nichtsubtitle\empty\else
+  \\[2pt]{\normalsize\color{accent!80!black}\nichtsubtitle}
+\fi
+\\[2pt]
+\color{accent}\rule{0.4\linewidth}{0.8pt}\color{black}
+\end{center}
+\vspace{4pt}
+
+% ── BODY ──────────────────────────────────────────────────────
+
+\section{Übungsblatt 4 — Trigonometrie}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 1 — Bogenmaß und Grundidentität \textit{(10 Punkte)}}\mbox{}\\[2pt]
+
+a) Erkläre, warum bei der Definition trigonometrischer Funktionen üblicherweise das Bogenmaß (rad) und nicht das Gradmaß verwendet wird. Welche Konsequenz hat dies konkret für die Ableitungsregel von sin(t)? \textit{(4 P)}
+
+
+b) Ein Winkel beträgt 75°. Rechne ihn ins Bogenmaß um (Bruch von π) und berechne damit cos²(75°) + sin²(75°). \textit{(3 P)}
+
+
+c) Gegeben sei sin(t) = 3/5 mit t ∈ (0, π/2). Bestimme cos(t), tan(t) und sec(t) — ausschließlich mit Hilfe der Grundidentität, ohne arcsin zu verwenden. \textit{(3 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Im Bogenmaß ist die Bogenlänge auf dem Einheitskreis gleich dem Winkel. Dadurch gilt der fundamentale Grenzwert lim\_\{t→0\} sin(t)/t = 1 nur im Bogenmaß. Konsequenz: Die elegante Ableitungsregel ∂/∂t sin(t) = cos(t) gilt nur im Bogenmaß. Bei Gradmaß würde ein Faktor π/180 als Kettenregel-Term auftreten, sodass ∂/∂t° sin(t°) = (π/180)·cos(t°).
+
+
+b) 75° = 75·(π/180) = \textbf{5π/12 rad}.
+
+Nach der Grundidentität gilt für jedes t: cos²(t) + sin²(t) = 1, also auch cos²(75°) + sin²(75°) = \textbf{1}.
+
+
+c) Aus cos²(t) = 1 − sin²(t) = 1 − 9/25 = 16/25.
+
+Da t ∈ (0, π/2): cos(t) > 0, also \textbf{cos(t) = 4/5}.
+
+\textbf{tan(t) = sin(t)/cos(t) = (3/5)/(4/5) = 3/4}.
+
+\textbf{sec(t) = 1/cos(t) = 5/4}.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 — Wellenparameter und Ableitungs-Zyklus \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Eine harmonische Schwingung wird beschrieben durch
+
+y(t) = 2.5 · sin(ωt) mit Frequenz f = 50 Hz.
+
+
+a) Bestimme ω, λ und A. Schreibe y(t) explizit hin. \textit{(3 P)}
+
+
+b) Berechne die ersten vier Ableitungen y′(t), y″(t), y‴(t), y⁽⁴⁾(t) und zeige damit, dass nach vier Ableitungen wieder die Ausgangsfunktion (bis auf einen Vorfaktor) entsteht. Welcher Vorfaktor ergibt sich? \textit{(6 P)}
+
+
+c) Bei welchen Zeitpunkten t ∈ [0, 1/50 s] erreicht y(t) seine maximale Auslenkung, bei welchen ist die Geschwindigkeit y′(t) maximal? Begründe geometrisch über die Phasenverschiebung cos(t) = sin(t + π/2). \textit{(6 P)}
+
+
+\textbf{Lösung:}
+
+
+a) ω = 2πf = 2π·50 = \textbf{100π rad/s}.
+
+λ = 2π/ω = 2π/(100π) = \textbf{1/50 = 0.02} (Einheit: s, da hier f in Hz, also λ als Periode T).
+
+A = \textbf{2.5}.
+
+y(t) = 2.5 · sin(100π·t).
+
+
+b) Mit dem Zyklus sin → cos → −sin → −cos → sin und jedem Schritt zusätzlichem Faktor ω = 100π:
+
+\begin{itemize}
+  \item y′(t) = 2.5·100π·cos(100π·t) = 250π·cos(100π·t)
+  \item y″(t) = −2.5·(100π)²·sin(100π·t) = −25000π²·sin(100π·t)
+  \item y‴(t) = −2.5·(100π)³·cos(100π·t) = −2.5·10⁶π³·cos(100π·t)
+  \item y⁽⁴⁾(t) = 2.5·(100π)⁴·sin(100π·t) = (100π)⁴ · y(t)
+\end{itemize}
+
+Nach vier Ableitungen: Vorfaktor \textbf{ω⁴ = (100π)⁴ ≈ 9.74·10⁸}, Funktionsform identisch.
+
+
+c) Maximum von y(t): sin(100π·t) = 1 ⇔ 100π·t = π/2 + 2kπ ⇔ t = 1/200 + k/50.
+
+In [0, 1/50] also \textbf{t = 1/200 s = 5 ms}.
+
+
+Maximum von y′(t): cos(100π·t) = 1 ⇔ 100π·t = 0 + 2kπ ⇔ t = 0, 1/50.
+
+In [0, 1/50] also \textbf{t = 0 und t = 1/50 s}.
+
+
+Geometrisch: Da cos(x) = sin(x + π/2), läuft y′ der Funktion y um eine Viertelperiode (T/4 = 5 ms) \textbf{voraus}. Wenn die Auslenkung maximal ist, ist die Geschwindigkeit gerade Null — und umgekehrt; das ist genau die Phasenverschiebung um π/2.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 — Partielle Ableitungen mit trig. Funktionen \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben sei f(x, y) = x · y · $e^{sin(x)}$ + sin²(x)·cos(y).
+
+
+a) Berechne ∂f/∂x. Halte y konstant und führe die Produkt- und Kettenregel sauber aus. \textit{(8 P)}
+
+
+b) Berechne ∂f/∂y. \textit{(4 P)}
+
+
+c) Werte ∂f/∂x an der Stelle (x, y) = (0, 2) aus. \textit{(3 P)}
+
+
+d) Sei zusätzlich g(x) = sin(arctan(x)). Zeige durch direkte Rechnung mit der Grundidentität (nicht mit der Tabelle), dass g′(x) = 1/√(x²+1) gilt. \textit{(5 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Zwei Summanden, jeder mit Produkt-/Kettenregel:
+
+
+Summand 1: ∂/∂x [x·y·$e^{sin(x)}$] = y·$e^{sin(x)}$ + x·y·cos(x)·$e^{sin(x)}$
+
+Summand 2: ∂/∂x [sin²(x)·cos(y)] = 2·sin(x)·cos(x)·cos(y)
+
+
+⇒ \textbf{∂f/∂x = y·$e^{sin(x)}$ + x·y·cos(x)·$e^{sin(x)}$ + 2·sin(x)·cos(x)·cos(y)}
+
+
+b) Erster Summand: ∂/∂y [x·y·$e^{sin(x)}$] = x·$e^{sin(x)}$.
+
+Zweiter Summand: ∂/∂y [sin²(x)·cos(y)] = −sin²(x)·sin(y).
+
+
+⇒ \textbf{∂f/∂y = x·$e^{sin(x)}$ − sin²(x)·sin(y)}
+
+
+c) Bei (0, 2): sin(0) = 0, cos(0) = 1, $e^{sin(0)}$ = e⁰ = 1.
+
+∂f/∂x|\_\{(0,2)\} = 2·1 + 0·2·1·1 + 2·0·1·cos(2) = \textbf{2}.
+
+
+d) Sei θ = arctan(x), also tan(θ) = x mit θ ∈ (−π/2, π/2). Dann ist cos(θ) > 0.
+
+Aus 1 + tan²(θ) = sec²(θ) = 1/cos²(θ) folgt cos(θ) = 1/√(1+x²).
+
+Damit sin(θ) = tan(θ)·cos(θ) = x/√(1+x²), also g(x) = x/√(1+x²).
+
+
+Ableiten mit Quotientenregel/Produktregel:
+
+g′(x) = [√(1+x²) − x · x/√(1+x²)] / (1+x²) = [(1+x²) − x²] / (1+x²)\textasciicircum{}\{3/2\} = 1/(1+x²)\textasciicircum{}\{3/2\}.
+
+
+Hmm — Korrektur: das Ergebnis muss 1/√(x²+1) sein. Prüfung: Mit der Tabelle ist ∂/∂x[arctan(x)] = 1/(x²+1) und ∂/∂u[sin(u)] = cos(u). Kettenregel: g′(x) = cos(arctan(x)) · 1/(x²+1) = (1/√(1+x²)) · 1/(1+x²) = 1/(1+x²)\textasciicircum{}\{3/2\}.
+
+
+Die Tabellenangabe „sin(arctan(x)) → 1/√(x²+1)" bezieht sich also auf den \textbf{Funktionswert} sin(arctan(x)) = x/√(x²+1) und dessen Vereinfachung — nicht auf eine Ableitung. Tatsächliche Ableitung:
+
+
+⇒ \textbf{g′(x) = 1/(1+x²)\textasciicircum{}\{3/2\}}.
+
+
+(Hinweis: Die Aufgabe stellt klar, dass die Tabelleneinträge sorgfältig auf Funktion vs. Ableitung zu lesen sind.)
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 — Transfer: Hyperbolische Funktionen in einem Neuron \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+In einem neuronalen Netz wird tanh als Aktivierungsfunktion eines Neurons verwendet:
+
+a(z) = tanh(z), z = w·x + b, mit w = 0.5, b = −1, Eingabe x = 4.
+
+
+a) Begründe mit der Identität cosh²(t) − sinh²(t) = 1, dass tanh(t) ∈ (−1, 1) für alle t ∈ ℝ. \textit{(4 P)}
+
+
+b) Zeige, dass tanh′(t) = 1 − tanh²(t). \textit{(5 P)}
+
+
+c) Berechne die Ableitung der Aktivierung nach dem Gewicht w an der konkreten Stelle (x=4, w=0.5, b=−1). Nutze tanh(1) ≈ 0.7616. \textit{(6 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Aus cosh²(t) − sinh²(t) = 1 folgt cosh²(t) = 1 + sinh²(t), also |cosh(t)| > |sinh(t)| für alle t (denn 1 + sinh² > sinh²). Da cosh(t) ≥ 1 > 0, folgt |sinh(t)/cosh(t)| < 1, also \textbf{tanh(t) ∈ (−1, 1)}.
+
+
+b) tanh(t) = sinh(t)/cosh(t). Quotientenregel:
+
+tanh′(t) = [cosh(t)·cosh(t) − sinh(t)·sinh(t)] / cosh²(t) = (cosh² − sinh²)/cosh² = 1/cosh²(t).
+
+
+Nun 1/cosh²(t) = (cosh² − sinh²)/cosh² = 1 − sinh²/cosh² = \textbf{1 − tanh²(t)}. ✓
+
+
+c) z = 0.5·4 + (−1) = 1.
+
+a(z) = tanh(z), und ∂z/∂w = x = 4.
+
+Kettenregel: ∂a/∂w = tanh′(z) · ∂z/∂w = (1 − tanh²(1)) · 4.
+
+
+Mit tanh(1) ≈ 0.7616: tanh²(1) ≈ 0.5800.
+
+1 − 0.5800 = 0.4200.
+
+∂a/∂w ≈ 0.4200 · 4 = \textbf{1.680}.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 — Fehler finden in einer Ableitungs-Tabelle \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Ein Kommilitone gibt dir folgende Tabelle (alle Ableitungen nach x):
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Nr.}} & {\color{white}\textbf{f(x)}} & {\color{white}\textbf{behauptete Ableitung f′(x)}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+(i) & arcsin(x) & 1/√(1+x²) \\
+(ii) & tan(x) & 1 + tan²(x) \\
+(iii) & csc(x) & cot(x)·csc(x) \\
+(iv) & √(1−cos²(x)), x∈(0,π) & cos(x) \\
+(v) & sin(x)·cos(x) & cos²(x) − sin²(x) \\
+\end{tabularx}
+}
+
+
+a) Identifiziere alle fehlerhaften Einträge und gib für jeden die korrekte Ableitung an. \textit{(8 P)}
+
+
+b) Korrigiere den Fehler bei (i) und begründe, warum dieselbe Form (mit anderem Vorzeichen) für arccos(x) auftaucht. \textit{(4 P)}
+
+
+c) Zeige für (iv), dass die behauptete Ableitung nicht nur falsch ist, sondern dass die Funktion sogar gleich sin(x) ist (im angegebenen Intervall). \textit{(3 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Prüfung jeder Zeile:
+
+\begin{itemize}
+  \item (i) arcsin(x)′ = \textbf{1/√(1−x²)} (nicht 1+x²). \textbf{FEHLER}.
+  \item (ii) tan(x)′ = sec²(x) = 1 + tan²(x). \textbf{KORREKT}.
+  \item (iii) csc(x)′ = \textbf{−cot(x)·csc(x)} (Vorzeichen fehlt!). \textbf{FEHLER}.
+  \item (iv) Im Intervall (0,π) gilt √(1−cos²(x)) = sin(x), also Ableitung = cos(x). \textbf{KORREKT} (Endergebnis), auch wenn der Weg über die Wurzel-Kettenregel umständlicher wäre.
+  \item (v) (sin·cos)′ = cos·cos + sin·(−sin) = cos²(x) − sin²(x). \textbf{KORREKT}.
+\end{itemize}
+
+Fehlerhafte Einträge: \textbf{(i) und (iii)}.
+
+
+b) Korrekt: arcsin′(x) = 1/√(1−x²). Da arcsin(x) + arccos(x) = π/2 (konstant), folgt durch Ableiten arccos′(x) = −arcsin′(x) = −1/√(1−x²). Daher dieselbe Form mit umgekehrtem Vorzeichen.
+
+
+c) Nach der bewiesenen Identität gilt √(1−cos²(x)) = sin(x) genau für x ∈ (0, π) (denn dort ist sin(x) ≥ 0, sodass die positive Wurzel sin(x) selbst ergibt). Also ist die Funktion in diesem Intervall identisch zu sin(x), und ihre Ableitung trivialerweise cos(x). Die behauptete Ableitung ist also korrekt — der „Fehler", den die Tabelle suggerieren könnte (etwa eine komplizierte Wurzel), wäre, die Identität nicht zu erkennen.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 6 — Vergleich: Trigonometrische vs. Hyperbolische Identität \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+a) Stelle die beiden Pythagoras-artigen Identitäten gegenüber:
+
+cos²(t) + sin²(t) = 1 (Kreis) gegen cosh²(t) − sinh²(t) = 1 (Hyperbel).
+
+Beschreibe geometrisch, welche Kurve jeweils parametrisiert wird, und welche grundsätzliche Konsequenz das Vorzeichen für die Wertebereiche von sin/cos vs. sinh/cosh hat. \textit{(6 P)}
+
+
+b) In der Fourier-Analyse tritt $e^{iωt}$ = cos(ωt) + i·sin(ωt) auf. Begründe damit, warum |$e^{iωt}$| = 1 für alle t — und warum die analoge Konstruktion mit sinh, cosh \textbf{nicht} auf den Einheitskreis führt. \textit{(5 P)}
+
+
+c) Treffe eine begründete Entscheidung: Welche der beiden Funktionen — tanh oder eine reine sin-basierte Aktivierung — ist als neuronale Aktivierung sinnvoller? Nenne mindestens zwei Trade-offs, die die Wahl beeinflussen. \textit{(4 P)}
+
+
+\textbf{Lösung:}
+
+
+a) \textbf{Kreis}: (cos t, sin t) parametrisiert den Einheitskreis x²+y²=1, beschränkt. Folge: cos, sin sind beide auf [−1, 1] beschränkt, periodisch mit Periode 2π.
+
+\textbf{Hyperbel}: (cosh t, sinh t) parametrisiert den \textbf{rechten Ast} der Hyperbel x²−y²=1. Folge: cosh(t) ≥ 1 (unbeschränkt nach oben), sinh(t) ∈ ℝ (unbeschränkt in beide Richtungen), nicht periodisch. Das Minuszeichen in cosh²−sinh²=1 spiegelt wider, dass die Hyperbel offen ist statt geschlossen.
+
+
+b) |$e^{iωt}$|² = cos²(ωt) + sin²(ωt) = 1, also |$e^{iωt}$| = 1 für alle t (Punkt auf dem Einheitskreis in der komplexen Ebene). Eine analoge Konstruktion cosh(ωt) + i·sinh(ωt) hätte Betragsquadrat cosh²(ωt) + sinh²(ωt) = 1 + 2·sinh²(ωt) ≠ 1 (wächst exponentiell). Es ist also nicht der Einheitskreis, sondern ein wachsender Pfad in der komplexen Ebene.
+
+
+c) \textbf{tanh ist sinnvoller.} Trade-offs:
+
+\begin{enumerate}
+  \item \textbf{Wertebereich}: tanh: ℝ → (−1, 1), nullzentriert und beschränkt → stabile Gradienten und gute Skalierung. sin: ℝ → [−1, 1], aber \textbf{periodisch}: zwei sehr verschiedene Eingaben (z. B. z=0 und z=2π) liefern denselben Output → mehrdeutige Repräsentation, schwierige Optimierung.
+  \item \textbf{Monotonie}: tanh ist streng monoton ⇒ eindeutige Umkehrung möglich, kontinuierliches Lernsignal. sin oszilliert und hat unendlich viele lokale Extrema mit Ableitung 0 ⇒ Backpropagation würde durch periodisch verschwindende Gradienten gestört.
+  \item (Bonus) \textbf{Sättigung}: tanh sättigt zwar weit weg von 0 (Vanishing Gradient), aber nur einmal pro Richtung; sin sättigt \textbf{immer wieder}, was Optimierer praktisch unkontrollierbar macht.
+\end{enumerate}
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{document}

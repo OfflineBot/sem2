@@ -1,0 +1,652 @@
+% ============================================================
+%  Probeklausur Template (my_dhbw Stil, klausur_*.tex)
+%  Formell mit Deckblatt-Header; Lösungen als grüne tcolorbox.
+%  Renderer: pdflatex (zweimal)
+% ============================================================
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+\usepackage[top=2cm, bottom=2cm, left=2.4cm, right=2.4cm, footskip=1cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{ltablex}
+\keepXColumns
+\usepackage{colortbl}
+\usepackage[most,breakable]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{pdflscape}
+\usepackage{titlesec}
+\usepackage[colorlinks=true, linkcolor=accent, urlcolor=accent]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme ─────────────────────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{loesung}{RGB}{0, 100, 0}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{240, 252, 240}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer ─────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\footnotesize\color{accent}Modulprüfung -- \nichttitle}
+\fancyhead[R]{\footnotesize\color{accent}\nichtsubtitle}
+\fancyfoot[L]{\footnotesize\color{accent}Matrikelnr.: \rule{3cm}{0.4pt}}
+\fancyfoot[R]{\footnotesize\color{accent}Blatt \thepage\,/\,\pageref{LastPage}}
+
+% ── Typografie ────────────────────────────────────────────────
+\titleformat{\section}
+    {\color{accent}\large\bfseries}{}{0pt}{}
+    [\vspace{-4pt}\color{accent}\rule{\linewidth}{1.5pt}]
+\titleformat{\subsection}
+    {\normalsize\bfseries\color{accent!85!black}}{}{0pt}{}{}
+\titleformat{\subsubsection}
+    {\small\bfseries\color{accent!70!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{12pt}{4pt}
+\titlespacing*{\subsection}{0pt}{8pt}{2pt}
+\titlespacing*{\subsubsection}{0pt}{6pt}{1pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\renewcommand{\arraystretch}{1.25}
+\setlist[itemize]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.4em}
+\setlist[enumerate]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.6em}
+
+% ── Boxen ─────────────────────────────────────────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={Abbildung: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={Tabelle: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{solutionbox}[1]{
+  enhanced,
+  colback=solutionbg, colframe=loesung,
+  title={#1}, fonttitle=\small\bfseries,
+  coltitle=white, colbacktitle=loesung,
+  breakable, before skip=8pt, after skip=8pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=single, framerule=0pt,
+  xleftmargin=4pt, xrightmargin=4pt,
+  aboveskip=6pt, belowskip=6pt,
+  keepspaces=true
+}
+
+\providecommand{\nichttitle}{Probeklausur}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Optimierungsverfahren}
+\renewcommand{\nichtsubtitle}{Probeklausur 2}
+
+
+\begin{document}
+
+% Deckblatt
+\thispagestyle{empty}
+\begin{center}
+\vspace*{1cm}
+{\Huge\bfseries\color{accent}Probeklausur}\\[8pt]
+{\Large\color{accent}\nichttitle}\\[4pt]
+\ifx\nichtsubtitle\empty\else
+  {\large\color{accent!80!black}\nichtsubtitle}\\[6pt]
+\fi
+\color{accent}\rule{0.5\linewidth}{1pt}\color{black}
+\end{center}
+
+\vspace{1cm}
+\begin{tabularx}{\textwidth}{@{}l X@{}}
+\textbf{Studiengang:}      & \rule{6cm}{0.4pt} \\[6pt]
+\textbf{Matrikelnummer:}    & \rule{6cm}{0.4pt} \\[6pt]
+\textbf{Name, Vorname:}    & \rule{6cm}{0.4pt} \\[6pt]
+\textbf{Datum:}             & \rule{6cm}{0.4pt} \\[6pt]
+\textbf{Bearbeitungszeit:}  & 60 Minuten \\[6pt]
+\textbf{Hilfsmittel:}       & Taschenrechner (nicht programmierbar) \\
+\end{tabularx}
+
+\vspace{2cm}
+\begin{center}
+{\large\itshape Viel Erfolg!}
+\end{center}
+
+\newpage
+
+% ── BODY ──────────────────────────────────────────────────────
+
+\section{Probeklausur 2 — Optimierungsverfahren}
+
+\textbf{Bearbeitungszeit}: 60 Minuten | \textbf{Hilfsmittel}: keine | \textbf{Punkte}: 100
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 1 — KKT-Bedingungen am konkreten Beispiel \textit{(22 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben sei das nicht-lineare Optimierungsproblem:
+
+
+\begin{lstlisting}
+min  f(x₁, x₂) = (x₁ − 3)² + (x₂ − 2)²
+u.B.: g₁(x⃗) = x₁ + x₂ − 4 ≤ 0
+      g₂(x⃗) = −x₁     ≤ 0
+      g₃(x⃗) = −x₂     ≤ 0
+\end{lstlisting}
+
+
+a) Stellen Sie die Lagrange-Funktion L(x⃗, b⃗) auf. \textit{(3 Punkte)}
+
+
+b) Notieren Sie alle vier Blöcke der KKT-Bedingungen für dieses Problem. \textit{(6 Punkte)}
+
+
+c) Bestimmen Sie den KKT-Punkt durch Fallunterscheidung über die Aktivität der Ungleichungen. Geben Sie auch die Multiplikatoren b₁, b₂, b₃ an. \textit{(10 Punkte)}
+
+
+d) Erläutern Sie kurz, warum die in (c) gefundene Lösung tatsächlich ein lokales Minimum ist. Welche zusätzliche Bedingung müssten Sie streng formal überprüfen? \textit{(3 Punkte)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 — Constrained Least Squares als QO \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Sie wollen die Zielgröße y aus drei Merkmalen schätzen: ŷ = b₁x₁ + b₂x₂ + b₃x₃. Aus betriebswirtschaftlichen Gründen müssen die Gewichte als Anteile eines Budgets interpretierbar sein.
+
+
+Datenmatrix und Zielvektor:
+
+
+\begin{lstlisting}
+X = [1 0 1]      y⃗ = [2]
+    [0 1 1]          [3]
+    [1 1 0]          [4]
+    [2 0 1]          [5]
+\end{lstlisting}
+
+
+a) Welche zwei Nebenbedingungen müssen die Gewichte erfüllen, damit die Anteilsinterpretation gültig ist? Notieren Sie sie formal. \textit{(3 Punkte)}
+
+
+b) Warum ist die analytische Normalengleichung b⃗ = (XᵀX)⁻¹Xᵀy⃗ hier ungeeignet? \textit{(2 Punkte)}
+
+
+c) Bringen Sie das Problem in die Standardform der quadratischen Optimierung (min ½b⃗ᵀQb⃗ + c⃗ᵀb⃗). Berechnen Sie Q = XᵀX und c⃗ = −Xᵀy⃗ explizit. \textit{(8 Punkte)}
+
+
+d) Begründen Sie kurz, warum Q in diesem Fall positiv semi-definit ist und welche Konsequenz das für die Lösbarkeit hat. \textit{(2 Punkte)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 — Nelder-Mead-Iteration \textit{(18 Punkte)}}\mbox{}\\[2pt]
+
+Minimieren Sie f(x₁, x₂) = x₁² + 2x₂² mit Nelder-Mead. Aktueller Simplex (n = 2):
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Ecke}} & {\color{white}\textbf{Koordinate}} & {\color{white}\textbf{f}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+x⃗₀ & (1, 0) & 1 \\
+x⃗₁ & (0, 1) & 2 \\
+x⃗₂ & (3, 1) & 11 \\
+\end{tabularx}
+}
+
+
+Parameter: α = 1, γ = 2, β = 0.5, δ = 0.5.
+
+
+a) Bestimmen Sie den Centerpoint c⃗ (über die n besten Ecken). \textit{(2 Punkte)}
+
+
+b) Berechnen Sie den Reflect-Punkt x⃗ᵣ und f(x⃗ᵣ). \textit{(4 Punkte)}
+
+
+c) Entscheiden Sie anhand der NM-Regeln, welche Transformation als nächstes durchgeführt wird. Führen Sie diese vollständig aus (Punktkoordinate, Funktionswert) und geben Sie den neuen Simplex an. \textit{(8 Punkte)}
+
+
+d) Nennen Sie ein Abbruchkriterium des Verfahrens und einen prinzipiellen Nachteil von Nelder-Mead. Wie kann man diesen Nachteil in der Praxis mildern? \textit{(4 Punkte)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 — 1+1-ES und 1/5-Regel \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Sie tunen einen 1+1-Evolutionsstrategie-Algorithmus mit Speicherlänge g = 5, Multiplikator a = 1.5 und σ⃗-Vektor (skalar σ).
+
+
+Beobachtungsfenster der letzten 5 Iterationen (1 = Erfolg, 0 = Fehler), in zeitlicher Reihenfolge älteste zuerst:
+
+
+\begin{lstlisting}
+G = [1, 0, 0, 1, 0]
+\end{lstlisting}
+
+
+Aktueller Wert σ = 0.40. In der nächsten Iteration ist die neue Mutation ein Erfolg.
+
+
+a) Wie aktualisiert die 1+1-ES den Speicher G nach diesem Erfolg? Geben Sie das neue G an. \textit{(3 Punkte)}
+
+
+b) Berechnen Sie den Erfolgsanteil s und entscheiden Sie nach der 1/5-Regel, wie σ angepasst wird. Geben Sie den neuen Wert von σ exakt an. \textit{(6 Punkte)}
+
+
+c) Die 1/5-Regel ist theoretisch optimal für eine bestimmte Funktionsklasse. Welche ist das, und warum schlägt die Regel auf der Rastrigin-Funktion f(x⃗) = 10n + ∑(xᵢ² − 10cos(2π xᵢ)) tendenziell fehl? \textit{(4 Punkte)}
+
+
+d) Schlagen Sie eine konkrete algorithmische Anpassung vor, mit der ein EA auf der Rastrigin-Funktion robuster wird. \textit{(2 Punkte)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 — SQO-Sub-Problem aufstellen \textit{(14 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben:
+
+
+\begin{lstlisting}
+min  f(x⃗) = x₁² + x₁x₂ + x₂²
+u.B.: h₁(x⃗) = x₁ + x₂ − 2 = 0
+\end{lstlisting}
+
+
+Sie befinden sich in der SQO-Iteration bei x⃗ᵢ = (1.5, 0.4). Als Hesse-Approximation verwenden Sie
+
+
+\begin{lstlisting}
+H = [2 1]
+    [1 2]
+\end{lstlisting}
+
+
+a) Berechnen Sie ∇f(x⃗ᵢ), ∇h₁(x⃗ᵢ), f(x⃗ᵢ) und h₁(x⃗ᵢ). \textit{(4 Punkte)}
+
+
+b) Stellen Sie das SQO-Sub-Problem in d⃗ vollständig auf (Zielfunktion und linearisierte Nebenbedingung). \textit{(5 Punkte)}
+
+
+c) Erklären Sie, warum SQO im Sub-Problem eine quadratische Approximation der Lagrange-Funktion (nicht von f allein) verwendet, und welche Rolle BFGS dabei spielt. \textit{(3 Punkte)}
+
+
+d) Welcher Schritt fehlt im Algorithmus zwischen dem Lösen des Sub-Problems und der Aktualisierung x⃗ᵢ₊₁? Wozu dient er? \textit{(2 Punkte)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 6 — Verfahrensvergleich und Pseudocode-Analyse \textit{(16 Punkte)}}\mbox{}\\[2pt]
+
+Ein Studi behauptet: „DIRECT, Nelder-Mead und CMA-ES sind alle gradientenfreie Verfahren, also kann man sie beliebig austauschen." Außerdem hat er folgenden Pseudocode für eine 1+1-ES geschrieben:
+
+
+\begin{lstlisting}
+σ = 1
+G = []
+loop:
+   x_next = x.clone()
+   for i in dims: x_next[i] += N(0, σ)
+   if f(x_next) <= f(x):           # (Z1)
+       x = x_next
+       G.append(1)
+   else:
+       G.append(0)
+   if mean(G) > 1/5: σ = σ * 1.5   # (Z2)
+   else:             σ = σ / 1.5
+\end{lstlisting}
+
+
+a) Stellen Sie DIRECT, Nelder-Mead und CMA-ES anhand der Eigenschaften (lokal/global, deterministisch/stochastisch, Eignung für teure f) gegenüber. Tabelle genügt. \textit{(6 Punkte)}
+
+
+b) Welches dieser drei Verfahren würden Sie für eine teure Black-Box-Zielfunktion (eine Auswertung dauert 30 Minuten) wählen — und warum eher \textit{kein} CMA-ES? Welche Verfahrensklasse wäre noch besser geeignet? \textit{(4 Punkte)}
+
+
+c) Identifizieren Sie zwei Fehler im Pseudocode (mit Zeilenangabe Z1/Z2 oder Position) und korrigieren Sie sie. \textit{(6 Punkte)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+
+\section{Musterlösung Klausur 2}
+
+\paragraph{Aufgabe 1 \textit{(22 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a)} \textit{(3 P.)}
+
+L(x⃗, b⃗) = (x₁−3)² + (x₂−2)² + b₁(x₁+x₂−4) + b₂(−x₁) + b₃(−x₂)
+
+\textit{Bewertung}: Lagrange korrekt aufgestellt 3 P.; nur Vorzeichenfehler bei einem bⱼ → 2 P.
+
+
+\textbf{b)} \textit{(6 P.)}
+
+\begin{enumerate}
+  \item Stationarität: ∂L/∂x₁ = 2(x₁−3) + b₁ − b₂ = 0;  ∂L/∂x₂ = 2(x₂−2) + b₁ − b₃ = 0
+  \item Primal Feasibility: x₁+x₂−4 ≤ 0; −x₁ ≤ 0; −x₂ ≤ 0
+  \item Dual Feasibility: b₁, b₂, b₃ ≥ 0
+  \item Komplementarität: b₁(x₁+x₂−4)=0; b₂(−x₁)=0; b₃(−x₂)=0
+\end{enumerate}
+
+\textit{Bewertung}: je Block 1.5 P.
+
+
+\textbf{c)} \textit{(10 P.)}
+
+Unrestringiertes Optimum von f wäre (3,2), das verletzt g₁: 3+2−4=1>0. Also ist g₁ aktiv, b₁>0; x₁,x₂>0 erwartbar → b₂=b₃=0.
+
+
+Aus Stationarität: 2(x₁−3) + b₁ = 0 und 2(x₂−2) + b₁ = 0 ⇒ x₁−3 = x₂−2 ⇒ x₁ = x₂+1.
+
+Mit x₁+x₂ = 4: (x₂+1)+x₂ = 4 ⇒ x₂ = 1.5, x₁ = 2.5.
+
+b₁ = −2(x₁−3) = −2(−0.5) = 1 > 0 ✓; b₂ = b₃ = 0 ✓.
+
+
+KKT-Punkt: x⃗\textit{ = (2.5, 1.5), b⃗ = (1, 0, 0); f} = 0.25 + 0.25 = 0.5.
+
+
+\textit{Bewertung}: Aktivitätsanalyse 2 P., Gleichungssystem \& Lösung 5 P., Multiplikatoren 2 P., Verifikation Vorzeichen 1 P.
+
+
+\textbf{d)} \textit{(3 P.)}
+
+f ist strikt konvex (Hesse 2I positiv definit), g₁ ist linear (also konvex), das Problem ist konvex → KKT ist hinreichend für globales Minimum. Streng formal: Hesse von L bzgl. x⃗ am KKT-Punkt positiv definit prüfen (hier 2I).
+
+\textit{Bewertung}: Konvexität benannt 2 P., 2.-Ordnung-Bedingung erwähnt 1 P.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a)} \textit{(3 P.)}
+
+bᵢ ≥ 0 für i=1,2,3 (Anteile nicht negativ); ∑bᵢ = 1 (Budget normiert). Formal: −bᵢ ≤ 0, ∑bᵢ − 1 = 0.
+
+\textit{Bewertung}: je Bedingung 1.5 P.
+
+
+\textbf{b)} \textit{(2 P.)}
+
+Die analytische Lösung minimiert nur ‖y−Xb‖² ohne NB; die so erhaltenen Gewichte erfüllen i.A. weder Nichtnegativität noch Summe=1.
+
+
+\textbf{c)} \textit{(8 P.)}
+
+Aus ½b⃗ᵀXᵀXb⃗ − y⃗ᵀXb⃗ → Q = XᵀX, c⃗ = −Xᵀy⃗.
+
+
+XᵀX:
+
+\begin{itemize}
+  \item Spalte1·Spalte1 = 1+0+1+4 = 6
+  \item Spalte1·Spalte2 = 0+0+1+0 = 1
+  \item Spalte1·Spalte3 = 1+0+0+2 = 3
+  \item Spalte2·Spalte2 = 0+1+1+0 = 2
+  \item Spalte2·Spalte3 = 0+1+0+0 = 1
+  \item Spalte3·Spalte3 = 1+1+0+1 = 3
+\end{itemize}
+
+Q = [[6,1,3],[1,2,1],[3,1,3]].
+
+
+Xᵀy⃗:
+
+\begin{itemize}
+  \item Zeile1: 1·2+0·3+1·4+2·5 = 16
+  \item Zeile2: 0·2+1·3+1·4+0·5 = 7
+  \item Zeile3: 1·2+1·3+0·4+1·5 = 10
+\end{itemize}
+
+c⃗ = −Xᵀy⃗ = (−16, −7, −10)ᵀ.
+
+
+\textit{Bewertung}: Q korrekt 4 P. (je Eintrag teilanrechnen), c⃗ korrekt 3 P., Form mit ½ und Vorzeichen 1 P.
+
+
+\textbf{d)} \textit{(2 P.)}
+
+Q = XᵀX ist immer positiv semi-definit (b⃗ᵀXᵀXb⃗ = ‖Xb⃗‖² ≥ 0). Bei vollem Spaltenrang von X sogar pos. def. → konvexe QO → eindeutiges globales Minimum unter den (linearen) NB.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 \textit{(18 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a)} \textit{(2 P.)}
+
+Centerpoint nutzt die n = 2 besten Ecken (x⃗₀, x⃗₁), nicht den schlechtesten:
+
+c⃗ = ½((1,0) + (0,1)) = (0.5, 0.5).
+
+
+\textbf{b)} \textit{(4 P.)}
+
+x⃗ᵣ = c⃗ + α(c⃗ − x⃗₂) = (0.5,0.5) + 1·((0.5,0.5)−(3,1)) = (0.5−2.5, 0.5−0.5) = (−2, 0).
+
+f(x⃗ᵣ) = (−2)² + 2·0² = 4.
+
+
+\textbf{c)} \textit{(8 P.)}
+
+Vergleich: f(x⃗₀)=1, f(x⃗ₙ₋₁)=f(x⃗₁)=2, f(x⃗ₙ)=f(x⃗₂)=11. f(x⃗ᵣ)=4.
+
+Es gilt f(x⃗ᵣ)=4 ≥ f(x⃗ₙ₋₁)=2, aber f(x⃗ᵣ)=4 < f(x⃗ₙ)=11. → \textbf{Contract} mit x⃗ᵣ (da besser als x⃗ₙ).
+
+
+x⃗\_c = c⃗ + β(x⃗ᵣ − c⃗) = (0.5,0.5) + 0.5·((−2,0)−(0.5,0.5)) = (0.5,0.5) + 0.5·(−2.5,−0.5) = (−0.75, 0.25).
+
+f(x⃗\_c) = 0.5625 + 0.125 = 0.6875.
+
+
+f(x⃗\_c) = 0.6875 < f(x⃗ₙ) = 11 → x⃗\_c ersetzt x⃗ₙ.
+
+
+Neuer Simplex (sortiert): \{(−0.75,0.25)→0.6875, (1,0)→1, (0,1)→2\}.
+
+
+\textit{Bewertung}: Regelentscheidung 3 P., x⃗\_c 3 P., Ersetzung \& neuer Simplex 2 P.
+
+
+\textbf{d)} \textit{(4 P.)}
+
+Abbruch z.B. f(x⃗ₙ)−f(x⃗₀) < ε oder ∑‖x⃗ⱼ−x⃗ᵢ‖ < ε oder max. Iterationen (1 P.). Nachteil: nur lokale Konvergenz, in höheren Dimensionen anfällig für Stagnation/Degeneration des Simplex (1.5 P.). Praktische Milderung: zufällige Restarts mit unterschiedlichen Startsimplexen oder Kombination mit Multistart (1.5 P.).
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a)} \textit{(3 P.)}
+
+Bei voller Speicherlänge wird der älteste Eintrag verworfen, der neue (Erfolg = 1) angehängt:
+
+G\_neu = [0, 0, 1, 0, 1].
+
+
+\textbf{b)} \textit{(6 P.)}
+
+s = ∑G\_neu / g = 2/5 = 0.4.
+
+0.4 > 1/5 = 0.2 → σ wird mit a = 1.5 multipliziert.
+
+σ\_neu = 0.40 · 1.5 = 0.60.
+
+
+\textit{Bewertung}: s berechnet 2 P., Vergleich 1 P., richtige Operation 2 P., Wert exakt 1 P.
+
+
+\textbf{c)} \textit{(4 P.)}
+
+Theoretisch optimal für die Kugelfunktion ∑xᵢ² im Grenzfall n→∞ (2 P.). Rastrigin ist multimodal; lokale Erfolge in einer Mulde halten σ klein, der Algorithmus konvergiert in ein lokales Minimum und entkommt der globalen Struktur nicht (2 P.).
+
+
+\textbf{d)} \textit{(2 P.)}
+
+z.B. (μ+λ)- bzw. (μ,λ)-ES mit größerer Population, CMA-ES (Kovarianzadaption), Restart-Mechanismen oder erhöhte Mutationsrate / Niching. Eine konkrete Antwort genügt.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 \textit{(14 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a)} \textit{(4 P.)}
+
+∇f = (2x₁ + x₂, x₁ + 2x₂)ᵀ → ∇f(1.5, 0.4) = (3 + 0.4, 1.5 + 0.8) = (3.4, 2.3)ᵀ.
+
+∇h₁ = (1, 1)ᵀ.
+
+f(x⃗ᵢ) = 1.5² + 1.5·0.4 + 0.4² = 2.25 + 0.6 + 0.16 = 3.01.
+
+h₁(x⃗ᵢ) = 1.5 + 0.4 − 2 = −0.1.
+
+
+\textit{Bewertung}: je Größe 1 P.
+
+
+\textbf{b)} \textit{(5 P.)}
+
+Sub-Problem in d⃗:
+
+
+min  f̃(d⃗) = 3.01 + (3.4, 2.3)·d⃗ + ½ d⃗ᵀ [[2,1],[1,2]] d⃗
+
+u.B.: h̃₁(d⃗) = −0.1 + (1,1)·d⃗ = 0  ⇔  d₁ + d₂ = 0.1
+
+
+\textit{Bewertung}: Konstante 1 P., Gradiententerm 1 P., quadratischer Term 2 P., NB linearisiert 1 P.
+
+
+\textbf{c)} \textit{(3 P.)}
+
+Die NB beeinflussen das Krümmungsverhalten an der Lösung; relevant ist die Hesse von L (nicht von f), weil Multiplikatoren die Krümmung verändern (2 P.). BFGS approximiert diese Hesse iterativ aus aufeinanderfolgenden Gradienten — billiger und numerisch stabiler als die exakte Hesse (1 P.).
+
+
+\textbf{d)} \textit{(2 P.)}
+
+Liniensuche zur Bestimmung der Schrittgröße c > 0; x⃗ᵢ₊₁ = x⃗ᵢ + c·d⃗. Sie sichert globalen Fortschritt (Abstieg in einer Merit-Funktion) und vermeidet Übersteuerung der QO-Approximation.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 6 \textit{(16 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a)} \textit{(6 P.)}
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Eigenschaft}} & {\color{white}\textbf{DIRECT}} & {\color{white}\textbf{Nelder-Mead}} & {\color{white}\textbf{CMA-ES}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+lokal/global & global & lokal & global (mit Restart) \\
+determ./stoch. & deterministisch & deterministisch & stochastisch \\
+Annahmen & Lipschitzian, kontinuierlich, Box-NB & kontinuierlich & kontinuierlich \\
+Eignung teure f & mittel (viele Auswertungen) & mittel & schlecht (große Population × Generationen) \\
+Adaption & Rechteckaufteilung & Simplex-Transformation & Kovarianzmatrix \\
+\end{tabularx}
+}
+
+
+\textit{Bewertung}: jede Zeile ≈ 1 P.
+
+
+\textbf{b)} \textit{(4 P.)}
+
+Bei einer 30-min-Auswertung ist die Anzahl der Funktionsaufrufe der Engpass. CMA-ES braucht typischerweise viele Generationen × Populationsgröße — hier prohibitiv (2 P.). DIRECT oder Nelder-Mead wären deterministischer/sparsamer, aber besonders geeignet wäre \textbf{SMBO} (Surrogate Model-Based Optimization): ein billiges ML-Surrogat ersetzt die teure Auswertung, neue Punkte werden gezielt gewählt (2 P.).
+
+
+\textbf{c)} \textit{(6 P.)}
+
+Fehler 1 (σ-Initialisierung): laut Skript σ⃗₀ = 1⃗ pro Dimension; im Code ist σ skalar — akzeptabel, aber σ sollte als Vektor gleicher Länge wie x geführt und komponentenweise mutiert werden (1.5 P.).
+
+Fehler 2 (Z1, Vergleich): Der Vergleich \texttt{f(x\_next) <= f(x)} zählt einen Stillstand als Erfolg; korrekt: strikt \texttt{f(x\_next) < f(x)} (gemäß "y\_next < y") (1.5 P.).
+
+Fehler 3 (Speicherlänge fehlt): G wächst unbeschränkt; es muss eine feste Länge g eingehalten werden (älteste Eintragung verwerfen, sobald len(G) > g). Andernfalls ist \texttt{mean(G)} nicht der Erfolgsanteil der letzten g Iterationen, sondern aller Iterationen (3 P.).
+
+
+(Zwei genannte Fehler genügen für volle Punktzahl; Korrekturvorschlag muss inhaltlich passen.)
+
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{document}

@@ -1,0 +1,380 @@
+% ============================================================
+%  Übungsaufgaben Template (my_dhbw Stil, uebung_*.tex)
+%  Header "Übungsblatt", grün eingefärbte <details>-Lösungen.
+%  Renderer: pdflatex (zweimal)
+% ============================================================
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+\usepackage[top=2cm, bottom=2cm, left=2.4cm, right=2.4cm, footskip=1cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{ltablex}
+\keepXColumns
+\usepackage{colortbl}
+\usepackage[most,breakable]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{pdflscape}
+\usepackage{titlesec}
+\usepackage[colorlinks=true, linkcolor=accent, urlcolor=accent]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme ─────────────────────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{loesung}{RGB}{0, 100, 0}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{240, 252, 240}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer ─────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\footnotesize\color{accent}\nichttitle}
+\fancyhead[R]{\footnotesize\color{accent}\nichtsubtitle}
+\fancyfoot[R]{\footnotesize\color{accent}Blatt \thepage\,/\,\pageref{LastPage}}
+
+% ── Typografie ────────────────────────────────────────────────
+\titleformat{\section}
+    {\color{accent}\large\bfseries}{}{0pt}{}
+    [\vspace{-4pt}\color{accent}\rule{\linewidth}{1.5pt}]
+\titleformat{\subsection}
+    {\normalsize\bfseries\color{accent!85!black}}{}{0pt}{}{}
+\titleformat{\subsubsection}
+    {\small\bfseries\color{accent!70!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{10pt}{3pt}
+\titlespacing*{\subsection}{0pt}{6pt}{2pt}
+\titlespacing*{\subsubsection}{0pt}{4pt}{1pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\renewcommand{\arraystretch}{1.2}
+\setlist[itemize]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.4em}
+\setlist[enumerate]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.6em}
+
+% ── Boxen: solutionbox = Lösungsbox in grün ──────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={Abbildung: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={Tabelle: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{solutionbox}[1]{
+  enhanced,
+  colback=solutionbg, colframe=loesung,
+  title={#1}, fonttitle=\small\bfseries,
+  coltitle=white, colbacktitle=loesung,
+  breakable, before skip=8pt, after skip=8pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=single, framerule=0pt,
+  xleftmargin=4pt, xrightmargin=4pt,
+  aboveskip=6pt, belowskip=6pt,
+  keepspaces=true
+}
+
+\providecommand{\nichttitle}{Übungsblatt}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Betriebssysteme}
+\renewcommand{\nichtsubtitle}{Übungsblatt 12}
+
+
+\begin{document}
+
+\begin{center}
+{\Large\bfseries\color{accent}\nichttitle}
+\ifx\nichtsubtitle\empty\else
+  \\[2pt]{\normalsize\color{accent!80!black}\nichtsubtitle}
+\fi
+\\[2pt]
+\color{accent}\rule{0.4\linewidth}{0.8pt}\color{black}
+\end{center}
+\vspace{4pt}
+
+% ── BODY ──────────────────────────────────────────────────────
+
+\section{Übungsblatt 12 — Virtueller Speicher}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 1 — Virtueller Adressraum \& Konsequenzen \textit{(12 Punkte)}}\mbox{}\\[2pt]
+
+a) Erkläre den Begriff \textbf{virtueller Adressraum} in eigenen Worten und nenne, in welchem Verhältnis er zum physischen RAM steht. \textit{(4 P)}
+
+
+b) Im Kapitel heißt es: \textit{„Speicherbedarf darf > RAM sein."} Begründe, warum das überhaupt möglich ist, und nenne den Speicherbereich, der diese Eigenschaft technisch ermöglicht. \textit{(4 P)}
+
+
+c) Ein Entwickler argumentiert: „Solange ich genug RAM kaufe, brauche ich keinen virtuellen Speicher — der Adressraum ist dann ohnehin physisch vorhanden." Widerlege diese Aussage mit \textbf{zwei} Vorteilen aus dem Kapitel, die unabhängig von der RAM-Größe gelten. \textit{(4 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Der virtuelle Adressraum ist der Speicher, den ein Prozess vom Betriebssystem zugewiesen bekommt — er existiert nur logisch / „virtuell". Jeder Prozess sieht \textbf{seinen eigenen} Adressraum, unabhängig von den anderen Prozessen. Nur der aktuell benötigte Teil liegt im RAM, der Rest auf dem Sekundärspeicher. Der virtuelle Adressraum ist also eine vom physischen RAM entkoppelte Sicht.
+
+
+b) Möglich ist das, weil nur die \textit{aktuell benötigten} Teile des Adressraums im RAM liegen müssen. Alle übrigen Seiten werden auf der \textbf{Paging Area (Schattenspeicher)} auf der Festplatte gehalten und bei Bedarf nachgeladen. Der adressierbare Speicher kann dadurch deutlich größer als der physische RAM sein.
+
+
+c) Auch bei beliebig viel RAM bleiben aus dem Kapitel:
+
+\begin{itemize}
+  \item \textbf{Externe Fragmentierung untergeordnet}: Da Seiten und Seitenrahmen gleich groß sind, entsteht kein Verschnitt zwischen frei werdenden Bereichen.
+  \item \textbf{Eigener Adressraum pro Prozess}: Prozesse stören sich nicht gegenseitig; der Schutz ist eine Eigenschaft des Adressraum-Konzepts, nicht der RAM-Menge.
+\end{itemize}
+
+(Alternativ akzeptabel: „mehr Programme gleichzeitig im RAM → CPU-Auslastung ↑" als organisatorischer Vorteil.)
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 — Seiten, Seitenrahmen, Paging Area berechnen \textit{(18 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben sei ein System mit folgenden Eckdaten:
+
+
+\begin{itemize}
+  \item physischer RAM: \textbf{256 MiB}
+  \item Seitengröße / Seitenrahmengröße: \textbf{4 KiB}
+  \item ein Prozess P mit virtuellem Adressraum \textbf{1 GiB}, davon zur Zeit \textbf{48 MiB} „aktiv" (im RAM)
+  \item ein zweiter Prozess Q mit virtuellem Adressraum \textbf{512 MiB}, davon \textbf{16 MiB} im RAM
+\end{itemize}
+
+Beantworte:
+
+
+a) Wie viele Seitenrahmen umfasst der RAM insgesamt? \textit{(3 P)}
+
+
+b) Wie viele Seiten umfassen die virtuellen Adressräume von P bzw. Q? \textit{(4 P)}
+
+
+c) Wie viele Seitenrahmen sind durch P und Q zusammen aktuell belegt? Wie viele Seitenrahmen bleiben für das BS / weitere Prozesse übrig? \textit{(4 P)}
+
+
+d) Wie groß muss die \textbf{Paging Area} mindestens sein, wenn die \textit{vollständigen} virtuellen Adressräume beider Prozesse jederzeit auslagerbar sein sollen (Worst Case, alles ausgelagert)? \textit{(4 P)}
+
+
+e) Begründe kurz, warum man in der Praxis selten mit einer Seitengröße von \textbf{1 KiB} arbeitet, obwohl das Kapitel sie als möglich nennt. \textit{(3 P)}
+
+
+\textbf{Lösung:}
+
+
+a) RAM = 256 MiB = 256 · 1024 KiB = 262 144 KiB.
+
+Seitenrahmen = 262 144 KiB / 4 KiB = \textbf{65 536 Seitenrahmen} (= 2¹⁶).
+
+
+b) P: 1 GiB = 1 048 576 KiB → 1 048 576 / 4 = \textbf{262 144 Seiten}.
+
+Q: 512 MiB = 524 288 KiB → 524 288 / 4 = \textbf{131 072 Seiten}.
+
+
+c) Aktiv im RAM:
+
+\begin{itemize}
+  \item P: 48 MiB / 4 KiB = 49 152 / 4 = \textbf{12 288 Seitenrahmen}
+  \item Q: 16 MiB / 4 KiB = 16 384 / 4 = \textbf{4 096 Seitenrahmen}
+  \item zusammen: 12 288 + 4 096 = \textbf{16 384 Seitenrahmen} belegt
+  \item frei: 65 536 − 16 384 = \textbf{49 152 Seitenrahmen} (≙ 192 MiB).
+\end{itemize}
+
+d) Worst Case ist „alles ausgelagert", also der gesamte virtuelle Adressraum beider Prozesse:
+
+1 GiB + 512 MiB = \textbf{1,5 GiB = 1 536 MiB}.
+
+Die Paging Area muss also mindestens 1 536 MiB groß sein. (Hinweis: Da der virtuelle Adressraum > RAM ist, reicht es nicht, sich an der RAM-Größe zu orientieren — der Schattenspeicher dimensioniert sich am virtuellen Bedarf.)
+
+
+e) Bei 1 KiB-Seiten gibt es viermal so viele Seiten/Seitenrahmen wie bei 4 KiB. Verwaltungsaufwand (Tabellen, Buchführung pro Seite) und I/O-Overhead beim Auslagern steigen entsprechend, der Nutzeffekt feinerer Granularität ist dagegen meist gering — daher sind 4–16 KiB praktischer Standard.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 — Transfer: Multiprogramming-Effekt \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Im Kapitel wird als Vorteil 2 genannt: \textit{„Mehr Programme im RAM → CPU-Auslastung ↑"}.
+
+
+Betrachte folgendes Szenario (im Kapitel nicht beschrieben, aber mit Kapitelwissen lösbar):
+
+
+\begin{quote}
+Ein Server hat 2 GiB RAM. Ein Programm A benötigt durchschnittlich \textbf{1,6 GiB} und verbringt 80 \% seiner Zeit blockiert auf I/O. Auf dem System soll auch ein Programm B (durchschnittlich 1,2 GiB, ebenfalls 70 \% I/O-Wartezeit) laufen.
+\end{quote}
+
+a) Erkläre, warum das \textbf{ohne} virtuellen Speicher in diesem Szenario nicht funktionieren würde. \textit{(4 P)}
+
+
+b) Erkläre, warum es \textbf{mit} virtuellem Speicher funktioniert, obwohl 1,6 GiB + 1,2 GiB > 2 GiB sind. Verwende die Begriffe \textit{Seite}, \textit{Seitenrahmen} und \textit{Paging Area}. \textit{(6 P)}
+
+
+c) Begründe mithilfe der I/O-Zeiten, warum dadurch die CPU-Auslastung tatsächlich steigt — und nicht nur der Speicherverbrauch. \textit{(5 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Ohne virtuellen Speicher müsste \textbf{der gesamte Adressraum eines Programms} physisch im RAM liegen. Da 1,6 GiB + 1,2 GiB = 2,8 GiB > 2 GiB, könnte höchstens eines der Programme zur selben Zeit gehalten werden; das andere müsste komplett geladen/entladen werden (Swapping ganzer Prozesse). Gleichzeitiger Lauf wäre nur durch ständiges vollständiges Umladen möglich — sehr teuer.
+
+
+b) Mit virtuellem Speicher liegt nicht der ganze Adressraum, sondern nur die \textbf{aktuell benötigten Seiten} in den RAM-\textbf{Seitenrahmen}. Inaktive Seiten beider Programme bleiben in der \textbf{Paging Area} auf der Festplatte. RAM enthält also eine Mischung „heißer" Seiten von A und B; bei Bedarf wird eine Seite aus der Paging Area nachgeladen, eine andere ggf. ausgelagert. So passen die \textit{aktiven Arbeitsmengen} beider Programme zusammen in 2 GiB, obwohl die Summe der virtuellen Adressräume größer ist.
+
+
+c) Wenn nur A liefe, wäre die CPU 80 \% der Zeit untätig (Wartet auf I/O). Mit B im RAM kann die CPU in A's Wartephasen B bedienen (und umgekehrt). Da beide Programme oft blockieren, liegt die Wahrscheinlichkeit, dass \textit{beide gleichzeitig} warten, deutlich niedriger (≈ 0,8 · 0,7 = 56 \% statt 80 \%). Die CPU-Auslastung steigt entsprechend von 20 \% auf rund 44 \%. Genau das meint Vorteil 2.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 — Analyse / Entscheidung: Swapping vs. Paging \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben sind drei Systeme:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{System}} & {\color{white}\textbf{RAM}} & {\color{white}\textbf{MMU vorhanden?}} & {\color{white}\textbf{typische Last}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+\textbf{S1} Mikrocontroller (Heizungssteuerung) & 64 KiB & nein & 1 Steuerprozess, 2 KiB Code \\
+\textbf{S2} Bürorechner & 16 GiB & ja & Browser, IDE, Mailclient gleichzeitig \\
+\textbf{S3} Embedded-Linux-Kasten an einer Maschine & 128 MiB & ja & 1 Hauptprozess (90 MiB) + selten genutzte Diagnose-App (60 MiB) \\
+\end{tabularx}
+}
+
+
+a) Wähle für jedes System begründet \textbf{Swapping} \textit{oder} \textbf{Paging} (oder „keines von beiden nötig"). Stütze dich auf die im Kapitel genannten Unterscheidungsmerkmale \textbf{Granularität} und \textbf{Einsatz (mit/ohne MMU)}. \textit{(9 P)}
+
+
+b) Erkläre für \textbf{S2} explizit, welche der vier Vorteile aus dem Kapitel hier wie zum Tragen kommen (jeden Vorteil benennen und auf das Szenario beziehen). \textit{(8 P)}
+
+
+c) Für \textbf{S3} entscheidet sich der Hersteller dennoch für Swapping. Nenne einen plausiblen Trade-off, der diese Entscheidung trotz vorhandener MMU rechtfertigen kann. \textit{(3 P)}
+
+
+\textbf{Lösung:}
+
+
+a)
+
+\begin{itemize}
+  \item \textbf{S1} — \textit{keines von beiden nötig (alternativ: Swapping bei zusätzlichen Prozessen)}. Ohne MMU ist Paging laut Kapitel nicht einsetzbar (Paging setzt MMU voraus). Da nur ein 2-KiB-Prozess existiert und 64 KiB RAM ausreichen, ist faktisch gar kein Auslagern nötig. \textit{Müsste} doch ausgelagert werden, käme nur \textbf{Swapping} in Frage (Granularität: ganzer Prozess).
+  \item \textbf{S2} — \textit{Paging}. MMU vorhanden, viele Prozesse gleichzeitig, summierter Speicherbedarf > RAM realistisch. Feine Granularität (Teile eines Prozesses) erlaubt es, dass alle Programme nebenher leben — genau das Einsatzgebiet von Paging.
+  \item \textbf{S3} — \textit{Paging (Standardentscheidung)}. MMU ist da; Hauptprozess + Diagnose-App können sich Seiten teilen, RAM (128 MiB) wird sonst knapp, sobald Diagnose läuft.
+\end{itemize}
+
+b) Für S2:
+
+\begin{enumerate}
+  \item \textbf{Programme > RAM möglich}: Einzelne Anwendungen (z. B. IDE mit großem Projekt) können größeren virtuellen Adressraum nutzen, als physisch verfügbar wäre.
+  \item \textbf{Mehr Programme im RAM → CPU-Auslastung ↑}: Browser, IDE, Mailclient blockieren oft auf I/O (Netzwerk, Disk); die CPU kann in den Wartephasen anderen Prozessen dienen.
+  \item \textbf{Ansprechbarer Speicher > physisch}: Jeder Prozess kann einen logisch großen Adressraum adressieren, unabhängig von 16 GiB.
+  \item \textbf{Externe Fragmentierung untergeordnet}: Da alle Seitenrahmen gleich groß sind, fragmentiert der RAM beim ständigen Starten/Beenden von Programmen nicht.
+\end{enumerate}
+
+c) Plausibler Trade-off: Die Diagnose-App läuft \textit{selten} und ihr Code ist i. d. R. \textbf{vollständig} zu laden (wenig Lokalität); Swapping eines kompletten Prozesses ist dann einfacher zu implementieren und braucht keine Seitenverwaltung. Außerdem ist der Speicheraufwand für Seitentabellen / Buchführung in 128 MiB nicht vernachlässigbar — Swapping spart diesen Verwaltungs-Overhead.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 — Fehler finden in einer Systembeschreibung \textit{(10 Punkte)}}\mbox{}\\[2pt]
+
+Ein Praktikant beschreibt die Speicherorganisation seines Systems wie folgt:
+
+
+\begin{quote}
+\textit{„Wir haben 8 GiB RAM und arbeiten mit Paging. Eine }\textit{Seite}\textit{ ist bei uns 4 KiB groß, ein }\textit{Seitenrahmen}\textit{ 8 KiB — das gibt uns mehr Flexibilität. Die }\textit{Paging Area}\textit{ liegt direkt im RAM, damit das Auslagern schnell geht. Da unser Mikrocontroller keine MMU hat, sparen wir uns Swapping komplett."}
+\end{quote}
+
+Identifiziere \textbf{alle} fachlichen Fehler in dieser Aussage und korrigiere sie jeweils mit Begründung aus dem Kapitel.
+
+
+\textbf{Lösung:}
+
+
+Drei (bzw. vier) Fehler:
+
+
+\begin{enumerate}
+  \item \textbf{„Seite 4 KiB, Seitenrahmen 8 KiB"} — falsch. Laut Kapitel sind Seitenrahmen Blöcke des RAM und \textbf{alle gleich groß}, und zwar genauso groß wie die Seiten — nur dann passt eine Seite genau in einen Rahmen. Korrektur: Seite und Seitenrahmen müssen identische Größe haben (z. B. beide 4 KiB).
+\end{enumerate}
+
+\begin{enumerate}
+  \item \textbf{„Paging Area liegt direkt im RAM"} — falsch. Die Paging Area (Schattenspeicher) ist per Definition ein \textbf{Festplattenbereich} für ausgelagerte Seiten. Im RAM zu liegen widerspricht ihrem Zweck — das Auslagern soll ja gerade RAM freigeben.
+\end{enumerate}
+
+\begin{enumerate}
+  \item \textbf{„Mikrocontroller hat keine MMU → wir nutzen Paging"} — falsch. Paging setzt laut Kapitel-Tabelle eine \textbf{MMU voraus}. Ohne MMU bleibt nur Swapping (ganzer Prozess) — genau das Gegenteil der Aussage des Praktikanten („Swapping sparen wir uns").
+\end{enumerate}
+
+\begin{enumerate}
+  \item (Folgefehler) Die Aussage „wir arbeiten mit Paging" ist mit „kein MMU" insgesamt unvereinbar — entweder MMU + Paging, oder ohne MMU nur Swapping.
+\end{enumerate}
+
+Korrekte Variante: \textit{„Seite und Seitenrahmen sind beide 4 KiB groß. Die Paging Area liegt auf der Festplatte. Ohne MMU ist nur Swapping (ganzer Prozess) möglich, kein Paging."}
+
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{document}

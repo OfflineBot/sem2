@@ -1,0 +1,459 @@
+% ============================================================
+%  Übungsaufgaben Template (my_dhbw Stil, uebung_*.tex)
+%  Header "Übungsblatt", grün eingefärbte <details>-Lösungen.
+%  Renderer: pdflatex (zweimal)
+% ============================================================
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+\usepackage[top=2cm, bottom=2cm, left=2.4cm, right=2.4cm, footskip=1cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{ltablex}
+\keepXColumns
+\usepackage{colortbl}
+\usepackage[most,breakable]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{pdflscape}
+\usepackage{titlesec}
+\usepackage[colorlinks=true, linkcolor=accent, urlcolor=accent]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme ─────────────────────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{loesung}{RGB}{0, 100, 0}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{240, 252, 240}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer ─────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\footnotesize\color{accent}\nichttitle}
+\fancyhead[R]{\footnotesize\color{accent}\nichtsubtitle}
+\fancyfoot[R]{\footnotesize\color{accent}Blatt \thepage\,/\,\pageref{LastPage}}
+
+% ── Typografie ────────────────────────────────────────────────
+\titleformat{\section}
+    {\color{accent}\large\bfseries}{}{0pt}{}
+    [\vspace{-4pt}\color{accent}\rule{\linewidth}{1.5pt}]
+\titleformat{\subsection}
+    {\normalsize\bfseries\color{accent!85!black}}{}{0pt}{}{}
+\titleformat{\subsubsection}
+    {\small\bfseries\color{accent!70!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{10pt}{3pt}
+\titlespacing*{\subsection}{0pt}{6pt}{2pt}
+\titlespacing*{\subsubsection}{0pt}{4pt}{1pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\renewcommand{\arraystretch}{1.2}
+\setlist[itemize]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.4em}
+\setlist[enumerate]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.6em}
+
+% ── Boxen: solutionbox = Lösungsbox in grün ──────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={Abbildung: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={Tabelle: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{solutionbox}[1]{
+  enhanced,
+  colback=solutionbg, colframe=loesung,
+  title={#1}, fonttitle=\small\bfseries,
+  coltitle=white, colbacktitle=loesung,
+  breakable, before skip=8pt, after skip=8pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=single, framerule=0pt,
+  xleftmargin=4pt, xrightmargin=4pt,
+  aboveskip=6pt, belowskip=6pt,
+  keepspaces=true
+}
+
+\providecommand{\nichttitle}{Übungsblatt}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Analysis 2}
+\renewcommand{\nichtsubtitle}{Übungsblatt 8}
+
+
+\begin{document}
+
+\begin{center}
+{\Large\bfseries\color{accent}\nichttitle}
+\ifx\nichtsubtitle\empty\else
+  \\[2pt]{\normalsize\color{accent!80!black}\nichtsubtitle}
+\fi
+\\[2pt]
+\color{accent}\rule{0.4\linewidth}{0.8pt}\color{black}
+\end{center}
+\vspace{4pt}
+
+% ── BODY ──────────────────────────────────────────────────────
+
+\section{Übungsblatt 8 — Fourieranalyse}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 1 — Interferenz zweier Sinuswellen \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben sind die Wellen $f_1(t) = 3\sin(2\pi t)$ und $f_2(t) = 3\sin(2\pi t + \varphi)$.
+
+
+a) Erkläre kurz das Prinzip der Wellenüberlagerung und definiere konstruktive und destruktive Interferenz. \textit{(3 P)}
+
+
+b) Berechne die Gesamtamplitude $A_{ges}$ der Überlagerung $f_1 + f_2$ für $\varphi = 0$, $\varphi = \pi/2$ und $\varphi = \pi$. Welche Form der Interferenz liegt jeweils vor? \textit{(7 P)}
+
+
+c) Eine Messstelle empfängt zusätzlich eine dritte Welle $f_3(t) = 3\sin(2\pi t + \pi)$. Begründe ohne Neurechnung, warum sich die Gesamtenergie an der Messstelle für $\varphi = 0$ nicht ändert, wenn $f_3$ hinzukommt — obwohl $f_3$ nicht null ist. \textit{(5 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Bei der Überlagerung addieren sich Amplituden punktweise: $f_{ges}(t) = f_1(t) + f_2(t)$. Die einzelnen Wellen bleiben dabei unverändert (Linearität). Konstruktive Interferenz: gleichphasige Wellen verstärken sich. Destruktive Interferenz: gegenphasige Wellen schwächen sich ab.
+
+
+b) Mit der Additionsformel $\sin(\alpha) + \sin(\beta) = 2\cos\!\left(\frac{\alpha-\beta}{2}\right)\sin\!\left(\frac{\alpha+\beta}{2}\right)$:
+
+\[
+f_1+f_2 = 2\cdot 3\cdot \cos(\varphi/2)\cdot \sin(2\pi t + \varphi/2)
+\]
+
+Die resultierende Amplitude ist $A_{ges} = 6\,|\cos(\varphi/2)|$.
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{$\varphi$}} & {\color{white}\textbf{$\cos(\varphi/2)$}} & {\color{white}\textbf{$A_{ges}$}} & {\color{white}\textbf{Interferenz}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+0 & 1 & 6 & konstruktiv \\
+$\pi/2$ & $\frac{\sqrt{2}}{2}$ & $3\sqrt{2}\approx 4{,}24$ & teilweise konstruktiv \\
+$\pi$ & 0 & 0 & destruktiv (Auslöschung) \\
+\end{tabularx}
+}
+
+
+c) Bei $\varphi = 0$ sind $f_1$ und $f_2$ gleichphasig und liefern $6\sin(2\pi t)$. $f_3$ ist gegenphasig zu $f_1$ ($\Delta\varphi = \pi$) und identisch in Amplitude. $f_1 + f_3 \equiv 0$ über alle $t$. Es bleibt nur $f_2$ übrig. Da Wellen sich nach dem Linearitätsprinzip nicht gegenseitig beeinflussen, "verschwinden" $f_1$ und $f_3$ nicht physikalisch — die Summenwelle hat aber die gleiche Amplitude 3 wie ohne $f_1$ und $f_3$ zusammen. Energie bleibt erhalten, weil Energie nicht der Amplitude einer Teilwelle, sondern dem Gesamtfeld entspricht (hier: messbares Feld an der Stelle).
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 — Fouriertransformation eines Rechteckpulses \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+Betrachte den Rechteckpuls
+
+\[
+f(t) = \begin{cases} 1, & |t| \leq T \\ 0, & |t| > T \end{cases}
+\]
+
+mit $T = 2$.
+
+
+a) Berechne $F(\omega) = \int_{-\infty}^{\infty} f(t)\,e^{-i\omega t}\,dt$ analytisch und vereinfache zu einer reellen Funktion. \textit{(8 P)}
+
+
+b) Werte $|F(\omega)|$ an den Stellen $\omega = 0$, $\omega = \pi/2$, $\omega = \pi$ aus. \textit{(4 P)}
+
+
+c) Begründe physikalisch, was die Nullstellen von $F(\omega)$ über das Signal $f(t)$ aussagen. \textit{(4 P)}
+
+
+d) Wende die Rücktransformation formal an: zeige durch Einsetzen, dass $\frac{1}{2\pi}\int_{-\infty}^{\infty} F(\omega)\,e^{i\omega \cdot 0}\,d\omega = f(0) = 1$ konsistent ist (Skizze des Arguments mit dem Dirichlet-Integral $\int_{-\infty}^{\infty} \frac{\sin x}{x}\,dx = \pi$). \textit{(4 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Da $f(t) = 0$ außerhalb von $[-T, T]$:
+
+\[
+F(\omega) = \int_{-T}^{T} e^{-i\omega t}\,dt = \left[\frac{e^{-i\omega t}}{-i\omega}\right]_{-T}^{T} = \frac{e^{-i\omega T} - e^{i\omega T}}{-i\omega} = \frac{2\sin(\omega T)}{\omega}
+\]
+
+Mit $T=2$: $F(\omega) = \dfrac{2\sin(2\omega)}{\omega}$. Für $\omega = 0$ gilt per Grenzwert $F(0) = 2T = 4$.
+
+
+b)
+
+\begin{itemize}
+  \item $\omega = 0$: $F(0) = 4$
+  \item $\omega = \pi/2$: $F(\pi/2) = \frac{2\sin(\pi)}{\pi/2} = 0$
+  \item $\omega = \pi$: $F(\pi) = \frac{2\sin(2\pi)}{\pi} = 0$
+\end{itemize}
+
+c) Nullstellen von $F(\omega)$ liegen bei $\omega = k\pi/T$ ($k\in\mathbb{Z}\setminus\{0\}$). Diese Frequenzen sind im Rechteckpuls \textbf{nicht enthalten} — ihr Anteil am Gesamtsignal ist null. Konkret: in der Pulsbreite $2T$ passt eine ganze Anzahl Perioden dieser Sinuswellen, sodass deren Integral mit $f(t)$ verschwindet. Geometrisch: die Pulsbreite ist ein Vielfaches der halben Periode.
+
+
+d) Mit $\omega' = \omega T$, $d\omega = d\omega'/T$:
+
+\[
+\frac{1}{2\pi}\int_{-\infty}^{\infty} \frac{2\sin(\omega T)}{\omega}\,d\omega = \frac{1}{\pi}\int_{-\infty}^{\infty}\frac{\sin(\omega T)}{\omega}\,d\omega = \frac{1}{\pi}\int_{-\infty}^{\infty}\frac{\sin(\omega')}{\omega'}\,d\omega' = \frac{\pi}{\pi} = 1 = f(0).\ \checkmark
+\]
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 — DFT von Hand \textit{(18 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben ist die Zeitreihe $x = (x_0, x_1, x_2, x_3) = (2,\,0,\,-2,\,0)$, abgetastet bei vier äquidistanten Zeitpunkten.
+
+
+a) Berechne alle vier DFT-Koeffizienten $X_k = \sum_{n=0}^{3} x_n\,e^{-i\,2\pi kn/4}$ für $k=0,1,2,3$. \textit{(10 P)}
+
+
+b) Welche Frequenz dominiert das Signal? Begründe anhand der Beträge $|X_k|$. \textit{(4 P)}
+
+
+c) Im Kapitel steht: "Analytische Lösung von Hand nicht praktikabel". Erkläre, warum die Rechnung in (a) trotzdem von Hand machbar war, und ab welcher Größe $N$ man auf FFT angewiesen ist. \textit{(4 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Mit $W_4 = e^{-i\pi/2} = -i$ und $e^{-i\pi kn/2}$:
+
+
+$X_0 = 2 + 0 + (-2) + 0 = 0$
+
+
+$X_1 = 2\cdot 1 + 0\cdot(-i) + (-2)\cdot(-1) + 0\cdot i = 2 + 2 = 4$
+
+
+$X_2 = 2\cdot 1 + 0\cdot(-1) + (-2)\cdot 1 + 0\cdot(-1) = 2 - 2 = 0$
+
+
+$X_3 = 2\cdot 1 + 0\cdot i + (-2)\cdot(-1) + 0\cdot(-i) = 2 + 2 = 4$
+
+
+Also $X = (0, 4, 0, 4)$.
+
+
+b) $|X_1| = |X_3| = 4$ sind die einzigen nichtverschwindenden Koeffizienten. $X_3$ entspricht wegen der Spiegelsymmetrie reellwertiger Signale ($X_{N-k} = \overline{X_k}$) der negativen Frequenz von $X_1$. Es dominiert die Grundfrequenz $k=1$, d.h. eine Periode pro 4 Abtastpunkten — passt zum Eingangsmuster $(2, 0, -2, 0)$, das genau einer Sinus-/Cosinus-Schwingung entspricht.
+
+
+c) Bei $N=4$ sind nur $N^2 = 16$ komplexe Multiplikationen nötig, davon viele mit $\pm 1$ oder $\pm i$ — also trivial. Bereits bei $N = 1024$ wären es ca. $10^6$ Multiplikationen vs. $\sim N\log_2 N \approx 10^4$ bei FFT. Ab $N \gtrsim 64\!-\!100$ wird die naive DFT von Hand sinnlos und numerisch ineffizient; FFT ist dann Standard.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 — Transfer: Periodische Komponente in Zeitreihe \textit{(22 Punkte)}}\mbox{}\\[2pt]
+
+Ein Energieversorger zeichnet stündlich den Stromverbrauch $y(t)$ einer Region auf (24 Werte/Tag, über 30 Tage). Visuelle Inspektion zeigt einen scheinbar zufälligen Verlauf. Du sollst per Fourieranalyse periodische Strukturen finden.
+
+
+a) Skizziere als Pseudocode die Pipeline: Datenladen → DFT → Identifikation der dominanten Frequenz → Rückübersetzung in Periodendauer in Stunden. \textit{(6 P)}
+
+
+b) Nach der FFT ergeben sich (gerundet) die größten Beträge bei den Frequenzindizes $k = 30$ und $k = 60$ (bei $N = 720$ Samples). Berechne die zugehörigen Periodendauern in Stunden. Welche realweltliche Interpretation haben sie? \textit{(8 P)}
+
+
+c) Ein Kollege schlägt vor, statt FFT eine gleitende Mittelwertbildung über 24 Stunden zu nutzen, um "die Tagesperiode zu finden". Begründe, warum dies die Tagesperiode \textbf{nicht} identifiziert, und nenne ein Szenario, in dem die FFT der Mittelwertbildung klar überlegen ist. \textit{(8 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Pseudocode:
+
+\begin{lstlisting}
+y = lade_zeitreihe()                  # Länge N = 720
+N = len(y)
+Y = FFT(y)                            # komplexe Koeffizienten Y[0..N-1]
+P = |Y[1:N/2]|                        # Beträge ohne DC, nur untere Hälfte
+k_max = argmax(P) + 1                 # +1 wegen Slice ab 1
+f_k = k_max / N                       # Frequenz in 1/Sample
+T_h = 1 / f_k                         # Periode in Stunden (Sample-Rate = 1/h)
+print(T_h)
+\end{lstlisting}
+
+
+b) Periode: $T_k = N/k$ Samples = $N/k$ Stunden (Abtastrate 1/h).
+
+\begin{itemize}
+  \item $k = 30$: $T = 720/30 = 24$ h → \textbf{Tagesrhythmus} (Tag/Nacht-Verbrauch).
+  \item $k = 60$: $T = 720/60 = 12$ h → \textbf{Halbtagesrhythmus} (zweite Harmonische, z.B. Morgen-/Abendspitze).
+\end{itemize}
+
+Die zweite Harmonische zeigt, dass die Tagesschwingung kein reiner Sinus ist, sondern eine Form mit zwei Spitzen pro Tag (typisch: Morgenpeak + Abendpeak).
+
+
+c) Eine gleitende Mittelung über 24 h \textbf{eliminiert} die Tagesperiode, weil das Integral einer Sinusschwingung über genau eine Periode null ist (vgl. Aufgabe 2c) — sie wird herausgefiltert, nicht detektiert. Der Output zeigt nur den langsam variierenden Trend.
+
+
+FFT ist überlegen, wenn:
+
+\begin{itemize}
+  \item mehrere Perioden gleichzeitig vorliegen (24 h, 12 h, 168 h Wochenrhythmus) — Mittelung kann nur eine Skala dämpfen, FFT trennt alle.
+  \item die genaue Periodendauer \textbf{unbekannt} ist: FFT findet sie automatisch als Maximum im Spektrum, während Mittelung das Fenster vorgeben muss.
+\end{itemize}
+
+Konkretes Szenario: Erkennung eines wöchentlichen Industriezyklus (168 h) zusätzlich zum Tagesrhythmus — FFT zeigt beide Peaks getrennt, ein 24-h-Mittel liefert keine Information über die Wochenperiode.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 — Fehleranalyse Code \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Ein Kommilitone schreibt zur Frequenzanalyse einer Tageszeitreihe folgendes Snippet:
+
+
+\begin{lstlisting}[language=python]
+import numpy as np
+y = lade_messwerte()           # 1024 Werte, Abtastrate 1 Hz
+Y = np.fft.fft(y)
+amplituden = Y                 # Zeile A
+freq_index = np.argmax(amplituden)
+print("Dominante Frequenz Index:", freq_index)
+periode = 1024 / freq_index    # Zeile B
+print("Periode in Sekunden:", periode)
+\end{lstlisting}
+
+
+a) Identifiziere zwei sachliche Fehler im Code (Zeilen A und B) und erkläre jeweils, warum das Ergebnis falsch wird. \textit{(8 P)}
+
+
+b) Schreibe die korrigierten Zeilen. \textit{(4 P)}
+
+
+c) Selbst nach der Korrektur kann \texttt{freq\_index = 0} herauskommen. Was bedeutet das physikalisch und wie sollte man damit umgehen? \textit{(3 P)}
+
+
+\textbf{Lösung:}
+
+
+a)
+
+\begin{itemize}
+  \item \textbf{Zeile A}: \texttt{Y} ist komplexwertig. \texttt{np.argmax} auf komplexe Zahlen vergleicht über die reelle Komponente (oder ist je nach Version undefiniert/warnt) — relevant ist aber der \textbf{Betrag} $|Y_k|$. Außerdem ist die obere Hälfte des Spektrums bei reellen Eingaben das gespiegelte Konjugat der unteren — sie liefert keine neue Information und enthält eventuell den Maximalwert doppelt.
+  \item \textbf{Zeile B}: \texttt{freq\_index = 0} entspricht dem Gleichanteil (DC, Mittelwert) — \textbf{keine} Periode. Außerdem ist die korrekte Umrechnung $T = N/(k\cdot f_s) = N/k$ Sekunden nur, wenn $f_s = 1$ Hz und $k > 0$. Bei $k=0$ kommt es zur Division durch null.
+\end{itemize}
+
+b) Korrigierte Zeilen:
+
+\begin{lstlisting}[language=python]
+amplituden = np.abs(Y[:len(Y)//2])           # Zeile A korrekt
+# argmax über Index >= 1, um DC zu ignorieren:
+freq_index = np.argmax(amplituden[1:]) + 1
+periode = 1024 / freq_index                   # Zeile B nun gültig (k>=1)
+\end{lstlisting}
+
+
+c) \texttt{freq\_index = 0} = DC = das Signal hat seinen größten "Beitrag" im Mittelwert — es gibt keine dominante periodische Komponente, oder das Signal hat einen großen Offset, der die Schwingungen überstrahlt. Behandlung: Mittelwert subtrahieren (\texttt{y = y - y.mean()}), dann erneut FFT, oder \texttt{argmax} auf Indizes $\geq 1$ einschränken (wie oben).
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 6 — Vergleich kontinuierliche FT vs. DFT \textit{(10 Punkte)}}\mbox{}\\[2pt]
+
+Stelle die kontinuierliche Fouriertransformation $F(\omega) = \int_{-\infty}^{\infty} f(t)\,e^{-i\omega t}\,dt$ und die DFT $X_k = \sum_{n=0}^{N-1} x_n\,e^{-i 2\pi kn/N}$ in einer Tabelle gegenüber. Bewerte für jedes der drei Szenarien, welches Verfahren passt und begründe:
+
+
+a) analytische Berechnung des Spektrums eines mathematisch gegebenen Pulses $f(t) = e^{-t^2}$.
+
+
+b) Spektralanalyse einer endlichen, gemessenen Sensor-Zeitreihe mit 4096 Werten.
+
+
+c) Untersuchung, ob ein periodisches Muster in einer geloggten CPU-Auslastung vorliegt.
+
+
+\textbf{Lösung:}
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Aspekt}} & {\color{white}\textbf{kontinuierliche FT}} & {\color{white}\textbf{DFT (FFT)}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Eingang & Funktion $f(t)$, $t\in\mathbb{R}$ & Vektor $x_0,\dots,x_{N-1}$ \\
+Ausgang & Funktion $F(\omega)$, $\omega\in\mathbb{R}$ & Vektor $X_0,\dots,X_{N-1}$ \\
+Berechnung & analytisch, Integral & numerisch, Summe \\
+Implementierung & symbolisch (z.B. von Hand) & FFT, $\mathcal{O}(N\log N)$ \\
+Voraussetzung & $f$ integrierbar & endliche Abtastung \\
+\end{tabularx}
+}
+
+
+a) \textbf{Kontinuierliche FT} — $f(t) = e^{-t^2}$ ist analytisch geschlossen, das Integral lässt sich exakt lösen ($F(\omega) = \sqrt{\pi}\,e^{-\omega^2/4}$). Eine DFT würde das nur approximieren.
+
+
+b) \textbf{DFT/FFT} — endliche Messreihe, kein analytischer Ausdruck verfügbar. Bei $N = 4096$ ist FFT ($\sim 49\,000$ Operationen) das Mittel der Wahl; analytische FT nicht anwendbar.
+
+
+c) \textbf{DFT/FFT} — Logdaten sind zeitdiskret und endlich. Genau das im Kapitel genannte Anwendungsfeld "periodische Komponenten in Zeitreihen identifizieren" (Data Science). Kontinuierliche FT scheitert, da kein $f(t)$ als Funktion vorliegt.
+
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{document}

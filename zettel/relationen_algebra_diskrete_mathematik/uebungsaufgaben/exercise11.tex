@@ -1,0 +1,501 @@
+% ============================================================
+%  Übungsaufgaben Template (my_dhbw Stil, uebung_*.tex)
+%  Header "Übungsblatt", grün eingefärbte <details>-Lösungen.
+%  Renderer: pdflatex (zweimal)
+% ============================================================
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+\usepackage[top=2cm, bottom=2cm, left=2.4cm, right=2.4cm, footskip=1cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{ltablex}
+\keepXColumns
+\usepackage{colortbl}
+\usepackage[most,breakable]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{pdflscape}
+\usepackage{titlesec}
+\usepackage[colorlinks=true, linkcolor=accent, urlcolor=accent]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme ─────────────────────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{loesung}{RGB}{0, 100, 0}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{240, 252, 240}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer ─────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\footnotesize\color{accent}\nichttitle}
+\fancyhead[R]{\footnotesize\color{accent}\nichtsubtitle}
+\fancyfoot[R]{\footnotesize\color{accent}Blatt \thepage\,/\,\pageref{LastPage}}
+
+% ── Typografie ────────────────────────────────────────────────
+\titleformat{\section}
+    {\color{accent}\large\bfseries}{}{0pt}{}
+    [\vspace{-4pt}\color{accent}\rule{\linewidth}{1.5pt}]
+\titleformat{\subsection}
+    {\normalsize\bfseries\color{accent!85!black}}{}{0pt}{}{}
+\titleformat{\subsubsection}
+    {\small\bfseries\color{accent!70!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{10pt}{3pt}
+\titlespacing*{\subsection}{0pt}{6pt}{2pt}
+\titlespacing*{\subsubsection}{0pt}{4pt}{1pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\renewcommand{\arraystretch}{1.2}
+\setlist[itemize]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.4em}
+\setlist[enumerate]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.6em}
+
+% ── Boxen: solutionbox = Lösungsbox in grün ──────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={Abbildung: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={Tabelle: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{solutionbox}[1]{
+  enhanced,
+  colback=solutionbg, colframe=loesung,
+  title={#1}, fonttitle=\small\bfseries,
+  coltitle=white, colbacktitle=loesung,
+  breakable, before skip=8pt, after skip=8pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=single, framerule=0pt,
+  xleftmargin=4pt, xrightmargin=4pt,
+  aboveskip=6pt, belowskip=6pt,
+  keepspaces=true
+}
+
+\providecommand{\nichttitle}{Übungsblatt}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Relationen, Algebra, Diskrete Mathematik}
+\renewcommand{\nichtsubtitle}{Übungsblatt 11}
+
+
+\begin{document}
+
+\begin{center}
+{\Large\bfseries\color{accent}\nichttitle}
+\ifx\nichtsubtitle\empty\else
+  \\[2pt]{\normalsize\color{accent!80!black}\nichtsubtitle}
+\fi
+\\[2pt]
+\color{accent}\rule{0.4\linewidth}{0.8pt}\color{black}
+\end{center}
+\vspace{4pt}
+
+% ── BODY ──────────────────────────────────────────────────────
+
+\section{Übungsblatt 11 — TSP – Travelling Salesperson Problem}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 1 — Grundbegriffe und Konsequenzen \textit{(10 Punkte)}}\mbox{}\\[2pt]
+
+a) Definiere das Travelling Salesperson Problem formal über einen Graphen $G=(V,E,W)$. Welche Bedingungen muss eine gültige Tour erfüllen? \textit{(4 P)}
+
+
+b) Brute Force liefert garantiert das Optimum, hat aber exponentielle Laufzeit. Begründe konkret, wie viele verschiedene Touren bei $n=10$ Städten (Startstadt fixiert) zu prüfen sind, und erkläre, warum dies in der Praxis ab $n\approx 15{-}20$ unbrauchbar wird. \textit{(6 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Gegeben sei ein gewichteter Graph $G=(V,E,W)$ mit $|V|=n$ Städten als Knoten, $E$ als Menge der Strecken und $W:E\to\mathbb{R}_{\geq 0}$ als Längenfunktion. Gesucht ist eine Tour (Permutation der Knoten) $v_{i_1},v_{i_2},\dots,v_{i_n},v_{i_1}$, so dass:
+
+\begin{itemize}
+  \item jeder Knoten genau einmal besucht wird,
+  \item die Tour zur Startstadt zurückkehrt,
+  \item die Gesamtlänge $\sum_{k=1}^{n-1} W(v_{i_k},v_{i_{k+1}}) + W(v_{i_n},v_{i_1})$ minimal ist.
+\end{itemize}
+
+b) Bei fixiertem Startknoten gibt es $(n-1)!$ Permutationen der übrigen Knoten. Da Tour und Rücktour dieselbe Länge haben (symmetrisches TSP), sind effektiv $(n-1)!/2$ verschiedene Touren zu prüfen.
+
+
+Für $n=10$: $(10-1)!/2 = 9!/2 = 362\,880/2 = 181\,440$ Touren.
+
+
+Für $n=15$: $14!/2 \approx 4{,}36 \cdot 10^{10}$, für $n=20$: $19!/2 \approx 6{,}08 \cdot 10^{16}$. Die Zahl wächst schneller als exponentiell (fakultativ), weshalb selbst bei $10^9$ geprüften Touren/Sekunde $n=20$ über zwei Jahre Rechenzeit benötigt. Praktisch unbrauchbar.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 — Nearest-Neighbour-Heuristik anwenden \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben sei der vollständige, ungerichtete Graph mit fünf Städten $A,B,C,D,E$ und folgender Distanzmatrix:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{}} & {\color{white}\textbf{A}} & {\color{white}\textbf{B}} & {\color{white}\textbf{C}} & {\color{white}\textbf{D}} & {\color{white}\textbf{E}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+A & – & 4 & 7 & 9 & 3 \\
+B & 4 & – & 5 & 6 & 8 \\
+C & 7 & 5 & – & 2 & 6 \\
+D & 9 & 6 & 2 & – & 5 \\
+E & 3 & 8 & 6 & 5 & – \\
+\end{tabularx}
+}
+
+
+a) Führe die Nearest-Neighbour-Heuristik mit Startknoten $A$ durch. Notiere in jedem Schritt die Wahl der günstigsten Kante zum nächsten unbesuchten Knoten. Gib die resultierende Tour und ihre Gesamtlänge an. \textit{(6 P)}
+
+
+b) Wende die Verbesserung "jeden Knoten als Start probieren" an: Berechne die NNA-Touren für alle fünf möglichen Startknoten und gib die jeweilige Tourlänge an. Welche Tour ist die beste? \textit{(7 P)}
+
+
+c) Begründe, warum NNA selbst mit dieser Verbesserung keine Optimalitätsgarantie bietet. \textit{(2 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Start bei $A$:
+
+\begin{enumerate}
+  \item Von $A$: günstigste Kante zu unbesuchtem Knoten ist $A\to E$ (3).
+  \item Von $E$: $E\to D$ (5), da $E\to A$ verboten (besucht); Alternativen $E\to B$ (8), $E\to C$ (6) teurer.
+  \item Von $D$: $D\to C$ (2), günstigste freie Kante.
+  \item Von $C$: nur $B$ übrig, $C\to B$ (5).
+  \item Rückkehr: $B\to A$ (4).
+\end{enumerate}
+
+Tour: $A\to E\to D\to C\to B\to A$, Länge $= 3+5+2+5+4 = 19$.
+
+
+b) Berechnung für jeden Startknoten:
+
+
+\begin{itemize}
+  \item \textbf{Start A}: $A\to E\to D\to C\to B\to A = 3+5+2+5+4 = 19$
+  \item \textbf{Start B}: $B\to A(4)\to E(3)\to D(5)\to C(2)\to B(5) = 4+3+5+2+5 = 19$
+  \item \textbf{Start C}: $C\to D(2)\to E(5)\to A(3)\to B(4)\to C(5) = 2+5+3+4+5 = 19$
+  \item \textbf{Start D}: $D\to C(2)\to B(5)\to A(4)\to E(3)\to D(5) = 2+5+4+3+5 = 19$
+  \item \textbf{Start E}: $E\to A(3)\to B(4)\to C(5)\to D(2)\to E(5) = 3+4+5+2+5 = 19$
+\end{itemize}
+
+Alle Startknoten liefern in diesem Beispiel zufällig dieselbe Tour bzw. eine zyklische Verschiebung mit Länge \textbf{19}. Die beste NNA-Tour hat Länge 19.
+
+
+c) NNA ist ein gieriges (greedy) Verfahren: Die lokal günstigste Kante muss nicht zur global optimalen Tour führen. Auch das Probieren aller $n$ Startknoten überprüft nur $n$ greedy-erzeugte Touren, nicht alle $(n-1)!/2$ möglichen. Optimumsgarantie liefert nur ein vollständiges Verfahren wie Brute Force.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 — 2-Opt-Verbesserung \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben sei eine Starttour $T = A\to B\to C\to D\to E\to A$ über den Graphen aus Aufgabe 2.
+
+
+a) Berechne die Länge der Starttour $T$. \textit{(2 P)}
+
+
+b) Erkläre den 2-Opt-Schritt allgemein: Welche zwei Kanten werden entfernt, welches Teilstück wird invertiert, und welche zwei neuen Kanten entstehen? \textit{(4 P)}
+
+
+c) Führe einen 2-Opt-Tausch durch, der die Kanten $(A,B)$ und $(D,E)$ entfernt. Gib die neue Tour und ihre Länge an. Wird der Tausch übernommen? \textit{(6 P)}
+
+
+d) Setze 2-Opt iterativ fort, bis keine Verbesserung mehr möglich ist. Gib die finale Tour mit Länge an und vergleiche sie mit dem NNA-Ergebnis aus Aufgabe 2. \textit{(8 P)}
+
+
+\textbf{Lösung:}
+
+
+a) $T: A\to B\to C\to D\to E\to A$
+
+Länge $= W(A,B)+W(B,C)+W(C,D)+W(D,E)+W(E,A) = 4+5+2+5+3 = 19$.
+
+
+b) Bei einem 2-Opt-Schritt werden zwei nicht-benachbarte Kanten $(v_i,v_{i+1})$ und $(v_j,v_{j+1})$ aus der Tour entfernt. Das Teilstück zwischen $v_{i+1}$ und $v_j$ wird invertiert (in umgekehrter Reihenfolge durchlaufen). Die neuen Kanten $(v_i,v_j)$ und $(v_{i+1},v_{j+1})$ schließen die Tour wieder. Wenn die neue Tourlänge kleiner ist als die alte, wird der Tausch übernommen.
+
+
+c) Entferne $(A,B)$ und $(D,E)$, invertiere das Teilstück $B\to C\to D$ zu $D\to C\to B$.
+
+Neue Tour: $A\to D\to C\to B\to E\to A$
+
+Länge $= W(A,D)+W(D,C)+W(C,B)+W(B,E)+W(E,A) = 9+2+5+8+3 = 27$.
+
+
+$27 > 19$, also \textbf{wird der Tausch nicht übernommen}.
+
+
+d) Wir prüfen alle nicht-trivialen 2-Opt-Tausche auf $T = A\to B\to C\to D\to E\to A$ (Länge 19):
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{entfernte Kanten}} & {\color{white}\textbf{neue Tour}} & {\color{white}\textbf{Länge}} & {\color{white}\textbf{Verbesserung?}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+$(A,B),(C,D)$ & $A\to C\to B\to D\to E\to A$ & $7+5+6+5+3=26$ & nein \\
+$(A,B),(D,E)$ & $A\to D\to C\to B\to E\to A$ & $9+2+5+8+3=27$ & nein \\
+$(B,C),(D,E)$ & $A\to B\to D\to C\to E\to A$ & $4+6+2+6+3=21$ & nein \\
+$(B,C),(E,A)$ & $A\to B\to E\to D\to C\to A$ & $4+8+5+2+7=26$ & nein \\
+$(C,D),(E,A)$ & $A\to B\to C\to E\to D\to A$ & $4+5+6+5+9=29$ & nein \\
+\end{tabularx}
+}
+
+
+Keiner der Tausche verbessert die Tour. Die finale 2-Opt-Tour ist $T$ selbst mit Länge \textbf{19} — ein lokales Optimum.
+
+
+Vergleich: NNA lieferte ebenfalls Länge 19. Hier stimmen NNA-Ergebnis und 2-Opt-lokales-Optimum überein. Allgemein hätte 2-Opt eine schlechte NNA-Tour weiter verbessern können; im konkreten Fall ist das Ergebnis bereits gut (möglicherweise sogar global optimal — das müsste Brute Force bestätigen).
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 — Transfer: TSP-Variante in der Genom-Sequenzierung \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+In der DNA-Sequenzierung werden $n$ kurze DNA-Teilstränge (Reads) zu einem Gesamtstrang zusammengesetzt. Die "Distanz" zwischen zwei Reads $r_i,r_j$ ist die Anzahl Basen, die nicht überlappen, wenn $r_i$ direkt vor $r_j$ gesetzt wird (kleinerer Wert = besseres Aneinanderfügen). Ziel: Reihenfolge finden, die alle Reads verbindet und die Summe der Nicht-Überlappungen minimiert. \textbf{Eine Rückkehr zum Startknoten ist nicht erforderlich.}
+
+
+a) Erkläre, welche TSP-Variante aus dem Kapitel hier zur Anwendung kommt und welcher Unterschied zum klassischen TSP besteht. \textit{(3 P)}
+
+
+b) Diskutiere, ob die im Kapitel besprochenen Verfahren (Brute Force, NNA, 2-Opt) auf diese Variante übertragen werden können. Welche Anpassungen sind nötig? \textit{(6 P)}
+
+
+c) Bei einem Sequenzierungsprojekt mit $n=25$ Reads soll praktisch eine Lösung gefunden werden. Empfiehl ein konkretes Vorgehen (Verfahrensreihenfolge) und begründe es. \textit{(6 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Es handelt sich um \textbf{TSP ohne Rückkehr} (Hamilton-Pfad statt Hamilton-Kreis). Im klassischen TSP wird zur Startstadt zurückgekehrt; hier endet die Sequenz nach dem letzten Read, da DNA-Teilstränge linear angeordnet werden. Die Tourlänge wird über $n-1$ Kanten statt $n$ Kanten summiert, und der Startknoten ist nicht zwangsläufig fest.
+
+
+b) \textbf{Brute Force} ist direkt übertragbar: Statt $(n-1)!/2$ werden $n!/2$ Permutationen geprüft (Start nicht fixiert; bei symmetrischen Distanzen halbieren). Optimal, aber bei $n=25$ ist $25!\approx 1{,}55\cdot 10^{25}$ — unbrauchbar.
+
+
+\textbf{NNA} lässt sich anwenden: Start bei beliebigem Read, jeweils der Read mit kleinster Nicht-Überlappung als nächster, ohne abschließende Rückkehrkante. Anpassung: Schleife terminiert bei Knoten $n$, kein $W(v_n,v_1)$. Empfehlenswert: alle $n$ Startknoten probieren.
+
+
+\textbf{2-Opt} ist anwendbar, allerdings auf Pfaden statt Kreisen. Beim Invertieren eines Teilstücks ändern sich zwei Kanten (am Pfadrand u. U. nur eine, falls das Teilstück bis zum Anfang/Ende reicht). Die Akzeptanzregel (neue Länge < alte) bleibt identisch.
+
+
+c) Bei $n=25$ ist Brute Force ausgeschlossen ($\approx 10^{25}$ Pfade). Empfohlenes Vorgehen:
+
+
+\begin{enumerate}
+  \item \textbf{NNA mit allen 25 Startknoten} ausführen (Laufzeit $\mathcal{O}(n^3)$, hier ca. $25^3 \approx 15\,000$ Operationen — vernachlässigbar). Beste der 25 Touren als Startlösung wählen.
+  \item \textbf{2-Opt} auf diese Startlösung anwenden, bis ein lokales Optimum erreicht ist.
+\end{enumerate}
+
+Begründung: Diese Kombination liefert in der Praxis sehr gute (wenn auch nicht garantiert optimale) Lösungen in Polynomialzeit. Für höhere Qualität müsste man auf weiterführende Verfahren (lineares Programmieren, evolutionäre Algorithmen) zurückgreifen, die nicht behandelt wurden.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 — Analyse und Vergleich der Verfahren \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Vergleiche die drei behandelten Verfahren \textbf{Brute Force}, \textbf{Nearest Neighbour} und \textbf{2-Opt} systematisch.
+
+
+a) Fülle folgende Tabelle vollständig aus (Lösungsqualität, Laufzeitverhalten, benötigte Vorbedingung): \textit{(6 P)}
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Verfahren}} & {\color{white}\textbf{Lösungsqualität}} & {\color{white}\textbf{Laufzeitklasse}} & {\color{white}\textbf{Vorbedingung}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Brute Force &  &  &  \\
+NNA &  &  &  \\
+2-Opt &  &  &  \\
+\end{tabularx}
+}
+
+
+b) Ein Logistikunternehmen plant Routen für ein VRP-ähnliches Szenario mit jeweils ca. 12 Stopps pro Fahrer und benötigt täglich neu berechnete Routen innerhalb weniger Sekunden. Welches Verfahren bzw. welche Kombination empfiehlst du? Begründe. \textit{(5 P)}
+
+
+c) Ein Mikrochip-Designer will eine Bohrreihenfolge für 500 Löcher auf einer Leiterplatte berechnen, die einmalig vor Produktionsstart über Nacht (mehrere Stunden Rechenzeit verfügbar) optimiert werden soll. Welche Strategie ist hier sinnvoll? Begründe. \textit{(4 P)}
+
+
+\textbf{Lösung:}
+
+
+a)
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Verfahren}} & {\color{white}\textbf{Lösungsqualität}} & {\color{white}\textbf{Laufzeitklasse}} & {\color{white}\textbf{Vorbedingung}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Brute Force & optimal (garantiert) & exponentiell, $\mathcal{O}(n!)$ & keine \\
+NNA & suboptimal, startknotenabhängig; mit $n$ Starts immer noch ohne Garantie & $\mathcal{O}(n^2)$ pro Start, $\mathcal{O}(n^3)$ mit allen Starts & Startknoten festlegen \\
+2-Opt & approximativ; lokales Optimum & pro Iteration $\mathcal{O}(n^2)$ Tausche; Anzahl Iterationen problemabhängig & bestehende Starttour (z. B. von NNA) \\
+\end{tabularx}
+}
+
+
+b) Bei $n=12$ wäre Brute Force noch grenzwertig machbar ($11!/2 \approx 2\cdot 10^7$ Touren — wenige Sekunden), aber bei mehreren Fahrzeugen täglich neu zu berechnen wird das knapp. \textbf{Empfehlung: NNA mit allen Startknoten + 2-Opt}. Begründung: $\mathcal{O}(n^3)$ bzw. $\mathcal{O}(n^2)$ pro 2-Opt-Iteration ist bei $n=12$ in Millisekunden fertig; gleichzeitig liefert die Kombination in der Praxis Lösungen sehr nahe am Optimum, was für Logistik ausreichend ist.
+
+
+c) Bei $n=500$ ist Brute Force absolut ausgeschlossen ($499!/2$ ist astronomisch). \textbf{Empfehlung: NNA mit allen 500 Startknoten als Initialisierung, anschließend 2-Opt bis zur Konvergenz}, ggf. mehrfach mit verschiedenen Startlösungen wiederholen, um lokale Optima zu vergleichen. Begründung: Das Zeitbudget (mehrere Stunden) erlaubt aufwendige 2-Opt-Iterationen, die bei $n=500$ pro Tausch-Prüfung $\mathcal{O}(n^2)=250\,000$ Operationen kosten. Für noch bessere Ergebnisse wären die im Kapitel erwähnten, aber nicht behandelten Verfahren (lineares Programmieren, evolutionäre Algorithmen) zusätzlich zu erwägen.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 6 — Pseudocode-Analyse: Fehler in NNA-Implementierung \textit{(10 Punkte)}}\mbox{}\\[2pt]
+
+Ein Studierender hat folgende NNA-Implementierung als Pseudocode geschrieben:
+
+
+\begin{lstlisting}
+function NNA(graph G, startknoten s):
+    tour = [s]
+    aktuell = s
+    while länge(tour) < anzahl_knoten(G):
+        nächster = null
+        min_dist = ∞
+        for jeder knoten v in G:
+            if W(aktuell, v) < min_dist:
+                nächster = v
+                min_dist = W(aktuell, v)
+        tour.append(nächster)
+        aktuell = nächster
+    return tour
+\end{lstlisting}
+
+
+a) Identifiziere alle Fehler in diesem Pseudocode und erkläre jeweils die Konsequenz. \textit{(6 P)}
+
+
+b) Korrigiere den Pseudocode so, dass er die NNA korrekt umsetzt (inklusive Rückkehr zum Startknoten). \textit{(4 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Drei Fehler:
+
+
+\begin{enumerate}
+  \item \textbf{Bereits besuchte Knoten werden nicht ausgeschlossen.} Die Schleife \texttt{for jeder knoten v in G} durchläuft alle Knoten inkl. des aktuellen und bereits besuchter. Konsequenz: Da $W(\text{aktuell},\text{aktuell})=0$ (oder undefiniert), wird $\text{nächster}=\text{aktuell}$ gewählt, die Schleife terminiert nie oder läuft endlos. Auch ohne Selbst-Schleife würden Knoten mehrfach besucht — verletzt die Definition einer gültigen Tour.
+\end{enumerate}
+
+\begin{enumerate}
+  \item \textbf{Keine Rückkehr zum Startknoten.} Nach der \texttt{while}-Schleife endet die Tour beim letzten besuchten Knoten. Die Definition des TSP fordert jedoch die Rückkehr zur Startstadt; die Kante $W(v_n,s)$ fehlt in Tour und Längensumme.
+\end{enumerate}
+
+\begin{enumerate}
+  \item \textbf{Tourlänge wird nicht berechnet/zurückgegeben.} Die Funktion gibt nur die Knotenfolge zurück; die Gesamtlänge muss separat berechnet werden, was bei einer NNA-Implementierung üblicherweise direkt mitgeführt wird.
+\end{enumerate}
+
+b) Korrigierter Pseudocode:
+
+
+\begin{lstlisting}
+function NNA(graph G, startknoten s):
+    tour = [s]
+    besucht = {s}
+    aktuell = s
+    gesamtlänge = 0
+    while länge(tour) < anzahl_knoten(G):
+        nächster = null
+        min_dist = ∞
+        for jeder knoten v in G:
+            if v ∉ besucht and W(aktuell, v) < min_dist:
+                nächster = v
+                min_dist = W(aktuell, v)
+        tour.append(nächster)
+        besucht.add(nächster)
+        gesamtlänge = gesamtlänge + min_dist
+        aktuell = nächster
+    // Rückkehr zum Startknoten
+    tour.append(s)
+    gesamtlänge = gesamtlänge + W(aktuell, s)
+    return (tour, gesamtlänge)
+\end{lstlisting}
+
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{document}

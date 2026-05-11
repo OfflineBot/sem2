@@ -1,0 +1,461 @@
+% ============================================================
+%  Übungsaufgaben Template (my_dhbw Stil, uebung_*.tex)
+%  Header "Übungsblatt", grün eingefärbte <details>-Lösungen.
+%  Renderer: pdflatex (zweimal)
+% ============================================================
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+\usepackage[top=2cm, bottom=2cm, left=2.4cm, right=2.4cm, footskip=1cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{ltablex}
+\keepXColumns
+\usepackage{colortbl}
+\usepackage[most,breakable]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{pdflscape}
+\usepackage{titlesec}
+\usepackage[colorlinks=true, linkcolor=accent, urlcolor=accent]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme ─────────────────────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{loesung}{RGB}{0, 100, 0}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{240, 252, 240}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer ─────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\footnotesize\color{accent}\nichttitle}
+\fancyhead[R]{\footnotesize\color{accent}\nichtsubtitle}
+\fancyfoot[R]{\footnotesize\color{accent}Blatt \thepage\,/\,\pageref{LastPage}}
+
+% ── Typografie ────────────────────────────────────────────────
+\titleformat{\section}
+    {\color{accent}\large\bfseries}{}{0pt}{}
+    [\vspace{-4pt}\color{accent}\rule{\linewidth}{1.5pt}]
+\titleformat{\subsection}
+    {\normalsize\bfseries\color{accent!85!black}}{}{0pt}{}{}
+\titleformat{\subsubsection}
+    {\small\bfseries\color{accent!70!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{10pt}{3pt}
+\titlespacing*{\subsection}{0pt}{6pt}{2pt}
+\titlespacing*{\subsubsection}{0pt}{4pt}{1pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\renewcommand{\arraystretch}{1.2}
+\setlist[itemize]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.4em}
+\setlist[enumerate]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.6em}
+
+% ── Boxen: solutionbox = Lösungsbox in grün ──────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={Abbildung: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={Tabelle: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{solutionbox}[1]{
+  enhanced,
+  colback=solutionbg, colframe=loesung,
+  title={#1}, fonttitle=\small\bfseries,
+  coltitle=white, colbacktitle=loesung,
+  breakable, before skip=8pt, after skip=8pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=single, framerule=0pt,
+  xleftmargin=4pt, xrightmargin=4pt,
+  aboveskip=6pt, belowskip=6pt,
+  keepspaces=true
+}
+
+\providecommand{\nichttitle}{Übungsblatt}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Relationen, Algebra, Diskrete Mathematik}
+\renewcommand{\nichtsubtitle}{Übungsblatt 4}
+
+
+\begin{document}
+
+\begin{center}
+{\Large\bfseries\color{accent}\nichttitle}
+\ifx\nichtsubtitle\empty\else
+  \\[2pt]{\normalsize\color{accent!80!black}\nichtsubtitle}
+\fi
+\\[2pt]
+\color{accent}\rule{0.4\linewidth}{0.8pt}\color{black}
+\end{center}
+\vspace{4pt}
+
+% ── BODY ──────────────────────────────────────────────────────
+
+\section{Übungsblatt 4 — Relationen}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 1 — Eigenschaften prüfen \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben sei die Menge M = \{1, 2, 3, 4\} und die Relation
+
+R = \{(1,1), (2,2), (3,3), (4,4), (1,2), (2,1), (3,4), (4,3)\} ⊆ M².
+
+
+a) Definiere die Eigenschaften \textit{reflexiv}, \textit{symmetrisch} und \textit{transitiv}. \textit{(3 P)}
+
+b) Prüfe für R jede der acht Eigenschaften aus dem Kapitel (reflexiv, irreflexiv, symmetrisch, asymmetrisch, antisymmetrisch, transitiv, linear, konnex). Jede Antwort kurz begründen (Gegenbeispiel oder Argument). \textit{(8 P)}
+
+c) Begründe, ob R eine Äquivalenzrelation ist, und gib gegebenenfalls alle Äquivalenzklassen an. \textit{(4 P)}
+
+
+\textbf{Lösung:}
+
+
+a)
+
+\begin{itemize}
+  \item \textit{Reflexiv}: ∀x ∈ M: xRx.
+  \item \textit{Symmetrisch}: xRy → yRx für alle x,y.
+  \item \textit{Transitiv}: xRy ∧ yRz → xRz für alle x,y,z.
+\end{itemize}
+
+b)
+
+\begin{itemize}
+  \item \textbf{Reflexiv}: ✓ Alle Paare (1,1), (2,2), (3,3), (4,4) ∈ R.
+  \item \textbf{Irreflexiv}: ✗ Wegen (1,1) ∈ R existiert ein x mit xRx.
+  \item \textbf{Symmetrisch}: ✓ Jedes nicht-diagonale Paar tritt mit getauschten Komponenten auf: (1,2)↔(2,1), (3,4)↔(4,3); Diagonalpaare sind trivial symmetrisch.
+  \item \textbf{Asymmetrisch}: ✗ Bereits (1,1) ∈ R verletzt: aus 1R1 müsste ¬1R1 folgen.
+  \item \textbf{Antisymmetrisch}: ✗ (1,2) ∈ R und (2,1) ∈ R, aber 1 ≠ 2.
+  \item \textbf{Transitiv}: ✓ Zu prüfen sind alle Verkettungen. (1,2)∧(2,1) → (1,1) ✓, (2,1)∧(1,2) → (2,2) ✓, (3,4)∧(4,3) → (3,3) ✓, (4,3)∧(3,4) → (4,4) ✓; alle anderen Ketten enden in der Diagonale, die ebenfalls drin ist.
+  \item \textbf{Linear}: ✗ Linear verlangt für \textit{alle} Paare xRy ∨ yRx, also auch x=y. Hier zwar erfüllt für gleiche x; aber etwa (1,3) ∉ R und (3,1) ∉ R → Bedingung verletzt.
+  \item \textbf{Konnex}: ✗ Gleiches Gegenbeispiel: 1 ≠ 3, weder 1R3 noch 3R1.
+\end{itemize}
+
+c) R ist reflexiv, symmetrisch und transitiv → \textbf{Äquivalenzrelation}. Äquivalenzklassen:
+
+[1] = [2] = \{1, 2\}, [3] = [4] = \{3, 4\}.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 — Ordnung modellieren \textit{(18 Punkte)}}\mbox{}\\[2pt]
+
+Auf der Menge T = \{1, 2, 3, 4, 6, 12\} sei die Relation T = "teilt" definiert durch
+
+a T b :⇔ b ist ohne Rest durch a teilbar.
+
+
+a) Liste alle Paare (a,b) ∈ T mit a ≠ b auf. \textit{(3 P)}
+
+b) Welche der Eigenschaften reflexiv, antisymmetrisch, asymmetrisch, transitiv, linear, konnex erfüllt T? Begründe jeweils. \textit{(7 P)}
+
+c) Klassifiziere T anhand der Tabelle aus dem Kapitel (Quasi-, Halb-, Vollordnung; reflexive oder irreflexive Variante). \textit{(3 P)}
+
+d) Konstruiere durch eine kleinste Streichung in der Grundmenge eine \textbf{Vollordnung} im reflexiven Sinn. Welche Elemente musst du entfernen, und warum genügt das? \textit{(5 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Paare mit a ≠ b:
+
+(1,2), (1,3), (1,4), (1,6), (1,12), (2,4), (2,6), (2,12), (3,6), (3,12), (4,12), (6,12).
+
+
+b)
+
+\begin{itemize}
+  \item \textbf{Reflexiv}: ✓ Jede Zahl teilt sich selbst, also a T a.
+  \item \textbf{Antisymmetrisch}: ✓ Aus a|b und b|a folgt für positive natürliche Zahlen a = b.
+  \item \textbf{Asymmetrisch}: ✗ Reflexive Paare wie (2,2) zeigen, dass aus aTa nicht ¬aTa folgt.
+  \item \textbf{Transitiv}: ✓ a|b und b|c ⇒ a|c (Standardresultat der Teilbarkeit).
+  \item \textbf{Linear}: ✗ 4 und 6 sind unvergleichbar: weder 4|6 noch 6|4.
+  \item \textbf{Konnex}: ✗ Gleiches Gegenbeispiel 4 und 6 (verschieden, aber unvergleichbar).
+\end{itemize}
+
+c) Reflexiv + transitiv + antisymmetrisch ⇒ \textbf{reflexive Halbordnung}. Linearität fehlt, daher keine Vollordnung.
+
+
+d) Damit eine Vollordnung im reflexiven Sinn entsteht, muss die Relation zusätzlich linear sein, d. h. je zwei Elemente vergleichbar. Inkomparable Paare in T sind genau \{2,3\}, \{3,4\}, \{4,6\}, \{2,3\} (und Folge-Inkomparabilitäten mit 3). Es genügt, die \textbf{3} zu entfernen — danach bleibt \{1, 2, 4, 6, 12\}. Prüfung: 1|2|4|12 und 6 muss noch eingeordnet werden — 4∤6 und 6∤4, also bleibt \{4,6\} inkomparabel. Daher reicht 3 allein nicht.
+
+
+Korrekt: Es müssen entweder \textbf{3 und 4} oder \textbf{3 und 6} entfernt werden. Wählen wir \{3, 4\}: übrig bleibt \{1, 2, 6, 12\} mit Kette 1|2|6|12 ✓ — alle Paare vergleichbar, reflexiv, antisymmetrisch, transitiv ⇒ Vollordnung (reflexive Variante = lineare Halbordnung).
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 — Schemafehler in einer Datenbankrelation \textit{(12 Punkte)}}\mbox{}\\[2pt]
+
+Eine Datenbankrelation ist nach dem Kapitel eine n-stellige Relation; der Tabellenkopf bildet das Schema. Gegeben:
+
+
+\begin{lstlisting}
+KURSBELEGUNG(MatrNr, Name, Kurs, Dozent)
+\end{lstlisting}
+
+
+mit Tupeln:
+
+\begin{lstlisting}
+(101, "Aydin",   "Mathe1", "Hofer")
+(102, "Becker",  "Mathe1", "Hofer")
+(101, "Aydın",   "Info1",  "Klein")
+(103, "Cuong",   "Mathe1", "Hofer")
+\end{lstlisting}
+
+
+a) Erkläre mit der Definition aus dem Kapitel, warum die obige Tabelle eine 4-stellige Relation R ⊆ M₁ × M₂ × M₃ × M₄ ist. Was sind M₁ … M₄? \textit{(3 P)}
+
+b) Tupel 1 und 3 haben dieselbe MatrNr 101, aber unterschiedliche Schreibweisen des Namens. Welche Konsequenz hat das auf Mengeneigenschaften der Relation? Ist R immer noch eine Menge von Tupeln? \textit{(4 P)}
+
+c) Definiere auf der Projektion auf (Kurs, Dozent) die Relation S "wird gelesen von". Prüfe, ob S funktional ist (d. h. zu jedem Kurs \textit{höchstens ein} Dozent). Welche der Eigenschaften aus dem Kapitel ist S vergleichbar? \textit{(5 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Jede Zeile ist ein 4-Tupel (m, n, k, d). M₁ = Menge zulässiger Matrikelnummern (ℕ), M₂ = Zeichenketten für Namen, M₃ = Kurs-IDs, M₄ = Dozent-Namen. R enthält genau die wahren Tupel "Student m mit Name n belegt Kurs k bei Dozent d", also R ⊆ M₁ × M₂ × M₃ × M₄.
+
+
+b) Eine Relation ist eine \textit{Menge} von Tupeln, d. h. \textbf{alle Tupel müssen paarweise verschieden} sein. (101,"Aydin","Mathe1","Hofer") und (101,"Aydın","Info1","Klein") sind als 4-Tupel verschieden — also formal in Ordnung; R ist eine Menge. Allerdings verletzt es die \textit{fachliche} Konsistenz: dieselbe MatrNr identifiziert eindeutig einen Studenten, der Name müsste also in jedem Tupel mit MatrNr=101 identisch sein. Folge: MatrNr ist \textit{nicht} funktional bestimmend für Name in dieser Tabelle — das Schema ist nicht in einer sinnvollen Normalform.
+
+
+c) Projektion: \{("Mathe1","Hofer"), ("Info1","Klein"), ("Mathe1","Hofer"), ("Mathe1","Hofer")\} = \{("Mathe1","Hofer"), ("Info1","Klein")\} (Mengen!). Zu jedem Kurs gibt es genau einen Dozenten ⇒ S ist \textbf{rechtseindeutig (funktional)}.
+
+Vergleich mit Kapitel-Eigenschaften: Funktionalität entspricht dort am ehesten der \textbf{Asymmetrie/Antisymmetrie}-Idee in dem Sinn, dass es zu einem linken Element nicht zwei verschiedene rechte Partner geben darf. Die im Kapitel genannten 8 Eigenschaften decken Funktionalität \textit{nicht} direkt ab — Mathe1 steht zu Hofer in Relation, aber Hofer nicht zu Mathe1 (S ist also weder symmetrisch noch reflexiv; die Mengen links und rechts sind sogar disjunkt).
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 — Äquivalenzklassen modulo \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Sei n ∈ ℕ, n ≥ 2 fest. Auf ℤ definiere
+
+a ≡ₙ b :⇔ n teilt (a − b).
+
+
+a) Zeige durch Anwendung der Definitionen aus dem Kapitel, dass ≡ₙ Reflexivität, Symmetrie und Transitivität erfüllt — also Äquivalenzrelation ist. \textit{(6 P)}
+
+b) Bestimme für n = 5 alle Äquivalenzklassen und beschreibe sie als Mengen. \textit{(4 P)}
+
+c) Zeige: Die Anzahl der Äquivalenzklassen ist genau n. \textit{(5 P)}
+
+
+\textbf{Lösung:}
+
+
+a)
+
+\begin{itemize}
+  \item \textit{Reflexiv}: a − a = 0, und n | 0 (jede Zahl teilt 0). Also a ≡ₙ a für alle a ∈ ℤ.
+  \item \textit{Symmetrisch}: Sei a ≡ₙ b, also n | (a − b). Dann gibt es k ∈ ℤ mit a − b = kn. Daraus b − a = −kn, und −k ∈ ℤ ⇒ n | (b − a) ⇒ b ≡ₙ a.
+  \item \textit{Transitiv}: Sei a ≡ₙ b und b ≡ₙ c, d. h. a − b = kn, b − c = ℓn mit k, ℓ ∈ ℤ. Addition: a − c = (k + ℓ)n, also n | (a − c) ⇒ a ≡ₙ c.
+\end{itemize}
+
+Damit ist ≡ₙ eine Äquivalenzrelation und teilt ℤ laut Kapitel in Äquivalenzklassen.
+
+
+b) Für n = 5:
+
+\begin{itemize}
+  \item [0] = \{…, −10, −5, 0, 5, 10, …\} = 5ℤ
+  \item [1] = \{…, −9, −4, 1, 6, 11, …\} = 5ℤ + 1
+  \item [2] = \{…, −8, −3, 2, 7, 12, …\} = 5ℤ + 2
+  \item [3] = \{…, −7, −2, 3, 8, 13, …\} = 5ℤ + 3
+  \item [4] = \{…, −6, −1, 4, 9, 14, …\} = 5ℤ + 4
+\end{itemize}
+
+c) Jedes a ∈ ℤ lässt sich nach Division mit Rest eindeutig als a = qn + r mit 0 ≤ r < n schreiben. Dann gilt a ≡ₙ r, also a ∈ [r]. Die Klassen [0], [1], …, [n−1] decken ℤ ab. Sie sind disjunkt: wären [r] = [s] für 0 ≤ r < s < n, so n | (s − r), aber 0 < s − r < n — Widerspruch. Folglich existieren genau n verschiedene Klassen.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 — Fehleranalyse Pseudocode \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+Eine Studentin schreibt eine Funktion, die prüfen soll, ob eine als Paarmenge gegebene binäre Relation R auf einer endlichen Menge M die Eigenschaft \textbf{transitiv} im Sinne des Kapitels (xRy ∧ yRz → xRz) erfüllt:
+
+
+\begin{lstlisting}
+function isTransitive(M, R):
+    for each (x, y) in R:
+        for each z in M:
+            if (y, z) in R:
+                if (x, z) in R:
+                    return true
+    return false
+\end{lstlisting}
+
+
+a) Beschreibe in einem Satz, was dieser Code tatsächlich entscheidet (also was bei \texttt{return true} und bei \texttt{return false} wirklich gilt). \textit{(4 P)}
+
+b) Konstruiere eine konkrete Relation auf M = \{1, 2, 3\}, die der Code als \texttt{true} meldet, obwohl sie laut Definition \textbf{nicht} transitiv ist. \textit{(6 P)}
+
+c) Korrigiere den Pseudocode so, dass er Transitivität korrekt entscheidet. Begründe, warum die Korrektur ausreicht. \textit{(6 P)}
+
+d) Wie verändert sich die Worst-Case-Laufzeit deiner korrigierten Variante in Abhängigkeit von |M| = m und |R| = r? \textit{(4 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Der Code liefert \texttt{true}, sobald \textbf{irgendein} Tripel (x, y, z) mit (x,y), (y,z), (x,z) ∈ R gefunden wird; \texttt{false}, wenn kein einziges solches Tripel existiert. Das ist also die Existenz einer Transitivitätszeuge, \textbf{nicht} die universelle Transitivitätsbedingung.
+
+
+b) M = \{1, 2, 3\}, R = \{(1,2), (2,3), (1,3), (3,1)\}.
+
+\begin{itemize}
+  \item Tripel (1,2,3): (1,2), (2,3), (1,3) ∈ R ⇒ Code gibt \texttt{true} zurück.
+  \item Aber: (2,3) ∈ R und (3,1) ∈ R, jedoch (2,1) ∉ R ⇒ R ist \textit{nicht} transitiv.
+\end{itemize}
+
+c) Korrektur — alle Verletzungen suchen:
+
+
+\begin{lstlisting}
+function isTransitive(M, R):
+    for each (x, y) in R:
+        for each (y2, z) in R:
+            if y2 == y:
+                if (x, z) not in R:
+                    return false
+    return true
+\end{lstlisting}
+
+
+Begründung: Der Code prüft jede mögliche Verkettung (x,y),(y,z) ∈ R. Findet er ein z mit (x,z) ∉ R, ist die Bedingung xRy ∧ yRz → xRz verletzt — also nicht-transitiv. Erst wenn \textit{keine} Verletzung existiert, gibt er \texttt{true} zurück. Das entspricht exakt der Definition aus dem Kapitel.
+
+
+Alternative äquivalent: zwei Schleifen über R, die zweite passend gefiltert.
+
+
+d) Äußere Schleife: r Iterationen. Innere Schleife im obigen Code: r Iterationen, der \texttt{(x,z) ∈ R}-Test mit Hash-Set/Lookup-Struktur in O(1). Gesamt \textbf{O(r²)}. Falls die innere Schleife stattdessen über M läuft (mit Test (y,z) ∈ R), ergibt sich O(r·m); bei dichtem R ist r ≤ m², also schlimmstenfalls O(m⁴). Mit Set-Lookup ist O(r²) bzw. O(m·r) die natürliche Schranke.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 6 — Halbordnung vs. Vollordnung \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben sei die Menge P = 𝒫(\{a, b, c\}) (Potenzmenge) mit der Relation ⊆ (Teilmenge), sowie die Menge ℕ mit der Relation ≤.
+
+
+a) Zeige, dass beide Relationen Halbordnungen im reflexiven Sinn sind (Reflexivität, Antisymmetrie, Transitivität). \textit{(6 P)}
+
+b) Begründe, dass (ℕ, ≤) zusätzlich linear, (P, ⊆) jedoch \textit{nicht} linear ist. Gib für (P, ⊆) ein konkretes Gegenbeispiel an. \textit{(5 P)}
+
+c) Klassifiziere beide nach der Tabelle aus dem Kapitel. \textit{(3 P)}
+
+d) Im Kapitel steht: \textit{"größer oder gleich groß" ist keine reflexive Halbordnung}. Übertrage diese Beobachtung: Definiere auf P die Relation ≼ durch A ≼ B :⇔ |A| ≤ |B| (Mächtigkeitsvergleich). Welche der drei Halbordnungseigenschaften scheitert, und warum? Welche Klasse aus der Kapitel-Tabelle passt stattdessen? \textit{(6 P)}
+
+
+\textbf{Lösung:}
+
+
+a)
+
+\begin{itemize}
+  \item \textbf{(P, ⊆)}:
+\begin{itemize}
+  \item Reflexiv: A ⊆ A für jede Menge A.
+  \item Antisymmetrisch: A ⊆ B ∧ B ⊆ A ⇒ A = B (Mengengleichheit).
+  \item Transitiv: A ⊆ B ∧ B ⊆ C ⇒ A ⊆ C.
+\end{itemize}
+  \item \textbf{(ℕ, ≤)}:
+\begin{itemize}
+  \item Reflexiv: n ≤ n.
+  \item Antisymmetrisch: n ≤ m ∧ m ≤ n ⇒ n = m.
+  \item Transitiv: n ≤ m ∧ m ≤ k ⇒ n ≤ k.
+\end{itemize}
+\end{itemize}
+
+Beide Relationen sind also reflexive Halbordnungen.
+
+
+b) Linearität: ∀x,y: xRy ∨ yRx.
+
+\begin{itemize}
+  \item ℕ: Für je zwei n,m ∈ ℕ gilt stets n ≤ m oder m ≤ n (Trichotomie); also linear.
+  \item P: Gegenbeispiel A = \{a\}, B = \{b\}. Weder A ⊆ B noch B ⊆ A. Daher nicht linear.
+\end{itemize}
+
+c) Laut Kapitel-Tabelle (reflexive Spalte):
+
+\begin{itemize}
+  \item (ℕ, ≤): reflexiv, antisymmetrisch, transitiv, linear ⇒ \textbf{(reflexive) Vollordnung}.
+  \item (P, ⊆): reflexiv, antisymmetrisch, transitiv, \textit{nicht} linear ⇒ \textbf{reflexive Halbordnung}.
+\end{itemize}
+
+d) Sei A ≼ B :⇔ |A| ≤ |B|.
+
+\begin{itemize}
+  \item Reflexiv: |A| ≤ |A| ✓.
+  \item Transitiv: aus |A| ≤ |B| ≤ |C| folgt |A| ≤ |C| ✓.
+  \item \textbf{Antisymmetrisch}: ✗. Beispiel A = \{a\}, B = \{b\}: |A| = |B| = 1, also A ≼ B und B ≼ A, aber A ≠ B.
+  \item Linear ist ≼ jedoch erfüllt: für je zwei A, B gilt |A| ≤ |B| oder |B| ≤ |A| (Vergleich auf ℕ).
+\end{itemize}
+
+Damit fehlt genau die Antisymmetrie — analog zur Kapitelbemerkung über "größer oder gleich groß". Mit reflex + transitiv (ohne Antisymmetrie) liegt eine \textbf{reflexive Quasiordnung} (auch \textit{Präordnung}) vor.
+
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{document}

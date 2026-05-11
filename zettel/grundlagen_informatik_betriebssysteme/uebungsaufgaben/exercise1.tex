@@ -1,0 +1,418 @@
+% ============================================================
+%  Übungsaufgaben Template (my_dhbw Stil, uebung_*.tex)
+%  Header "Übungsblatt", grün eingefärbte <details>-Lösungen.
+%  Renderer: pdflatex (zweimal)
+% ============================================================
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+\usepackage[top=2cm, bottom=2cm, left=2.4cm, right=2.4cm, footskip=1cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{ltablex}
+\keepXColumns
+\usepackage{colortbl}
+\usepackage[most,breakable]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{pdflscape}
+\usepackage{titlesec}
+\usepackage[colorlinks=true, linkcolor=accent, urlcolor=accent]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme ─────────────────────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{loesung}{RGB}{0, 100, 0}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{240, 252, 240}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer ─────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\footnotesize\color{accent}\nichttitle}
+\fancyhead[R]{\footnotesize\color{accent}\nichtsubtitle}
+\fancyfoot[R]{\footnotesize\color{accent}Blatt \thepage\,/\,\pageref{LastPage}}
+
+% ── Typografie ────────────────────────────────────────────────
+\titleformat{\section}
+    {\color{accent}\large\bfseries}{}{0pt}{}
+    [\vspace{-4pt}\color{accent}\rule{\linewidth}{1.5pt}]
+\titleformat{\subsection}
+    {\normalsize\bfseries\color{accent!85!black}}{}{0pt}{}{}
+\titleformat{\subsubsection}
+    {\small\bfseries\color{accent!70!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{10pt}{3pt}
+\titlespacing*{\subsection}{0pt}{6pt}{2pt}
+\titlespacing*{\subsubsection}{0pt}{4pt}{1pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\renewcommand{\arraystretch}{1.2}
+\setlist[itemize]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.4em}
+\setlist[enumerate]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.6em}
+
+% ── Boxen: solutionbox = Lösungsbox in grün ──────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={Abbildung: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={Tabelle: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{solutionbox}[1]{
+  enhanced,
+  colback=solutionbg, colframe=loesung,
+  title={#1}, fonttitle=\small\bfseries,
+  coltitle=white, colbacktitle=loesung,
+  breakable, before skip=8pt, after skip=8pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=single, framerule=0pt,
+  xleftmargin=4pt, xrightmargin=4pt,
+  aboveskip=6pt, belowskip=6pt,
+  keepspaces=true
+}
+
+\providecommand{\nichttitle}{Übungsblatt}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Betriebssysteme}
+\renewcommand{\nichtsubtitle}{Übungsblatt 1}
+
+
+\begin{document}
+
+\begin{center}
+{\Large\bfseries\color{accent}\nichttitle}
+\ifx\nichtsubtitle\empty\else
+  \\[2pt]{\normalsize\color{accent!80!black}\nichtsubtitle}
+\fi
+\\[2pt]
+\color{accent}\rule{0.4\linewidth}{0.8pt}\color{black}
+\end{center}
+\vspace{4pt}
+
+% ── BODY ──────────────────────────────────────────────────────
+
+\section{Übungsblatt 1 — Grundlagen}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 1 — Begriffliche Abgrenzung und Konsequenzen \textit{(10 Punkte)}}\mbox{}\\[2pt]
+
+a) Definieren Sie den Begriff "Betriebssystem" in eigenen Worten und benennen Sie, was den \textbf{Kernel} vom Rest des Betriebssystems unterscheidet. \textit{(4 P)}
+
+
+b) Ein Kommilitone behauptet: \textit{"Ein Texteditor wie \texttt{nano} ist ein Systemprogramm, weil er ohne Betriebssystem nicht läuft."} Begründen Sie, warum diese Aussage falsch ist, und ordnen Sie \texttt{nano} der korrekten Programmart zu. \textit{(3 P)}
+
+
+c) Leiten Sie aus der Definition des Betriebssystems eine Konsequenz für die \textbf{Portabilität} von Anwendungsprogrammen ab: Warum lässt sich ein Windows-\texttt{.exe}-Programm nicht ohne Weiteres unter Linux ausführen, obwohl die zugrundeliegende Hardware (z. B. x86-64-CPU) identisch ist? \textit{(3 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Ein Betriebssystem ist Systemsoftware, die als Schnittstelle zwischen Hardware und Software fungiert. Es steuert und überwacht die Programmabwicklung, regelt den Rechnerbetrieb und stellt Benutzern und Anwendungen elementare Dienste (z. B. Datei-, Speicher-, Prozessverwaltung) bereit.
+
+Der \textbf{Kernel} ist der innere Kern des Betriebssystems — er ist der Teil, der direkt mit der Hardware spricht und privilegierte Operationen ausführt. Darüber liegen Benutzer- und Systemprozesse, die Dienste des Kernels über definierte Schnittstellen nutzen, aber selbst nicht im privilegierten Modus laufen.
+
+
+b) Die Aussage verwechselt "läuft auf einem BS" mit "verwaltet den Rechnerbetrieb". \textbf{Anwendungsprogramme} sind dadurch definiert, dass sie \textit{Probleme der Benutzer} lösen — bei \texttt{nano} ist das die Texterstellung/-bearbeitung. \textbf{Systemprogramme} verwalten dagegen den Rechnerbetrieb (z. B. Treiber, Shell-Hilfsprogramme zur Systemkonfiguration). Da \texttt{nano} ein Werkzeug zur Lösung eines Benutzerproblems ist, ist es ein \textbf{Anwendungsprogramm}, kein Systemprogramm. Die Tatsache, dass jedes Programm ein BS zur Ausführung braucht, ist kein Klassifikationskriterium.
+
+
+c) Das Betriebssystem stellt Anwendungen \textit{elementare Dienste} (Datei-, Speicher-, Prozessverwaltung etc.) über eine spezifische Schnittstelle bereit. Eine Windows-\texttt{.exe} ist gegen die Windows-Schnittstelle (Windows-API, PE-Format, Windows-Lader) gebaut. Linux nutzt eine andere Schnittstelle (POSIX/Linux-Syscalls, ELF-Format). Auch wenn die CPU-Befehle identisch wären, fehlt unter Linux der erwartete Dienste-Anbieter — das BS ist eben \textit{Schnittstelle} zwischen Hardware und Software, und ein Wechsel der Schnittstelle bricht die Anwendung, obwohl die Hardware gleich bleibt.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 — Klassifikation konkreter Software \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Ordnen Sie die folgenden Programme/Komponenten jeweils \textbf{genau einer} der drei Programmarten (Anwendungsprogramm / Systemprogramm / Betriebssystem) zu und begründen Sie Ihre Wahl in einem Satz pro Eintrag. Bei Grenzfällen geben Sie an, welches Kriterium Sie heranziehen.
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Nr.}} & {\color{white}\textbf{Software/Komponente}} & {\color{white}\textbf{Programmart}} & {\color{white}\textbf{Begründung}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+1 & Mozilla Firefox &  &  \\
+2 & Linux-Kernel 6.6 &  &  \\
+3 & \texttt{fdisk} (Partitionierungswerkzeug) &  &  \\
+4 & Tabellenkalkulation Excel &  &  \\
+5 & Geräteverwaltung (Device Manager) &  &  \\
+6 & Spotify-Client &  &  \\
+7 & Energieverwaltungs-Modul \texttt{powerd} &  &  \\
+8 & Online-Banking-App &  &  \\
+\end{tabularx}
+}
+
+
+\textbf{Lösung:}
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Nr.}} & {\color{white}\textbf{Software}} & {\color{white}\textbf{Programmart}} & {\color{white}\textbf{Begründung}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+1 & Mozilla Firefox & Anwendungsprogramm & Löst ein Benutzerproblem (Web-Inhalte abrufen/anzeigen). \\
+2 & Linux-Kernel 6.6 & Betriebssystem (Kern) & Direkter Hardware-Zugriff, stellt elementare Dienste bereit — entspricht der Kernel-Definition. \\
+3 & \texttt{fdisk} & Systemprogramm & Verwaltet den Rechnerbetrieb (Datenträger-/Partitionsverwaltung), löst kein fachliches Benutzerproblem. \\
+4 & Excel & Anwendungsprogramm & Löst Benutzerproblem (Daten in Tabellenform berechnen). \\
+5 & Geräteverwaltung & Systemprogramm & Dient der Verwaltung der Hardware-Ausstattung des Rechners. \\
+6 & Spotify-Client & Anwendungsprogramm & Löst Benutzerproblem (Musik streamen). \\
+7 & \texttt{powerd} & Systemprogramm & Realisiert die im Kapitel genannte Energieverwaltung-Aufgabe; läuft als Dienst, nicht im Kernel-Modus → kein BS-Kern, sondern Systemprogramm. \\
+8 & Online-Banking-App & Anwendungsprogramm & Löst Benutzerproblem (Bankgeschäfte erledigen). \\
+\end{tabularx}
+}
+
+
+Kriterium: \textit{Wer ist Adressat des gelösten Problems?} — Endbenutzer ⇒ Anwendungsprogramm; Rechnerbetrieb selbst ⇒ Systemprogramm; Hardware-naher Dienste-Anbieter ⇒ BS/Kernel.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 — Schichtenarchitektur als Diagramm \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben sei folgendes (vereinfachtes) ASCII-Schichtenmodell eines Rechnersystems:
+
+
+\begin{lstlisting}
++-----------------------------------+
+|   ?  Schicht D                    |   ← Firefox, Excel, Spotify
++-----------------------------------+
+|   ?  Schicht C                    |   ← fdisk, Geräteverwaltung
++-----------------------------------+
+|   ?  Schicht B                    |   ← Kernel + elementare Dienste
++-----------------------------------+
+|   ?  Schicht A                    |   ← CPU, RAM, SSD, GPU, …
++-----------------------------------+
+\end{lstlisting}
+
+
+a) Beschriften Sie die vier Schichten A–D korrekt mit den im Kapitel eingeführten Begriffen. \textit{(4 P)}
+
+
+b) Im Kapitel wird das Betriebssystem als \textit{Schnittstelle zwischen Hardware und Software} beschrieben. Begründen Sie anhand Ihrer Beschriftung, warum es \textbf{genau eine} Schicht gibt, durch die alle Pfeile zwischen Anwendungs-/Systemprogrammen und Hardware verlaufen müssen. \textit{(4 P)}
+
+
+c) Ein Praktikant skizziert den Pfeil "Excel → SSD" als direkte Verbindung von Schicht D zu Schicht A unter Umgehung der mittleren Schichten. Erklären Sie, gegen welche der fünf BS-Aufgaben (Prozess-, Speicher-, Geräte-, Datei-, Energieverwaltung) diese Skizze verstößt — und welche \textbf{mindestens drei} dieser Aufgaben beim normalen Speichern einer Excel-Datei tatsächlich beteiligt sind. \textit{(7 P)}
+
+
+\textbf{Lösung:}
+
+
+a)
+
+\begin{itemize}
+  \item A = \textbf{Hardware}
+  \item B = \textbf{Betriebssystem (Kernel)}
+  \item C = \textbf{Systemprogramme}
+  \item D = \textbf{Anwendungsprogramme}
+\end{itemize}
+
+b) Laut Kapitel ist das BS \textit{die} Schnittstelle zwischen Hardware und Software und stellt \textit{elementare Dienste} bereit. Damit ist Schicht B die einzige Schicht mit Hardware-Zugriff (privilegierter Modus). Anwendungs- und Systemprogramme (C, D) dürfen Hardware nur über die vom Kernel angebotenen Dienste ansprechen — entsprechend gehen alle Pfeile zwischen D/C und A zwingend durch B. Gäbe es einen direkten Pfad, wäre das BS keine Schnittstelle mehr, und die Schutz- und Verwaltungsfunktionen würden umgangen.
+
+
+c) Der direkte Pfeil D→A umgeht die \textbf{Geräteverwaltung} (SSD-Zugriff am BS vorbei) und die \textbf{Dateiverwaltung} (Schreiben ohne Dateisystem-Logik) — beide sind explizit als BS-Aufgaben genannt.
+
+Beim regulären Speichern einer Excel-Datei beteiligen sich mindestens:
+
+\begin{enumerate}
+  \item \textbf{Dateiverwaltung} — Datei anlegen/öffnen, Pfad auflösen, Metadaten aktualisieren.
+  \item \textbf{Geräteverwaltung} — Zugriff auf den SSD-Controller über den entsprechenden Treiber.
+  \item \textbf{Speicherverwaltung} — Puffer im Hauptspeicher allokieren, Dateiinhalt aus dem Excel-Adressraum in Kernelpuffer kopieren.
+\end{enumerate}
+(zusätzlich plausibel: \textbf{Prozessverwaltung} — Excel wird während des blockierenden I/O suspendiert; \textbf{Energieverwaltung} — SSD wird bei Bedarf aus einem Stromsparzustand geweckt.)
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 — Auswahl der Benutzerschnittstelle (Transfer) \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+Sie sind Systemarchitekt:in und sollen für die folgenden vier Einsatzszenarien die \textbf{primär} geeignete Benutzerschnittstelle aus \{GUI, CLI, TUI, VUI, NUI\} festlegen. Treffen Sie pro Szenario eine begründete Entscheidung (welche Schnittstelle, warum \textit{diese}, warum \textit{nicht} die nächstplausible Alternative).
+
+
+\begin{enumerate}
+  \item \textbf{Server-Wartung über SSH auf einem Root-Server} ohne Grafik-Stack, Admin pflegt Konfigurationsdateien und automatisiert Routinen per Skript.
+  \item \textbf{Smart-Speaker in der Küche}, Hände sind beim Kochen oft schmutzig oder feucht.
+  \item \textbf{Touchscreen-Kassensystem in einer Bäckerei}, das von Aushilfskräften ohne IT-Vorkenntnisse bedient wird.
+  \item \textbf{Installer eines Linux-Servers} auf einem System mit funktionierender Konsole, aber ohne X-Server. Soll mit Pfeiltasten und Menüs bedienbar sein.
+\end{enumerate}
+
+Geben Sie zusätzlich an: Welche zwei Schnittstellen aus der Liste eignen sich \textbf{prinzipiell schlecht} für sicherheitskritische Eingaben (Passwörter, PINs) und warum?
+
+
+\textbf{Lösung:}
+
+
+\begin{enumerate}
+  \item \textbf{CLI} — Skriptbarkeit, Bandbreitenschonung, präziser Zugriff auf Konfigurationsdateien; eine GUI scheidet mangels Grafik-Stack aus, eine TUI wäre möglich, aber für Skript-Automatisierung weniger geeignet, da sie auf interaktive Menüs zielt.
+  \item \textbf{VUI} — Sprache erlaubt freihändige Bedienung, was die Anforderung "Hände schmutzig/feucht" direkt adressiert. Eine NUI (Gestik) wäre verwandt, scheidet aber bei feuchten/schmutzigen Händen ebenfalls aus und benötigt Sichtkontakt zu einem Sensor; VUI ist robuster.
+  \item \textbf{GUI} — Touch + grafische Buttons sind für ungeschulte Bedienung die etablierte Wahl (visuelle Auffindbarkeit, niedrige Lernkurve). Eine NUI wäre denkbar, ist aber für klar abgegrenzte Bestellvorgänge weniger präzise und teurer in der Hardware.
+  \item \textbf{TUI} — zeichenorientierte Oberflächen mit Menüs und Pfeiltasten (z. B. ncurses-basierter Installer). Eine reine CLI wäre möglich, aber für einen Installer mit Auswahlschritten unergonomisch; eine GUI scheidet wegen fehlendem X-Server aus.
+\end{enumerate}
+
+\textbf{Sicherheitskritische Eingaben:} \textbf{VUI} und \textbf{NUI} sind problematisch — gesprochene Passwörter sind in der Umgebung mithörbar, und natürliche Gesten/Mimik sind schwer als geheimer Faktor zu nutzen. CLI/GUI/TUI können dagegen Eingaben verdeckt entgegennehmen (z. B. Punkte statt Zeichen).
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 — Fehleranalyse einer Architekturskizze \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Ein Studierender reicht folgende Beschreibung eines Mini-Betriebssystems ein:
+
+
+\begin{lstlisting}
+1  Unser BS "TinyOS" besteht aus drei Schichten:
+2    - oben: der Kernel, der Excel und Firefox ausführt
+3    - mitte: die Hardware (CPU, RAM, Tastatur)
+4    - unten: Anwendungsprogramme wie der Treiber der Festplatte
+5
+6  TinyOS erfüllt nur EINE BS-Aufgabe: Energieverwaltung.
+7  Auf Speicher- und Prozessverwaltung haben wir verzichtet,
+8  weil Programme das selbst regeln können.
+9
+10 Als Schnittstelle gibt es nur eine VUI - das ist die
+11 schnellste Art, Befehle einzugeben.
+\end{lstlisting}
+
+
+Identifizieren Sie \textbf{mindestens fünf} fachliche Fehler (mit Zeilenangabe) und korrigieren Sie jeden Fehler in einem Satz auf Basis des Kapitels.
+
+
+\textbf{Lösung:}
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{\#}} & {\color{white}\textbf{Zeile}} & {\color{white}\textbf{Fehler}} & {\color{white}\textbf{Korrektur}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+1 & 2 & Der Kernel ist als oberste Schicht eingeordnet und führt Anwendungen aus. & Der Kernel sitzt direkt über der Hardware (unten/innen); darüber liegen Benutzer- und Systemprozesse. Anwendungen werden durch das BS \textit{verwaltet}, nicht "vom Kernel ausgeführt" wie eine Bibliothek. \\
+2 & 3 & Hardware ist als Mittelschicht eingezeichnet. & Hardware ist die unterste Schicht — das BS ist die Schnittstelle \textit{zwischen} Hardware und Software. \\
+3 & 4 & Ein Festplattentreiber wird als Anwendungsprogramm bezeichnet. & Treiber sind hardwarenahe Komponenten, die zur Geräteverwaltung gehören und typischerweise als Teil des BS/Kerns oder als Systemprogramm laufen, nicht als Anwendungsprogramm (das löst Benutzerprobleme). \\
+4 & 6–8 & Behauptung, ein BS könne mit nur einer der fünf Aufgaben auskommen. & Das Kapitel nennt fünf BS-Aufgaben (Prozess-, Speicher-, Geräte-, Datei-, Energieverwaltung). Insbesondere Prozess- und Speicherverwaltung sind essenziell, sobald mehrere Programme gleichzeitig laufen — sie können nicht "von den Programmen selbst" konsistent geregelt werden, weil dafür gerade die übergeordnete Verwaltungsinstanz fehlt. \\
+5 & 10–11 & "Schnittstelle" ist hier auf die Benutzerschnittstelle verengt; zudem wird VUI pauschal als "schnellste" deklariert. & Im BS-Kontext bezeichnet "Schnittstelle" primär die Schnittstelle zwischen Hardware und Software. Bezüglich VUI: das Kapitel listet GUI/CLI/TUI/VUI/NUI gleichberechtigt — es gibt keine pauschale Geschwindigkeitsrangfolge, die Eignung hängt vom Einsatzzweck ab (z. B. ist CLI für Power-User oft schneller als VUI). \\
+6 (Bonus) & 4 & "Anwendungsprogramme … Treiber" — Vermischung der Programmarten. & Anwendungsprogramme lösen Benutzerprobleme; Systemprogramme verwalten den Rechnerbetrieb; Treiber gehören in die zweite Kategorie bzw. sind Teil der Geräteverwaltung. \\
+\end{tabularx}
+}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 6 — Vergleich CLI vs. GUI \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+a) Stellen Sie CLI und GUI in einer Tabelle entlang der Kriterien \textit{Lernkurve}, \textit{Skriptbarkeit/Automatisierung}, \textit{Bandbreitenbedarf bei Remote-Zugriff}, \textit{Visuelle Rückmeldung} und \textit{Eignung für Massenoperationen} gegenüber. \textit{(8 P)}
+
+
+b) Treffen Sie eine begründete Empfehlung für folgendes Szenario: Ein:e DevOps-Ingenieur:in muss auf 200 Linux-Servern denselben Konfigurations-Patch ausrollen und das Ergebnis dokumentieren. \textit{(4 P)}
+
+
+c) Nennen Sie ein Szenario, in dem trotz gegenteiliger Intuition die GUI der CLI vorzuziehen ist, und begründen Sie. \textit{(3 P)}
+
+
+\textbf{Lösung:}
+
+
+a)
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Kriterium}} & {\color{white}\textbf{CLI}} & {\color{white}\textbf{GUI}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Lernkurve & steil — Kommandos und Flags müssen gelernt werden & flach — visuelle Affordances, Discoverability \\
+Skriptbarkeit & hoch — Befehle in Skripten verkettbar, idempotent reproduzierbar & gering — Klick-Sequenzen sind schwer reproduzierbar (UI-Automatisierung ist brüchig) \\
+Bandbreite (Remote) & sehr gering — nur Text über SSH & hoch — Pixel/Frames über X11/RDP/VNC \\
+Visuelle Rückmeldung & textuell, kompakt & grafisch, intuitiv (Diagramme, Vorschau) \\
+Massenoperationen & exzellent — Schleifen, Pipes, Wildcards & schlecht — Operationen i. d. R. sequenziell und manuell \\
+\end{tabularx}
+}
+
+
+b) \textbf{CLI} in Verbindung mit Skripten/Automatisierungsframeworks. Begründung: Bei 200 Servern sind Skriptbarkeit und Reproduzierbarkeit ausschlaggebend; CLI-Aufrufe lassen sich in Schleifen ausführen, Logs maschinenlesbar erfassen und damit auch dokumentieren. Eine GUI-Lösung skaliert nicht (200× klicken) und erzeugt keine konsistente Audit-Spur.
+
+
+c) Beispiel: \textbf{Bildbearbeitung / Layout-Arbeit} (z. B. ein Plakat in einem Grafikprogramm gestalten). Hier ist die räumlich-visuelle Manipulation von Objekten Kern der Aufgabe; eine CLI-Beschreibung wäre dramatisch ineffizient, weil das Ergebnis selbst grafisch ist und die Rückkopplungsschleife "Sehen → Anpassen" eine GUI erfordert.
+
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{document}

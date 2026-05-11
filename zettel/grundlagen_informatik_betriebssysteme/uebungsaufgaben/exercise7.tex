@@ -1,0 +1,618 @@
+% ============================================================
+%  Übungsaufgaben Template (my_dhbw Stil, uebung_*.tex)
+%  Header "Übungsblatt", grün eingefärbte <details>-Lösungen.
+%  Renderer: pdflatex (zweimal)
+% ============================================================
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+\usepackage[top=2cm, bottom=2cm, left=2.4cm, right=2.4cm, footskip=1cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{ltablex}
+\keepXColumns
+\usepackage{colortbl}
+\usepackage[most,breakable]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{pdflscape}
+\usepackage{titlesec}
+\usepackage[colorlinks=true, linkcolor=accent, urlcolor=accent]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme ─────────────────────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{loesung}{RGB}{0, 100, 0}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{240, 252, 240}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer ─────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\footnotesize\color{accent}\nichttitle}
+\fancyhead[R]{\footnotesize\color{accent}\nichtsubtitle}
+\fancyfoot[R]{\footnotesize\color{accent}Blatt \thepage\,/\,\pageref{LastPage}}
+
+% ── Typografie ────────────────────────────────────────────────
+\titleformat{\section}
+    {\color{accent}\large\bfseries}{}{0pt}{}
+    [\vspace{-4pt}\color{accent}\rule{\linewidth}{1.5pt}]
+\titleformat{\subsection}
+    {\normalsize\bfseries\color{accent!85!black}}{}{0pt}{}{}
+\titleformat{\subsubsection}
+    {\small\bfseries\color{accent!70!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{10pt}{3pt}
+\titlespacing*{\subsection}{0pt}{6pt}{2pt}
+\titlespacing*{\subsubsection}{0pt}{4pt}{1pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\renewcommand{\arraystretch}{1.2}
+\setlist[itemize]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.4em}
+\setlist[enumerate]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.6em}
+
+% ── Boxen: solutionbox = Lösungsbox in grün ──────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={Abbildung: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={Tabelle: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{solutionbox}[1]{
+  enhanced,
+  colback=solutionbg, colframe=loesung,
+  title={#1}, fonttitle=\small\bfseries,
+  coltitle=white, colbacktitle=loesung,
+  breakable, before skip=8pt, after skip=8pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=single, framerule=0pt,
+  xleftmargin=4pt, xrightmargin=4pt,
+  aboveskip=6pt, belowskip=6pt,
+  keepspaces=true
+}
+
+\providecommand{\nichttitle}{Übungsblatt}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Betriebssysteme}
+\renewcommand{\nichtsubtitle}{Übungsblatt 7}
+
+
+\begin{document}
+
+\begin{center}
+{\Large\bfseries\color{accent}\nichttitle}
+\ifx\nichtsubtitle\empty\else
+  \\[2pt]{\normalsize\color{accent!80!black}\nichtsubtitle}
+\fi
+\\[2pt]
+\color{accent}\rule{0.4\linewidth}{0.8pt}\color{black}
+\end{center}
+\vspace{4pt}
+
+% ── BODY ──────────────────────────────────────────────────────
+
+\section{Übungsblatt 7 — Scheduling}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 1 — Verfahrensklassen und Komponenten \textit{(10 Punkte)}}\mbox{}\\[2pt]
+
+a) Erläutern Sie den Unterschied zwischen \textbf{Scheduler} und \textbf{Dispatcher} und ordnen Sie beide Komponenten dem Begriff \textit{Prozessmanager} zu. \textit{(3 P)}
+
+
+b) Ein Betriebssystemkern verwendet ein \textbf{non-preemptives} Verfahren. Während ein rechenintensiver Prozess P1 die CPU hält, trifft ein hochpriorer interaktiver Prozess P2 ein. Beschreiben Sie, was passiert, und begründen Sie, welche der sieben Scheduling-Ziele dadurch konkret verletzt werden. \textit{(4 P)}
+
+
+c) Würde der Wechsel auf ein \textbf{preemptives} Verfahren das Problem aus (b) ohne Nebenwirkungen lösen? Nennen Sie eine zusätzliche Kostenstelle, die durch Preemption entsteht. \textit{(3 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Der \textbf{Prozessmanager} ist die Sammelkomponente, bestehend aus zwei Teilen: Der \textbf{Scheduler} trifft die \textit{Entscheidung}, welcher Prozess als nächster die CPU erhält (Auswahllogik nach Strategie). Der \textbf{Dispatcher} ist das \textit{ausführende} Element — er führt den eigentlichen Kontextwechsel durch (Register sichern/laden, PC umschalten). Scheduler = Politik, Dispatcher = Mechanismus.
+
+
+b) In einem non-preemptiven Verfahren bekommt P1 die CPU nur entzogen, wenn er \textbf{blockiert, freiwillig abgibt oder terminiert}. P2 muss warten, obwohl er hochprior und interaktiv ist. Verletzte Ziele:
+
+\begin{itemize}
+  \item \textbf{Min. Antwortzeit}: der Anwender wartet trotz hoher Priorität.
+  \item \textbf{Fairness/Mindestzuteilung}: P2 erhält keinerlei CPU-Anteil.
+  \item \textbf{Vorhersehbarkeit}: die Wartezeit von P2 hängt willkürlich von der Restbedienzeit von P1 ab.
+\end{itemize}
+
+c) Nein. Preemption löst zwar das Verdrängungsproblem (P2 kann sofort übernehmen), erzeugt aber Zusatzkosten durch \textbf{Kontextwechsel-Overhead}: Sichern/Laden der Register, Pipeline-Flush, ggf. Cache- und TLB-Invalidierung. Bei sehr häufiger Preemption sinkt die Effizienz (Ziel "volle CPU-Auslastung"), weil ein steigender Anteil reine Verwaltungsarbeit wird.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 — FCFS, SJF und SRTN durchrechnen \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+Vier Batch-Jobs treffen wie folgt ein. Die Bedienzeit ist die reine CPU-Zeit.
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Job}} & {\color{white}\textbf{Ankunftszeit}} & {\color{white}\textbf{Bedienzeit}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+A & 0 & 8 \\
+B & 1 & 4 \\
+C & 2 & 9 \\
+D & 3 & 5 \\
+\end{tabularx}
+}
+
+
+a) Bestimmen Sie für \textbf{FCFS} die Reihenfolge, die Durchlaufzeit jedes Jobs und die mittlere Wartezeit. \textit{(5 P)}
+
+
+b) Bestimmen Sie dieselben Werte für \textbf{SJF (non-preemptive)}. \textit{(6 P)}
+
+
+c) Führen Sie \textbf{SRTN (preemptive SJF)} durch. Geben Sie ein Gantt-Diagramm an und vergleichen Sie die mittlere Durchlaufzeit mit (a) und (b). \textit{(7 P)}
+
+
+d) Erklären Sie, warum SRTN gegenüber SJF die mittlere Wartezeit hier weiter reduziert, und nennen Sie die zentrale praktische Schwäche beider Verfahren. \textit{(2 P)}
+
+
+\textbf{Lösung:}
+
+
+a) \textbf{FCFS} — Reihenfolge nach Ankunft: A, B, C, D.
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Job}} & {\color{white}\textbf{Start}} & {\color{white}\textbf{Ende}} & {\color{white}\textbf{Durchlaufzeit (Ende − Ankunft)}} & {\color{white}\textbf{Wartezeit (DLZ − Bedienzeit)}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+A & 0 & 8 & 8 & 0 \\
+B & 8 & 12 & 11 & 7 \\
+C & 12 & 21 & 19 & 10 \\
+D & 21 & 26 & 23 & 18 \\
+\end{tabularx}
+}
+
+
+Mittlere Wartezeit = (0 + 7 + 10 + 18) / 4 = \textbf{8,75}. Mittlere Durchlaufzeit = (8 + 11 + 19 + 23)/4 = \textbf{15,25}.
+
+
+b) \textbf{SJF (non-preemptive)}: A startet bei 0 (einziger verfügbarer Job) und läuft bis 8. Bei t = 8 sind B (4), C (9), D (5) bereit → kürzester ist B.
+
+Reihenfolge: A → B → D → C.
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Job}} & {\color{white}\textbf{Start}} & {\color{white}\textbf{Ende}} & {\color{white}\textbf{DLZ}} & {\color{white}\textbf{Wartezeit}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+A & 0 & 8 & 8 & 0 \\
+B & 8 & 12 & 11 & 7 \\
+D & 12 & 17 & 14 & 9 \\
+C & 17 & 26 & 24 & 15 \\
+\end{tabularx}
+}
+
+
+Mittlere Wartezeit = (0 + 7 + 9 + 15)/4 = \textbf{7,75}. Mittlere DLZ = (8 + 11 + 14 + 24)/4 = \textbf{14,25}.
+
+
+c) \textbf{SRTN} — bei jedem Eintreffen wird die kürzeste Restzeit gewählt.
+
+
+\begin{itemize}
+  \item t=0: nur A (Rest 8) läuft.
+  \item t=1: B kommt (Rest 4) < A-Rest (7) → \textbf{B verdrängt A}. B läuft.
+  \item t=2: C kommt (Rest 9), B-Rest=3 → B bleibt.
+  \item t=3: D kommt (Rest 5), B-Rest=2 → B bleibt.
+  \item t=5: B fertig. Reste: A=7, C=9, D=5 → D läuft.
+  \item t=10: D fertig. Reste: A=7, C=9 → A läuft.
+  \item t=17: A fertig. C läuft.
+  \item t=26: C fertig.
+\end{itemize}
+
+Gantt: \texttt{A(0–1) | B(1–5) | D(5–10) | A(10–17) | C(17–26)}.
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Job}} & {\color{white}\textbf{Ende}} & {\color{white}\textbf{Ankunft}} & {\color{white}\textbf{DLZ}} & {\color{white}\textbf{Wartezeit (DLZ − Bedienzeit)}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+A & 17 & 0 & 17 & 9 \\
+B & 5 & 1 & 4 & 0 \\
+C & 26 & 2 & 24 & 15 \\
+D & 10 & 3 & 7 & 2 \\
+\end{tabularx}
+}
+
+
+Mittlere Wartezeit = (9 + 0 + 15 + 2)/4 = \textbf{6,5}. Mittlere DLZ = (17 + 4 + 24 + 7)/4 = \textbf{13,0}.
+
+
+Vergleich mittlere DLZ: FCFS 15,25 > SJF 14,25 > SRTN 13,0.
+
+
+d) SRTN bevorzugt \textbf{neu eintreffende kurze Jobs} sofort, statt sie hinter einen bereits laufenden längeren Job zu stellen. Dadurch verlassen kurze Jobs früher das System und verkürzen die kumulierten Wartezeiten. \textbf{Praktische Schwäche}: Die Bedienzeit ist im Voraus unbekannt — sie muss geschätzt werden. Außerdem droht \textbf{Verhungern (Starvation)} für lange Jobs, wenn ständig neue kurze Jobs eintreffen.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 — Round Robin und Quantum-Wahl \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Drei Prozesse treffen alle zum Zeitpunkt t = 0 ein:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Prozess}} & {\color{white}\textbf{Bedienzeit}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+P1 & 10 \\
+P2 & 4 \\
+P3 & 6 \\
+\end{tabularx}
+}
+
+
+Reihenfolge in der Ready-Queue: P1, P2, P3. Der Kontextwechsel benötigt 0 Zeiteinheiten.
+
+
+a) Erstellen Sie ein Gantt-Diagramm für \textbf{RR mit Quantum q = 3} und berechnen Sie die mittlere Wartezeit. \textit{(6 P)}
+
+
+b) Wiederholen Sie (a) für \textbf{q = 1}. \textit{(4 P)}
+
+
+c) Begründen Sie aus dem Kapitel, warum in der Praxis Quanten von 10–200 ms gewählt werden, und entscheiden Sie für die folgenden zwei Last-Szenarien jeweils, ob ein \textbf{kürzeres} oder \textbf{längeres} Quantum sinnvoll ist:
+
+\begin{enumerate}
+  \item Editor mit häufiger Tastatureingabe (E/A-intensiv)
+\begin{enumerate}
+  \item Numerische Simulation (rechenintensiv) \textit{(5 P)}
+\end{enumerate}
+\end{enumerate}
+
+\textbf{Lösung:}
+
+
+a) \textbf{q = 3}. Ready-Queue zu Beginn: [P1, P2, P3].
+
+
+\begin{itemize}
+  \item t=0–3: P1 (Rest 7) → ans Ende → [P2, P3, P1]
+  \item t=3–6: P2 (Rest 1) → ans Ende → [P3, P1, P2]
+  \item t=6–9: P3 (Rest 3) → fertig wäre nach 3, also genau 0 Rest → P3 endet bei 9 → [P1, P2]
+  \item t=9–12: P1 (Rest 4) → ans Ende → [P2, P1]
+  \item t=12–13: P2 (Rest 1) → P2 endet bei 13 → [P1]
+  \item t=13–16: P1 (Rest 1) → P1 endet bei 16. Aber Rest war 4, also läuft volles Quantum 3 → t=13–16 → Rest 1 → [P1]
+  \item t=16–17: P1 (Rest 1) → endet bei 17.
+\end{itemize}
+
+Gantt: \texttt{P1 | P2 | P3 | P1 | P2 | P1 | P1} an Punkten 0,3,6,9,12,13,16,17.
+
+
+Endzeiten: P1=17, P2=13, P3=9. Wartezeit = Endzeit − Bedienzeit (alle Ankunft 0):
+
+\begin{itemize}
+  \item P1: 17 − 10 = 7
+  \item P2: 13 − 4 = 9
+  \item P3: 9 − 6 = 3
+\end{itemize}
+
+Mittlere Wartezeit = (7 + 9 + 3)/3 = \textbf{6,33}.
+
+
+b) \textbf{q = 1}. Bei jedem Tick rotiert die Queue. Solange alle drei aktiv sind, läuft die Sequenz P1, P2, P3, P1, P2, P3, …
+
+\begin{itemize}
+  \item Nach 4 Runden (t = 12) ist P2 (4 Bedienzeit) fertig. Endzeit P2 = 12.
+  \item Ab t=12 stehen nur noch P1 (Rest 6) und P3 (Rest 2) in der Reihenfolge … P3, P1.
+\end{itemize}
+Genauer: bei t=12 wurde gerade P2 als 4. Tick gefahren; nächste Plätze: P3, P1, P3, P1, P3, P1, P1, P1, P1.
+
+\begin{itemize}
+  \item t=12: P3 → Rest 1
+  \item t=13: P1 → Rest 5
+  \item t=14: P3 → Rest 0 → P3 endet bei 15.
+  \item Danach läuft nur P1 durch: t=15 bis t=20 (5 Resteinheiten). Endzeit P1 = 20.
+\end{itemize}
+
+Wartezeit = Endzeit − Bedienzeit:
+
+\begin{itemize}
+  \item P1: 20 − 10 = 10
+  \item P2: 12 − 4 = 8
+  \item P3: 15 − 6 = 9
+\end{itemize}
+
+Mittlere Wartezeit = (10 + 8 + 9)/3 = \textbf{9,0}.
+
+
+c) Ein \textbf{zu kurzes} Quantum erzeugt vielen Kontextwechsel-\textbf{Overhead} (Verwaltungskosten dominieren). Ein \textbf{zu langes} Quantum führt zu \textbf{Verzögerungen} für andere Prozesse, RR nähert sich FCFS an. Der Bereich 10–200 ms balanciert beides; mit höherer CPU-Taktrate werden kürzere Quanten möglich, weil Kontextwechsel selbst schneller werden.
+
+
+Szenarien:
+
+\begin{enumerate}
+  \item \textbf{Editor (E/A-intensiv)}: Längeres Quantum (oder dynamisch erhöht), denn der Prozess gibt die CPU ohnehin früh durch eine Blockade an der Tastatur zurück — er nutzt sein Quantum selten voll aus. Ein langes Quantum schadet ihm nicht und spart unnötige Kontextwechsel.
+  \item \textbf{Simulation (rechenintensiv)}: Kürzeres Quantum, da der Prozess seine CPU-Scheibe stets voll auskostet und sonst andere Prozesse zu lange blockiert. Das Kapitel führt explizit diese dynamische Anpassung an.
+\end{enumerate}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 — EDF im Realtime-System \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+In einer Steuerung werden zum Zeitpunkt t = 0 drei periodische Tasks freigegeben. Die Deadlines sind absolute Zeitpunkte.
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Task}} & {\color{white}\textbf{Bedienzeit}} & {\color{white}\textbf{Absolute Deadline}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+T1 & 2 & 5 \\
+T2 & 3 & 7 \\
+T3 & 4 & 12 \\
+\end{tabularx}
+}
+
+
+a) Welche Reihenfolge ergibt \textbf{EDF} unter der Annahme, dass alle drei Tasks zur Zeit 0 bereit sind und das Verfahren preemptiv arbeitet, aber keine neuen Tasks während des Zeitfensters eintreffen? Erstellen Sie ein Gantt-Diagramm und prüfen Sie, ob alle Deadlines eingehalten werden. \textit{(6 P)}
+
+
+b) Zum Zeitpunkt t = 4 trifft eine zusätzliche Task \textbf{T4} (Bedienzeit 1, absolute Deadline 6) ein. Korrigieren Sie das Gantt-Diagramm ab t = 4. Hält das System weiterhin alle Deadlines? \textit{(5 P)}
+
+
+c) Klassifizieren Sie die Steuerung: Wäre eine Verspätung von T4 als \textbf{Hard} oder \textbf{Soft Real Time} zu bewerten, wenn T4 das Auslösen eines Airbags ist? Begründen Sie über die Definition aus dem Kapitel. \textit{(4 P)}
+
+
+\textbf{Lösung:}
+
+
+a) EDF wählt jeweils die kleinste Deadline. Bei t=0: T1 (5) < T2 (7) < T3 (12) → T1 läuft.
+
+\begin{itemize}
+  \item t=0–2: T1 fertig (Deadline 5 ✓).
+  \item t=2: bereit sind T2 (D=7), T3 (D=12) → T2 läuft.
+  \item t=2–5: T2 fertig (Deadline 7 ✓).
+  \item t=5–9: T3 läuft, fertig bei 9 (Deadline 12 ✓).
+\end{itemize}
+
+Gantt: \texttt{T1(0–2) | T2(2–5) | T3(5–9)}. Alle Deadlines werden eingehalten.
+
+
+b) Bei t = 4 läuft T2 (Rest 1, Deadline 7). T4 kommt mit Deadline 6 < 7 → \textbf{T4 verdrängt T2}.
+
+\begin{itemize}
+  \item t=4–5: T4 läuft, fertig bei 5 (Deadline 6 ✓).
+  \item t=5: bereit sind T2 (Rest 1, D=7), T3 (Rest 4, D=12) → T2.
+  \item t=5–6: T2 fertig (Deadline 7 ✓).
+  \item t=6–10: T3 fertig (Deadline 12 ✓).
+\end{itemize}
+
+Gantt korrigiert: \texttt{T1(0–2) | T2(2–4) | T4(4–5) | T2(5–6) | T3(6–10)}. Alle Deadlines bleiben eingehalten — EDF zeigt hier seinen Vorteil: durch Preemption wird die neue, dringendere Deadline sofort priorisiert, ohne die anderen zu reißen.
+
+
+c) Laut Kapitel ist \textbf{Hard Real Time} durch eine \textit{feste Zeitschranke definiert, deren Verspätung einen schweren Fehler darstellt}. Beim Airbag bedeutet eine zu späte Auslösung Personenschaden — die Deadline ist absolut bindend. Daher ist die Steuerung als \textbf{Hard Real Time} einzustufen. Eine Soft-Real-Time-Klassifikation würde lediglich „lästige" Verspätungen erlauben, was hier inakzeptabel wäre.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 — Multi-Level-Feedback-Scheduling entwerfen \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+Sie sollen ein \textbf{Multi-Level-Feedback-Scheduling} für ein Universalbetriebssystem entwerfen. Verfügbare Klassen aus dem Kapitel:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Prio}} & {\color{white}\textbf{Klasse}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+0 & Systemprozesse \\
+1 & Interaktive Prozesse \\
+2 & Allgemeine Prozesse \\
+4 & Batch \\
+\end{tabularx}
+}
+
+
+a) Skizzieren Sie eine Strategie, wie ein anfangs interaktiver Prozess (Prio 1), der sich plötzlich rechenintensiv verhält (z. B. ein Browser-Tab führt eine lange JS-Berechnung aus), automatisch in eine niedrigere Klasse abrutschen kann, und wie er später wieder aufsteigt. Geben Sie ein konkretes Kriterium pro Richtung an. \textit{(8 P)}
+
+
+b) Innerhalb jeder Klasse wird laut Kapitel \textbf{RR} verwendet. Begründen Sie, warum man das Quantum \textbf{pro Klasse} unterschiedlich wählt, und schlagen Sie konkrete Quantum-Werte aus dem im Kapitel genannten Bereich (10–200 ms) für die vier Klassen vor — mit Begründung. \textit{(7 P)}
+
+
+c) Ein Kollege schlägt vor, Klasse 0 (Systemprozesse) auf \textbf{Lottery Scheduling} mit gleicher Loslzahl pro Prozess umzustellen, „weil das fairer ist". Bewerten Sie diesen Vorschlag im Kontext eines Echtzeit-Systemtreibers (z. B. Plattenkontroller-ISR) und nennen Sie das verletzte Scheduling-Ziel. \textit{(5 P)}
+
+
+\textbf{Lösung:}
+
+
+a) \textbf{Abstieg (Prio 1 → 2 → 4)}: Verbraucht der Prozess sein RR-Quantum \textbf{wiederholt vollständig}, ohne freiwillig zu blockieren, wertet das Verfahren ihn als rechenintensiv und stuft ihn nach beispielsweise 3 vollen Quanten in Folge eine Klasse herab. Konkretes Kriterium: \textit{"≥ 3 aufeinanderfolgende vollständige Quanten ohne E/A-Block → Herabstufung um 1"}.
+
+
+\textbf{Aufstieg (4 → 2 → 1)}: Blockiert der Prozess wieder vor Quantum-Ende (echtes E/A-Verhalten — Tastatur, Netzwerk, Maus), wird er nach einer Wartephase eine Stufe heraufgesetzt. Konkretes Kriterium: \textit{"Block vor Quantum-Ende auf Eingabegerät → nach Aufwachen eine Klasse höher"}. Optional: nach festem Zeitfenster ohne Volllast wird die Klasse zurückgesetzt — verhindert Verhungern.
+
+
+Diese gegenläufige Heuristik entspricht der im Kapitel als \textbf{häufigste Praxis-Lösung} bezeichneten Multi-Level-Feedback-Strategie und reagiert dynamisch auf das beobachtete Verhalten statt auf einen statischen Hinweis.
+
+
+b) Das Kapitel sagt: \textit{E/A-intensive Prozesse benötigen längere Quanten, rechenintensive kürzere}. Innerhalb verschiedener Klassen sind die Charakteristika sehr unterschiedlich, daher braucht jede Klasse eine eigene Wahl:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Klasse}} & {\color{white}\textbf{Quantum}} & {\color{white}\textbf{Begründung}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+0 — Systemprozesse & \textbf{20 ms} & kurz und schnell durchgereicht; Treiber sollen niemandem CPU lange wegnehmen, sind selbst aber zeitkritisch. \\
+1 — Interaktiv & \textbf{150 ms} & E/A-intensiv (Maus, Tastatur), gibt CPU früh ab; langes Quantum schadet nicht und reduziert Kontextwechsel. \\
+2 — Allgemein & \textbf{50 ms} & Mischlast, mittlerer Kompromiss zwischen Reaktivität und Overhead. \\
+4 — Batch & \textbf{200 ms} & rein rechenintensiv, läuft im Hintergrund; langes Quantum maximiert Durchsatz und CPU-Auslastung, niedrige Klasse stört Interaktion ohnehin nicht. \\
+\end{tabularx}
+}
+
+
+(Hinweis: Die hohe Quantum-Wahl bei Batch wirkt zunächst paradox zur Kapitel-Aussage „rechenintensiv → kürzer", greift aber nur \textbf{innerhalb} \textit{einer} Klasse mit gemischter Last; in einer reinen Batch-Klasse, in der niemand auf Reaktion wartet, dominiert das Effizienzziel.)
+
+
+c) Lottery Scheduling verteilt CPU \textbf{probabilistisch}. Ein Plattenkontroller-ISR muss aber \textbf{deterministisch und sofort} bedient werden — er hat eine harte Reaktionszeit. Lottery verletzt damit das Ziel \textbf{Vorhersehbarkeit} (und im Echtzeitfall auch die Hard-Deadline). Die Fairness des Vorschlags ist hier kein Vorteil, sondern ein Risiko: ein Trommel-Treiber, der eine Verlosung verliert, könnte einen Datenverlust verursachen. Klasse 0 muss strikt prioritär laufen.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 6 — Fehleranalyse: FSS-Implementierung \textit{(10 Punkte)}}\mbox{}\\[2pt]
+
+Folgender Pseudocode soll \textbf{Fair-Share-Scheduling} für n Prozesse umsetzen — laut Definition: \textit{"jeder von n Prozessen erhält 1/n der CPU-Zeit; das schlechteste Verhältnis verbraucht/zustehend wird als nächstes ausgewählt"}.
+
+
+\begin{lstlisting}
+function pickNext(procs):
+    best := procs[0]
+    for p in procs:
+        if p.consumed < best.consumed:
+            best := p
+    return best
+\end{lstlisting}
+
+
+a) Erklären Sie, warum diese Implementierung das Kapitel-Kriterium \textbf{nicht korrekt} umsetzt. \textit{(4 P)}
+
+
+b) Geben Sie eine korrigierte Variante in Pseudocode an, die das im Kapitel definierte Kriterium exakt umsetzt. \textit{(4 P)}
+
+
+c) Welches Problem entsteht, wenn ein neuer Prozess später hinzukommt und \texttt{consumed = 0} startet, während andere bereits viel CPU-Zeit verbraucht haben? Wie würden Sie es beheben? \textit{(2 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Der Code wählt den Prozess mit dem \textbf{absolut kleinsten Verbrauch}. Das Kapitel verlangt aber das \textbf{schlechteste Verhältnis verbraucht/zustehend}, also \texttt{consumed/entitled}. Die beiden sind nur dann äquivalent, wenn alle Prozesse denselben Anspruch (\texttt{entitled}) haben — sobald ein Prozess einen höheren oder geringeren Anteil zugesprochen bekommt (z. B. durch Gewichtung oder Gruppen), liefert der Code falsche Entscheidungen. Außerdem fehlt die Definition von „schlechtestes Verhältnis": gemeint ist das \textit{kleinste} Verhältnis (am wenigsten von dem, was zusteht, wurde verbraucht).
+
+
+b) Korrigierter Pseudocode:
+
+
+\begin{lstlisting}
+function pickNext(procs):
+    best := procs[0]
+    bestRatio := best.consumed / best.entitled
+    for p in procs[1..]:
+        ratio := p.consumed / p.entitled
+        if ratio < bestRatio:
+            best := p
+            bestRatio := ratio
+    return best
+\end{lstlisting}
+
+
+Hier ist \texttt{entitled} der Sollanteil (z. B. 1/n der gesamten Beobachtungszeit). Wer am weitesten \textit{unter} seinem Soll liegt, wird ausgewählt. Division durch Null muss abgefangen werden (z. B. \texttt{entitled} immer > 0 erzwingen).
+
+
+c) Ein neu hinzukommender Prozess hat \texttt{consumed = 0} und damit Verhältnis 0 — er würde \textbf{dauerhaft bevorzugt}, bis er aufgeholt hat, und blockiert während der Aufholphase faktisch alle anderen. Behebung: den Anfangswert von \texttt{consumed} auf den \textbf{aktuellen Mittelwert der bestehenden Prozesse} setzen (oder \texttt{entitled} zeitgewichtet ab Eintritt zählen, sodass der Prozess nur ab seiner Geburt einen Anspruch akkumuliert). So entsteht ein faires Gleichgewicht statt eines Verhungerns der Altprozesse.
+
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{document}

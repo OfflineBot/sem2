@@ -1,0 +1,400 @@
+% ============================================================
+%  Übungsaufgaben Template (my_dhbw Stil, uebung_*.tex)
+%  Header "Übungsblatt", grün eingefärbte <details>-Lösungen.
+%  Renderer: pdflatex (zweimal)
+% ============================================================
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+\usepackage[top=2cm, bottom=2cm, left=2.4cm, right=2.4cm, footskip=1cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{ltablex}
+\keepXColumns
+\usepackage{colortbl}
+\usepackage[most,breakable]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{pdflscape}
+\usepackage{titlesec}
+\usepackage[colorlinks=true, linkcolor=accent, urlcolor=accent]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme ─────────────────────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{loesung}{RGB}{0, 100, 0}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{240, 252, 240}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer ─────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\footnotesize\color{accent}\nichttitle}
+\fancyhead[R]{\footnotesize\color{accent}\nichtsubtitle}
+\fancyfoot[R]{\footnotesize\color{accent}Blatt \thepage\,/\,\pageref{LastPage}}
+
+% ── Typografie ────────────────────────────────────────────────
+\titleformat{\section}
+    {\color{accent}\large\bfseries}{}{0pt}{}
+    [\vspace{-4pt}\color{accent}\rule{\linewidth}{1.5pt}]
+\titleformat{\subsection}
+    {\normalsize\bfseries\color{accent!85!black}}{}{0pt}{}{}
+\titleformat{\subsubsection}
+    {\small\bfseries\color{accent!70!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{10pt}{3pt}
+\titlespacing*{\subsection}{0pt}{6pt}{2pt}
+\titlespacing*{\subsubsection}{0pt}{4pt}{1pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\renewcommand{\arraystretch}{1.2}
+\setlist[itemize]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.4em}
+\setlist[enumerate]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.6em}
+
+% ── Boxen: solutionbox = Lösungsbox in grün ──────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={Abbildung: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={Tabelle: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{solutionbox}[1]{
+  enhanced,
+  colback=solutionbg, colframe=loesung,
+  title={#1}, fonttitle=\small\bfseries,
+  coltitle=white, colbacktitle=loesung,
+  breakable, before skip=8pt, after skip=8pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=single, framerule=0pt,
+  xleftmargin=4pt, xrightmargin=4pt,
+  aboveskip=6pt, belowskip=6pt,
+  keepspaces=true
+}
+
+\providecommand{\nichttitle}{Übungsblatt}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Betriebssysteme}
+\renewcommand{\nichtsubtitle}{Übungsblatt 4}
+
+
+\begin{document}
+
+\begin{center}
+{\Large\bfseries\color{accent}\nichttitle}
+\ifx\nichtsubtitle\empty\else
+  \\[2pt]{\normalsize\color{accent!80!black}\nichtsubtitle}
+\fi
+\\[2pt]
+\color{accent}\rule{0.4\linewidth}{0.8pt}\color{black}
+\end{center}
+\vspace{4pt}
+
+% ── BODY ──────────────────────────────────────────────────────
+
+\section{Übungsblatt 4 — Modi und Systemaufruf}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 1 — Modus-Eigenschaften und Konsequenz \textit{(10 Punkte)}}\mbox{}\\[2pt]
+
+a) Erläutere die vier Eigenschaften (Privileg, Nutzer, Befehlssatz, Speicher), die User-Mode und Kernel-Mode unterscheiden. \textit{(4 P)}
+
+
+b) Ein Anwendungsentwickler argumentiert: „Wenn ich meiner Anwendung im User-Mode einfach einen Pointer auf eine Kernel-Speicheradresse übergebe, kann ich daraus lesen, weil der Pointer ja nur eine Zahl ist." Begründe fachlich, warum diese Annahme falsch ist und welche der vier Eigenschaften das verhindert. \textit{(3 P)}
+
+
+c) Leite aus dem Punkt „Kernel→User ist unproblematisch, User→Kernel nur indirekt" eine Konsequenz für das Design jeder modernen CPU-Architektur ab: Welche Hardwareunterstützung ist zwingend notwendig, damit dieses Modell überhaupt Sinn ergibt? \textit{(3 P)}
+
+
+\textbf{Lösung:}
+
+
+a)
+
+\begin{itemize}
+  \item \textbf{Privileg}: User-Mode läuft nicht-privilegiert, Kernel-Mode privilegiert. Privilegiert heißt, dass der ausführende Code uneingeschränkten Zugriff auf alle CPU-Befehle und Betriebsmittel hat.
+  \item \textbf{Nutzer}: User-Mode wird von Anwendungen verwendet (z. B. ein Texteditor), Kernel-Mode ausschließlich von BS-Code (Scheduler, Speicherverwalter, Treiber).
+  \item \textbf{Befehlssatz}: Im User-Mode steht nur ein eingeschränkter Befehlssatz zur Verfügung — privilegierte Befehle (z. B. CPU-Halt, MMU-Konfiguration, I/O-Befehle) sind gesperrt. Im Kernel-Mode ist der gesamte Befehlssatz nutzbar.
+  \item \textbf{Speicher}: User-Mode hat keinen Zugriff auf Kernel-Speicher; Kernel-Mode darf den gesamten Speicher und alle Betriebsmittel adressieren.
+\end{itemize}
+
+b) Die Eigenschaft \textbf{Speicher} verhindert das. Auch wenn ein Pointer technisch nur eine Zahl ist, prüft die MMU bei jedem Zugriff im User-Mode, ob die Zieladresse für den User-Mode überhaupt erlaubt ist. Liegt die Adresse im Kernel-Bereich, schlägt die Adressübersetzung fehl bzw. die Zugriffsrechte verbieten den Zugriff — die CPU löst eine Schutzverletzung (Trap/Exception) aus. Der Prozess kommt also nie an die Daten.
+
+
+c) Notwendig ist eine Hardware-Unterstützung in der CPU für mindestens zwei privilegierte Modi und einen Mechanismus, der den Wechsel zwischen ihnen kontrolliert (Modus-Bit + Trap/Interrupt-Mechanismus). Ohne Hardwareebene könnte der User-Mode-Code den Modus selbst setzen und die Trennung wäre wirkungslos. Zusätzlich braucht es eine MMU, die je nach aktuellem Modus Zugriffe filtert.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 — Syscall-Ablauf an \texttt{read} \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Ein User-Prozess \texttt{P} möchte 100 Bytes aus einer geöffneten Datei (Filedeskriptor 5) in einen Puffer \texttt{buf} lesen und ruft \texttt{read(5, buf, 100)} auf.
+
+
+a) Skizziere den vollständigen Ablauf in \textbf{fünf} nummerierten Schritten gemäß Kapitel und ordne jedem Schritt zu, ob er im \textbf{User-Mode} oder im \textbf{Kernel-Mode} stattfindet. \textit{(5 P)}
+
+
+b) Bei Schritt 3 (Sicherheitsprüfung) seien folgende Zustände gegeben:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Fall}} & {\color{white}\textbf{FD 5 geöffnet?}} & {\color{white}\textbf{Lese-Recht?}} & {\color{white}\textbf{\texttt{buf} im User-Adressraum?}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+A & ja & ja & ja \\
+B & ja & nein & ja \\
+C & ja & ja & nein, zeigt in Kernel-Bereich \\
+D & nein & — & ja \\
+\end{tabularx}
+}
+
+
+Gib für jeden Fall an, ob der Syscall ausgeführt wird oder abgelehnt wird, und begründe knapp. \textit{(6 P)}
+
+
+c) Erkläre, warum es sicherheitstechnisch katastrophal wäre, wenn Schritt 3 entfiele und der Kernel direkt zu Schritt 4 ginge. Nenne ein konkretes Angriffsszenario. \textit{(4 P)}
+
+
+\textbf{Lösung:}
+
+
+a)
+
+\begin{enumerate}
+  \item User-Prozess \texttt{P} tätigt den Syscall \texttt{read(5, buf, 100)} — \textbf{User-Mode}.
+  \item Umschalten in Kernel-Mode (Trap-Instruktion, Modus-Bit wird gesetzt) — \textbf{Übergang}, ab hier \textbf{Kernel-Mode}.
+  \item Sicherheitsprüfung: gehört FD 5 zum Prozess, hat er Lese-Recht, liegt \texttt{buf} im User-Adressraum von \texttt{P} mit Schreibrecht? — \textbf{Kernel-Mode}.
+  \item Ausführung: Bytes aus dem Datei-Cache/Block-Device werden in \texttt{buf} kopiert (oder Ablehnung mit Fehlercode) — \textbf{Kernel-Mode}.
+  \item Rückkehr in User-Mode, Rückgabewert (Anzahl gelesener Bytes oder negativer Fehlercode) wird \texttt{P} übergeben — \textbf{User-Mode}.
+\end{enumerate}
+
+b)
+
+\begin{itemize}
+  \item \textbf{Fall A}: ausgeführt. Alle drei Bedingungen erfüllt → 100 Bytes werden gelesen.
+  \item \textbf{Fall B}: abgelehnt. FD ist zwar offen, aber ohne Lese-Recht (z. B. nur zum Schreiben geöffnet) → Fehler \texttt{EBADF}/\texttt{EACCES}.
+  \item \textbf{Fall C}: abgelehnt. \texttt{buf} zeigt in den Kernel-Bereich. Dürfte der Kernel das schreiben, würde der User-Prozess Kernel-Speicher manipulieren (siehe Aufgabe 1c). Fehler \texttt{EFAULT}.
+  \item \textbf{Fall D}: abgelehnt. FD existiert nicht im Prozess, Recht ist irrelevant. Fehler \texttt{EBADF}.
+\end{itemize}
+
+c) Ohne Sicherheitsprüfung würde jeder Aufruf, der die Trap-Instruktion ausführt, mit voller Kernel-Privilegierung beliebigen Code ausführen lassen — der Sinn der Mode-Trennung wäre dahin. Konkretes Szenario: Ein Angreifer ruft \texttt{read(fd\_eines\_anderen\_prozesses, kernel\_addr, n)}. Schritt 4 würde dann Kernel-Speicher mit fremden Dateiinhalten überschreiben (oder umgekehrt Kernel-Daten in ein User-Buffer leaken — z. B. Passwort-Hashes aus einem privilegierten Prozess). Die Mode-Trennung ist nur so stark wie ihre Eintrittskontrolle.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 — Code-Analyse: fehlerhafter Pseudo-Syscall \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Ein Studierender entwirft folgenden Pseudocode für die Kernel-Seite eines \texttt{write(fd, buf, n)}-Syscalls:
+
+
+\begin{lstlisting}
+syscall_write(fd, buf, n):
+  1: switch_to_kernel_mode()
+  2: device = file_table[fd]
+  3: copy n bytes from buf into device
+  4: if (current_user has no write permission on device):
+  5:     return ERROR
+  6: switch_to_user_mode()
+  7: return n
+\end{lstlisting}
+
+
+a) Identifiziere \textbf{drei} Fehler im Ablauf gemessen am Kapitel-Schema (User→Kernel, Sicherheitsprüfung, Ausführung, Rückkehr). \textit{(6 P)}
+
+
+b) Korrigiere den Pseudocode so, dass er dem im Kapitel beschriebenen Ablauf entspricht. \textit{(6 P)}
+
+
+c) Bei Schritt 1 steht \texttt{switch\_to\_kernel\_mode()} als gewöhnlicher Funktionsaufruf. Warum ist das in Wirklichkeit nicht möglich, und wie geschieht der Modus-Wechsel tatsächlich? \textit{(3 P)}
+
+
+\textbf{Lösung:}
+
+
+a)
+
+\begin{enumerate}
+  \item \textbf{Reihenfolge der Sicherheitsprüfung}: Schritt 3 (Ausführung des Schreibens) erfolgt \textbf{vor} der Berechtigungsprüfung in Schritt 4. Damit hat der Schreibvorgang bereits stattgefunden, wenn die Ablehnung kommt — die Prüfung kommt zu spät und ist wirkungslos.
+  \item \textbf{Fehlerpfad lässt Modus offen}: Bei \texttt{return ERROR} in Schritt 5 fehlt das \texttt{switch\_to\_user\_mode()}. Der Prozess würde im Kernel-Mode weiterlaufen — das verletzt den Punkt „Rückkehr in User-Mode mit Rückgabewert".
+  \item \textbf{\texttt{buf} wird ungeprüft genutzt}: Es gibt keine Prüfung, ob \texttt{buf} im User-Adressraum des aufrufenden Prozesses liegt und ob \texttt{fd} überhaupt ein gültiger Eintrag in \texttt{file\_table} für diesen Prozess ist. Das verletzt die Sicherheitsprüfung (Schritt 3 des Kapitelschemas).
+\end{enumerate}
+
+b)
+
+\begin{lstlisting}
+syscall_write(fd, buf, n):
+  1: trap → switch_to_kernel_mode()    // durch Hardware
+  2: if (fd not valid for current_user) OR
+        (current_user has no write permission on file_table[fd]) OR
+        (buf not in user address space of current_user with read access):
+  3:     switch_to_user_mode()
+  4:     return ERROR
+  5: device = file_table[fd]
+  6: copy n bytes from buf into device
+  7: switch_to_user_mode()
+  8: return n
+\end{lstlisting}
+
+Wesentlich: Sicherheitsprüfung \textbf{vor} Ausführung, und in \textbf{jedem} Rückgabezweig zurück in User-Mode.
+
+
+c) \texttt{switch\_to\_kernel\_mode()} ist eine privilegierte Operation — sie setzt das Modus-Bit der CPU. Dieser Befehl ist im User-Mode gerade nicht erlaubt (sonst könnte sich jede Anwendung selbst Kernel-Rechte geben). Der Wechsel geschieht stattdessen \textbf{indirekt über eine Trap-Instruktion} (z. B. \texttt{syscall}/\texttt{int 0x80}/\texttt{svc}). Die Trap ist eine Hardware-Ausnahme: die CPU springt an eine festgelegte Kernel-Einsprungadresse, schaltet dabei automatisch in den Kernel-Mode und übergibt die Kontrolle an den BS-Handler. Der User-Prozess kann also nur den Wunsch äußern, der Kernel entscheidet, ob und wie umgeschaltet wird.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 — Transfer: Mikrocontroller ohne Modus-Trennung \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+Ein einfacher Mikrocontroller (z. B. ein klassischer 8-Bit-AVR) kennt \textbf{keine} Trennung zwischen User- und Kernel-Mode: jeder Code läuft mit vollen Rechten.
+
+
+a) Erkläre, welche der vier im Kapitel genannten Eigenschaften (Privileg, Nutzer, Befehlssatz, Speicher) auf so einem System praktisch wegfallen oder bedeutungslos werden. \textit{(5 P)}
+
+
+b) Auf diesem Mikrocontroller wird eine Library-Funktion \texttt{mc\_write\_flash(addr, data)} angeboten, die in den Programmflash schreibt. Diskutiere, warum man diese Funktion auf einem System mit Mode-Trennung \textbf{niemals} einer User-Anwendung als gewöhnliche Funktion zugänglich machen würde, sondern nur als Syscall. \textit{(7 P)}
+
+
+c) Du sollst auf dem Mikrocontroller ein „Mini-BS" aufbauen, das mehrere voneinander unabhängige Apps ausführt und Mode-Trennung \textbf{softwareseitig} simuliert (Hardware bietet sie nicht). Skizziere zwei Maßnahmen, mit denen du das Schutzziel (Apps können den BS-Code/-Speicher nicht beschädigen) wenigstens teilweise erreichen könntest, und nenne für jede Maßnahme \textbf{eine} prinzipielle Schwäche im Vergleich zu echter Hardware-Trennung. \textit{(8 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Es fallen \textbf{Privileg} und \textbf{Befehlssatz} als Unterscheidungsmerkmale weg: jeder Code ist privilegiert, der vollständige Befehlssatz steht stets zur Verfügung. Auch \textbf{Speicher} verliert seine Schutzbedeutung — alle Code-Teile sehen den gesamten Adressraum, weil keine MMU-gestützte Trennung erzwungen wird. Die Eigenschaft \textbf{Nutzer} ist nur noch eine logische, organisatorische Unterscheidung („das ist mein BS-Code, das ist meine App"), aber keine technisch durchgesetzte mehr.
+
+
+b) Ein Schreibzugriff in den Programmflash kann den eigenen Programmcode des Systems verändern — also auch den BS-Code selbst. Würde \texttt{mc\_write\_flash} als gewöhnliche User-Funktion exportiert, könnte jede App damit z. B. den Sicherheitsprüfungs-Code des Kernels überschreiben, einen Backdoor einschleusen oder das System unbrauchbar machen. Genau dafür gibt es die Mode-Trennung: das Schreiben in privilegierten Speicher ist im User-Mode gesperrt (Befehlssatz/Speicher-Eigenschaft). Als Syscall verpackt durchläuft der Aufruf zunächst die Sicherheitsprüfung (Schritt 3 des Syscall-Ablaufs): Hat der aufrufende Prozess überhaupt das Recht, in genau diesen Flash-Bereich zu schreiben? Erst dann wird die Operation im Kernel-Mode ausgeführt und ordnungsgemäß zurückgekehrt. Die Indirektion über den Syscall ist gerade der Hebel, an dem das BS Policy einsetzen kann — der direkte Funktionsaufruf hätte diesen Hebel nicht.
+
+
+c) Mögliche Maßnahmen:
+
+
+\begin{enumerate}
+  \item \textbf{Bytecode-/VM-Ansatz}: Apps werden nicht als nativer Maschinencode ausgeführt, sondern als Bytecode in einer vom BS bereitgestellten virtuellen Maschine. Die VM kann jeden Speicherzugriff und jeden „Syscall" prüfen, bevor er ausgeführt wird.
+\end{enumerate}
+\textit{Schwäche}: Die VM selbst läuft als nativer Code mit vollen Rechten; jeder Bug in der VM (Buffer Overflow, ungeprüfter Index) führt direkt zu einer Schutzlücke. Bei echter Hardware-Trennung schützt die CPU auch dann, wenn der BS-Code Bugs hat.
+
+
+\begin{enumerate}
+  \item \textbf{Statische Code-Verifikation / Vertrauensmodell}: Alle Apps werden vor dem Flashen durch einen Verifier geprüft (z. B. „benutzt nur erlaubte Adressbereiche, ruft nur freigegebene BS-Funktionen") und nur signierte Binaries dürfen geladen werden.
+\end{enumerate}
+\textit{Schwäche}: Das Modell ist nur so stark wie der Verifier und das Signaturmanagement. Sobald jemand eine Schwachstelle im Verifier findet oder einen Signaturschlüssel kompromittiert, ist der Schutz weg — und es gibt keinen Laufzeit-Mechanismus, der das noch fängt. Hardware-Trennung wirkt dagegen zur Laufzeit unabhängig vom Build-Prozess.
+
+
+(Akzeptiert werden auch andere sinnvolle Maßnahmen, z. B. kooperatives Scheduling mit Adressbereichs-Konventionen, Software-Fault-Isolation durch eingefügte Bounds-Checks, etc., jeweils mit passender Schwäche.)
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 — Vergleich: Bibliotheksaufruf vs. Systemaufruf \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Eine App will einen Wert quadrieren (\texttt{y = x*x}) und alternativ eine Datei öffnen (\texttt{fd = open(...)}).
+
+
+a) Begründe, warum die erste Operation \textbf{kein} Systemaufruf ist, die zweite aber \textbf{muss}. Nutze dafür die Spalten der Modus-Tabelle (Befehlssatz, Speicher, Privileg). \textit{(5 P)}
+
+
+b) Vergleiche Bibliotheksaufruf und Systemaufruf in einer Tabelle nach mindestens vier Kriterien (z. B. Modus-Wechsel, Sicherheitsprüfung, Kosten/Aufwand, Zugriff auf Betriebsmittel). \textit{(6 P)}
+
+
+c) Eine Studentin schlägt vor: „Damit \texttt{open} schneller wird, sollte das BS einfach den Code von \texttt{open} als gewöhnliche Bibliothek in den User-Adressraum mappen, dann braucht man keinen Modus-Wechsel mehr." Bewerte den Vorschlag begründet. \textit{(4 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Das Quadrieren \texttt{y = x*x} benötigt nur arithmetische Befehle (Multiplikation), die im \textbf{eingeschränkten Befehlssatz} des User-Mode enthalten sind, und greift nur auf eigenen Prozess-\textbf{Speicher} zu. Es ist also \textbf{nicht-privilegiert} ausführbar — kein Syscall nötig.
+
+\texttt{open(...)} dagegen benötigt Zugriff auf das Dateisystem, also auf BS-verwaltete \textbf{Betriebsmittel} und Datenstrukturen (Inode-Tabelle, Filedeskriptor-Tabelle, Block-Device-Treiber). Diese liegen im \textbf{Kernel-Speicher}, dessen Manipulation \textbf{privilegiert} ist und teils privilegierte Befehle (I/O-Instruktionen) erfordert. Im User-Mode steht beides nicht zur Verfügung → der Zugriff ist nur indirekt über einen Syscall möglich.
+
+
+b)
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Kriterium}} & {\color{white}\textbf{Bibliotheksaufruf}} & {\color{white}\textbf{Systemaufruf}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Modus & bleibt im User-Mode & wechselt User → Kernel und zurück \\
+Sicherheitsprüfung durch BS & nein (bestenfalls Library-interne Checks) & ja, vom Kernel erzwungen (Schritt 3 des Ablaufs) \\
+Zugriff auf Betriebsmittel & nur was im User-Adressraum liegt & gesamter Speicher, alle Betriebsmittel \\
+Kosten/Aufwand & sehr gering (gewöhnlicher Funktionsaufruf, ggf. inlining) & höher: Trap, Modus-Wechsel, Prüfungen, Rückkehr \\
+Befehlssatz & nur eingeschränkter Satz & beliebige (auch privilegierte) Befehle \\
+\end{tabularx}
+}
+
+
+c) Der Vorschlag verfehlt den Sinn der Mode-Trennung. Wenn \texttt{open}-Code im User-Adressraum läuft, läuft er im \textbf{User-Mode} — er hätte dann genau jene eingeschränkten Rechte, die der eigentliche \texttt{open}-Vorgang gerade nicht haben darf (Zugriff auf Inode-Tabellen, Geräte, Kernel-Datenstrukturen). Entweder funktioniert der gemappte Code also gar nicht (Schutzverletzungen), oder das BS müsste dem User-Mode diese Zugriffe erlauben — dann ist die Mode-Trennung effektiv aufgehoben und jede App kann beliebig im Dateisystem wüten. Außerdem würde die zentrale Sicherheitsprüfung (Schritt 3) entfallen oder müsste der App selbst überlassen werden, was widersprüchlich ist (wer angreift, prüft nicht). Der Modus-Wechsel ist kein Optimierungs-Overhead, sondern der Träger der Sicherheitseigenschaft — er lässt sich nicht „wegoptimieren", ohne das Schutzziel aufzugeben.
+
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{document}

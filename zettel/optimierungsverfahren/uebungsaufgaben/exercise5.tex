@@ -1,0 +1,558 @@
+% ============================================================
+%  Übungsaufgaben Template (my_dhbw Stil, uebung_*.tex)
+%  Header "Übungsblatt", grün eingefärbte <details>-Lösungen.
+%  Renderer: pdflatex (zweimal)
+% ============================================================
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+\usepackage[top=2cm, bottom=2cm, left=2.4cm, right=2.4cm, footskip=1cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{ltablex}
+\keepXColumns
+\usepackage{colortbl}
+\usepackage[most,breakable]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{pdflscape}
+\usepackage{titlesec}
+\usepackage[colorlinks=true, linkcolor=accent, urlcolor=accent]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme ─────────────────────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{loesung}{RGB}{0, 100, 0}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{240, 252, 240}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer ─────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\footnotesize\color{accent}\nichttitle}
+\fancyhead[R]{\footnotesize\color{accent}\nichtsubtitle}
+\fancyfoot[R]{\footnotesize\color{accent}Blatt \thepage\,/\,\pageref{LastPage}}
+
+% ── Typografie ────────────────────────────────────────────────
+\titleformat{\section}
+    {\color{accent}\large\bfseries}{}{0pt}{}
+    [\vspace{-4pt}\color{accent}\rule{\linewidth}{1.5pt}]
+\titleformat{\subsection}
+    {\normalsize\bfseries\color{accent!85!black}}{}{0pt}{}{}
+\titleformat{\subsubsection}
+    {\small\bfseries\color{accent!70!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{10pt}{3pt}
+\titlespacing*{\subsection}{0pt}{6pt}{2pt}
+\titlespacing*{\subsubsection}{0pt}{4pt}{1pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\renewcommand{\arraystretch}{1.2}
+\setlist[itemize]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.4em}
+\setlist[enumerate]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.6em}
+
+% ── Boxen: solutionbox = Lösungsbox in grün ──────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={Abbildung: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={Tabelle: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{solutionbox}[1]{
+  enhanced,
+  colback=solutionbg, colframe=loesung,
+  title={#1}, fonttitle=\small\bfseries,
+  coltitle=white, colbacktitle=loesung,
+  breakable, before skip=8pt, after skip=8pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=single, framerule=0pt,
+  xleftmargin=4pt, xrightmargin=4pt,
+  aboveskip=6pt, belowskip=6pt,
+  keepspaces=true
+}
+
+\providecommand{\nichttitle}{Übungsblatt}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Optimierungsverfahren}
+\renewcommand{\nichtsubtitle}{Übungsblatt 5}
+
+
+\begin{document}
+
+\begin{center}
+{\Large\bfseries\color{accent}\nichttitle}
+\ifx\nichtsubtitle\empty\else
+  \\[2pt]{\normalsize\color{accent!80!black}\nichtsubtitle}
+\fi
+\\[2pt]
+\color{accent}\rule{0.4\linewidth}{0.8pt}\color{black}
+\end{center}
+\vspace{4pt}
+
+% ── BODY ──────────────────────────────────────────────────────
+
+\section{Übungsblatt 5 — 4. Nicht-Lineare Optimierung}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 1 — Q-Matrix und Konvexität \textit{(10 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben sei das QO-Problem
+
+
+\[
+\min \tfrac{1}{2}\,\vec{x}^{\,T} Q\, \vec{x} + \vec{c}^{\,T}\vec{x}, \qquad Q = \begin{pmatrix} 4 & 2 \\ 2 & 3 \end{pmatrix},\ \vec{c} = \begin{pmatrix} -1 \\ -2 \end{pmatrix}
+\]
+
+
+ohne Nebenbedingungen.
+
+
+a) Nenne die drei laut Kapitel relevanten Eigenschaften der Matrix $Q$ in einem QO-Problem und ihre jeweilige Konsequenz für die Lösbarkeit.
+
+b) Prüfe für die obige Matrix $Q$, welche dieser Eigenschaften erfüllt sind. Begründe rechnerisch.
+
+c) Welche Konsequenz folgt aus deiner Antwort in b) für das Optimierungsproblem? Bestimme zusätzlich die optimale Lösung $\vec{x}^*$ analytisch.
+
+
+\textbf{Lösung:}
+
+
+a)
+
+\begin{itemize}
+  \item \textbf{Symmetrie} ($Q = Q^T$): erforderlich, sonst lässt sich die Form $\tfrac{1}{2}x^TQx$ nicht eindeutig schreiben (man kann sie aber durch $\tfrac{1}{2}(Q+Q^T)$ symmetrisieren).
+  \item \textbf{Positiv semi-definit} (keine negativen Eigenwerte): Zielfunktion ist konvex, jeder lokale Optimum ist global.
+  \item \textbf{Positiv definit}: Zielfunktion strikt konvex → es existiert eine \textbf{eindeutige} globale Lösung.
+\end{itemize}
+
+b)
+
+\begin{itemize}
+  \item Symmetrie: $Q_{12} = Q_{21} = 2$ ✓
+  \item Hauptminoren-Kriterium (Sylvester): $\det(4) = 4 > 0$, $\det(Q) = 4\cdot 3 - 2\cdot 2 = 8 > 0$ ✓
+  \item Eigenwerte als Gegenprobe: $\lambda^2 - 7\lambda + 8 = 0 \Rightarrow \lambda_{1,2} = \tfrac{7 \pm \sqrt{17}}{2} \approx 5{,}56\ /\ 1{,}44$ — beide positiv.
+\end{itemize}
+
+$Q$ ist \textbf{symmetrisch und positiv definit}.
+
+
+c) Damit ist das Problem strikt konvex und besitzt eine \textbf{eindeutige globale Lösung}. Da keine NB vorliegen, gilt $\nabla f = Q\vec{x} + \vec{c} = \vec{0}$:
+
+
+\[
+\vec{x}^* = -Q^{-1}\vec{c} = -\frac{1}{8}\begin{pmatrix} 3 & -2 \\ -2 & 4 \end{pmatrix}\begin{pmatrix} -1 \\ -2 \end{pmatrix} = -\frac{1}{8}\begin{pmatrix} 1 \\ -6 \end{pmatrix} = \begin{pmatrix} -1/8 \\ 3/4 \end{pmatrix}
+\]
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 — CLS als QO formulieren \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Du sollst die Funktion $\hat{y}(x) = b_1 + b_2 x$ an folgende Daten anpassen:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{$i$}} & {\color{white}\textbf{$x_i$}} & {\color{white}\textbf{$y_i$}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+1 & 1 & 2 \\
+2 & 2 & 3 \\
+3 & 3 & 5 \\
+\end{tabularx}
+}
+
+
+Aus dem Anwendungskontext gilt: $b_1 \ge 0$, $b_2 \ge 0$, und es ist bekannt, dass $b_1 + b_2 = 4$.
+
+
+a) Stelle Designmatrix $X$ und Beobachtungsvektor $\vec{y}$ auf und berechne $X^TX$ sowie $X^T\vec{y}$.
+
+b) Warum kann hier nicht die analytische Lösung $\vec{b} = (X^TX)^{-1}X^T\vec{y}$ direkt verwendet werden? Begründe mit dem Kapitel.
+
+c) Schreibe das Ausgleichsproblem als QO-Problem in Standardform $\min \tfrac{1}{2}\vec{b}^TQ\vec{b} + \vec{c}^T\vec{b}$ mit allen NB an. Gib $Q$, $\vec{c}$ und alle Restriktionen explizit an.
+
+
+\textbf{Lösung:}
+
+
+a) Mit Spalte für den Achsenabschnitt zuerst:
+
+
+\[
+X = \begin{pmatrix} 1 & 1 \\ 1 & 2 \\ 1 & 3 \end{pmatrix},\qquad \vec{y} = \begin{pmatrix} 2 \\ 3 \\ 5 \end{pmatrix}
+\]
+
+
+\[
+X^TX = \begin{pmatrix} 3 & 6 \\ 6 & 14 \end{pmatrix}, \qquad X^T\vec{y} = \begin{pmatrix} 2+3+5 \\ 1\cdot 2 + 2\cdot 3 + 3\cdot 5 \end{pmatrix} = \begin{pmatrix} 10 \\ 23 \end{pmatrix}
+\]
+
+
+b) Die analytische Normalgleichung liefert das \textbf{unbeschränkte} Optimum. Sobald NB vorliegen ($b_i \ge 0$, $\sum b_i = 4$), kann diese Lösung außerhalb des zulässigen Bereichs liegen, also ist sie ungültig. Genau diese Situation definiert laut Kapitel das CLS-Problem, und wir müssen es als QO mit NB lösen.
+
+
+c) Aus $\|\vec{y} - X\vec{b}\|^2 = \vec{y}^T\vec{y} - 2\vec{y}^TX\vec{b} + \vec{b}^TX^TX\vec{b}$ folgt durch Weglassen der Konstanten und Multiplikation mit $\tfrac{1}{2}$:
+
+
+\[
+\min_{\vec{b}}\ \tfrac{1}{2}\vec{b}^T\underbrace{(X^TX)}_{Q}\vec{b}\ +\ \underbrace{(-X^T\vec{y})^T}_{\vec{c}^{\,T}}\vec{b}
+\]
+
+
+\[
+Q = \begin{pmatrix} 3 & 6 \\ 6 & 14 \end{pmatrix},\qquad \vec{c} = \begin{pmatrix} -10 \\ -23 \end{pmatrix}
+\]
+
+
+Restriktionen:
+
+\begin{itemize}
+  \item Gleichungs-NB: $A_{eq}\vec{b} = b_{eq}$ mit $A_{eq} = (1,\ 1)$, $b_{eq} = 4$.
+  \item Box-NB: $b_l = (0,0)^T \le \vec{b}$ (kein oberer Wert nötig).
+\end{itemize}
+
+$Q$ hat $\det = 42 - 36 = 6 > 0$ und $Q_{11} = 3 > 0$, also positiv definit → konvexes QO-Problem mit eindeutiger Lösung.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 — KKT-Bedingungen anwenden \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben:
+
+
+\[
+\min f(x,y) = x^2 + 2y^2,\qquad \text{u.B.}\quad x+y = 3,\ \ x \ge 0,\ \ y \ge 0
+\]
+
+
+a) Bringe die Ungleichungs-NB in die Normalform $g_j(\vec{x}) \le 0$ und schreibe die Lagrange-Funktion $L(x,y,a,b_1,b_2)$ an.
+
+b) Stelle die vier KKT-Blöcke vollständig auf.
+
+c) Bestimme den KKT-Punkt. Mache dazu eine begründete Fallunterscheidung über die aktiven Ungleichungs-NB und prüfe alle KKT-Bedingungen am Ergebnis.
+
+d) Argumentiere mit der Bedingung 2. Ordnung, ob es sich um ein lokales Minimum handelt.
+
+
+\textbf{Lösung:}
+
+
+a) Normalform: $g_1(\vec{x}) = -x \le 0$, $g_2(\vec{x}) = -y \le 0$, $h_1(\vec{x}) = x+y-3 = 0$.
+
+
+\[
+L = x^2 + 2y^2 + a(x+y-3) + b_1(-x) + b_2(-y)
+\]
+
+
+b) KKT-Blöcke:
+
+
+1) \textbf{Stationarität}:
+
+\[
+\frac{\partial L}{\partial x} = 2x + a - b_1 = 0,\qquad \frac{\partial L}{\partial y} = 4y + a - b_2 = 0
+\]
+
+2) \textbf{Primal Feasibility}: $x+y-3 = 0$, $-x \le 0$, $-y \le 0$.
+
+3) \textbf{Dual Feasibility}: $b_1 \ge 0$, $b_2 \ge 0$.
+
+4) \textbf{Komplementarität}: $b_1\cdot(-x) = 0$, $b_2\cdot(-y) = 0$.
+
+
+c) \textbf{Fallunterscheidung}:
+
+
+\textit{Annahme: beide Ungleichungs-NB inaktiv}, also $b_1 = b_2 = 0$ (Komplementarität, falls $x>0, y>0$).
+
+
+Dann liefert die Stationarität:
+
+\[
+2x + a = 0\ \Rightarrow\ x = -a/2,\qquad 4y + a = 0\ \Rightarrow\ y = -a/4
+\]
+
+
+Einsetzen in die Gleichungs-NB:
+
+\[
+x+y = -\tfrac{a}{2} - \tfrac{a}{4} = -\tfrac{3a}{4} = 3 \Rightarrow a = -4
+\]
+
+
+\[
+x^* = 2,\quad y^* = 1
+\]
+
+
+Prüfung aller KKT:
+
+\begin{itemize}
+  \item Stationarität: $2\cdot 2 + (-4) = 0$ ✓, $4\cdot 1 + (-4) = 0$ ✓
+  \item Primal: $2+1=3$ ✓, $-2 \le 0$ ✓, $-1 \le 0$ ✓
+  \item Dual: $b_1 = b_2 = 0 \ge 0$ ✓
+  \item Komplementarität: $0\cdot(-2) = 0$ ✓, $0\cdot(-1) = 0$ ✓
+\end{itemize}
+
+KKT-Punkt: $(x^*, y^*, a, b_1, b_2) = (2,\ 1,\ -4,\ 0,\ 0)$, $f^* = 4 + 2 = 6$.
+
+
+(Andere Fälle: aktiv $g_1$ ($x=0$) liefert $y=3$ → $b_1 = a$, aus $4y+a=0$ folgt $a=-12$, $b_1=-12 < 0$ → verletzt Dual Feasibility. Analog für $g_2$. Damit ist obiger Punkt der einzige KKT-Punkt.)
+
+
+d) Hesse von $L$ bzgl. $\vec{x}$:
+
+\[
+\nabla^2_{\vec{x}} L = \begin{pmatrix} 2 & 0 \\ 0 & 4 \end{pmatrix}
+\]
+
+positiv definit (Hauptminoren $2>0$, $8>0$). Damit ist das hinreichende Kriterium 2. Ordnung erfüllt → $(2,1)$ ist ein \textbf{lokales Minimum} (sogar global, da $f$ konvex und der zulässige Bereich konvex ist).
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 — Eine Iteration SQO \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben sei das NLO
+
+
+\[
+\min f(x_1,x_2) = x_1^2 + x_2^2 + x_1 x_2,\qquad \text{u.B.}\ x_1 + x_2 \ge 2
+\]
+
+
+mit Startpunkt $\vec{x}_0 = (3, 0)^T$.
+
+
+a) Schreibe die Ungleichungs-NB als $g(\vec{x}) \le 0$. Berechne $\nabla f(\vec{x}_0)$, $\nabla g(\vec{x}_0)$, $g(\vec{x}_0)$.
+
+b) Stelle das QO-Sub-Problem nach Kapitel-Definition auf (mit $H$ = exakte Hesse von $L$ bzgl. $\vec{x}$ am Punkt $\vec{x}_0$ — begründe, dass dies hier zulässig ist).
+
+c) Löse das Sub-Problem über KKT (Sub-Problem hat eigene KKT-Bedingungen!) und bestimme die Suchrichtung $\vec{d}$.
+
+d) Führe einen vollständigen Iterationsschritt mit Schrittweite $c=1$ durch. Vergleiche $f(\vec{x}_0)$ und $f(\vec{x}_1)$ und prüfe, ob $\vec{x}_1$ zulässig ist.
+
+
+\textbf{Lösung:}
+
+
+a) Normalform: $g(\vec{x}) = 2 - x_1 - x_2 \le 0$.
+
+
+\[
+\nabla f(\vec{x}) = \begin{pmatrix} 2x_1 + x_2 \\ 2x_2 + x_1 \end{pmatrix},\quad \nabla f(\vec{x}_0) = \begin{pmatrix} 6 \\ 3 \end{pmatrix}
+\]
+
+
+\[
+\nabla g(\vec{x}_0) = \begin{pmatrix} -1 \\ -1 \end{pmatrix},\qquad g(\vec{x}_0) = 2 - 3 - 0 = -1\ (<0,\ \text{NB inaktiv})
+\]
+
+
+b) Hesse:
+
+\[
+\nabla^2 f = \begin{pmatrix} 2 & 1 \\ 1 & 2 \end{pmatrix},\qquad \nabla^2 g = 0
+\]
+
+Da $g$ linear ist, ist $\nabla^2_{\vec{x}} L = \nabla^2 f + b\cdot\nabla^2 g = \nabla^2 f$ unabhängig von $b$. Damit ist $H = \begin{pmatrix} 2 & 1 \\ 1 & 2 \end{pmatrix}$ exakt und positiv definit (Hauptminoren $2>0$, $3>0$); BFGS wäre nicht nötig.
+
+
+Sub-Problem ($\vec{d} = (d_1,d_2)^T$):
+
+\[
+\min_{\vec{d}}\ f(\vec{x}_0) + \nabla f^T\vec{d} + \tfrac{1}{2}\vec{d}^T H \vec{d}
+\]
+
+\[
+\text{u.B.}\quad g(\vec{x}_0) + \nabla g^T\vec{d} \le 0\ \Leftrightarrow\ -1 - d_1 - d_2 \le 0\ \Leftrightarrow\ d_1 + d_2 \ge -1
+\]
+
+
+Konstanten weglassen:
+
+\[
+\min\ \tfrac{1}{2}(2d_1^2 + 2d_2^2 + 2d_1 d_2) + 6d_1 + 3d_2 \quad\text{s.t.}\ -1 - d_1 - d_2 \le 0
+\]
+
+
+c) KKT mit Multiplikator $b \ge 0$:
+
+
+\[
+2d_1 + d_2 + 6 - b = 0,\quad d_1 + 2d_2 + 3 - b = 0,\quad b\cdot(-1-d_1-d_2) = 0
+\]
+
+
+\textbf{Versuch $b=0$} (NB inaktiv):
+
+Aus den ersten beiden Gleichungen: $2d_1+d_2=-6$, $d_1+2d_2=-3$. Subtraktion liefert $d_1 - d_2 = -3$, eingesetzt: $d_2 = 0$, $d_1 = -3$. Aber $-1 - (-3) - 0 = 2 > 0$ — NB \textbf{verletzt}.
+
+
+\textbf{Damit $b>0$, NB aktiv}: $d_1 + d_2 = -1$, also $d_2 = -1 - d_1$.
+
+
+\[
+2d_1 + (-1-d_1) + 6 - b = 0\ \Rightarrow\ d_1 + 5 = b
+\]
+
+\[
+d_1 + 2(-1-d_1) + 3 - b = 0\ \Rightarrow\ -d_1 + 1 = b
+\]
+
+
+Gleichsetzen: $d_1 + 5 = -d_1 + 1\ \Rightarrow\ d_1 = -2$, $d_2 = 1$, $b = 3 > 0$ ✓.
+
+
+Suchrichtung: $\vec{d} = (-2,\ 1)^T$.
+
+
+d) Mit $c=1$:
+
+\[
+\vec{x}_1 = \vec{x}_0 + 1\cdot \vec{d} = (3,0)^T + (-2,1)^T = (1,1)^T
+\]
+
+
+Zulässigkeit: $x_1 + x_2 = 2 \ge 2$ ✓ (NB jetzt aktiv).
+
+
+Funktionswerte: $f(\vec{x}_0) = 9 + 0 + 0 = 9$, $f(\vec{x}_1) = 1 + 1 + 1 = 3$ → echter Abstieg um 6.
+
+
+(Anmerkung: $(1,1)$ ist hier sogar bereits das globale Optimum des ursprünglichen NLO; in einer zweiten Iteration würde $\vec{d} \approx \vec{0}$ und der Algorithmus konvergieren.)
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 — Fehler im SQO-Pseudocode \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Ein Studierender hat die folgende Implementierung des SQO-Algorithmus geschrieben:
+
+
+\begin{lstlisting}
+INPUT: NLO mit f, h, g, Startpunkt x_0
+1:  i ← 0
+2:  H ← I              // I = Einheitsmatrix
+3:  while i < 100 do
+4:      grad_f ← ∇f(x_i)
+5:      grad_h ← ∇h(x_i);  grad_g ← ∇g(x_i)
+6:      löse QO-Sub-Problem mit grad_f, grad_h, grad_g, H → d
+7:      x_{i+1} ← x_i + d
+8:      i ← i + 1
+9:  end while
+10: return x_i
+\end{lstlisting}
+
+
+a) Identifiziere mindestens \textbf{drei} inhaltliche Fehler/Mängel gegenüber dem Kapitel und erkläre jeweils, welche praktische Konsequenz der Fehler hat.
+
+b) Formuliere den Algorithmus in korrigierter Form (Pseudocode oder Stichpunkte).
+
+c) Begründe, warum das in (a) gewählte Verfahren zur Berechnung von $H$ insbesondere bei nicht-linearen Problemen wichtig ist.
+
+
+\textbf{Lösung:}
+
+
+a) Mängel:
+
+
+\begin{enumerate}
+  \item \textbf{Fixe Hesse $H = I$}: Im Kapitel ist $H$ eine Approximation der Hesse von $L$ bzgl. $\vec{x}$ (typisch BFGS-Update). Mit $H = I$ wird das Sub-Problem zu einer skalierten Gradientenrichtung — die quadratische Krümmung von $f$ und das Verhalten der NB-Multiplikatoren werden vollständig ignoriert. Konsequenz: extrem langsame oder gar fehlende Konvergenz, kein superlinearer Charakter mehr.
+  \item \textbf{Fehlende Liniensuche}: Das Kapitel verlangt eine Schrittgröße $c > 0$ aus einer Liniensuche und $\vec{x}_{i+1} = \vec{x}_i + c\cdot\vec{d}$. Im Code wird stets $c=1$ verwendet. Konsequenz: Schritt kann zu groß sein → Zielfunktion steigt, NB werden grob verletzt, Algorithmus divergiert oder oszilliert.
+  \item \textbf{Falsches Abbruchkriterium}: Es wird nur die Iterationszahl geprüft, kein Konvergenzkriterium (z. B. $\|\vec{d}\| < \varepsilon$, $\|\nabla L\| < \varepsilon$, KKT-Residuum). Konsequenz: Entweder zu früh abgebrochen (kein lokales Optimum) oder unnötig lange weitergerechnet, ohne Garantie über die Qualität von $\vec{x}_i$.
+\end{enumerate}
+
+(Optional weitere Punkte: keine Multiplikatoren-Übernahme aus dem Sub-Problem zur $H$-Update / Liniensuche; keine Prüfung der Lösbarkeit des Sub-Problems; keine Zulässigkeitsprüfung von $\vec{x}_0$.)
+
+
+b) Korrigierte Fassung:
+
+
+\begin{lstlisting}
+INPUT: NLO (f, h, g), Startpunkt x_0, Toleranz ε > 0, max_iter
+1:  i ← 0;  H ← I  (Initialisierung; wird via BFGS aktualisiert)
+2:  repeat
+3:      grad_f ← ∇f(x_i);  grad_h ← ∇h(x_i);  grad_g ← ∇g(x_i)
+4:      löse QO-Sub-Problem → Suchrichtung d, Multiplikatoren a, b
+5:      bestimme Schrittgröße c > 0 via Liniensuche (z. B. Armijo / Merit-Funktion)
+6:      x_{i+1} ← x_i + c·d
+7:      aktualisiere H via BFGS aus (x_i, x_{i+1}, ∇L)
+8:      i ← i + 1
+9:  until ‖d‖ < ε  ODER  KKT-Residuum < ε  ODER  i ≥ max_iter
+10: return x_i, a, b
+\end{lstlisting}
+
+
+c) Bei nicht-linearen Problemen variiert die Krümmung von $f$ und $L$ über den Iterationsverlauf. Eine Approximation der Hesse von $L$ (statt eines reinen Gradientenschritts) sorgt dafür, dass das Sub-Problem die \textit{lokale} Krümmung berücksichtigt — dadurch wird die Suchrichtung lokal nahezu Newton-artig und SQO erreicht typischerweise superlineare Konvergenz, was bei $H=I$ verlorengeht. BFGS wird dabei der direkten Hessen-Berechnung vorgezogen, weil zweite Ableitungen oft teuer oder nicht analytisch verfügbar sind.
+
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{document}

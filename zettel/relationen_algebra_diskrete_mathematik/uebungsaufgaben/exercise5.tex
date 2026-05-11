@@ -1,0 +1,445 @@
+% ============================================================
+%  Übungsaufgaben Template (my_dhbw Stil, uebung_*.tex)
+%  Header "Übungsblatt", grün eingefärbte <details>-Lösungen.
+%  Renderer: pdflatex (zweimal)
+% ============================================================
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+\usepackage[top=2cm, bottom=2cm, left=2.4cm, right=2.4cm, footskip=1cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{ltablex}
+\keepXColumns
+\usepackage{colortbl}
+\usepackage[most,breakable]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{pdflscape}
+\usepackage{titlesec}
+\usepackage[colorlinks=true, linkcolor=accent, urlcolor=accent]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme ─────────────────────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{loesung}{RGB}{0, 100, 0}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{240, 252, 240}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer ─────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\footnotesize\color{accent}\nichttitle}
+\fancyhead[R]{\footnotesize\color{accent}\nichtsubtitle}
+\fancyfoot[R]{\footnotesize\color{accent}Blatt \thepage\,/\,\pageref{LastPage}}
+
+% ── Typografie ────────────────────────────────────────────────
+\titleformat{\section}
+    {\color{accent}\large\bfseries}{}{0pt}{}
+    [\vspace{-4pt}\color{accent}\rule{\linewidth}{1.5pt}]
+\titleformat{\subsection}
+    {\normalsize\bfseries\color{accent!85!black}}{}{0pt}{}{}
+\titleformat{\subsubsection}
+    {\small\bfseries\color{accent!70!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{10pt}{3pt}
+\titlespacing*{\subsection}{0pt}{6pt}{2pt}
+\titlespacing*{\subsubsection}{0pt}{4pt}{1pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\renewcommand{\arraystretch}{1.2}
+\setlist[itemize]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.4em}
+\setlist[enumerate]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.6em}
+
+% ── Boxen: solutionbox = Lösungsbox in grün ──────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={Abbildung: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={Tabelle: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{solutionbox}[1]{
+  enhanced,
+  colback=solutionbg, colframe=loesung,
+  title={#1}, fonttitle=\small\bfseries,
+  coltitle=white, colbacktitle=loesung,
+  breakable, before skip=8pt, after skip=8pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=single, framerule=0pt,
+  xleftmargin=4pt, xrightmargin=4pt,
+  aboveskip=6pt, belowskip=6pt,
+  keepspaces=true
+}
+
+\providecommand{\nichttitle}{Übungsblatt}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Relationen, Algebra, Diskrete Mathematik}
+\renewcommand{\nichtsubtitle}{Übungsblatt 5}
+
+
+\begin{document}
+
+\begin{center}
+{\Large\bfseries\color{accent}\nichttitle}
+\ifx\nichtsubtitle\empty\else
+  \\[2pt]{\normalsize\color{accent!80!black}\nichtsubtitle}
+\fi
+\\[2pt]
+\color{accent}\rule{0.4\linewidth}{0.8pt}\color{black}
+\end{center}
+\vspace{4pt}
+
+% ── BODY ──────────────────────────────────────────────────────
+
+\section{Übungsblatt 5 — Abbildungen / Funktionen}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 1 — Eigenschaften einer endlichen Abbildung \textit{(12 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben sei die Abbildung g: A → B mit A = \{1, 2, 3, 4\} und B = \{a, b, c\} sowie der Wertetabelle:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{x}} & {\color{white}\textbf{1}} & {\color{white}\textbf{2}} & {\color{white}\textbf{3}} & {\color{white}\textbf{4}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+g(x) & b & a & b & c \\
+\end{tabularx}
+}
+
+
+a) Erkläre kurz die Begriffe \textbf{linksvollständig} und \textbf{rechtseindeutig} und begründe, ob g eine Abbildung im Sinne der Definition ist. \textit{(3 P)}
+
+
+b) Untersuche g auf Injektivität und Surjektivität. Begründe jede Aussage durch Verweis auf konkrete Elemente der Tabelle. \textit{(5 P)}
+
+
+c) Welche minimale Änderung an genau einem Tabelleneintrag macht g injektiv? Ist g danach automatisch bijektiv? Begründe. \textit{(4 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Linksvollständig heißt: jedem x ∈ D ist (mindestens) ein y zugeordnet. Rechtseindeutig heißt: jedem x ∈ D ist höchstens ein y zugeordnet (also genau eines, in Kombination mit Linksvollständigkeit). Die Tabelle ordnet jedem der vier Elemente von A genau einen Wert in B zu, also ist g eine Abbildung.
+
+
+b) \textbf{Nicht injektiv}: g(1) = b = g(3), aber 1 ≠ 3 — die Bedingung f(x₁) = f(x₂) ⇒ x₁ = x₂ ist verletzt. \textbf{Surjektiv}: ∀ y ∈ B existiert ein Urbild — a hat Urbild 2, b hat Urbild 1 (oder 3), c hat Urbild 4. Also „rechtsvollständig".
+
+
+c) Injektivität verlangt höchstens ein Urbild pro Bild. Das einzige doppelte Bild ist b (von 1 und 3). Da |A| = 4 > |B| = 3, ist eine injektive Abbildung A → B \textbf{prinzipiell unmöglich} — durch das Schubfachprinzip muss mindestens ein Bild zwei Urbilder haben. Also macht \textit{keine} Änderung eines einzigen Eintrags g injektiv (trickreiche Aufgabe). Folgerung: g kann auf diesem D, W nicht bijektiv sein.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 — Definitionsmenge anpassen \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Sei f: ℝ → ℝ, f(x) = x² − 4x + 5.
+
+
+a) Zeige rechnerisch, dass f auf ℝ \textbf{nicht injektiv} ist, indem du zwei verschiedene Argumente mit gleichem Bild angibst. \textit{(3 P)}
+
+
+b) Bestimme das Bild f(ℝ) ⊆ ℝ. Folgere, dass f als Abbildung ℝ → ℝ \textbf{nicht surjektiv} ist. \textit{(5 P)}
+
+
+c) Schränke Definitions- und Wertemenge so ein, dass eine bijektive Abbildung f̃ entsteht. Gib f̃ explizit (mit D̃, W̃) an und beschreibe die Umkehrabbildung f̃⁻¹. \textit{(7 P)}
+
+
+\textbf{Lösung:}
+
+
+a) f(x) = (x − 2)² + 1. Wegen Symmetrie um x = 2 gilt f(2 − t) = f(2 + t). Konkret: f(0) = 5 und f(4) = 16 − 16 + 5 = 5. Also f(0) = f(4), aber 0 ≠ 4 → nicht injektiv.
+
+
+b) Aus f(x) = (x − 2)² + 1 ≥ 1 folgt f(ℝ) = [1, ∞). Werte y < 1 (z. B. y = 0) haben kein Urbild, denn (x − 2)² + 1 = 0 hätte (x − 2)² = −1, was in ℝ unlösbar ist. Also nicht surjektiv auf ℝ.
+
+
+c) Wähle D̃ = [2, ∞) (rechter Ast der Parabel) und W̃ = [1, ∞). Auf [2, ∞) ist f̃(x) = (x − 2)² + 1 streng monoton wachsend, also injektiv; und sie nimmt jeden Wert in [1, ∞) an, also surjektiv → bijektiv.
+
+
+Umkehrung: y = (x − 2)² + 1 ⇔ x − 2 = √(y − 1) (positive Wurzel, weil x ≥ 2) ⇔ x = 2 + √(y − 1).
+
+Also f̃⁻¹: [1, ∞) → [2, ∞), y ↦ 2 + √(y − 1).
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 — Transfer: Hashfunktion als Abbildung \textit{(18 Punkte)}}\mbox{}\\[2pt]
+
+In einem Backend werden N = 10 Nutzer-IDs aus der Menge U = \{0, 1, …, 99\} auf Buckets B = \{0, 1, …, 6\} abgebildet via h: U → B, h(x) = x mod 7.
+
+
+a) Begründe mit den Begriffen Injektiv/Surjektiv, warum h: U → B nicht injektiv sein \textbf{kann}, aber surjektiv ist. \textit{(5 P)}
+
+
+b) Konkret werden die IDs S = \{3, 10, 14, 21, 28, 35, 42, 49, 56, 63\} eingefügt. Berechne h(S) als Multimenge (mit Vielfachheiten) und gib an, wie viele Kollisionen (Paare verschiedener IDs mit gleichem Bild) auftreten. \textit{(6 P)}
+
+
+c) Auf welche Teilmenge D′ ⊆ U müsste man die zulässigen IDs einschränken, damit die Einschränkung h|\_\{D′\} bijektiv auf B wird? Gib ein konkretes D′ mit |D′| = 7 an und zeige Bijektivität durch eine Tabelle. \textit{(7 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Da |U| = 100 > 7 = |B|, kann nach dem Schubfachprinzip keine Abbildung U → B injektiv sein (mind. ⌈100/7⌉ = 15 IDs landen auf demselben Bucket für mindestens ein Bucket). Surjektivität: jedes b ∈ \{0,…,6\} hat z. B. b selbst als Urbild (h(b) = b), also rechtsvollständig.
+
+
+b) Bilder:
+
+\begin{itemize}
+  \item h(3) = 3, h(10) = 3, h(14) = 0, h(21) = 0, h(28) = 0, h(35) = 0, h(42) = 0, h(49) = 0, h(56) = 0, h(63) = 0.
+\end{itemize}
+
+Multimenge h(S) = \{0⁸, 3²\}. Also Bucket 0 acht Mal, Bucket 3 zwei Mal, Buckets 1, 2, 4, 5, 6 leer.
+
+
+Kollisionspaare: in Bucket 0 gibt es C(8,2) = 28 Paare, in Bucket 3 gibt es C(2,2) = 1 Paar. Insgesamt \textbf{29 Kollisionspaare}.
+
+
+c) Wähle D′ = \{0, 1, 2, 3, 4, 5, 6\} (Repräsentantensystem mod 7). Tabelle:
+
+
+
+\begin{landscape}
+
+{\footnotesize
+\begin{tabularx}{\linewidth}{XXXXXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{x}} & {\color{white}\textbf{0}} & {\color{white}\textbf{1}} & {\color{white}\textbf{2}} & {\color{white}\textbf{3}} & {\color{white}\textbf{4}} & {\color{white}\textbf{5}} & {\color{white}\textbf{6}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+h(x) & 0 & 1 & 2 & 3 & 4 & 5 & 6 \\
+\end{tabularx}
+}
+\end{landscape}
+
+
+Jedes y ∈ B hat genau ein Urbild → linkseindeutig (injektiv) und rechtsvollständig (surjektiv) → bijektiv. (Allgemein funktioniert jedes vollständige Restsystem mod 7.)
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 — Vergleich zweier Funktionsdefinitionen \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Betrachte die beiden Abbildungen
+
+
+\begin{itemize}
+  \item f₁: ℝ → ℝ, f₁(x) = x²
+  \item f₂: ℝ⁺ → ℝ⁺, f₂(x) = x²  (mit ℝ⁺ = (0, ∞))
+\end{itemize}
+
+a) Stelle in einer Tabelle gegenüber, welche der Eigenschaften (linksvollständig, rechtseindeutig, injektiv, surjektiv, bijektiv) f₁ bzw. f₂ erfüllt. \textit{(6 P)}
+
+
+b) Erkläre, warum f₁ und f₂ trotz \textbf{derselben Abbildungsvorschrift} unterschiedliche Eigenschaften haben. Welche Aussage des Kapitels begründet das? \textit{(4 P)}
+
+
+c) Welche Konsequenz hat die Bijektivität von f₂ für die Existenz einer Umkehrabbildung? Gib f₂⁻¹ explizit an und prüfe an einem Beispielwert (z. B. y = 9). \textit{(5 P)}
+
+
+\textbf{Lösung:}
+
+
+a)
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Eigenschaft}} & {\color{white}\textbf{f₁: ℝ → ℝ, x²}} & {\color{white}\textbf{f₂: ℝ⁺ → ℝ⁺, x²}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+linksvollständig & ja & ja \\
+rechtseindeutig & ja & ja \\
+injektiv & nein (f₁(−1)=f₁(1)) & ja (auf ℝ⁺ streng monoton steigend) \\
+surjektiv & nein (y = −1 hat kein Urbild) & ja (jedes y > 0 hat Urbild √y > 0) \\
+bijektiv & nein & ja \\
+\end{tabularx}
+}
+
+
+b) Die \textbf{Bewertung Injektiv/Surjektiv hängt von D und W ab} (Kapitelzitat). Bei f₁ enthält D negative Argumente, die wegen x² = (−x)² Doppelbilder erzeugen → nicht injektiv; und W = ℝ enthält negative Werte, die nicht im Bild liegen → nicht surjektiv. Bei f₂ wurden D und W gerade so gewählt, dass beide Probleme verschwinden.
+
+
+c) Bijektivität bedeutet „genau 1 Pfeil pro y" — also existiert die Umkehrabbildung f₂⁻¹: ℝ⁺ → ℝ⁺, y ↦ √y. Probe: f₂⁻¹(9) = √9 = 3, und f₂(3) = 9 ✓.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 — Fehler im Pseudocode \textit{(10 Punkte)}}\mbox{}\\[2pt]
+
+Eine Studentin behauptet, folgender Pseudocode realisiere eine \textbf{bijektive} Abbildung f: \{0, 1, …, 9\} → \{0, 1, …, 9\}:
+
+
+\begin{lstlisting}
+function f(x):
+    if x < 5:
+        return 2 * x
+    else:
+        return 2 * x - 9
+\end{lstlisting}
+
+
+a) Berechne f(x) für alle x ∈ \{0, …, 9\} und trage es in eine Tabelle ein. \textit{(4 P)}
+
+
+b) Ist f tatsächlich bijektiv? Falls nicht, identifiziere präzise, woran es scheitert (Injektivität, Surjektivität oder beides) und nenne konkrete Gegenbeispiele. \textit{(4 P)}
+
+
+c) Gib eine \textit{minimale} Änderung im else-Zweig an, sodass f bijektiv wird. \textit{(2 P)}
+
+
+\textbf{Lösung:}
+
+
+a)
+
+
+
+\begin{landscape}
+
+{\scriptsize
+\begin{tabularx}{\linewidth}{XXXXXXXXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{x}} & {\color{white}\textbf{0}} & {\color{white}\textbf{1}} & {\color{white}\textbf{2}} & {\color{white}\textbf{3}} & {\color{white}\textbf{4}} & {\color{white}\textbf{5}} & {\color{white}\textbf{6}} & {\color{white}\textbf{7}} & {\color{white}\textbf{8}} & {\color{white}\textbf{9}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+f(x) & 0 & 2 & 4 & 6 & 8 & 1 & 3 & 5 & 7 & 9 \\
+\end{tabularx}
+}
+\end{landscape}
+
+
+b) Bild f(\{0,…,9\}) = \{0, 2, 4, 6, 8, 1, 3, 5, 7, 9\} = \{0, 1, …, 9\}. Jedes der 10 Elemente kommt \textbf{genau einmal} vor → injektiv (linkseindeutig) und surjektiv (rechtsvollständig), also tatsächlich \textbf{bijektiv}. Die Behauptung der Studentin stimmt — es gibt nichts zu beanstanden. (Begründung: Die geraden Zahlen 0, 2, 4, 6, 8 entstehen aus x ∈ \{0,…,4\}, die ungeraden 1, 3, 5, 7, 9 aus x ∈ \{5,…,9\}, beides ohne Überlapp.)
+
+
+c) Da f bereits bijektiv ist, ist \textbf{keine Änderung nötig}. Eine zulässige Antwort ist also: „Der Code ist bereits korrekt; eine Änderung würde die Bijektivität zerstören." (Beispiel einer zerstörerischen Änderung: \texttt{return 2*x - 10} ergäbe f(5) = 0 = f(0), also nicht mehr injektiv.)
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 6 — Verkettung und Bijektivität \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+Seien g: ℝ → ℝ⁺, g(x) = x² + 1 und h: ℝ⁺ → ℝ, h(y) = y − 1. Betrachte die Komposition (h ∘ g)(x) = h(g(x)).
+
+
+a) Berechne (h ∘ g)(x) als geschlossenen Term und werte für x ∈ \{−2, 0, 3\} aus. \textit{(4 P)}
+
+
+b) Untersuche g, h und h ∘ g jeweils auf Injektivität und Surjektivität (mit den angegebenen D, W). \textit{(9 P)}
+
+
+c) Beweise oder widerlege folgende Aussage:
+
+„Wenn g und h beide nicht bijektiv sind, dann ist auch h ∘ g nicht bijektiv."
+
+Verwende dabei dein Ergebnis aus (b) als Anschauung. \textit{(7 P)}
+
+
+\textbf{Lösung:}
+
+
+a) (h ∘ g)(x) = h(x² + 1) = (x² + 1) − 1 = \textbf{x²}.
+
+\begin{itemize}
+  \item (h ∘ g)(−2) = 4
+  \item (h ∘ g)(0) = 0
+  \item (h ∘ g)(3) = 9
+\end{itemize}
+
+b)
+
+\begin{itemize}
+  \item \textbf{g: ℝ → ℝ⁺, x² + 1}: nicht injektiv, da g(−1) = 2 = g(1). Bild g(ℝ) = [1, ∞) ⊊ ℝ⁺ = (0, ∞), denn z. B. y = 0,5 hat kein Urbild ((x² + 1) = 0,5 ⇒ x² = −0,5 unlösbar). Also auch \textbf{nicht surjektiv}.
+  \item \textbf{h: ℝ⁺ → ℝ, y − 1}: injektiv, da y₁ − 1 = y₂ − 1 ⇒ y₁ = y₂. Aber Bild h(ℝ⁺) = (−1, ∞) ⊊ ℝ — z. B. hat z = −5 kein Urbild (y = −4 ∉ ℝ⁺). Also \textbf{nicht surjektiv}, somit nicht bijektiv.
+  \item \textbf{h ∘ g: ℝ → ℝ, x²}: nicht injektiv ((h∘g)(−1) = 1 = (h∘g)(1)); Bild = [0, ∞) ⊊ ℝ, also nicht surjektiv.
+\end{itemize}
+
+c) \textbf{Die Aussage ist falsch — als allgemeine Implikation.} Im konkreten Fall (b) ist h ∘ g zwar tatsächlich nicht bijektiv, aber das beweist die Aussage nicht; ein einzelnes positives Beispiel ist kein Beweis.
+
+
+Gegenbeispiel: Sei g₀: \{1, 2\} → \{a, b, c\}, g₀(1) = a, g₀(2) = b (injektiv, aber nicht surjektiv → nicht bijektiv). Sei h₀: \{a, b, c\} → \{1, 2\}, h₀(a) = 1, h₀(b) = 2, h₀(c) = 2 (surjektiv, aber nicht injektiv → nicht bijektiv). Dann ist (h₀ ∘ g₀): \{1, 2\} → \{1, 2\} mit (h₀ ∘ g₀)(1) = 1, (h₀ ∘ g₀)(2) = 2 — also die Identität, \textbf{bijektiv}.
+
+
+Folgerung: Aus „g, h nicht bijektiv" folgt \textbf{nicht} zwingend „h ∘ g nicht bijektiv". Bijektivität der Komposition hängt vom Zusammenspiel der Bilder/Urbilder ab, nicht nur von Einzeleigenschaften.
+
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{document}

@@ -1,0 +1,469 @@
+% ============================================================
+%  Übungsaufgaben Template (my_dhbw Stil, uebung_*.tex)
+%  Header "Übungsblatt", grün eingefärbte <details>-Lösungen.
+%  Renderer: pdflatex (zweimal)
+% ============================================================
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+\usepackage[top=2cm, bottom=2cm, left=2.4cm, right=2.4cm, footskip=1cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{ltablex}
+\keepXColumns
+\usepackage{colortbl}
+\usepackage[most,breakable]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{pdflscape}
+\usepackage{titlesec}
+\usepackage[colorlinks=true, linkcolor=accent, urlcolor=accent]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme ─────────────────────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{loesung}{RGB}{0, 100, 0}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{240, 252, 240}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer ─────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\footnotesize\color{accent}\nichttitle}
+\fancyhead[R]{\footnotesize\color{accent}\nichtsubtitle}
+\fancyfoot[R]{\footnotesize\color{accent}Blatt \thepage\,/\,\pageref{LastPage}}
+
+% ── Typografie ────────────────────────────────────────────────
+\titleformat{\section}
+    {\color{accent}\large\bfseries}{}{0pt}{}
+    [\vspace{-4pt}\color{accent}\rule{\linewidth}{1.5pt}]
+\titleformat{\subsection}
+    {\normalsize\bfseries\color{accent!85!black}}{}{0pt}{}{}
+\titleformat{\subsubsection}
+    {\small\bfseries\color{accent!70!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{10pt}{3pt}
+\titlespacing*{\subsection}{0pt}{6pt}{2pt}
+\titlespacing*{\subsubsection}{0pt}{4pt}{1pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\renewcommand{\arraystretch}{1.2}
+\setlist[itemize]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.4em}
+\setlist[enumerate]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.6em}
+
+% ── Boxen: solutionbox = Lösungsbox in grün ──────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={Abbildung: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={Tabelle: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{solutionbox}[1]{
+  enhanced,
+  colback=solutionbg, colframe=loesung,
+  title={#1}, fonttitle=\small\bfseries,
+  coltitle=white, colbacktitle=loesung,
+  breakable, before skip=8pt, after skip=8pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=single, framerule=0pt,
+  xleftmargin=4pt, xrightmargin=4pt,
+  aboveskip=6pt, belowskip=6pt,
+  keepspaces=true
+}
+
+\providecommand{\nichttitle}{Übungsblatt}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Optimierungsverfahren}
+\renewcommand{\nichtsubtitle}{Übungsblatt 1}
+
+
+\begin{document}
+
+\begin{center}
+{\Large\bfseries\color{accent}\nichttitle}
+\ifx\nichtsubtitle\empty\else
+  \\[2pt]{\normalsize\color{accent!80!black}\nichtsubtitle}
+\fi
+\\[2pt]
+\color{accent}\rule{0.4\linewidth}{0.8pt}\color{black}
+\end{center}
+\vspace{4pt}
+
+% ── BODY ──────────────────────────────────────────────────────
+
+\section{Übungsblatt 1 — Grundlagen}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 1 — Begriffe und Modellaufbau \textit{(8 Punkte)}}\mbox{}\\[2pt]
+
+Im Kapitel werden die Modellbestandteile (Variable, Parameter, Zielfunktion, Nebenbedingung) sowie die Mengen X, X\_z, Y eingeführt.
+
+
+a) (4 P) Erkläre kurz die Begriffe \textbf{Variable} und \textbf{Parameter} sowie die Mengen \textbf{X} und \textbf{X\_z} und gib für jede der vier Begriffe ein Beispiel aus dem Getränkedose-Modell.
+
+
+b) (4 P) Was ist die unmittelbare Konsequenz für ein Optimierungsproblem, wenn X\_z = ∅ ist? Begründe und nenne eine konkrete Modellierungsentscheidung im Getränkedose-Modell, die — isoliert verändert — zu X\_z = ∅ führen würde.
+
+
+\textbf{Lösung:}
+
+
+a)
+
+\begin{itemize}
+  \item \textbf{Variable}: gezielt veränderbare Entscheidungsgröße (Komponenten von x⃗). Getränkedose: Durchmesser d und Höhe h.
+  \item \textbf{Parameter}: Umgebungsgröße, die im Modell festliegt und nicht optimiert wird. Getränkedose: Sollvolumen V = 0.5 l und Materialpreis C = 0.01 €/cm².
+  \item \textbf{X}: Suchraum, Menge aller im Variablentyp möglichen x⃗. Getränkedose: X = ℝ² (für (d,h)).
+  \item \textbf{X\_z}: zulässiger Bereich, X\_z ⊆ X — alle x⃗, die zusätzlich alle Restriktionen erfüllen. Getränkedose: alle (d,h) mit Volumengleichung πd²h/4 = 500, h ≥ 2d, 6 ≤ d ≤ 9 und 12 ≤ h ≤ 18.
+\end{itemize}
+
+b) X\_z = ∅ bedeutet: kein einziger Kandidat ist zulässig — das Problem ist \textbf{nicht lösbar} und das Modell muss überarbeitet werden (Restriktion lockern, Variablen ergänzen, Modellfehler suchen).
+
+
+Beispiel im Getränkedose-Modell: Würde man die Box-Schranke zu 8 ≤ d ≤ 9 verschärfen (statt 6 ≤ d ≤ 9), müsste die Volumengleichung πd²h/4 = 500 erzwingen: bei d = 8 wäre h = 2000/(π·64) ≈ 9.95 cm — verletzt h ≥ 12; bei d = 9 wäre h ≈ 7.86 — auch verletzt. Es existiert kein zulässiges (d,h) mehr, also X\_z = ∅.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 — Modellierung Solar-Anlage (Transfer) \textit{(22 Punkte)}}\mbox{}\\[2pt]
+
+Eine Hausverwaltung plant eine Solar-Anlage auf einem Flachdach. Pro Modul wird die Jahres-Energieausbeute (in kWh/Jahr) angesetzt zu
+
+
+e(θ) = 420 − 0.35 · (θ − 30)²,
+
+
+wobei θ ∈ [0°, 70°] der Aufstellwinkel ist. Pro Modul fallen zudem fixe Jahres-Kosten von k = 180 €/Jahr (Reinigung, Wechselrichter-Anteil, Versicherung) an. Die Anlage darf höchstens 24 Module umfassen, der Strom-Erlös liegt bei p = 0.32 €/kWh. Es soll der Jahresgewinn maximiert werden. Die Modulanzahl n wird kontinuierlich modelliert; θ ist gemeinsamer Aufstellwinkel aller Module. Vertraglich muss die Anlage mindestens 5000 kWh/Jahr liefern.
+
+
+a) (6 P) Identifiziere \textbf{Variablen} (x⃗), \textbf{Parameter} (p⃗) und benenne \textbf{Zielfunktion}, \textbf{Such- und Zielraum} sowie \textbf{zulässigen Bereich} (in Worten).
+
+
+b) (10 P) Stelle das Modell vollständig in der \textbf{Standard-Notation} des Kapitels (min f(x), h\_k(x) = 0, g\_j(x) ≤ 0, Box-Constraints) auf. Achte darauf, dass eine Maximierung nicht direkt erlaubt ist und alle Ungleichungen in der Form g\_j ≤ 0 stehen.
+
+
+c) (6 P) Welcher Punkt (n, θ) wäre dein erster Vermutungs-Kandidat für ein lokales Optimum? Begründe \textbf{ohne} stationäre Punkte explizit zu berechnen — argumentiere allein aus der Struktur von e(θ) und den Restriktionen.
+
+
+\textbf{Lösung:}
+
+
+a)
+
+\begin{itemize}
+  \item \textbf{Variablen}: x⃗ = (n, θ).
+  \item \textbf{Parameter}: p⃗ enthält k = 180, p = 0.32, n\_max = 24, θ\_min = 0, θ\_max = 70, E\_min = 5000 sowie die Strukturkonstanten 420, 0.35 und 30 in e(θ).
+  \item \textbf{Zielfunktion}: Jahresgewinn = Erlös − Kosten = n · p · e(θ) − n · k = n · (p · e(θ) − k).
+  \item \textbf{Suchraum}: X = ℝ². \textbf{Zielraum}: Y = ℝ (Einzelziel).
+  \item \textbf{Zulässiger Bereich}: X\_z = \{ (n, θ) ∈ ℝ² : 0 ≤ n ≤ 24, 0 ≤ θ ≤ 70, n · e(θ) ≥ 5000 \}.
+\end{itemize}
+
+b) Maximierung → Minimierung durch Vorzeichenwechsel; ≥ → ≤ durch Multiplikation mit −1.
+
+
+\begin{lstlisting}
+minimiere   f(n, θ) = − n · ( 0.32 · (420 − 0.35·(θ−30)²) − 180 )
+
+mit         g_1(n, θ) = 5000 − n · (420 − 0.35·(θ−30)²) ≤ 0
+            (keine Gleichungs-Nebenbedingungen, l = 0)
+
+Box:        0  ≤ n ≤ 24
+            0  ≤ θ ≤ 70
+\end{lstlisting}
+
+
+c) e(θ) ist eine nach unten geöffnete Parabel mit Scheitel bei θ = 30°, also e\_max = 420 kWh; θ = 30° liegt im Box-Intervall [0, 70]. Für jedes feste n ist der Gewinn streng monoton in e(θ), also ist θ = 30° unabhängig von n optimal. Bei θ = 30° ist p · e − k = 0.32 · 420 − 180 = −45.6 €/Modul: pro Modul wird Verlust gemacht. Die Zielfunktion fällt deshalb monoton in n — n wäre so klein wie möglich zu wählen. Die Mindestertrags-Restriktion n · 420 ≥ 5000 erzwingt n ≥ 5000/420 ≈ 11.91 und wird also \textbf{aktiv}.
+
+
+Vermutungs-Kandidat: (n\textit{, θ}) ≈ (11.91, 30°). Das Optimum liegt auf dem \textbf{Rand} des zulässigen Bereichs (Nebenbedingung aktiv) — eine Beobachtung, die für KKT/Lagrange-Methoden später wichtig wird. Der Gewinn ist negativ: das Modell zeigt, dass die Anlage unter den Annahmen unwirtschaftlich ist.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 — Getränkedose: Zulässigkeit \& Zielfunktion \textit{(18 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben sei das Lernzettel-Modell der Getränkedose:
+
+
+\begin{lstlisting}
+min  f(d, h) = C · π · d · h          (mit C = 0.01 €/cm²)
+mit  h_1: π · d² · h / 4 − 500 = 0
+     g_1: 2d − h ≤ 0
+     6 ≤ d ≤ 9 ;  12 ≤ h ≤ 18
+\end{lstlisting}
+
+
+a) (4 P) Prüfe für jeden der drei Kandidaten \textbf{alle} Restriktionen (h\_1, g\_1, beide Boxen) und gib jeweils „erfüllt" oder „verletzt" an.
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Kandidat}} & {\color{white}\textbf{d (cm)}} & {\color{white}\textbf{h (cm)}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+K1 & 7.0 & 13.0 \\
+K2 & 6.5 & 15.07 \\
+K3 & 6.0 & 17.68 \\
+\end{tabularx}
+}
+
+
+b) (6 P) Eliminiere h aus h\_1 = 0 und drücke f auf der Volumen-Mannigfaltigkeit als Funktion \textbf{nur von d} aus. Berechne f für jeden in (a) als zulässig identifizierten Kandidaten.
+
+
+c) (8 P) Bestimme den maximal zulässigen Wert d* von d, für den (d, h) auf der Volumen-Mannigfaltigkeit zusätzlich g\_1 erfüllt. Welche Material-Kosten ergeben sich an dieser Stelle? Welcher Kandidat aus (a) liegt diesem Wert am nächsten und ist damit der billigste der drei?
+
+
+\textbf{Lösung:}
+
+
+a) Aus h\_1 = 0 folgt d² · h = 2000/π ≈ 636.62.
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Kandidat}} & {\color{white}\textbf{d²·h}} & {\color{white}\textbf{h\_1 (≈ 0?)}} & {\color{white}\textbf{g\_1: h ≥ 2d?}} & {\color{white}\textbf{d ∈ [6,9]}} & {\color{white}\textbf{h ∈ [12,18]}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+K1 & 49 · 13 = 637.0 & erfüllt & \textbf{verletzt} (13 < 14) & erfüllt & erfüllt \\
+K2 & 42.25 · 15.07 = 636.7 & erfüllt & erfüllt (15.07 ≥ 13) & erfüllt & erfüllt \\
+K3 & 36 · 17.68 = 636.5 & erfüllt & erfüllt (17.68 ≥ 12) & erfüllt & erfüllt \\
+\end{tabularx}
+}
+
+
+K1 ist \textbf{nicht zulässig} (g\_1 verletzt). K2 und K3 sind zulässig.
+
+
+b) Aus h\_1 = 0 folgt h(d) = 2000/(π · d²). Einsetzen:
+
+
+f(d, h(d)) = C · π · d · 2000/(π · d²) = C · 2000 / d = 20 / d  (€).
+
+
+\begin{itemize}
+  \item K2 (d = 6.5): f = 20 / 6.5 ≈ \textbf{3.077 €}
+  \item K3 (d = 6.0): f = 20 / 6.0 ≈ \textbf{3.333 €}
+\end{itemize}
+
+c) g\_1 auf der Volumen-Mannigfaltigkeit:
+
+
+2d − 2000/(π · d²) ≤ 0  ⇔  2π · d³ ≤ 2000  ⇔  d³ ≤ 1000/π ≈ 318.31
+
+
+⇒  d ≤ d\textit{ := ³√(1000/π) ≈ }\textit{6.828 cm}*.
+
+
+Da f(d) = 20/d auf [6, 6.828] streng monoton fällt, wird das Minimum in d\textit{ angenommen. h(d}) = 2000/(π · 6.828²) ≈ 13.66 cm liegt in [12, 18] und (d\textit{, h}) liegt in den Boxen.
+
+
+f(d\textit{) = 20 / 6.828 ≈ }\textit{2.929 €}*.
+
+
+K2 (d = 6.5) liegt am dichtesten an d\textit{ ≈ 6.83 und ist mit ≈ 3.077 € }\textit{der billigste der drei zulässigen Kandidaten}*.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 — Umformung in die Standard-Notation \textit{(12 Punkte)}}\mbox{}\\[2pt]
+
+Ein Industrie-Kunde liefert das folgende Optimierungsproblem (x\_1, x\_2, x\_3 ∈ ℝ):
+
+
+\begin{lstlisting}
+maximiere   3·x_1 + 2·x_2 − x_3
+mit         x_1 + x_2          ≥ 4
+            x_1     − x_3      = 1
+            x_2 + x_3          ≤ 5
+            −2 ≤ x_1 ≤ 7
+             x_2 frei
+             x_3 ≥ 0
+\end{lstlisting}
+
+
+Bringe das Problem in die im Kapitel definierte Standard-Notation
+
+
+\begin{lstlisting}
+minimiere f(x), mit h_k(x) = 0, g_j(x) ≤ 0, x_i^l ≤ x_i ≤ x_i^u.
+\end{lstlisting}
+
+
+Notiere alle h\_k, alle g\_j sowie alle Box-Schranken explizit. Begründe in einem Satz pro Schritt, welche Regel des Kapitels du anwendest.
+
+
+\textbf{Lösung:}
+
+
+Schritt 1 — \textbf{Maximierung → Minimierung} durch Vorzeichenwechsel der Zielfunktion:
+
+
+f(x) = −(3·x\_1 + 2·x\_2 − x\_3) = −3·x\_1 − 2·x\_2 + x\_3.
+
+
+Schritt 2 — \textbf{Ungleichungen in die Form g\_j ≤ 0}:
+
+\begin{itemize}
+  \item „x\_1 + x\_2 ≥ 4" mit −1 multiplizieren  →  g\_1(x) = 4 − x\_1 − x\_2 ≤ 0.
+  \item „x\_2 + x\_3 ≤ 5" umstellen  →  g\_2(x) = x\_2 + x\_3 − 5 ≤ 0.
+\end{itemize}
+
+Schritt 3 — \textbf{Gleichungen in die Form h\_k = 0}:
+
+\begin{itemize}
+  \item „x\_1 − x\_3 = 1"  →  h\_1(x) = x\_1 − x\_3 − 1 = 0.
+\end{itemize}
+
+Schritt 4 — \textbf{Box-Schranken} explizit:
+
+\begin{itemize}
+  \item x\_1: −2 ≤ x\_1 ≤ 7.
+  \item x\_2 frei: x\_2\textasciicircum{}l = −∞, x\_2\textasciicircum{}u = +∞.
+  \item x\_3 ≥ 0: x\_3\textasciicircum{}l = 0, x\_3\textasciicircum{}u = +∞.
+\end{itemize}
+
+\textbf{Standard-Form:}
+
+
+\begin{lstlisting}
+minimiere   f(x) = −3·x_1 − 2·x_2 + x_3
+mit         h_1 :  x_1 − x_3 − 1 = 0
+            g_1 :  4 − x_1 − x_2 ≤ 0
+            g_2 :  x_2 + x_3 − 5 ≤ 0
+Box:        −2 ≤ x_1 ≤ 7
+            −∞ < x_2 < +∞
+             0 ≤ x_3 < +∞
+\end{lstlisting}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 — Modellanalyse: Fehler finden \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Ein Mitstudent reicht für die Aufgabe „baue eine quaderförmige Lagerbox mit Breite b, Tiefe t, Höhe h; minimiere Materialbedarf (Oberfläche), Volumen mindestens 1 m³, Tiefe gleich Breite, alle Maße zwischen 0.4 m und 1.5 m" folgende Modellierung ein:
+
+
+\begin{lstlisting}
+maximiere   f(b, t, h, ρ) = 2·(b·t + b·h + t·h)·ρ
+
+mit         h_1 : b · t · h ≥ 1
+            h_2 : b − t = 0
+            g_1 : b ≤ 1.5
+            g_2 : t ≤ 1.5
+            g_3 : h ≤ 1.5
+
+            b, t, h ∈ ℝ ;  ρ = 7850 kg/m³
+\end{lstlisting}
+
+
+a) (9 P) Finde \textbf{mindestens vier} Modellfehler bezogen auf die Standard-Notation und die Begriffsdefinitionen aus dem Kapitel. Erkläre jeden Fehler in einem Satz und gib jeweils die korrekte Formulierung an.
+
+
+b) (6 P) Schreibe das vollständig korrigierte Modell in der Standard-Notation auf.
+
+
+\textbf{Lösung:}
+
+
+a) Fehler-Liste (vier reichen — hier sechs benannt):
+
+
+\begin{enumerate}
+  \item \textbf{Maximierung statt Minimierung}: Die Aufgabe verlangt den Materialbedarf zu \textit{minimieren}. Korrektur: \texttt{minimiere f(...)}.
+  \item \textbf{Parameter als Variable}: ρ ist eine Materialkonstante (7850 kg/m³) — also ein Parameter. Es darf nicht als Argument in f auftauchen. Korrektur: f(b, t, h) mit ρ als externem Parameter.
+  \item \textbf{Zielgröße unscharf}: Wenn das Ziel die \textit{Oberfläche} (Materialbedarf) ist, gehört ρ überhaupt nicht in f, da sie das Optimum nur multiplikativ skaliert. Korrektur: f(b, t, h) = 2 · (bt + bh + th).
+  \item \textbf{„h\_1: b·t·h ≥ 1" ist eine Ungleichung, nicht Gleichung}: h\_k bezeichnen im Lernzettel ausschließlich Gleichungen. Außerdem steht ≥ statt ≤. Korrektur: g-Restriktion in Form g\_j ≤ 0:  g\_1 : 1 − b · t · h ≤ 0.
+  \item \textbf{Untere Box-Schranken fehlen}: Die Bedingung „mindestens 0.4 m" ist im Modell nicht abgebildet. Korrektur: 0.4 ≤ b, t, h ≤ 1.5.
+  \item \textbf{Box-Constraints stehen als g\_j}: Die oberen Schranken b ≤ 1.5 etc. gehören laut Lernzettel in die Box-Section x\_i\textasciicircum{}l ≤ x\_i ≤ x\_i\textasciicircum{}u, nicht in g\_j — sonst wird die Standard-Struktur unsauber.
+\end{enumerate}
+
+b) Korrigiertes Modell:
+
+
+\begin{lstlisting}
+minimiere   f(b, t, h) = 2 · (b·t + b·h + t·h)
+            (ρ als konstanter Skalierungsfaktor weggelassen, da
+             optimumsneutral; ρ bleibt externer Parameter.)
+
+mit         h_1 :  b − t = 0
+            g_1 :  1 − b · t · h ≤ 0
+
+Box:        0.4 ≤ b ≤ 1.5
+            0.4 ≤ t ≤ 1.5
+            0.4 ≤ h ≤ 1.5
+
+Parameter:  ρ = 7850 kg/m³ (nicht Teil der Optimierung)
+\end{lstlisting}
+
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{document}

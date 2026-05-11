@@ -1,0 +1,654 @@
+% ============================================================
+%  Probeklausur Template (my_dhbw Stil, klausur_*.tex)
+%  Formell mit Deckblatt-Header; Lösungen als grüne tcolorbox.
+%  Renderer: pdflatex (zweimal)
+% ============================================================
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+\usepackage[top=2cm, bottom=2cm, left=2.4cm, right=2.4cm, footskip=1cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{ltablex}
+\keepXColumns
+\usepackage{colortbl}
+\usepackage[most,breakable]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{pdflscape}
+\usepackage{titlesec}
+\usepackage[colorlinks=true, linkcolor=accent, urlcolor=accent]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme ─────────────────────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{loesung}{RGB}{0, 100, 0}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{240, 252, 240}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer ─────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\footnotesize\color{accent}Modulprüfung -- \nichttitle}
+\fancyhead[R]{\footnotesize\color{accent}\nichtsubtitle}
+\fancyfoot[L]{\footnotesize\color{accent}Matrikelnr.: \rule{3cm}{0.4pt}}
+\fancyfoot[R]{\footnotesize\color{accent}Blatt \thepage\,/\,\pageref{LastPage}}
+
+% ── Typografie ────────────────────────────────────────────────
+\titleformat{\section}
+    {\color{accent}\large\bfseries}{}{0pt}{}
+    [\vspace{-4pt}\color{accent}\rule{\linewidth}{1.5pt}]
+\titleformat{\subsection}
+    {\normalsize\bfseries\color{accent!85!black}}{}{0pt}{}{}
+\titleformat{\subsubsection}
+    {\small\bfseries\color{accent!70!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{12pt}{4pt}
+\titlespacing*{\subsection}{0pt}{8pt}{2pt}
+\titlespacing*{\subsubsection}{0pt}{6pt}{1pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\renewcommand{\arraystretch}{1.25}
+\setlist[itemize]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.4em}
+\setlist[enumerate]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.6em}
+
+% ── Boxen ─────────────────────────────────────────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={Abbildung: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={Tabelle: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{solutionbox}[1]{
+  enhanced,
+  colback=solutionbg, colframe=loesung,
+  title={#1}, fonttitle=\small\bfseries,
+  coltitle=white, colbacktitle=loesung,
+  breakable, before skip=8pt, after skip=8pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=single, framerule=0pt,
+  xleftmargin=4pt, xrightmargin=4pt,
+  aboveskip=6pt, belowskip=6pt,
+  keepspaces=true
+}
+
+\providecommand{\nichttitle}{Probeklausur}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Relationen, Algebra, Diskrete Mathematik}
+\renewcommand{\nichtsubtitle}{Probeklausur 1}
+
+
+\begin{document}
+
+% Deckblatt
+\thispagestyle{empty}
+\begin{center}
+\vspace*{1cm}
+{\Huge\bfseries\color{accent}Probeklausur}\\[8pt]
+{\Large\color{accent}\nichttitle}\\[4pt]
+\ifx\nichtsubtitle\empty\else
+  {\large\color{accent!80!black}\nichtsubtitle}\\[6pt]
+\fi
+\color{accent}\rule{0.5\linewidth}{1pt}\color{black}
+\end{center}
+
+\vspace{1cm}
+\begin{tabularx}{\textwidth}{@{}l X@{}}
+\textbf{Studiengang:}      & \rule{6cm}{0.4pt} \\[6pt]
+\textbf{Matrikelnummer:}    & \rule{6cm}{0.4pt} \\[6pt]
+\textbf{Name, Vorname:}    & \rule{6cm}{0.4pt} \\[6pt]
+\textbf{Datum:}             & \rule{6cm}{0.4pt} \\[6pt]
+\textbf{Bearbeitungszeit:}  & 60 Minuten \\[6pt]
+\textbf{Hilfsmittel:}       & Taschenrechner (nicht programmierbar) \\
+\end{tabularx}
+
+\vspace{2cm}
+\begin{center}
+{\large\itshape Viel Erfolg!}
+\end{center}
+
+\newpage
+
+% ── BODY ──────────────────────────────────────────────────────
+
+\section{Probeklausur 1 — Relationen, Algebra, Diskrete Mathematik}
+
+\textbf{Bearbeitungszeit}: 60 Minuten | \textbf{Hilfsmittel}: keine | \textbf{Punkte}: 100
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 1 — Wahrheitstafel und Klassifikation \textit{(14 Punkte)}}\mbox{}\\[2pt]
+
+a) Erklären Sie kurz die folgenden drei Begriffe der Aussagenlogik (jeweils ein Satz genügt):
+
+\textit{erfüllbar}, \textit{Tautologie}, \textit{widerspruchsvoll}. \textit{(3 P)}
+
+
+b) Gegeben sei die Formel
+
+\[
+F(a,b) \;=\; (a \to b) \,\land\, (b \to \neg a).
+\]
+
+Erstellen Sie eine vollständige Wahrheitstafel mit Spalten für \texttt{a, b, ¬a, a→b, b→¬a, F} und klassifizieren Sie \texttt{F} (erfüllbar / Tautologie / widerspruchsvoll). \textit{(8 P)}
+
+
+c) Geben Sie unter Nutzung Ihrer Wahrheitstafel eine möglichst kurze äquivalente Formel \texttt{G(a,b)} an, die nur \textbf{eine} Variable und höchstens \textbf{einen} Operator enthält. Begründen Sie kurz. \textit{(3 P)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 — Normalformen \textit{(18 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben sei die Formel
+
+\[
+F(a,b,c) \;=\; (a \leftrightarrow b) \,\lor\, \neg c.
+\]
+
+
+a) Eliminieren Sie zunächst \texttt{↔} und formen Sie \texttt{F} schrittweise in eine \textbf{disjunktive Normalform (DN)} um. Geben Sie pro Umformungsschritt das verwendete Gesetz an. \textit{(6 P)}
+
+
+b) Wandeln Sie das Ergebnis aus a) in die \textbf{kanonische disjunktive Normalform (kDN)} um. Erweitern Sie dazu jeden Konjunktionsterm um die fehlenden Variablen mit Hilfe von \texttt{(x ∨ ¬x)} und sortieren Sie die Minterme aufsteigend nach Binärwert (\texttt{x := 1}, \texttt{¬x := 0}, MSB = \texttt{a}). \textit{(8 P)}
+
+
+c) Begründen Sie anhand Ihrer kDN, ob \texttt{F} eine Tautologie ist, und geben Sie alle Belegungen an, unter denen \texttt{F} falsch wird. \textit{(4 P)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 — Resolution \textit{(16 Punkte)}}\mbox{}\\[2pt]
+
+Zu beweisen ist die Schlussfolgerung
+
+\[
+\{\,p \lor q,\; p \to r,\; q \to r\,\} \;\models\; r.
+\]
+
+
+a) Negieren Sie die Behauptung, bilden Sie die Gesamtformel und überführen Sie diese in eine \textbf{konjunktive Normalform (KN)}. \textit{(4 P)}
+
+
+b) Geben Sie die zugehörige \textbf{Klauselmenge} in Mengen-Notation an. \textit{(3 P)}
+
+
+c) Führen Sie den Resolutionsbeweis durch, bis die leere Klausel \texttt{□} entsteht. Notieren Sie pro Schritt die beiden verwendeten Klauseln und das resolvierte Literal. \textit{(7 P)}
+
+
+d) Was wäre zu folgern, wenn nach endlich vielen Schritten \textbf{keine neue Resolvente} mehr gebildet werden kann und die leere Klausel \textbf{nicht} auftritt? \textit{(2 P)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 — Mengenalgebra \textit{(18 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben seien die Grundmenge \texttt{E = \{1,2,3,4,5,6,7,8\}} sowie
+
+\texttt{A = \{1,2,3,4\}},  \texttt{B = \{3,4,5,6\}},  \texttt{C = \{2,4,6,8\}}.
+
+
+a) Berechnen Sie (Aufzählung der Elemente, in geschweiften Klammern): \texttt{A ∩ B}, \texttt{A ∪ C}, \texttt{A ∖ B}, \texttt{C\_E(B)}. \textit{(4 P)}
+
+
+b) Bestimmen Sie \texttt{|P(A ∩ B)|} und geben Sie die Potenzmenge \texttt{P(A ∩ B)} vollständig an. \textit{(4 P)}
+
+
+c) Weisen Sie für die obigen Mengen die Identität
+
+\[
+C_E(A \cup B) \;=\; C_E(A) \,\cap\, C_E(B)
+\]
+
+durch separate Berechnung \textbf{beider Seiten} nach. Welches allgemeine Gesetz steht dahinter? \textit{(5 P)}
+
+
+d) \textbf{Transfer:} Von 80 Studierenden eines Jahrgangs belegen 50 das Modul Mathematik, 40 das Modul Informatik und 25 belegen \textbf{beide} Module. Wie viele Studierende belegen \textbf{keines} der beiden Module? Modellieren Sie die Situation mit Mengen, formulieren Sie die benötigte Mengenoperation und rechnen Sie das Ergebnis aus. \textit{(5 P)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 — Algebraische Strukturen \textit{(18 Punkte)}}\mbox{}\\[2pt]
+
+Auf \texttt{ℤ} werde die Verknüpfung \texttt{⊕} definiert durch
+
+\[
+a \oplus b \;:=\; a + b - 5.
+\]
+
+
+a) Prüfen Sie systematisch, ob \texttt{(ℤ, ⊕)} eine \textbf{Gruppe} bildet. Gehen Sie alle vier Gruppenaxiome (Abgeschlossenheit, Assoziativität, neutrales Element, inverses Element) \textbf{einzeln} durch und geben Sie das neutrale Element sowie eine Formel für das Inverse \texttt{a*} an. \textit{(10 P)}
+
+
+b) Ist \texttt{(ℤ, ⊕)} \textbf{kommutativ}? Begründen Sie. \textit{(3 P)}
+
+
+c) Betrachten Sie nun dieselbe Verknüpfung über \texttt{(ℕ, ⊕)} mit \texttt{ℕ = \{1, 2, 3, …\}}. Begründen Sie konkret (mit einem Gegenbeispiel), warum \texttt{(ℕ, ⊕)} \textbf{keine} Gruppe ist. \textit{(5 P)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 6 — Prädikatenlogik \& Fehleranalyse \textit{(16 Punkte)}}\mbox{}\\[2pt]
+
+Zur Verfügung stehen die Prädikate \texttt{Student(x)}, \texttt{Modul(m)} und \texttt{Bestanden(x, m)} (\texttt{x} hat Modul \texttt{m} bestanden).
+
+
+a) Formalisieren Sie in Prädikatenlogik:
+
+\textit{„Jeder Student hat mindestens ein Modul bestanden."} \textit{(4 P)}
+
+
+b) Eine Kommilitonin behauptet, die Aussage \textit{„Es gibt einen Studenten, der }\textit{kein einziges}\textit{ Modul bestanden hat"} lasse sich formalisieren als:
+
+\[
+\exists x \big(\, \text{Student}(x) \,\land\, \neg \forall m (\text{Modul}(m) \to \text{Bestanden}(x, m)) \,\big).
+\]
+
+Erklären Sie, \textbf{warum diese Formalisierung falsch ist} (was bedeutet sie tatsächlich?), und geben Sie eine \textbf{korrekte} Formalisierung an. \textit{(6 P)}
+
+
+c) Wenden Sie auf Ihre korrekte Formalisierung aus b) die \textbf{Negation} an und vereinfachen Sie schrittweise mit DeMorgan und den Quantorenregeln (\texttt{¬∃ ↔ ∀¬}, \texttt{¬∀ ↔ ∃¬}), bis nur noch Negationen direkt vor Atomformeln stehen. Vergleichen Sie das Endergebnis mit Aufgabe a) und kommentieren Sie kurz die logische Beziehung. \textit{(6 P)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+
+\section{Musterlösung Klausur 1}
+
+\paragraph{Aufgabe 1 \textit{(14 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a)} \textit{(3 P, je 1 P)}
+
+\begin{itemize}
+  \item \textit{erfüllbar}: Es existiert mindestens eine Belegung der Aussagevariablen, unter der \texttt{F = w} ist.
+  \item \textit{Tautologie}: Unter \textbf{jeder} Belegung gilt \texttt{F = w}.
+  \item \textit{widerspruchsvoll}: Unter \textbf{keiner} Belegung gilt \texttt{F = w} (Formel ist immer falsch).
+\end{itemize}
+
+\textbf{b)} \textit{(8 P)} Wahrheitstafel:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{a}} & {\color{white}\textbf{b}} & {\color{white}\textbf{¬a}} & {\color{white}\textbf{a→b}} & {\color{white}\textbf{b→¬a}} & {\color{white}\textbf{F = (a→b)∧(b→¬a)}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+w & w & f & w & f & \textbf{f} \\
+w & f & f & f & w & \textbf{f} \\
+f & w & w & w & w & \textbf{w} \\
+f & f & w & w & w & \textbf{w} \\
+\end{tabularx}
+}
+
+
+\texttt{F} ist \textbf{erfüllbar} (z.B. \texttt{a=f}), aber weder Tautologie noch widerspruchsvoll.
+
+
+\textit{Bewertung: 4 P Tabellenstruktur (1 P pro Hilfsspalte/F-Spalte), 4 P korrekte Werte; Klassifikation ohne korrekte Tabelle nur 1 P.}
+
+
+\textbf{c)} \textit{(3 P)} Aus der Tabelle: \texttt{F} ist genau dann wahr, wenn \texttt{a = f}. Also gilt \texttt{F ↔ ¬a}. Damit ist \texttt{G(a,b) = ¬a} (kommt ohne \texttt{b} aus, ein einziger Operator).
+
+\textit{Bewertung: 2 P richtige Formel, 1 P Begründung über Wahrheitstafel.}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 \textit{(18 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a)} \textit{(6 P)} Schritte:
+
+
+\begin{enumerate}
+  \item Definition \texttt{↔}: \texttt{(a ↔ b) = (a ∧ b) ∨ (¬a ∧ ¬b)}. Damit
+\end{enumerate}
+\texttt{F = ((a ∧ b) ∨ (¬a ∧ ¬b)) ∨ ¬c}. \textit{(2 P)}
+
+\begin{enumerate}
+  \item Assoziativität von \texttt{∨} (Klammern entfallen):
+\end{enumerate}
+\texttt{F = (a ∧ b) ∨ (¬a ∧ ¬b) ∨ ¬c}. \textit{(2 P)}
+
+\begin{enumerate}
+  \item Negationen stehen bereits direkt vor Variablen, keine Distributivanwendung nötig — die Form ist eine \textbf{DN} mit drei Konjunktionstermen \texttt{K₁ = a∧b}, \texttt{K₂ = ¬a∧¬b}, \texttt{K₃ = ¬c}. \textit{(2 P)}
+\end{enumerate}
+
+\textbf{b)} \textit{(8 P)} Erweiterung jedes Terms um fehlende Variablen mittels \texttt{(x ∨ ¬x)}:
+
+
+\begin{itemize}
+  \item \texttt{K₁ = a∧b} fehlt \texttt{c}: \texttt{K₁ ∧ (c ∨ ¬c) = (a∧b∧c) ∨ (a∧b∧¬c)}
+  \item \texttt{K₂ = ¬a∧¬b} fehlt \texttt{c}: \texttt{(¬a∧¬b∧c) ∨ (¬a∧¬b∧¬c)}
+  \item \texttt{K₃ = ¬c} fehlen \texttt{a, b}: \texttt{¬c ∧ (a ∨ ¬a) ∧ (b ∨ ¬b) = (a∧b∧¬c) ∨ (a∧¬b∧¬c) ∨ (¬a∧b∧¬c) ∨ (¬a∧¬b∧¬c)}
+\end{itemize}
+
+Vereinigung aller Minterme + Idempotenz (Duplikate \texttt{a∧b∧¬c}, \texttt{¬a∧¬b∧¬c} entfernen) ergibt 6 Minterme mit Binärwerten (\texttt{a} als MSB):
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{\texttt{a b c}}} & {\color{white}\textbf{Bin.}} & {\color{white}\textbf{Minterm}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+0 0 0 & 0 & \texttt{¬a∧¬b∧¬c} \\
+0 0 1 & 1 & \texttt{¬a∧¬b∧c} \\
+0 1 0 & 2 & \texttt{¬a∧b∧¬c} \\
+1 0 0 & 4 & \texttt{a∧¬b∧¬c} \\
+1 1 0 & 6 & \texttt{a∧b∧¬c} \\
+1 1 1 & 7 & \texttt{a∧b∧c} \\
+\end{tabularx}
+}
+
+
+Sortierte kDN:
+
+\[
+\boxed{\,(\neg a \land \neg b \land \neg c) \lor (\neg a \land \neg b \land c) \lor (\neg a \land b \land \neg c) \lor (a \land \neg b \land \neg c) \lor (a \land b \land \neg c) \lor (a \land b \land c)\,}
+\]
+
+
+\textit{Bewertung: 3 P korrekte Erweiterung jedes Terms, 2 P Idempotenz/Duplikate, 2 P Sortierung, 1 P Notation.}
+
+
+\textbf{c)} \textit{(4 P)} \texttt{F} enthält \textbf{6} der \texttt{2³ = 8} möglichen Minterme — keine Tautologie. \texttt{F} ist falsch genau für die fehlenden Belegungen
+
+\begin{itemize}
+  \item \texttt{(a, b, c) = (0, 1, 1)} (Bin. 3) und
+  \item \texttt{(a, b, c) = (1, 0, 1)} (Bin. 5).
+\end{itemize}
+
+(Probe: Bei \texttt{a=0, b=1, c=1} ist \texttt{a↔b = f} und \texttt{¬c = f}, also \texttt{F = f} ✓.)
+
+
+\textit{Bewertung: 1 P "keine Tautologie", 2 P beide Gegenbelegungen, 1 P Probe.}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 \textit{(16 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a)} \textit{(4 P)} Behauptung: \texttt{r}. Negation der Behauptung: \texttt{¬r}. Konjunktion aller Voraussetzungen mit \texttt{¬r} liefert
+
+\[
+(p \lor q) \,\land\, (p \to r) \,\land\, (q \to r) \,\land\, \neg r.
+\]
+
+Implikationen ersetzen (\texttt{x → y = ¬x ∨ y}):
+
+\[
+(p \lor q) \,\land\, (\neg p \lor r) \,\land\, (\neg q \lor r) \,\land\, \neg r \quad\text{(KN).}
+\]
+
+
+\textbf{b)} \textit{(3 P)} Klauselmenge:
+
+\[
+M = \{\;\{p, q\},\; \{\neg p, r\},\; \{\neg q, r\},\; \{\neg r\}\;\}.
+\]
+
+
+\textbf{c)} \textit{(7 P)} Resolutionsschritte:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{\#}} & {\color{white}\textbf{Klausel A}} & {\color{white}\textbf{Klausel B}} & {\color{white}\textbf{resolviertes Literal}} & {\color{white}\textbf{Resolvente}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+1 & \texttt{\{¬p, r\}} & \texttt{\{¬r\}} & \texttt{r} & \texttt{\{¬p\}} \\
+2 & \texttt{\{¬q, r\}} & \texttt{\{¬r\}} & \texttt{r} & \texttt{\{¬q\}} \\
+3 & \texttt{\{p, q\}} & \texttt{\{¬p\}} & \texttt{p} & \texttt{\{q\}} \\
+4 & \texttt{\{q\}} & \texttt{\{¬q\}} & \texttt{q} & \texttt{□} \\
+\end{tabularx}
+}
+
+
+Damit ist die leere Klausel hergeleitet, die Behauptung bewiesen.
+
+
+\textit{Bewertung: je 1,5 P pro Schritt, 1 P abschließende Aussage.}
+
+
+\textbf{d)} \textit{(2 P)} Die Behauptung wäre \textbf{falsch}: aus den Voraussetzungen folgt \texttt{r} nicht (es gibt eine Belegung, die alle Voraussetzungen erfüllt und \texttt{r = f} macht).
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 \textit{(18 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a)} \textit{(4 P, je 1 P)}
+
+\begin{itemize}
+  \item \texttt{A ∩ B = \{3, 4\}}
+  \item \texttt{A ∪ C = \{1, 2, 3, 4, 6, 8\}}
+  \item \texttt{A ∖ B = \{1, 2\}}
+  \item \texttt{C\_E(B) = E ∖ B = \{1, 2, 7, 8\}}
+\end{itemize}
+
+\textbf{b)} \textit{(4 P)} \texttt{A ∩ B = \{3, 4\}}, also \texttt{|A ∩ B| = 2} und \texttt{|P(A ∩ B)| = 2² = 4}. \textit{(2 P)}
+
+\[
+P(\{3,4\}) = \{\,\emptyset,\; \{3\},\; \{4\},\; \{3, 4\}\,\}. \quad (2\,P)
+\]
+
+
+\textbf{c)} \textit{(5 P)}
+
+\begin{itemize}
+  \item Linke Seite: \texttt{A ∪ B = \{1, 2, 3, 4, 5, 6\}}, daher \texttt{C\_E(A ∪ B) = \{7, 8\}}. \textit{(2 P)}
+  \item Rechte Seite: \texttt{C\_E(A) = \{5, 6, 7, 8\}}, \texttt{C\_E(B) = \{1, 2, 7, 8\}}, also \texttt{C\_E(A) ∩ C\_E(B) = \{7, 8\}}. \textit{(2 P)}
+  \item Beide Seiten gleich \texttt{\{7, 8\}}. Allgemein gilt das \textbf{Gesetz von DeMorgan} für Mengen. \textit{(1 P)}
+\end{itemize}
+
+\textbf{d)} \textit{(5 P)} Sei \texttt{M} die Menge der Mathematik-Belegenden, \texttt{I} die der Informatik-Belegenden, \texttt{S} die Gesamtmenge der Studierenden mit \texttt{|S| = 80}, \texttt{|M| = 50}, \texttt{|I| = 40}, \texttt{|M ∩ I| = 25}. \textit{(1 P Modellierung)}
+
+
+Die Anzahl der Studierenden, die \textbf{mindestens eines} der Module belegen, ist
+
+\[
+|M \cup I| = |M| + |I| - |M \cap I| = 50 + 40 - 25 = 65. \quad(2\,P)
+\]
+
+
+Die Gesuchten bilden das Komplement: \texttt{S ∖ (M ∪ I)}, mit
+
+\[
+|S \setminus (M \cup I)| = |S| - |M \cup I| = 80 - 65 = \mathbf{15}. \quad(2\,P)
+\]
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 \textit{(18 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a)} \textit{(10 P, je 2,5 P)}
+
+
+\begin{enumerate}
+  \item \textbf{Abgeschlossenheit:} Für \texttt{a, b ∈ ℤ} ist \texttt{a + b - 5 ∈ ℤ}, da \texttt{ℤ} unter \texttt{+} und \texttt{−} abgeschlossen ist. ✓
+  \item \textbf{Assoziativität:}
+\end{enumerate}
+\texttt{(a ⊕ b) ⊕ c = (a + b − 5) + c − 5 = a + b + c − 10},
+
+\texttt{a ⊕ (b ⊕ c) = a + (b + c − 5) − 5 = a + b + c − 10}. Gleich ✓
+
+\begin{enumerate}
+  \item \textbf{Neutrales Element:} Ansatz \texttt{a ⊕ e = a} ⇒ \texttt{a + e − 5 = a} ⇒ \texttt{e = 5 ∈ ℤ}. Probe: \texttt{a ⊕ 5 = a + 5 − 5 = a} ✓
+  \item \textbf{Inverses Element:} Ansatz \texttt{a ⊕ a* = 5} ⇒ \texttt{a + a* − 5 = 5} ⇒ \texttt{a* = 10 − a ∈ ℤ} für jedes \texttt{a ∈ ℤ}. Probe: \texttt{a ⊕ (10 − a) = a + 10 − a − 5 = 5 = e} ✓
+\end{enumerate}
+
+Damit ist \texttt{(ℤ, ⊕)} eine \textbf{Gruppe}.
+
+
+\textbf{b)} \textit{(3 P)} \texttt{a ⊕ b = a + b − 5 = b + a − 5 = b ⊕ a} (Kommutativität von \texttt{+} in \texttt{ℤ}). Also kommutative Gruppe. \textit{(1 P Aussage, 2 P Begründung)}
+
+
+\textbf{c)} \textit{(5 P)} In \texttt{(ℕ, ⊕)} mit \texttt{ℕ = \{1, 2, 3, …\}} schlägt das Inverse fehl: Für \texttt{a = 12 ∈ ℕ} müsste \texttt{a* = 10 − a = −2} sein, aber \texttt{−2 ∉ ℕ}. \textit{(3 P Gegenbeispiel)} Bereits für jedes \texttt{a ≥ 10} ist \texttt{10 − a ≤ 0 ∉ ℕ}. \textit{(1 P Verallgemeinerung)} Also ist Axiom 4 (Existenz inverser Elemente) verletzt — keine Gruppe. \textit{(1 P Schluss)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 6 \textit{(16 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a)} \textit{(4 P)}
+
+\[
+\forall x \big(\, \text{Student}(x) \,\to\, \exists m (\text{Modul}(m) \,\land\, \text{Bestanden}(x, m)) \,\big).
+\]
+
+\textit{(2 P Allquantor mit Implikation Student→…, 2 P Existenzquantor mit Konjunktion Modul∧Bestanden).}
+
+
+\textbf{b)} \textit{(6 P)} Die kritisierte Formel
+
+\texttt{∃x(Student(x) ∧ ¬∀m(Modul(m) → Bestanden(x, m)))}
+
+bedeutet wörtlich: \textit{„Es gibt einen Studenten, der }\textit{nicht alle}\textit{ Module bestanden hat"} — also einen Studenten, dem \textbf{mindestens ein} Modul fehlt. Das ist \textbf{schwächer} als gefordert: schon ein einziges nicht bestandenes Modul reicht, während die Originalaussage verlangt, dass \textbf{gar kein} Modul bestanden wurde. \textit{(3 P Erklärung des Bedeutungsunterschieds)}
+
+
+Korrekte Formalisierung:
+
+\[
+\exists x \big(\, \text{Student}(x) \,\land\, \forall m (\text{Modul}(m) \,\to\, \neg \text{Bestanden}(x, m)) \,\big). \quad(3\,P)
+\]
+
+
+\textbf{c)} \textit{(6 P)} Negation der korrekten Formel und Vereinfachung:
+
+
+\[
+\neg \exists x (\text{Student}(x) \land \forall m (\text{Modul}(m) \to \neg \text{Bestanden}(x, m)))
+\]
+
+
+\begin{enumerate}
+  \item \texttt{¬∃ ↔ ∀¬}:
+\end{enumerate}
+\[
+\forall x \,\neg\big(\text{Student}(x) \land \forall m (\text{Modul}(m) \to \neg \text{Bestanden}(x, m))\big)
+\]
+
+\begin{enumerate}
+  \item DeMorgan auf \texttt{¬(P ∧ Q) = ¬P ∨ ¬Q}:
+\end{enumerate}
+\[
+\forall x \big(\neg \text{Student}(x) \,\lor\, \neg \forall m (\text{Modul}(m) \to \neg \text{Bestanden}(x, m))\big)
+\]
+
+\begin{enumerate}
+  \item \texttt{¬∀ ↔ ∃¬}:
+\end{enumerate}
+\[
+\forall x \big(\neg \text{Student}(x) \,\lor\, \exists m \,\neg(\text{Modul}(m) \to \neg \text{Bestanden}(x, m))\big)
+\]
+
+\begin{enumerate}
+  \item \texttt{¬(P → Q) = P ∧ ¬Q}, also \texttt{¬(Modul(m) → ¬Bestanden(x,m)) = Modul(m) ∧ Bestanden(x,m)}:
+\end{enumerate}
+\[
+\forall x \big(\neg \text{Student}(x) \,\lor\, \exists m (\text{Modul}(m) \land \text{Bestanden}(x, m))\big)
+\]
+
+\begin{enumerate}
+  \item \texttt{¬P ∨ Q = P → Q}:
+\end{enumerate}
+\[
+\forall x \big(\text{Student}(x) \to \exists m (\text{Modul}(m) \land \text{Bestanden}(x, m))\big).
+\]
+
+
+\textit{(je 1 P pro Umformungsschritt, gesamt 5 P)}
+
+
+\textbf{Vergleich:} Das Endergebnis ist \textbf{identisch} mit der Formel aus Teil a). Logisch heißt das: „Jeder Student hat mindestens ein Modul bestanden" ist genau die \textbf{Verneinung} von „Es gibt einen Studenten, der kein einziges Modul bestanden hat" — die beiden Aussagen sind kontradiktorisch. \textit{(1 P)}
+
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{document}

@@ -1,0 +1,443 @@
+% ============================================================
+%  Übungsaufgaben Template (my_dhbw Stil, uebung_*.tex)
+%  Header "Übungsblatt", grün eingefärbte <details>-Lösungen.
+%  Renderer: pdflatex (zweimal)
+% ============================================================
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+\usepackage[top=2cm, bottom=2cm, left=2.4cm, right=2.4cm, footskip=1cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{ltablex}
+\keepXColumns
+\usepackage{colortbl}
+\usepackage[most,breakable]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{pdflscape}
+\usepackage{titlesec}
+\usepackage[colorlinks=true, linkcolor=accent, urlcolor=accent]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme ─────────────────────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{loesung}{RGB}{0, 100, 0}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{240, 252, 240}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer ─────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\footnotesize\color{accent}\nichttitle}
+\fancyhead[R]{\footnotesize\color{accent}\nichtsubtitle}
+\fancyfoot[R]{\footnotesize\color{accent}Blatt \thepage\,/\,\pageref{LastPage}}
+
+% ── Typografie ────────────────────────────────────────────────
+\titleformat{\section}
+    {\color{accent}\large\bfseries}{}{0pt}{}
+    [\vspace{-4pt}\color{accent}\rule{\linewidth}{1.5pt}]
+\titleformat{\subsection}
+    {\normalsize\bfseries\color{accent!85!black}}{}{0pt}{}{}
+\titleformat{\subsubsection}
+    {\small\bfseries\color{accent!70!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{10pt}{3pt}
+\titlespacing*{\subsection}{0pt}{6pt}{2pt}
+\titlespacing*{\subsubsection}{0pt}{4pt}{1pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\renewcommand{\arraystretch}{1.2}
+\setlist[itemize]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.4em}
+\setlist[enumerate]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.6em}
+
+% ── Boxen: solutionbox = Lösungsbox in grün ──────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={Abbildung: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={Tabelle: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{solutionbox}[1]{
+  enhanced,
+  colback=solutionbg, colframe=loesung,
+  title={#1}, fonttitle=\small\bfseries,
+  coltitle=white, colbacktitle=loesung,
+  breakable, before skip=8pt, after skip=8pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=single, framerule=0pt,
+  xleftmargin=4pt, xrightmargin=4pt,
+  aboveskip=6pt, belowskip=6pt,
+  keepspaces=true
+}
+
+\providecommand{\nichttitle}{Übungsblatt}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Betriebssysteme}
+\renewcommand{\nichtsubtitle}{Übungsblatt 10}
+
+
+\begin{document}
+
+\begin{center}
+{\Large\bfseries\color{accent}\nichttitle}
+\ifx\nichtsubtitle\empty\else
+  \\[2pt]{\normalsize\color{accent!80!black}\nichtsubtitle}
+\fi
+\\[2pt]
+\color{accent}\rule{0.4\linewidth}{0.8pt}\color{black}
+\end{center}
+\vspace{4pt}
+
+% ── BODY ──────────────────────────────────────────────────────
+
+\section{Übungsblatt 10 — Deadlock}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 1 — Bedingungen und Konsequenz \textit{(10 Punkte)}}\mbox{}\\[2pt]
+
+a) Nennen Sie die vier Bedingungen, die \textbf{gleichzeitig} erfüllt sein müssen, damit ein Deadlock entstehen kann. \textit{(4 P)}
+
+
+b) Ein Systemarchitekt schlägt vor, das Betriebssystem so zu erweitern, dass jeder gehaltenen Ressource ein Zeitstempel zugewiesen wird und das BS einer Ressource bei Bedarf den Besitzer \textbf{entziehen} darf. Welche der vier Bedingungen wird damit gezielt aufgehoben, und welche prinzipielle Strategie aus dem Kapitel wird damit umgesetzt? \textit{(3 P)}
+
+
+c) Begründen Sie, warum das Aufheben \textit{einer einzigen} der vier Bedingungen ausreicht, um einen Deadlock unmöglich zu machen. \textit{(3 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Mutual Exclusion, Hold and Wait, No Preemption, Circular Wait.
+
+
+b) Durch das gewollte Entziehen einer Ressource wird die Bedingung \textbf{No Preemption} verletzt — Ressourcen werden also doch entziehbar gemacht. Damit ist das Vorgehen der Strategie \textbf{Verhindern} (Prevention) zuzuordnen: durch Konstruktion des BS wird sichergestellt, dass eine der vier Bedingungen niemals erfüllt ist.
+
+
+c) Die vier Bedingungen sind \textbf{konjunktiv} verknüpft („alle gleichzeitig"). Logisch bedeutet das: ein Deadlock kann nur entstehen, wenn B1 ∧ B2 ∧ B3 ∧ B4 gilt. Negiert man eine einzige Bedingung, ist die Konjunktion bereits falsch — die notwendige Voraussetzung für einen Zyklus aus haltenden und wartenden Prozessen entfällt, ein Deadlock ist damit ausgeschlossen.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 — Betriebsmittelgraph analysieren \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben sei folgender Betriebsmittelgraph mit den Prozessen P1, P2, P3, P4 und den Ressourcen R1, R2, R3, R4 (jeweils mit einer Instanz). Eine Kante \texttt{Pi → Rj} bedeutet \textit{Pi fordert Rj an}; eine Kante \texttt{Rj → Pi} bedeutet \textit{Rj ist von Pi belegt}.
+
+
+\begin{lstlisting}
+R1 → P1        P1 → R2
+R2 → P2        P2 → R3
+R3 → P3        P3 → R4
+R4 → P4        P4 → R1
+                P3 → R1   (zusätzlich)
+\end{lstlisting}
+
+
+a) Zeichnen Sie den Graphen und identifizieren Sie alle Zyklen. \textit{(6 P)}
+
+
+b) Liegt ein Deadlock vor? Begründen Sie anhand der Definition aus dem Kapitel. \textit{(5 P)}
+
+
+c) Der Scheduler darf einem Prozess \textbf{eine} belegte Ressource entziehen, um den Deadlock aufzulösen. Welche Wahl ist sinnvoll und warum? Geben Sie den resultierenden Graphen (textuell) an. \textit{(5 P)}
+
+
+d) Welche der vier Deadlock-Bedingungen haben Sie in (c) verletzt? \textit{(4 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Knoten: P1..P4, R1..R4. Kanten:
+
+\begin{itemize}
+  \item Belegung: R1→P1, R2→P2, R3→P3, R4→P4
+  \item Anforderung: P1→R2, P2→R3, P3→R4, P3→R1, P4→R1
+\end{itemize}
+
+Zyklen:
+
+\begin{itemize}
+  \item \textbf{Zyklus Z1}: P1 → R2 → P2 → R3 → P3 → R4 → P4 → R1 → P1 (Länge 8, alle vier Prozesse beteiligt)
+  \item \textbf{Zyklus Z2}: P1 → R2 → P2 → R3 → P3 → R1 → P1 (Länge 6, P1, P2, P3 beteiligt)
+\end{itemize}
+
+b) \textbf{Ja, es liegt ein Deadlock vor.} Bei Ressourcen mit \textit{einer Instanz} ist ein Zyklus im Betriebsmittelgraph hinreichend für einen Deadlock. Es existiert mindestens ein Zyklus (sogar zwei), und alle vier Bedingungen sind erfüllt:
+
+\begin{itemize}
+  \item Mutual Exclusion: jede Ressource hat genau eine Instanz, exklusiver Zugriff.
+  \item Hold and Wait: jeder Prozess hält eine Ressource und fordert eine weitere an.
+  \item No Preemption: Ressourcen werden nicht entzogen.
+  \item Circular Wait: Z1 und Z2 sind zyklische Warteabhängigkeiten.
+\end{itemize}
+
+c) Sinnvoll ist der Entzug von \textbf{R1 von P1}, denn R1 liegt auf \textbf{beiden} Zyklen — wird R1 freigegeben, brechen beide Zyklen gleichzeitig auf. Würde man dagegen R4 von P4 entziehen, bliebe Z2 (über P3 → R1) bestehen.
+
+
+Resultierender Graph: Belegung R1→P1 entfällt, P1 wird zum Wartenden auf R1 (P1 → R1). Es bleiben die Anforderungen P1→R2, P2→R3, P3→R4, P3→R1, P4→R1 sowie die Belegungen R2→P2, R3→P3, R4→P4. P4 kann nun R1 erhalten, danach R4 freigeben, dann P3 weiterlaufen — der Zyklus ist gebrochen.
+
+
+d) Verletzt wurde \textbf{No Preemption} (Ressource wurde gegen den Willen des Besitzers entzogen) und damit auch \textbf{Circular Wait} (der Zyklus existiert nicht mehr).
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 — Dining Philosophers: Fehler im Pseudocode \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+Ein Studierender implementiert das Dining-Philosophers-Problem mit 5 Philosophen P0..P4 und 5 Gabeln G0..G4 wie folgt. \texttt{lock(Gi)} blockiert, bis die Gabel verfügbar ist.
+
+
+\begin{lstlisting}
+philosoph(i):
+    while true:
+        denken()
+        lock(G[i])              // linke Gabel
+        lock(G[(i+1) mod 5])    // rechte Gabel
+        essen()
+        unlock(G[i])
+        unlock(G[(i+1) mod 5])
+\end{lstlisting}
+
+
+a) Konstruieren Sie eine konkrete Verschränkung (Scheduling), in der dieser Code in einen Deadlock läuft. Welche der vier Bedingungen sind erfüllt? \textit{(8 P)}
+
+
+b) Schlagen Sie eine \textbf{minimale} Codeänderung vor, die Circular Wait verhindert, ohne neue Synchronisationsprimitive einzuführen. Begründen Sie, warum dadurch kein Zyklus mehr im Wartegraph entstehen kann. \textit{(8 P)}
+
+
+c) Welche Eigenschaft der Lösung aus dem Kapitel („max 2 essen gleichzeitig; niemand verhungert") muss ergänzend geprüft werden — und ist sie durch Ihre Lösung aus (b) automatisch garantiert? \textit{(4 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Scheduling: Jeder Philosoph Pi führt zuerst \texttt{lock(G[i])} aus, bevor irgendein Pj \texttt{lock(G[(j+1) mod 5])} ausführt. Konkret:
+
+\begin{lstlisting}
+P0: lock(G0) ✓
+P1: lock(G1) ✓
+P2: lock(G2) ✓
+P3: lock(G3) ✓
+P4: lock(G4) ✓
+P0: lock(G1) → blockiert (G1 hält P1)
+P1: lock(G2) → blockiert (G2 hält P2)
+P2: lock(G3) → blockiert
+P3: lock(G4) → blockiert
+P4: lock(G0) → blockiert (G0 hält P0)
+\end{lstlisting}
+
+Alle vier Bedingungen sind erfüllt:
+
+\begin{itemize}
+  \item \textbf{Mutual Exclusion}: Gabel ist exklusiv.
+  \item \textbf{Hold and Wait}: jeder hält die linke und wartet auf die rechte.
+  \item \textbf{No Preemption}: \texttt{lock} wird nicht entzogen.
+  \item \textbf{Circular Wait}: P0 → G1 → P1 → G2 → P2 → G3 → P3 → G4 → P4 → G0 → P0.
+\end{itemize}
+
+b) \textbf{Asymmetrische Reihenfolge} für genau einen Philosophen — z. B. nimmt P4 zuerst die rechte, dann die linke Gabel:
+
+\begin{lstlisting}
+philosoph(i):
+    while true:
+        denken()
+        if i == 4:
+            lock(G[(i+1) mod 5])   // rechte zuerst (= G0)
+            lock(G[i])             // dann linke (= G4)
+        else:
+            lock(G[i])
+            lock(G[(i+1) mod 5])
+        essen()
+        unlock(...)  unlock(...)
+\end{lstlisting}
+
+Begründung: Definiert man eine totale Ordnung auf den Gabeln (G0 < G1 < ... < G4) und fordert jeder Philosoph seine Gabeln in \textbf{aufsteigender} Reihenfolge an, kann kein Zyklus entstehen — würde ein Zyklus existieren, müsste irgendwo eine kleinere Gabel auf eine größere warten \textit{und umgekehrt}, Widerspruch. P0..P3 nehmen ohnehin Gi vor G(i+1) (aufsteigend); nur P4 würde G4 vor G0 nehmen (absteigend). Durch das Vertauschen bei P4 nehmen alle in aufsteigender Reihenfolge → \textbf{Circular Wait verletzt}.
+
+
+c) Zu prüfen ist \textbf{Starvation-Freiheit}: Jeder hungrige Philosoph muss irgendwann essen. Die Lösung aus (b) garantiert \textit{Deadlock-Freiheit}, aber \textbf{nicht automatisch Starvation-Freiheit} — ein einzelner Philosoph könnte theoretisch immer wieder von schnelleren Nachbarn überholt werden, wenn das \texttt{lock} keine Fairness-Garantie (FIFO) gibt. Die Kapitel-Anforderung „niemand verhungert" verlangt also zusätzlich ein faires Lock oder eine explizite Reihenfolgegarantie.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 — Strategievergleich \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+In einem eingebetteten Steuergerät (Echtzeitanforderungen, Reaktionszeit < 10 ms) und in einem Desktop-Betriebssystem (Mehrbenutzerbetrieb, Komfort-orientiert) sollen jeweils Maßnahmen gegen Deadlocks getroffen werden.
+
+
+a) Stellen Sie die vier Strategien des Kapitels — \textit{Erkennen, Ignorieren, Vermeiden, Verhindern} — kurz gegenüber (je 1 Satz Idee + 1 Stichwort Aufwand). \textit{(6 P)}
+
+
+b) Ordnen Sie jeder der beiden Systeme \textbf{eine} Strategie begründet zu. Beziehen Sie sich auf den Hinweis aus dem Kapitel, dass Erkennung/Vermeidung/Verhinderung \textit{sehr aufwendig} sind. \textit{(6 P)}
+
+
+c) Welche Strategie wählt nach allgemeiner Erfahrung das Desktop-OS Linux/Windows tatsächlich, und was ist die externe Konsequenz für den Benutzer? \textit{(3 P)}
+
+
+\textbf{Lösung:}
+
+
+a)
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Strategie}} & {\color{white}\textbf{Idee}} & {\color{white}\textbf{Aufwand}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Erkennen & Zyklus im Betriebsmittelgraph suchen, dann auflösen & hoch (Graph + Suche zur Laufzeit) \\
+Ignorieren & nichts tun, ggf. extern abbrechen & minimal \\
+Vermeiden & BS so konstruiert, dass Deadlocks gar nicht entstehen können & hoch (Designaufwand, ggf. Banker o. ä.) \\
+Verhindern & Anforderung nur erlauben, wenn kein zukünftiger Deadlock; sequentielles Anfordern & hoch (Prüfung bei jeder Anforderung) \\
+\end{tabularx}
+}
+
+
+b)
+
+\begin{itemize}
+  \item \textbf{Eingebettetes Echtzeitsystem}: \textbf{Verhindern} (oder Vermeiden). Eine deterministische Reaktionszeit < 10 ms verträgt keinen Deadlock und keine teure Recovery. Da das System klein und die Ressourcen statisch bekannt sind, lohnt sich der einmalige Designaufwand: feste Anforderungsreihenfolge, gestaffeltes Anfordern → kein Zyklus möglich. Ignorieren ist unzulässig (Sicherheitsrisiko), Erkennen zu aufwendig zur Laufzeit.
+  \item \textbf{Desktop-OS}: \textbf{Ignorieren} (Vogel-Strauß-Strategie). Die im Kapitel benannten Verfahren (Erkennung/Vermeidung/Verhinderung) sind „sehr aufwendig" und „vollständige Abdeckung kaum möglich"; im Desktop-Alltag sind echte Kernel-Deadlocks selten, der Benutzer erträgt seltenes manuelles Eingreifen.
+\end{itemize}
+
+c) Praktisch wählen Linux/Windows die \textbf{Ignorieren-Strategie}. Externe Konsequenz: Im Deadlock-Fall „hängt" eine Anwendung; der Benutzer beendet den Prozess von außen (Task-Manager, \texttt{kill}) — exakt das im Kapitel beschriebene „extern abbrechen".
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 — Producer-Consumer-Transfer \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Ein Webshop besteht aus drei Komponenten, die je einen begrenzten Puffer (Kapazität N = 4) teilen:
+
+
+\begin{itemize}
+  \item \textbf{Bestellannahme} (Producer) legt Bestellungen in Puffer \textbf{A}.
+  \item \textbf{Zahlungsdienst} (Consumer von A, Producer für B) entnimmt aus A, legt freigegebene Bestellungen in Puffer \textbf{B}.
+  \item \textbf{Versand} (Consumer von B) entnimmt aus B.
+\end{itemize}
+
+Jeder Puffer wird durch ein Mutex \texttt{m\_X} und zwei Semaphoren \texttt{empty\_X} (Anzahl freier Plätze, Init = 4) und \texttt{full\_X} (Anzahl belegter Plätze, Init = 0) geschützt. Der Zahlungsdienst implementiert pro Bestellung:
+
+
+\begin{lstlisting}
+P(full_A);  P(m_A);          // aus A nehmen
+P(empty_B); P(m_B);          // in B legen
+... bewegen ...
+V(m_B); V(empty_B);          // FEHLER: empty statt full?
+V(m_A); V(full_A);           // FEHLER: full statt empty?
+\end{lstlisting}
+
+
+a) Korrigieren Sie die \texttt{V}-Aufrufe so, dass das klassische Producer-Consumer-Schema eingehalten wird. \textit{(4 P)}
+
+
+b) Auch nach Korrektur kann das System bei Lastspitzen in einen \textbf{Deadlock} laufen. Geben Sie eine konkrete Belegung von Puffer A und B sowie den Wartezustand des Zahlungsdienstes an, in der dies geschieht. Welche der vier Bedingungen sind erfüllt? \textit{(7 P)}
+
+
+c) Schlagen Sie eine Änderung der Anforderungsreihenfolge im Zahlungsdienst vor, die das Problem aus (b) entschärft, ODER begründen Sie, warum hier eher die Strategie \textit{Vermeiden} (z. B. Puffer dynamisch wachsen lassen) angemessen ist. \textit{(4 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Der Zahlungsdienst entnimmt aus A → er verringert \texttt{full\_A} und erhöht \texttt{empty\_A}. Er produziert in B → er verringert \texttt{empty\_B} und erhöht \texttt{full\_B}. Korrekt:
+
+\begin{lstlisting}
+P(full_A);  P(m_A);
+... aus A entnehmen ...
+V(m_A); V(empty_A);
+
+P(empty_B); P(m_B);
+... in B legen ...
+V(m_B); V(full_B);
+\end{lstlisting}
+
+
+b) \textbf{Konkrete Deadlock-Konstellation:}
+
+\begin{itemize}
+  \item Puffer A: voll mit 4 Bestellungen (\texttt{full\_A = 4}, \texttt{empty\_A = 0}).
+  \item Puffer B: voll mit 4 Bestellungen (\texttt{full\_B = 4}, \texttt{empty\_B = 0}).
+  \item Bestellannahme will eine 5. Bestellung in A legen → blockiert auf \texttt{P(empty\_A)}.
+  \item Versand ist abgestürzt / sehr langsam → entnimmt nichts aus B.
+  \item Zahlungsdienst hat soeben eine Bestellung aus A entnommen (also \texttt{full\_A = 3}, \texttt{empty\_A = 1}), hält keine Sperre mehr auf A, will jetzt in B legen → blockiert auf \texttt{P(empty\_B)}.
+\end{itemize}
+
+Sobald die Bestellannahme den frei gewordenen Platz in A wieder füllt (\texttt{empty\_A = 0}, \texttt{full\_A = 4}), wartet der Zahlungsdienst dauerhaft auf B, und ohne Versand wird B nie frei → der Zahlungsdienst kommt nicht weiter, Bestellannahme wartet anschließend ebenfalls — Stillstand.
+
+
+Streng genommen ist dies ein Deadlock zwischen \textit{Zahlungsdienst} und \textit{Versand}:
+
+\begin{itemize}
+  \item \textbf{Mutual Exclusion}: Pufferplätze sind exklusiv.
+  \item \textbf{Hold and Wait}: Zahlungsdienst hält bereits entnommene Bestellung (Ressource „Slot in Bearbeitung") und wartet auf Slot in B.
+  \item \textbf{No Preemption}: Semaphor-Zähler wird nicht entzogen.
+  \item \textbf{Circular Wait}: liegt nur, sobald der Versand seinerseits auf eine Ressource wartet, die der Zahlungsdienst hält — z. B. wenn Versand und Zahlungsdienst sich zusätzlich ein Datenbank-Lock teilen. Andernfalls handelt es sich um eine unbeschränkte Wartesituation (Livelock-/Starvation-artig), die erst durch eine zusätzliche zyklische Abhängigkeit zum echten Deadlock wird.
+\end{itemize}
+
+c) \textbf{Anforderungsreihenfolge ändern}: Der Zahlungsdienst sollte \textit{erst} einen freien Platz in B reservieren (\texttt{P(empty\_B)}) und \textit{dann} eine Bestellung aus A entnehmen (\texttt{P(full\_A)}). Dadurch hält er nie eine Bestellung „in der Hand", für die kein Zielplatz garantiert ist — Hold and Wait wird abgeschwächt, und der Rückstau löst sich, sobald der Versand wieder läuft. Alternativ ist \textit{Vermeiden} durch dynamisches Wachsen der Puffer angemessen, wenn die Lastspitzen schwer prognostizierbar sind und die Echtzeit-Anforderungen keine harten Schranken setzen — der Preis ist erhöhter Speicherverbrauch und der Verlust der Rückkopplung an den Producer.
+
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{document}

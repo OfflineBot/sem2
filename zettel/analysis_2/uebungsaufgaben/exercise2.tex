@@ -1,0 +1,487 @@
+% ============================================================
+%  Übungsaufgaben Template (my_dhbw Stil, uebung_*.tex)
+%  Header "Übungsblatt", grün eingefärbte <details>-Lösungen.
+%  Renderer: pdflatex (zweimal)
+% ============================================================
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+\usepackage[top=2cm, bottom=2cm, left=2.4cm, right=2.4cm, footskip=1cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{ltablex}
+\keepXColumns
+\usepackage{colortbl}
+\usepackage[most,breakable]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{pdflscape}
+\usepackage{titlesec}
+\usepackage[colorlinks=true, linkcolor=accent, urlcolor=accent]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme ─────────────────────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{loesung}{RGB}{0, 100, 0}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{240, 252, 240}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer ─────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\footnotesize\color{accent}\nichttitle}
+\fancyhead[R]{\footnotesize\color{accent}\nichtsubtitle}
+\fancyfoot[R]{\footnotesize\color{accent}Blatt \thepage\,/\,\pageref{LastPage}}
+
+% ── Typografie ────────────────────────────────────────────────
+\titleformat{\section}
+    {\color{accent}\large\bfseries}{}{0pt}{}
+    [\vspace{-4pt}\color{accent}\rule{\linewidth}{1.5pt}]
+\titleformat{\subsection}
+    {\normalsize\bfseries\color{accent!85!black}}{}{0pt}{}{}
+\titleformat{\subsubsection}
+    {\small\bfseries\color{accent!70!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{10pt}{3pt}
+\titlespacing*{\subsection}{0pt}{6pt}{2pt}
+\titlespacing*{\subsubsection}{0pt}{4pt}{1pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\renewcommand{\arraystretch}{1.2}
+\setlist[itemize]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.4em}
+\setlist[enumerate]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.6em}
+
+% ── Boxen: solutionbox = Lösungsbox in grün ──────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={Abbildung: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={Tabelle: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{solutionbox}[1]{
+  enhanced,
+  colback=solutionbg, colframe=loesung,
+  title={#1}, fonttitle=\small\bfseries,
+  coltitle=white, colbacktitle=loesung,
+  breakable, before skip=8pt, after skip=8pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=single, framerule=0pt,
+  xleftmargin=4pt, xrightmargin=4pt,
+  aboveskip=6pt, belowskip=6pt,
+  keepspaces=true
+}
+
+\providecommand{\nichttitle}{Übungsblatt}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Analysis 2}
+\renewcommand{\nichtsubtitle}{Übungsblatt 2}
+
+
+\begin{document}
+
+\begin{center}
+{\Large\bfseries\color{accent}\nichttitle}
+\ifx\nichtsubtitle\empty\else
+  \\[2pt]{\normalsize\color{accent!80!black}\nichtsubtitle}
+\fi
+\\[2pt]
+\color{accent}\rule{0.4\linewidth}{0.8pt}\color{black}
+\end{center}
+\vspace{4pt}
+
+% ── BODY ──────────────────────────────────────────────────────
+
+\section{Übungsblatt 2 — Partielle Ableitungen}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 1 — Begriff und Konsequenz \textit{(8 Punkte)}}\mbox{}\\[2pt]
+
+a) Erkläre in eigenen Worten, was die partielle Ableitung ∂f/∂x einer Funktion f(x, y, z) bedeutet und wie sie konkret gebildet wird. \textit{(3 P)}
+
+
+b) Sei g(x, y, z) = 7y³ + 2z² − 5. Bestimme ∂g/∂x und begründe das Ergebnis aus der Definition. Welche allgemeine Konsequenz ergibt sich für Summanden, in denen die Differenzierungsvariable nicht vorkommt? \textit{(5 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Die partielle Ableitung ∂f/∂x ist die Ableitung der Funktion f nach der Variable x, wobei alle anderen Variablen (hier y und z) als Konstanten behandelt werden. Praktisch: man wendet die normalen Ableitungsregeln (Summen-, Produkt-, Quotienten-, Kettenregel) nur auf den x-Anteil an, alles ohne x bleibt unverändert oder fällt — falls es ein reiner konstanter Summand ohne x ist — komplett weg.
+
+
+b) g(x, y, z) = 7y³ + 2z² − 5. Keiner der drei Summanden enthält die Variable x. Da y, z bei der Differentiation nach x als Konstanten gelten, sind 7y³, 2z² und −5 allesamt konstante Summanden bezüglich x. Konstante Summanden ohne Differenzierungsvariable entfallen vollständig:
+
+
+∂g/∂x = 0.
+
+
+\textbf{Konsequenz:} Hängt eine Funktion in einem Summanden gar nicht von der Differenzierungsvariable ab, liefert dieser Summand bei der partiellen Ableitung den Beitrag 0. Das ist auch der Grund, warum bei f(x,y) = h(y) + k(x) die partielle Ableitung nach x nur k'(x) liefert — h(y) verschwindet.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 — Tabelle vervollständigen \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Vervollständige die folgende Tabelle. Gib jeweils ∂f/∂x, ∂f/∂y und (falls anwendbar) ∂f/∂z an. Zeige bei (ii) und (iii) den Rechenweg.
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Nr.}} & {\color{white}\textbf{f(x, y, z)}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+(i) & 4x⁵ − 3xy + 2y² \\
+(ii) & (x² + y) / z \\
+(iii) & √(x + y²) · z \\
+\end{tabularx}
+}
+
+
+\textit{(je 5 P)}
+
+
+\textbf{Lösung:}
+
+
+\textbf{(i) f = 4x⁵ − 3xy + 2y²}
+
+
+\begin{itemize}
+  \item ∂f/∂x: 4x⁵ → 20x⁴; −3xy → −3y (y konstant); 2y² → 0. Also \textbf{∂f/∂x = 20x⁴ − 3y}.
+  \item ∂f/∂y: 4x⁵ → 0; −3xy → −3x; 2y² → 4y. Also \textbf{∂f/∂y = −3x + 4y}.
+  \item ∂f/∂z = 0 (z kommt nicht vor).
+\end{itemize}
+
+\textbf{(ii) f = (x² + y) / z}
+
+
+Schreibe als f = (x² + y) · z⁻¹.
+
+
+\begin{itemize}
+  \item ∂f/∂x: y und z konstant. Ableitung von x² ist 2x, also \textbf{∂f/∂x = 2x/z}.
+  \item ∂f/∂y: x und z konstant. Ableitung von y ist 1, also \textbf{∂f/∂y = 1/z}.
+  \item ∂f/∂z: (x² + y) konstant, ∂/∂z (z⁻¹) = −z⁻² = −1/z². Also \textbf{∂f/∂z = −(x² + y)/z²}.
+\end{itemize}
+
+\textbf{(iii) f = √(x + y²) · z = (x + y²)\textasciicircum{}\{0,5\} · z}
+
+
+Innere Ableitung mit Kettenregel.
+
+
+\begin{itemize}
+  \item ∂f/∂x: z konstant; ∂/∂x (x + y²)\textasciicircum{}\{0,5\} = 0,5·(x + y²)\textasciicircum{}\{−0,5\} · 1 = 1/(2√(x + y²)). Also \textbf{∂f/∂x = z / (2√(x + y²))}.
+  \item ∂f/∂y: z konstant; ∂/∂y (x + y²)\textasciicircum{}\{0,5\} = 0,5·(x + y²)\textasciicircum{}\{−0,5\} · 2y = y/√(x + y²). Also \textbf{∂f/∂y = yz / √(x + y²)}.
+  \item ∂f/∂z: (x + y²)\textasciicircum{}\{0,5\} konstant; ∂/∂z (z) = 1. Also \textbf{∂f/∂z = √(x + y²)}.
+\end{itemize}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 — Anwendung mit Logarithmus \textit{(12 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben sei
+
+
+f(x, y, z) = 3x · ln(x²yz)
+
+
+a) Bestimme ∂f/∂x mit Produkt- und Kettenregel. \textit{(5 P)}
+
+
+b) Bestimme ∂f/∂y und ∂f/∂z. \textit{(4 P)}
+
+
+c) Werte alle drei partiellen Ableitungen am Punkt (x, y, z) = (1, e, 1) aus. \textit{(3 P)}
+
+
+\textbf{Lösung:}
+
+
+\textbf{a) ∂f/∂x:} Produktregel auf 3x · ln(x²yz).
+
+
+\begin{itemize}
+  \item (3x)' = 3.
+  \item ln(x²yz)' nach x: innere Ableitung ∂/∂x (x²yz) = 2xyz, also ∂/∂x ln(x²yz) = 2xyz / (x²yz) = 2/x.
+\end{itemize}
+
+Damit:
+
+∂f/∂x = 3 · ln(x²yz) + 3x · (2/x) = \textbf{3 ln(x²yz) + 6}.
+
+
+\textbf{b)}
+
+
+∂f/∂y: 3x ist bzgl. y konstant.
+
+∂/∂y ln(x²yz) = (x²z)/(x²yz) = 1/y.
+
+Also ∂f/∂y = 3x · (1/y) = \textbf{3x/y}.
+
+
+∂f/∂z: analog ∂/∂z ln(x²yz) = (x²y)/(x²yz) = 1/z.
+
+Also ∂f/∂z = 3x · (1/z) = \textbf{3x/z}.
+
+
+\textbf{c) Auswertung in (1, e, 1):}
+
+
+x²yz = 1 · e · 1 = e, also ln(x²yz) = ln(e) = 1.
+
+
+\begin{itemize}
+  \item ∂f/∂x = 3·1 + 6 = \textbf{9}.
+  \item ∂f/∂y = 3·1/e = \textbf{3/e}.
+  \item ∂f/∂z = 3·1/1 = \textbf{3}.
+\end{itemize}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 — Transfer: Wärmeverteilung an einer Platte \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+Auf einer rechteckigen Metallplatte ist die Temperatur (in °C) modelliert durch
+
+
+T(x, y) = 60 + 4x² − xy + 2y²,
+
+
+wobei x, y die Koordinaten in Metern sind. Ein Sensor sitzt am Punkt P = (3, 2).
+
+
+a) Bestimme ∂T/∂x und ∂T/∂y. \textit{(4 P)}
+
+
+b) Werte beide partielle Ableitungen am Punkt P aus und interpretiere die Vorzeichen und Beträge physikalisch (welche Richtung bringt schnellere Temperaturänderung?). \textit{(6 P)}
+
+
+c) Ein zweiter Sensor sitzt bei Q = (1, 5). In welche Achsen­richtung (x oder y) ist die Temperatur dort lokal empfindlicher gegen Verschiebung? Begründe rechnerisch. \textit{(5 P)}
+
+
+d) An welchen Punkten der Platte gilt simultan ∂T/∂x = 0 und ∂T/∂y = 0? Bestimme alle Lösungen. \textit{(5 P)}
+
+
+\textbf{Lösung:}
+
+
+\textbf{a)} Konstante 60 fällt weg.
+
+
+∂T/∂x = 8x − y.
+
+∂T/∂y = −x + 4y.
+
+
+\textbf{b)} In P = (3, 2):
+
+
+∂T/∂x|\_P = 8·3 − 2 = 22 [°C/m].
+
+∂T/∂y|\_P = −3 + 4·2 = 5 [°C/m].
+
+
+Interpretation: Bei einer kleinen Verschiebung in x-Richtung wächst die Temperatur um ca. 22 °C pro Meter, in y-Richtung um ca. 5 °C pro Meter. Beide Vorzeichen sind positiv → in beide Achsenrichtungen wird es wärmer. Die x-Richtung ist deutlich „heißempfindlicher": ∂T/∂x ist mehr als viermal so groß wie ∂T/∂y.
+
+
+\textbf{c)} In Q = (1, 5):
+
+
+∂T/∂x|\_Q = 8·1 − 5 = 3.
+
+∂T/∂y|\_Q = −1 + 4·5 = 19.
+
+
+|∂T/∂y| = 19 > |∂T/∂x| = 3 → in Q ist die Temperatur \textbf{in y-Richtung} lokal empfindlicher: eine Verschiebung um Δy bewirkt eine ca. 6,3-fach stärkere Temperaturänderung als die gleiche Verschiebung in x.
+
+
+\textbf{d)} System:
+
+
+8x − y = 0 → y = 8x.
+
+−x + 4y = 0 → x = 4y.
+
+
+Einsetzen: x = 4·(8x) = 32x → 31x = 0 → x = 0, daraus y = 0.
+
+
+Einzige Lösung: \textbf{(x, y) = (0, 0)}. An diesem Punkt verschwinden beide partiellen Ableitungen gleichzeitig (kandidatischer kritischer Punkt der Funktion).
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 — Fehler finden \textit{(10 Punkte)}}\mbox{}\\[2pt]
+
+Eine Kommilitonin reicht die folgende Rechnung ein. Gegeben sei
+
+
+f(x, y, z) = (x + y²) / z + 2xy.
+
+
+Ihre Behauptung:
+
+
+\begin{quote}
+∂f/∂y = 2y/z + 2x − (x + y²)/z².
+\end{quote}
+
+Finde \textbf{alle} Fehler, korrigiere sie und gib die richtige partielle Ableitung ∂f/∂y vollständig an. Erkläre kurz, woher der Fehler vermutlich kommt.
+
+
+\textbf{Lösung:}
+
+
+Wir leiten Term für Term nach y ab. Bei ∂/∂y werden x und z als Konstanten behandelt.
+
+
+\begin{itemize}
+  \item Term 1: (x + y²)/z. Nur y² hängt von y ab. ∂/∂y ((x + y²)/z) = 2y/z. ✓
+  \item Term 2: 2xy. ∂/∂y (2xy) = 2x. ✓
+\end{itemize}
+
+Also: \textbf{∂f/∂y = 2y/z + 2x}.
+
+
+\textbf{Fehler:} Die Kommilitonin hat zusätzlich den Term −(x + y²)/z² angehängt. Dieser Term ist die Ableitung von (x + y²)/z \textbf{nach z}, nicht nach y. Vermutlich hat sie die Spalte ∂f/∂z aus der Beispieltabelle versehentlich übernommen (klassischer Spalten-Verwechsler) oder beim Umschreiben (x + y²)·z⁻¹ einmal nach z statt nach y abgeleitet.
+
+
+Der Term −(x + y²)/z² gehört korrekt nur in ∂f/∂z = −(x + y²)/z² + 0 = −(x + y²)/z².
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 6 — Vergleich zweier Schreibweisen \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben sei
+
+
+f(x, y, z) = √(x·y) / z.
+
+
+Zwei Studenten lösen die Aufgabe ∂f/∂x unterschiedlich:
+
+
+\begin{itemize}
+  \item \textbf{Variante A} schreibt f = (xy)\textasciicircum{}\{0,5\} · z⁻¹ und differenziert direkt nach x.
+  \item \textbf{Variante B} schreibt f = √x · √y / z und nutzt, dass √y/z bzgl. x konstant ist.
+\end{itemize}
+
+a) Führe beide Varianten vollständig durch und zeige, dass das Ergebnis identisch ist. \textit{(8 P)}
+
+
+b) Welche Variante ist hier rechnerisch effizienter? Begründe und nenne ein Szenario (eigenes Beispiel mit anderer Funktion), in dem die jeweils andere Variante besser ist. \textit{(7 P)}
+
+
+\textbf{Lösung:}
+
+
+\textbf{a)}
+
+
+\textbf{Variante A:} f = (xy)\textasciicircum{}\{0,5\} · z⁻¹. Nach x ableiten, z⁻¹ ist konstant bzgl. x:
+
+
+∂f/∂x = z⁻¹ · 0,5·(xy)\textasciicircum{}\{−0,5\} · y = (0,5 y) / (z·√(xy)) = y / (2z√(xy)).
+
+
+Vereinfachen: √(xy) = √x·√y, also y/(2z√x·√y) = √y / (2z√x).
+
+
+\textbf{Ergebnis A:} ∂f/∂x = √y / (2z√x).
+
+
+\textbf{Variante B:} f = √x · (√y / z). Faktor √y/z ist bzgl. x konstant:
+
+
+∂f/∂x = (√y/z) · ∂/∂x (√x) = (√y/z) · 1/(2√x) = √y / (2z√x).
+
+
+\textbf{Ergebnis B:} ∂f/∂x = √y / (2z√x). ✓ identisch.
+
+
+\textbf{b) Vergleich:}
+
+
+Variante B ist hier effizienter: durch das Faktorisieren √x · (√y/z) wird der konstante Faktor sofort ausgeklammert, und es bleibt eine einfache eindimensionale Ableitung d/dx √x = 1/(2√x). Variante A muss die Kettenregel auf (xy)\textasciicircum{}\{0,5\} anwenden und am Ende noch den Wurzelterm zerlegen, um auf die gleiche Form zu kommen — mehr Schritte, mehr Fehlerquellen.
+
+
+\textbf{Szenario, in dem A besser ist:} Wenn das Argument der Wurzel nicht in x- und y-Faktoren zerfällt, z. B.
+
+
+g(x, y, z) = √(x + y²) / z.
+
+
+Hier kann man \textbf{nicht} in einen reinen x-Faktor und einen reinen y-Faktor trennen — die Summe x + y² lässt sich nicht zerlegen. Dann muss man die Form (x + y²)\textasciicircum{}\{0,5\} · z⁻¹ stehen lassen und mit Kettenregel direkt ableiten (Variante A): ∂g/∂x = 1/(2z√(x+y²)). Variante B ist hier nicht anwendbar.
+
+
+\textbf{Trade-off:} B nur bei multiplikativer Trennbarkeit der Variablen; A funktioniert immer, ist aber bei trennbaren Funktionen unnötig aufwendig.
+
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{document}

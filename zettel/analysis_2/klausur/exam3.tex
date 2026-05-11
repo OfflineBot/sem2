@@ -1,0 +1,513 @@
+% ============================================================
+%  Probeklausur Template (my_dhbw Stil, klausur_*.tex)
+%  Formell mit Deckblatt-Header; Lösungen als grüne tcolorbox.
+%  Renderer: pdflatex (zweimal)
+% ============================================================
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+\usepackage[top=2cm, bottom=2cm, left=2.4cm, right=2.4cm, footskip=1cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{ltablex}
+\keepXColumns
+\usepackage{colortbl}
+\usepackage[most,breakable]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{pdflscape}
+\usepackage{titlesec}
+\usepackage[colorlinks=true, linkcolor=accent, urlcolor=accent]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme ─────────────────────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{loesung}{RGB}{0, 100, 0}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{240, 252, 240}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer ─────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\footnotesize\color{accent}Modulprüfung -- \nichttitle}
+\fancyhead[R]{\footnotesize\color{accent}\nichtsubtitle}
+\fancyfoot[L]{\footnotesize\color{accent}Matrikelnr.: \rule{3cm}{0.4pt}}
+\fancyfoot[R]{\footnotesize\color{accent}Blatt \thepage\,/\,\pageref{LastPage}}
+
+% ── Typografie ────────────────────────────────────────────────
+\titleformat{\section}
+    {\color{accent}\large\bfseries}{}{0pt}{}
+    [\vspace{-4pt}\color{accent}\rule{\linewidth}{1.5pt}]
+\titleformat{\subsection}
+    {\normalsize\bfseries\color{accent!85!black}}{}{0pt}{}{}
+\titleformat{\subsubsection}
+    {\small\bfseries\color{accent!70!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{12pt}{4pt}
+\titlespacing*{\subsection}{0pt}{8pt}{2pt}
+\titlespacing*{\subsubsection}{0pt}{6pt}{1pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\renewcommand{\arraystretch}{1.25}
+\setlist[itemize]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.4em}
+\setlist[enumerate]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.6em}
+
+% ── Boxen ─────────────────────────────────────────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={Abbildung: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={Tabelle: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{solutionbox}[1]{
+  enhanced,
+  colback=solutionbg, colframe=loesung,
+  title={#1}, fonttitle=\small\bfseries,
+  coltitle=white, colbacktitle=loesung,
+  breakable, before skip=8pt, after skip=8pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=single, framerule=0pt,
+  xleftmargin=4pt, xrightmargin=4pt,
+  aboveskip=6pt, belowskip=6pt,
+  keepspaces=true
+}
+
+\providecommand{\nichttitle}{Probeklausur}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Analysis 2}
+\renewcommand{\nichtsubtitle}{Probeklausur 3}
+
+
+\begin{document}
+
+% Deckblatt
+\thispagestyle{empty}
+\begin{center}
+\vspace*{1cm}
+{\Huge\bfseries\color{accent}Probeklausur}\\[8pt]
+{\Large\color{accent}\nichttitle}\\[4pt]
+\ifx\nichtsubtitle\empty\else
+  {\large\color{accent!80!black}\nichtsubtitle}\\[6pt]
+\fi
+\color{accent}\rule{0.5\linewidth}{1pt}\color{black}
+\end{center}
+
+\vspace{1cm}
+\begin{tabularx}{\textwidth}{@{}l X@{}}
+\textbf{Studiengang:}      & \rule{6cm}{0.4pt} \\[6pt]
+\textbf{Matrikelnummer:}    & \rule{6cm}{0.4pt} \\[6pt]
+\textbf{Name, Vorname:}    & \rule{6cm}{0.4pt} \\[6pt]
+\textbf{Datum:}             & \rule{6cm}{0.4pt} \\[6pt]
+\textbf{Bearbeitungszeit:}  & 60 Minuten \\[6pt]
+\textbf{Hilfsmittel:}       & Taschenrechner (nicht programmierbar) \\
+\end{tabularx}
+
+\vspace{2cm}
+\begin{center}
+{\large\itshape Viel Erfolg!}
+\end{center}
+
+\newpage
+
+% ── BODY ──────────────────────────────────────────────────────
+
+\section{Probeklausur 3 — Analysis 2}
+
+\textbf{Bearbeitungszeit}: 60 Minuten | \textbf{Hilfsmittel}: keine | \textbf{Punkte}: 100
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 1 — Klassifikation und homogene DGL \textit{(14 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben sei die Differenzialgleichung
+
+\[
+y'(x) = 3x^2 \cdot y(x)
+\]
+
+
+a) Klassifizieren Sie die DGL nach \textbf{vier} Kriterien (Ordnung, gewöhnlich/partiell, linear/nichtlinear, homogen/inhomogen) und begründen Sie jede Einordnung in einem Halbsatz. \textit{(4 Punkte)}
+
+
+b) Bestimmen Sie die allgemeine Lösung $y(x)$. \textit{(4 Punkte)}
+
+
+c) Lösen Sie das Anfangswertproblem mit $y(1) = 2 \cdot e$. \textit{(3 Punkte)}
+
+
+d) Begründen Sie, warum bei einer linearen homogenen DGL 1. Ordnung die Lösung niemals das Vorzeichen wechseln kann (sofern $y_0 \neq 0$). \textit{(3 Punkte)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 — Inhomogene DGL: Reaktorkühlung \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+Ein Wärmeübertrager enthält zum Zeitpunkt $t = 0$ eine Wärmemenge von $Q_0 = 50$ (in kJ relativ zur Umgebungstemperatur). Pro Minute fließen 5 \% der vorhandenen Überschusswärme über die Wand ab; gleichzeitig wird durch eine elektrische Heizung kontinuierlich $b(t) = 4 \cdot e^{-0{,}05\,t}$ kJ/min zugeführt.
+
+
+a) Stellen Sie die DGL für $Q(t)$ auf und klassifizieren Sie sie. \textit{(3 Punkte)}
+
+
+b) Bestimmen Sie $A(t) = \int a(t)\,dt$ und schreiben Sie die Lösungsformel des AWP in dieser Form an. \textit{(4 Punkte)}
+
+
+c) Lösen Sie das AWP vollständig (zeigen Sie das Integral $\int b(u) e^{-A(u)} du$ explizit). \textit{(8 Punkte)}
+
+
+d) Bestimmen Sie den Grenzwert $\lim_{t \to \infty} Q(t)$ und interpretieren Sie das Ergebnis physikalisch. \textit{(3 Punkte)}
+
+
+e) Wie würde sich die Lösung qualitativ ändern, wenn die Heizung konstant $b(t) = 4$ liefern würde? Skizzieren Sie das Verhalten in Worten. \textit{(2 Punkte)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 — Getrennte Veränderliche und Datierung \textit{(18 Punkte)}}\mbox{}\\[2pt]
+
+Eine archäologische Probe enthält noch $y(t_1) = 296{,}25$ Einheiten eines Isotops; vor langer Zeit lag der Anfangsbestand bei $y(0) = 1185$ Einheiten. Gemessen wurde $t_1 = 8000$ Jahre nach Bildung.
+
+
+a) Stellen Sie das Zerfallsgesetz als DGL auf und lösen Sie sie mit der Methode \textbf{„Getrennte Veränderliche"}. Geben Sie alle Schritte an (Trennen, Integrieren, Auflösen). \textit{(6 Punkte)}
+
+
+b) Berechnen Sie die Zerfallskonstante $\alpha$ aus den Messwerten. Geben Sie das Ergebnis mit drei signifikanten Stellen an. \textit{(5 Punkte)}
+
+
+c) Bestimmen Sie die Halbwertszeit $t_{1/2}$ des Isotops. \textit{(3 Punkte)}
+
+
+d) Eine zweite Probe desselben Isotops enthält noch 10 \% des Anfangsbestands. Wie alt ist sie? \textit{(4 Punkte)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 — Fehleranalyse einer Trennung der Variablen \textit{(16 Punkte)}}\mbox{}\\[2pt]
+
+Ein Studierender soll das AWP $y'(x) = 2x \cdot e^y, \; y(0) = 0$ lösen. Er notiert:
+
+
+\begin{lstlisting}
+(1)  dy / e^y  =  2x dx
+(2)  -e^(-y)   =  x^2 + C
+(3)  e^(-y)    =  -x^2 + C        // Vorzeichen umgedreht
+(4)  -y        =  ln(-x^2 + C)
+(5)  AWP:  y(0)=0  =>  C = 0
+(6)  Lösung:  y(x) = -ln(-x^2)
+\end{lstlisting}
+
+
+a) Identifizieren Sie \textbf{alle} fachlichen Fehler in den Schritten (1)–(6) und benennen Sie für jeden Fehler die Schrittnummer und die Art des Fehlers. \textit{(6 Punkte)}
+
+
+b) Führen Sie die Lösung selbst korrekt durch. Geben Sie das Ergebnis als $y(x) = \dots$ an. \textit{(7 Punkte)}
+
+
+c) Für welchen Definitionsbereich $D \subset \mathbb{R}$ ist Ihre Lösung gültig? Begründen Sie. \textit{(3 Punkte)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 — Fourieranalyse: Konzept und Anwendung \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+Ein Sensor misst die Auslastung einer Mensa minütlich über mehrere Wochen. Im Rohsignal $f(t)$ vermutet man eine Tages- und eine Wochenperiodik, überlagert mit Rauschen.
+
+
+a) Erklären Sie in höchstens drei Sätzen, was eine \textbf{Fouriertransformation} in diesem Kontext leistet, und welche Bedeutung der Betrag $|F(\omega)|$ konkret hat. \textit{(4 Punkte)}
+
+
+b) Begründen Sie, warum hier \textbf{nicht} die kontinuierliche Fouriertransformation, sondern die \textbf{DFT} (bzw. FFT) eingesetzt werden muss. Nennen Sie zwei Gründe. \textit{(4 Punkte)}
+
+
+c) Zwei sinusförmige Tagesschwankungen $s_1(t) = A\sin(\omega t)$ und $s_2(t) = A\sin(\omega t + \pi)$ überlagern sich im Eingang des Sensors. Welches Signal misst der Sensor? Welche zwei Phänomene aus dem Stoff illustriert dieses Beispiel? \textit{(4 Punkte)}
+
+
+d) \textbf{Transfer}: Im DFT-Spektrum erkennen Sie zwei deutlich erhöhte $|F(\omega)|$ bei den Frequenzen $\omega_1 = 2\pi/1440\,\text{min}^{-1}$ und $\omega_2 = 2\pi/10080\,\text{min}^{-1}$. Interpretieren Sie diese Werte inhaltlich. Welche Schlussfolgerung ziehen Sie für die Modellierung der Mensa-Auslastung? \textit{(5 Punkte)}
+
+
+e) Nennen Sie die Eigenschaft der Wellenüberlagerung, die es überhaupt erst rechtfertigt, das Signal als \textbf{Summe} einzelner Frequenzen darzustellen. \textit{(3 Punkte)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 6 — Verfahrensvergleich \textit{(12 Punkte)}}\mbox{}\\[2pt]
+
+Sie sollen die DGL $y'(x) = \dfrac{y}{x} + x^2, \; y(1) = 0$ lösen.
+
+
+a) Begründen Sie, warum die Methode \textbf{„Getrennte Veränderliche"} hier \textbf{nicht} direkt funktioniert. \textit{(3 Punkte)}
+
+
+b) Lösen Sie das AWP mit der Lösungsformel für linear inhomogene DGL 1. Ordnung. Zeigen Sie alle Schritte. \textit{(7 Punkte)}
+
+
+c) Geben Sie ein Kriterium an, nach dem Sie \textit{vor} dem Rechnen entscheiden, welches der beiden Verfahren (Trennung der Variablen vs. Lösungsformel inhomogen-linear) zum Einsatz kommt. \textit{(2 Punkte)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+
+\section{Musterlösung Klausur 3}
+
+\paragraph{Aufgabe 1 \textit{(14 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a)} \textit{(4 P, je 1 P)}
+
+\begin{itemize}
+  \item Ordnung 1 (höchste Ableitung ist $y'$)
+  \item gewöhnlich (nur eine unabhängige Variable $x$)
+  \item linear ($y$ und $y'$ kommen nur in 1. Potenz, nicht verschachtelt vor)
+  \item homogen (keine reine Funktion von $x$ ohne Faktor $y$ als Zusatzterm)
+\end{itemize}
+
+\textbf{b)} \textit{(4 P)} Mit $a(x) = 3x^2$ ist $A(x) = \int 3x^2\,dx = x^3$. Allgemeine Lösung:
+
+\[
+y(x) = c_1 \cdot e^{x^3}
+\]
+
+\textit{Bewertung: 2 P Integration, 2 P korrekte Form.}
+
+
+\textbf{c)} \textit{(3 P)} $y(1) = c_1 \cdot e^{1} = 2e \Rightarrow c_1 = 2$. Also $y(x) = 2 \cdot e^{x^3}$.
+
+\textit{Bewertung: 2 P Einsetzen, 1 P Ergebnis.}
+
+
+\textbf{d)} \textit{(3 P)} Die allgemeine Lösung hat die Form $y(x) = c_1 \cdot e^{A(x)}$. Da $e^{A(x)} > 0$ für alle $x$, hängt das Vorzeichen ausschließlich vom Vorzeichen von $c_1$ ab — und $c_1$ ist durch den Anfangswert $y_0 \neq 0$ fixiert. Ein Vorzeichenwechsel ist nur möglich, wenn die Lösung eine Nullstelle hat, was die Exponentialfunktion ausschließt.
+
+\textit{Bewertung: 1 P „$e^{...}>0$", 1 P Bezug zu $c_1$, 1 P Schluss.}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a)} \textit{(3 P)} $Q'(t) = -0{,}05\,Q(t) + 4 e^{-0{,}05\,t}$, $\;Q(0) = 50$. Linear inhomogen, 1. Ordnung, gewöhnlich.
+
+\textit{Bewertung: 2 P DGL, 1 P Klassifikation.}
+
+
+\textbf{b)} \textit{(4 P)} $a(t) = -0{,}05$, also $A(t) = -0{,}05\,t$. Lösungsformel:
+
+\[
+Q(t) = e^{A(t)}\left(Q_0 + \int_0^t b(u) e^{-A(u)}\,du\right) = e^{-0{,}05 t}\left(50 + \int_0^t 4 e^{-0{,}05 u} \cdot e^{0{,}05 u}\,du\right)
+\]
+
+\textit{Bewertung: 1 P $A$, 3 P Formel mit Einsetzen.}
+
+
+\textbf{c)} \textit{(8 P)} Im Integral kürzt sich die Exponentialfunktion: $\int_0^t 4\,du = 4t$. Damit
+
+\[
+Q(t) = e^{-0{,}05 t}(50 + 4t) = (50 + 4t)\cdot e^{-0{,}05 t}
+\]
+
+Probe: $Q(0) = 50$ ✓; $Q'(t) = 4 e^{-0{,}05 t} - 0{,}05 (50+4t) e^{-0{,}05 t} = -0{,}05\,Q + 4 e^{-0{,}05 t}$ ✓.
+
+\textit{Bewertung: 2 P Kürzung, 2 P Integration, 2 P Ergebnis, 2 P Probe oder Anfangswert.}
+
+
+\textbf{d)} \textit{(3 P)} $\lim_{t\to\infty} (50+4t) e^{-0{,}05 t} = 0$ (Exponential schlägt Polynom). Physikalisch: die zugeführte Heizleistung sinkt exponentiell gegen 0, gleichzeitig kühlt der Reaktor — das System nähert sich asymptotisch dem Umgebungs-Gleichgewicht.
+
+\textit{Bewertung: 1 P Grenzwert, 2 P Begründung/Interpretation.}
+
+
+\textbf{e)} \textit{(2 P)} Bei konstanter Zufuhr $b(t)=4$ würde sich ein stationärer Zustand $Q_\infty$ einstellen mit $0 = -0{,}05\,Q_\infty + 4 \Rightarrow Q_\infty = 80$ kJ. Die Lösung steigt monoton von 50 auf 80.
+
+\textit{Bewertung: 1 P Gleichgewicht, 1 P Verhalten.}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 \textit{(18 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a)} \textit{(6 P)} DGL: $y'(t) = \alpha\, y(t)$ mit $\alpha < 0$.
+
+\begin{enumerate}
+  \item $\dfrac{dy}{y} = \alpha\,dt$
+  \item $\int \dfrac{dy}{y} = \int \alpha\,dt \Rightarrow \ln|y| = \alpha t + C$
+  \item $y(t) = c_1 \cdot e^{\alpha t}$ mit $c_1 = e^C$
+  \item $y(0) = c_1 = 1185$, also $y(t) = 1185 \cdot e^{\alpha t}$.
+\end{enumerate}
+
+\textit{Bewertung: je 1,5 P pro Schritt.}
+
+
+\textbf{b)} \textit{(5 P)} $\;\dfrac{y(8000)}{y(0)} = \dfrac{296{,}25}{1185} = 0{,}25 = e^{8000\,\alpha}$
+
+$\Rightarrow 8000\,\alpha = \ln(0{,}25) = -1{,}3863 \Rightarrow \alpha \approx -1{,}73 \cdot 10^{-4}\,\text{a}^{-1}$.
+
+\textit{Bewertung: 2 P Verhältnis, 2 P Logarithmus, 1 P Wert.}
+
+
+\textbf{c)} \textit{(3 P)} $t_{1/2} = -\dfrac{\ln 2}{\alpha} = \dfrac{0{,}6931}{1{,}733\cdot 10^{-4}} \approx 4000$ Jahre.
+
+\textit{Bewertung: 1 P Formel, 2 P Wert. (Alternativ aus $0{,}25 = (1/2)^{8000/t_{1/2}} \Rightarrow t_{1/2}=4000$ direkt.)}
+
+
+\textbf{d)} \textit{(4 P)} $0{,}1 = e^{\alpha t} \Rightarrow t = \dfrac{\ln 0{,}1}{\alpha} = \dfrac{-2{,}3026}{-1{,}733 \cdot 10^{-4}} \approx 13\,290$ Jahre.
+
+\textit{Bewertung: 2 P Ansatz, 2 P Wert (Toleranz ±100 a).}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 \textit{(16 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a)} \textit{(6 P, je 2 P pro Hauptfehler, max 6)}
+
+\begin{itemize}
+  \item \textbf{Schritt (3)}: Beim Multiplizieren mit -1 muss \textit{jeder} Term das Vorzeichen wechseln; aus $-e^{-y} = x^2 + C$ folgt $e^{-y} = -x^2 - C$, also $e^{-y} = -x^2 + C'$ wäre formal nur bei Umbenennung der Konstante korrekt — aber die nachfolgende Behandlung der Konstante ist falsch.
+  \item \textbf{Schritt (5)}: Aus $y(0) = 0$ folgt $e^0 = 1 = -0 + C \Rightarrow C = 1$, \textbf{nicht} $C = 0$.
+  \item \textbf{Schritt (4)/(6)}: Aus $e^{-y} = -x^2 + C$ folgt $-y = \ln(-x^2 + C) \Rightarrow y = -\ln(C - x^2)$. Mit $C=0$ erhielte man $\ln(-x^2)$, das ist für reelles $x \neq 0$ \textbf{nicht definiert} — ein klares Indiz für den Fehler in (5).
+\end{itemize}
+
+\textit{Bewertung: 2 P Vorzeichen-/Konstantenfehler in (3), 2 P falsche Anfangswert-Auswertung (5), 2 P Definitionsproblem in (6).}
+
+
+\textbf{b)} \textit{(7 P)}
+
+\begin{enumerate}
+  \item $e^{-y}\,dy = 2x\,dx$
+  \item $-e^{-y} = x^2 + C$
+  \item AWP: $y(0)=0 \Rightarrow -1 = 0 + C \Rightarrow C = -1$
+  \item $-e^{-y} = x^2 - 1 \Rightarrow e^{-y} = 1 - x^2$
+  \item $-y = \ln(1 - x^2) \Rightarrow \boxed{y(x) = -\ln(1 - x^2)}$
+\end{enumerate}
+
+\textit{Bewertung: 1 P Trennung, 2 P Integration, 1 P AWP, 1 P Auflösung, 2 P Ergebnis.}
+
+
+\textbf{c)} \textit{(3 P)} Argument des Logarithmus muss positiv sein: $1 - x^2 > 0 \Rightarrow -1 < x < 1$. Also $D = (-1, 1)$.
+
+\textit{Bewertung: 2 P Bedingung, 1 P Intervall.}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a)} \textit{(4 P)} Die Fouriertransformation überführt das Zeitsignal $f(t)$ in ein Frequenzspektrum $F(\omega)$. $|F(\omega)|$ gibt an, mit welchem Anteil eine Schwingung der Frequenz $\omega$ am Gesamtsignal beteiligt ist — Spitzen markieren also dominante periodische Komponenten in den Mensa-Daten.
+
+\textit{Bewertung: 2 P Zeit↔Spektrum, 2 P Bedeutung von $|F(\omega)|$.}
+
+
+\textbf{b)} \textit{(4 P)} (i) Die Messwerte liegen als \textbf{diskrete Zeitreihe} vor (minütlich), nicht als analytische Funktion — das Integral $\int_{-\infty}^\infty\dots$ kann nicht ausgewertet werden. (ii) Die analytische Fouriertransformation ist „von Hand nicht praktikabel"; die FFT liefert das Spektrum numerisch effizient.
+
+\textit{Bewertung: je 2 P pro Grund.}
+
+
+\textbf{c)} \textit{(4 P)} Wegen $\sin(\omega t + \pi) = -\sin(\omega t)$ überlagern sich die beiden Wellen zu $s_1 + s_2 = 0$ — der Sensor misst nichts (in dieser Komponente). Phänomene: \textbf{Linearität der Wellenüberlagerung} und \textbf{destruktive Interferenz}.
+
+\textit{Bewertung: 2 P Rechnung/Ergebnis, je 1 P pro genanntes Phänomen.}
+
+
+\textbf{d)} \textit{(5 P)} 1440 min $= 24$ h → \textbf{Tagesperiode} (Mittagsspitze etc.). $10\,080$ min $= 7 \cdot 1440$ min → \textbf{Wochenperiode} (z. B. Wochenende). Schlussfolgerung: das Signal lässt sich gut durch eine Linearkombination zweier Sinusterme mit diesen Perioden plus Rauschen modellieren — z. B. für Vorhersage der Auslastung.
+
+\textit{Bewertung: 1 P Tag, 1 P Woche, 1 P Erkennen periodischer Komponenten, 2 P Modellierungsschluss.}
+
+
+\textbf{e)} \textit{(3 P)} \textbf{Linearität der Wellenüberlagerung}: Wellen beeinflussen sich nicht, die Gesamtamplitude ist die Summe der Teilamplituden. Erst dadurch ist die Zerlegung in eine Summe (bzw. ein Integral) elementarer Sinus-/Kosinus-Schwingungen überhaupt sinnvoll.
+
+\textit{Bewertung: 1 P Begriff, 2 P Begründung.}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 6 \textit{(12 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a)} \textit{(3 P)} Die rechte Seite $\dfrac{y}{x} + x^2$ lässt sich nicht als Produkt $f(x)\cdot g(y)$ schreiben (der inhomogene Term $x^2$ enthält kein $y$, der homogene Teil $y/x$ schon — die Variablen sind also nicht trennbar).
+
+\textit{Bewertung: 1 P Form $f(x) g(y)$, 2 P konkrete Begründung am Beispiel.}
+
+
+\textbf{b)} \textit{(7 P)} $a(x) = 1/x \Rightarrow A(x) = \ln|x|$, also $e^{A(x)} = x$ (für $x>0$) und $e^{-A(u)} = 1/u$.
+
+\[
+y(x) = x\left(0 + \int_1^x u^2 \cdot \dfrac{1}{u}\,du\right) = x \int_1^x u\,du = x \cdot \left[\dfrac{u^2}{2}\right]_1^x = x \cdot \dfrac{x^2 - 1}{2} = \dfrac{x^3 - x}{2}
+\]
+
+Probe: $y(1) = 0$ ✓; $y' = (3x^2 - 1)/2$, $y/x + x^2 = (x^2-1)/2 + x^2 = (3x^2-1)/2$ ✓.
+
+\textit{Bewertung: 1 P $A$, 2 P Integral aufstellen, 2 P auswerten, 1 P Ergebnis, 1 P Probe.}
+
+
+\textbf{c)} \textit{(2 P)} Lässt sich die DGL in der Form $y' = f(x) g(y)$ schreiben → Trennung der Variablen. Lässt sie sich in der Form $y' = a(x) y + b(x)$ mit nichtverschwindendem $b(x)$ schreiben (linear inhomogen) → Lösungsformel. Bei diesem Beispiel scheitert die erste Form, die zweite passt.
+
+\textit{Bewertung: 1 P Kriterium Trennung, 1 P Kriterium linear inhomogen.}
+
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{document}

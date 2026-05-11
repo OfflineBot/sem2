@@ -1,0 +1,610 @@
+% ============================================================
+%  Übungsaufgaben Template (my_dhbw Stil, uebung_*.tex)
+%  Header "Übungsblatt", grün eingefärbte <details>-Lösungen.
+%  Renderer: pdflatex (zweimal)
+% ============================================================
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+\usepackage[top=2cm, bottom=2cm, left=2.4cm, right=2.4cm, footskip=1cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{ltablex}
+\keepXColumns
+\usepackage{colortbl}
+\usepackage[most,breakable]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{pdflscape}
+\usepackage{titlesec}
+\usepackage[colorlinks=true, linkcolor=accent, urlcolor=accent]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme ─────────────────────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{loesung}{RGB}{0, 100, 0}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{240, 252, 240}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer ─────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\footnotesize\color{accent}\nichttitle}
+\fancyhead[R]{\footnotesize\color{accent}\nichtsubtitle}
+\fancyfoot[R]{\footnotesize\color{accent}Blatt \thepage\,/\,\pageref{LastPage}}
+
+% ── Typografie ────────────────────────────────────────────────
+\titleformat{\section}
+    {\color{accent}\large\bfseries}{}{0pt}{}
+    [\vspace{-4pt}\color{accent}\rule{\linewidth}{1.5pt}]
+\titleformat{\subsection}
+    {\normalsize\bfseries\color{accent!85!black}}{}{0pt}{}{}
+\titleformat{\subsubsection}
+    {\small\bfseries\color{accent!70!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{10pt}{3pt}
+\titlespacing*{\subsection}{0pt}{6pt}{2pt}
+\titlespacing*{\subsubsection}{0pt}{4pt}{1pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\renewcommand{\arraystretch}{1.2}
+\setlist[itemize]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.4em}
+\setlist[enumerate]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.6em}
+
+% ── Boxen: solutionbox = Lösungsbox in grün ──────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={Abbildung: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={Tabelle: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{solutionbox}[1]{
+  enhanced,
+  colback=solutionbg, colframe=loesung,
+  title={#1}, fonttitle=\small\bfseries,
+  coltitle=white, colbacktitle=loesung,
+  breakable, before skip=8pt, after skip=8pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=single, framerule=0pt,
+  xleftmargin=4pt, xrightmargin=4pt,
+  aboveskip=6pt, belowskip=6pt,
+  keepspaces=true
+}
+
+\providecommand{\nichttitle}{Übungsblatt}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Relationen, Algebra, Diskrete Mathematik}
+\renewcommand{\nichtsubtitle}{Übungsblatt 7}
+
+
+\begin{document}
+
+\begin{center}
+{\Large\bfseries\color{accent}\nichttitle}
+\ifx\nichtsubtitle\empty\else
+  \\[2pt]{\normalsize\color{accent!80!black}\nichtsubtitle}
+\fi
+\\[2pt]
+\color{accent}\rule{0.4\linewidth}{0.8pt}\color{black}
+\end{center}
+\vspace{4pt}
+
+% ── BODY ──────────────────────────────────────────────────────
+
+\section{Übungsblatt 7 — Boolesche Algebra}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 1 — Axiome und Dualitätsprinzip \textit{(12 Punkte)}}\mbox{}\\[2pt]
+
+a) Nennen Sie die vier Axiomgruppen einer Booleschen Algebra (M; ⊗, ⊕, ∼) und schreiben Sie jeweils beide Formen auf. \textit{(4 P)}
+
+
+b) Erklären Sie das \textbf{Dualitätsprinzip} in eigenen Worten. Welche praktische Konsequenz hat es für das Beweisen von Sätzen? \textit{(3 P)}
+
+
+c) Im Skript wurde \texttt{a⊗0 = 0} bewiesen. Übertragen Sie diesen Beweis durch Anwendung des Dualitätsprinzips auf die duale Aussage \texttt{a⊕1 = 1}. Geben Sie alle 5 Schritte explizit an und benennen Sie das jeweils benutzte Axiom. \textit{(5 P)}
+
+
+\textbf{Lösung:}
+
+
+a)
+
+\begin{itemize}
+  \item Kommutativ: a⊗b = b⊗a / a⊕b = b⊕a
+  \item Distributiv: a⊗(b⊕c) = (a⊗b)⊕(a⊗c) / a⊕(b⊗c) = (a⊕b)⊗(a⊕c)
+  \item Neutralelemente: ∃1 mit a⊗1 = a / ∃0 mit a⊕0 = a
+  \item Komplement: a⊗∼a = 0 / a⊕∼a = 1
+\end{itemize}
+
+b) Vertauscht man in einer wahren Aussage konsequent ⊗↔⊕ und 0↔1, so bleibt die Aussage wahr. Konsequenz: Jeder bewiesene Satz liefert ohne weiteren Aufwand einen zweiten — die duale Form. Man muss nur eine der beiden Formen beweisen.
+
+
+c) Dualisierung des Originalbeweises (⊗→⊕, ⊕→⊗, 0→1, 1→0):
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{\#}} & {\color{white}\textbf{Schritt}} & {\color{white}\textbf{benutztes Axiom}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+1 & a⊕∼a = 1 & Komplement (Form 2) \\
+2 & a⊕(∼a ⊗ 1) = 1 & Neutralelement (a⊗1 = a, hier auf ∼a angewendet) \\
+3 & (a⊕∼a) ⊗ (a⊕1) = 1 & Distributiv (Form 2) \\
+4 & 1 ⊗ (a⊕1) = 1 & Komplement (1) eingesetzt \\
+5 & a⊕1 = 1 & Neutralelement ⊗ (1⊗x = x) \\
+\end{tabularx}
+}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 — Termvereinfachung mit abgeleiteten Gesetzen \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Vereinfachen Sie die folgenden booleschen Terme \textbf{schrittweise}. Notieren Sie pro Umformung das verwendete Gesetz (Absorption, DeMorgan, Distributiv, Komplement, Idempotenz, Doppelnegation, 0-1-Gesetz, Neutralelement).
+
+
+a) \texttt{T₁ = (a ∧ b) ∨ (a ∧ b ∧ c) ∨ (a ∧ b′)} \textit{(4 P)}
+
+
+b) \texttt{T₂ = ∼(∼a ∨ b) ∨ ∼(a ∧ ∼b)} \textit{(5 P)}
+
+
+c) \texttt{T₃ = (a ∨ b) ∧ (a ∨ ∼b) ∧ (∼a ∨ c)} \textit{(6 P)}
+
+
+\textbf{Lösung:}
+
+
+a)
+
+\begin{enumerate}
+  \item \texttt{(a∧b) ∨ (a∧b∧c)} → \texttt{a∧b} (Absorption: x ∨ (x∧y) = x; mit x = a∧b, y = c)
+\end{enumerate}
+⇒ \texttt{T₁ = (a∧b) ∨ (a∧b′)}
+
+\begin{enumerate}
+  \item \texttt{T₁ = a ∧ (b ∨ b′)} (Distributiv)
+  \item \texttt{= a ∧ 1} (Komplement)
+  \item \texttt{= a} (Neutralelement)
+\end{enumerate}
+
+\textbf{Ergebnis:} \texttt{T₁ = a}.
+
+
+b)
+
+\begin{enumerate}
+  \item \texttt{∼(∼a ∨ b) = ∼∼a ∧ ∼b = a ∧ ∼b} (DeMorgan + Doppelnegation)
+  \item \texttt{∼(a ∧ ∼b) = ∼a ∨ ∼∼b = ∼a ∨ b} (DeMorgan + Doppelnegation)
+  \item \texttt{T₂ = (a ∧ ∼b) ∨ (∼a ∨ b)}
+  \item Umordnen: \texttt{= (∼a ∨ b) ∨ (a ∧ ∼b)}
+  \item Mit \texttt{(∼a ∨ b) = ∼(a ∧ ∼b)} und \texttt{x ∨ ∼x = 1}: \texttt{ = ∼(a∧∼b) ∨ (a∧∼b) = 1}
+\end{enumerate}
+
+\textbf{Ergebnis:} \texttt{T₂ = 1} (Tautologie).
+
+
+c)
+
+\begin{enumerate}
+  \item \texttt{(a∨b) ∧ (a∨∼b) = a ∨ (b ∧ ∼b)} (Distributiv Form 2)
+  \item \texttt{= a ∨ 0 = a} (Komplement, Neutralelement)
+  \item \texttt{T₃ = a ∧ (∼a ∨ c) = (a∧∼a) ∨ (a∧c)} (Distributiv)
+  \item \texttt{= 0 ∨ (a∧c) = a ∧ c} (Komplement, Neutralelement)
+\end{enumerate}
+
+\textbf{Ergebnis:} \texttt{T₃ = a ∧ c}.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 — Normalformen aus einer Wertetabelle \textit{(18 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben sei die folgende boolesche Funktion \texttt{f(a,b,c)} (ein „Mehrheitsmelder mit Veto": liefert 1, wenn mindestens zwei Eingänge 1 sind, \textbf{außer} wenn nur \texttt{b} und \texttt{c} zugleich 1 sind):
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{a}} & {\color{white}\textbf{b}} & {\color{white}\textbf{c}} & {\color{white}\textbf{f}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+0 & 0 & 0 & 0 \\
+0 & 0 & 1 & 0 \\
+0 & 1 & 0 & 0 \\
+0 & 1 & 1 & 0 \\
+1 & 0 & 0 & 0 \\
+1 & 0 & 1 & 1 \\
+1 & 1 & 0 & 1 \\
+1 & 1 & 1 & 1 \\
+\end{tabularx}
+}
+
+
+a) Bestimmen Sie die \textbf{kanonische disjunktive Normalform (kDN)}. \textit{(4 P)}
+
+
+b) Bestimmen Sie die \textbf{kanonische konjunktive Normalform (kKN)}. \textit{(4 P)}
+
+
+c) Vereinfachen Sie die kDN mit Hilfe der Gesetze der Booleschen Algebra (kein KV-Diagramm) auf eine möglichst kurze Form. \textit{(6 P)}
+
+
+d) Verifizieren Sie Ihr Ergebnis aus c), indem Sie die Wertetabelle des vereinfachten Terms mit der vorgegebenen vergleichen. \textit{(4 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Zeilen mit \texttt{f=1}: 101, 110, 111. Minterme:
+
+\begin{itemize}
+  \item 101 → \texttt{a∧b′∧c}
+  \item 110 → \texttt{a∧b∧c′}
+  \item 111 → \texttt{a∧b∧c}
+\end{itemize}
+
+\texttt{kDN: f = (a∧b′∧c) ∨ (a∧b∧c′) ∨ (a∧b∧c)}
+
+
+b) Zeilen mit \texttt{f=0}: 000, 001, 010, 011, 100. Maxterme (a=0→a, a=1→a′):
+
+\begin{itemize}
+  \item 000 → \texttt{a∨b∨c}
+  \item 001 → \texttt{a∨b∨c′}
+  \item 010 → \texttt{a∨b′∨c}
+  \item 011 → \texttt{a∨b′∨c′}
+  \item 100 → \texttt{a′∨b∨c}
+\end{itemize}
+
+\texttt{kKN: f = (a∨b∨c) ∧ (a∨b∨c′) ∧ (a∨b′∨c) ∧ (a∨b′∨c′) ∧ (a′∨b∨c)}
+
+
+c) kDN-Vereinfachung:
+
+\begin{enumerate}
+  \item \texttt{(a∧b∧c′) ∨ (a∧b∧c) = a∧b∧(c′∨c) = a∧b∧1 = a∧b} (Distributiv, Komplement, Neutralelement)
+  \item \texttt{f = (a∧b′∧c) ∨ (a∧b)}
+  \item Distributiv: \texttt{= a ∧ ((b′∧c) ∨ b)}
+  \item \texttt{(b′∧c) ∨ b = b ∨ (b′∧c) = (b∨b′) ∧ (b∨c) = 1∧(b∨c) = b∨c} (Distributiv Form 2, Komplement, Neutralelement)
+  \item \texttt{f = a ∧ (b ∨ c)}
+\end{enumerate}
+
+\textbf{Ergebnis:} \texttt{f = a ∧ (b ∨ c)}.
+
+
+d) Wertetabelle von \texttt{a ∧ (b∨c)}:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{a}} & {\color{white}\textbf{b}} & {\color{white}\textbf{c}} & {\color{white}\textbf{b∨c}} & {\color{white}\textbf{a∧(b∨c)}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 1 & 1 & 0 \\
+0 & 1 & 0 & 1 & 0 \\
+0 & 1 & 1 & 1 & 0 \\
+1 & 0 & 0 & 0 & 0 \\
+1 & 0 & 1 & 1 & 1 \\
+1 & 1 & 0 & 1 & 1 \\
+1 & 1 & 1 & 1 & 1 \\
+\end{tabularx}
+}
+
+
+Die Spalte stimmt zeilenweise mit dem vorgegebenen \texttt{f} überein → vereinfachter Term ist korrekt.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 — KV-Diagramm mit Don't-Cares \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+Eine Heizungssteuerung erhält 4 Bits \texttt{(a,b,c,d)}:
+
+\begin{itemize}
+  \item \texttt{a} = Anwesenheit erkannt
+  \item \texttt{b} = Außentemperatur unter Schwelle
+  \item \texttt{c} = Fenster offen
+  \item \texttt{d} = Nachtmodus aktiv
+\end{itemize}
+
+Die Heizung wird angeschaltet (\texttt{f=1}) gemäß folgender (vereinfachter) Wertetabelle. \texttt{−} = Don't-care (Kombination ist physikalisch ausgeschlossen, weil ein Wartungssensor sie unterbindet):
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Nr}} & {\color{white}\textbf{a}} & {\color{white}\textbf{b}} & {\color{white}\textbf{c}} & {\color{white}\textbf{d}} & {\color{white}\textbf{f}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+0 & 0 & 0 & 0 & 0 & 0 \\
+1 & 0 & 0 & 0 & 1 & 0 \\
+2 & 0 & 0 & 1 & 0 & 0 \\
+3 & 0 & 0 & 1 & 1 & 0 \\
+4 & 0 & 1 & 0 & 0 & 1 \\
+5 & 0 & 1 & 0 & 1 & 1 \\
+6 & 0 & 1 & 1 & 0 & 0 \\
+7 & 0 & 1 & 1 & 1 & − \\
+8 & 1 & 0 & 0 & 0 & 1 \\
+9 & 1 & 0 & 0 & 1 & 0 \\
+10 & 1 & 0 & 1 & 0 & 0 \\
+11 & 1 & 0 & 1 & 1 & 0 \\
+12 & 1 & 1 & 0 & 0 & 1 \\
+13 & 1 & 1 & 0 & 1 & 1 \\
+14 & 1 & 1 & 1 & 0 & − \\
+15 & 1 & 1 & 1 & 1 & − \\
+\end{tabularx}
+}
+
+
+a) Tragen Sie die Funktionswerte in ein 4-Variablen-KV-Diagramm ein (Zeilen \texttt{ab} im Gray-Code 00, 01, 11, 10; Spalten \texttt{cd} im Gray-Code 00, 01, 11, 10). \textit{(4 P)}
+
+
+b) Bestimmen Sie eine \textbf{disjunktive Minimalform} (DMF) durch Identifikation maximaler Einserblöcke unter geschickter Nutzung der Don't-Cares. \textit{(10 P)}
+
+
+c) Begründen Sie für jeden gewählten Block, welche Variablen eliminiert werden und warum. \textit{(4 P)}
+
+
+d) Welche \textbf{realweltliche Aussage} macht der vereinfachte Schaltausdruck über die Heizungslogik? \textit{(2 P)}
+
+
+\textbf{Lösung:}
+
+
+a) KV-Diagramm (Zeilen ab ↓, Spalten cd →):
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{ab\textbackslash{}cd}} & {\color{white}\textbf{00}} & {\color{white}\textbf{01}} & {\color{white}\textbf{11}} & {\color{white}\textbf{10}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+\textbf{00} & 0 & 0 & 0 & 0 \\
+\textbf{01} & 1 & 1 & − & 0 \\
+\textbf{11} & 1 & 1 & − & − \\
+\textbf{10} & 1 & 0 & 0 & 0 \\
+\end{tabularx}
+}
+
+
+(Nr 0,1,3,2 / 4,5,7,6 / 12,13,15,14 / 8,9,11,10 — Reihenfolge der Spalten beachten.)
+
+
+b) Maximale Einserblöcke (Don't-Cares ggf. als 1 nutzen):
+
+
+\begin{itemize}
+  \item \textbf{Block 1 (4er):} \texttt{b=1, c=0} → Zellen (01,00), (01,01), (11,00), (11,01) — alle 1.
+  \item \textbf{Block 2 (4er):} \texttt{b=1, d=0} → (01,00), (11,00), (11,10)\textit{, (01,10) — Zelle (01,10) ist 0 → }\textit{dieser Block existiert nicht in der Form}*. Verwerfen.
+  \item \textbf{Block 2 (alternativ, 4er):} \texttt{a=1, b=1} → (11,00), (11,01), (11,11)\textit{, (11,10)} — die zwei − werden als 1 genutzt → vollständiger 4er-Block. Aber dieser ist Teilmenge zusammen mit Block 1; trotzdem nötig? Nein, alle vier Zellen sind bereits durch Block 1 für (11,00),(11,01) abgedeckt; (11,11) und (11,10) sind − und müssen nicht abgedeckt werden. Verwerfen.
+  \item \textbf{Block 3 (1er):} Zelle (10,00) = Nr 8: \texttt{a=1, b=0, c=0, d=0}. Liegt isoliert (Nachbarn (10,01)=0, (10,10)=0, (00,00)=0, (11,00)=1). Mit (11,00) ergibt sich ein 2er-Block:
+  \item \textbf{Block 3 (2er):} \texttt{a=1, c=0, d=0} → (10,00) und (11,00) — beide 1. ✓
+\end{itemize}
+
+Damit decken Block 1 und Block 3 alle Einsen ab (Nr 4, 5, 12, 13, 8). Don't-Cares Nr 7, 14, 15 werden nicht zwingend benötigt.
+
+
+DMF:
+
+\begin{itemize}
+  \item Block 1 → \texttt{b ∧ c′} (a wechselt, d wechselt → eliminiert; b=1 konstant, c=0 konstant)
+  \item Block 3 → \texttt{a ∧ c′ ∧ d′} (b wechselt → eliminiert; a=1, c=0, d=0 konstant)
+\end{itemize}
+
+\textbf{\texttt{f\_min = (b ∧ c′) ∨ (a ∧ c′ ∧ d′)}}
+
+
+Eine weitere zulässige Vereinfachung (Distributiv): \texttt{f\_min = c′ ∧ (b ∨ (a ∧ d′))}.
+
+
+c) Begründung der Eliminationen:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Block}} & {\color{white}\textbf{konstante Variablen}} & {\color{white}\textbf{wechselnde (eliminierte)}} & {\color{white}\textbf{Term}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+1 (4er, b=1,c=0) & b=1, c=0 & a, d & \texttt{b∧c′} \\
+3 (2er, a=1,c=0,d=0) & a=1, c=0, d=0 & b & \texttt{a∧c′∧d′} \\
+\end{tabularx}
+}
+
+
+Eine Variable wird eliminiert, wenn sie innerhalb des Blocks beide Werte (0 und 1) annimmt — sie hat dann keinen Einfluss auf den Funktionswert in diesem Block.
+
+
+d) Realweltliche Aussage: \textbf{Die Heizung läuft genau dann, wenn das Fenster geschlossen ist (\texttt{c′}) UND es entweder draußen kalt ist (\texttt{b}) oder jemand tagsüber anwesend ist (\texttt{a∧d′}).} Bei offenem Fenster bleibt die Heizung immer aus.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 — Modelltransfer: Mengenalgebra ↔ Schaltalgebra \textit{(10 Punkte)}}\mbox{}\\[2pt]
+
+Im Skript werden zwei Modelle einer Booleschen Algebra erwähnt: die \textbf{Mengenalgebra} über \texttt{P(M)} und die \textbf{Schaltalgebra} über \texttt{B = \{0,1\}}.
+
+
+a) Übersetzen Sie die folgende mengentheoretische Identität in einen schaltalgebraischen Ausdruck und beweisen Sie diese mit den Axiomen der Booleschen Algebra: \textit{(6 P)}
+
+
+\texttt{(A ∩ B) ∪ (A ∩ B̄) = A}
+
+
+b) Welche Rolle spielen \texttt{M} (Grundmenge) und \texttt{∅} in der Mengenalgebra, und welche Elemente entsprechen ihnen in der Schaltalgebra? Warum heißen sie „Neutralelemente"? \textit{(4 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Übersetzung mit ∩↔⊗ (∧), ∪↔⊕ (∨), Komplement↔ ′:
+
+
+\texttt{(a ∧ b) ∨ (a ∧ b′) = a}
+
+
+Beweis:
+
+\begin{enumerate}
+  \item \texttt{(a∧b) ∨ (a∧b′) = a ∧ (b ∨ b′)} (Distributiv Form 1)
+  \item \texttt{= a ∧ 1} (Komplement: \texttt{b ∨ b′ = 1})
+  \item \texttt{= a} (Neutralelement von ⊗: \texttt{a ∧ 1 = a})
+\end{enumerate}
+
+Damit gilt die mengentheoretische Aussage durch Anwendung der Modellzuordnung ebenfalls.
+
+
+b)
+
+\begin{itemize}
+  \item In der Mengenalgebra ist \textbf{M} das Neutralelement der Durchschnittsoperation (\texttt{A ∩ M = A}) und \textbf{∅} das Neutralelement der Vereinigung (\texttt{A ∪ ∅ = A}).
+  \item In der Schaltalgebra entspricht \texttt{M ↦ 1} und \texttt{∅ ↦ 0}. Es gilt analog \texttt{a ⊗ 1 = a} und \texttt{a ⊕ 0 = a}.
+  \item „Neutral" heißen sie, weil die Verknüpfung mit ihnen das andere Argument unverändert lässt — sie sind also bezüglich der jeweiligen Operation wirkungslos.
+\end{itemize}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 6 — Verfahrensvergleich KV vs. Quine-McCluskey \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Ein Kommilitone möchte boolesche Funktionen mit \texttt{n = 8} Variablen minimieren und plant, dafür ein KV-Diagramm zu zeichnen.
+
+
+a) Wie viele Zellen hätte ein 8-Variablen-KV-Diagramm? Begründen Sie über die Anzahl der Belegungen aus dem Skript. \textit{(3 P)}
+
+
+b) Warum skaliert das KV-Verfahren laut Skript schlecht? Nennen Sie die im Skript erwähnte Größenordnung als Vergleichswert für \texttt{n = 32}. \textit{(3 P)}
+
+
+c) Stellen Sie KV-Diagramme und Quine-McCluskey gegenüber: Geben Sie pro Verfahren je \textbf{einen Vorteil} und \textbf{einen Nachteil} an, sowie den \textbf{typischen Anwendungsbereich}. \textit{(6 P)}
+
+
+d) Welches Verfahren würden Sie dem Kommilitonen empfehlen — und unter welcher Voraussetzung wäre selbst Quine-McCluskey nicht mehr praktikabel? \textit{(3 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Eine boolesche Funktion über \texttt{n} Variablen hat \texttt{2ⁿ} Belegungen, jede entspricht einer Zelle im KV-Diagramm. Für \texttt{n=8}: \textbf{\texttt{2⁸ = 256} Zellen}.
+
+
+b) Die Anzahl der Zellen wächst exponentiell mit \texttt{n}. Bereits ab \texttt{n ≈ 6} ist die zweidimensionale Darstellung mit Gray-Code-Anordnung kaum noch übersichtlich (Blöcke „über Kanten" werden in mehreren Dimensionen unleserlich). Im Skript explizit erwähnt: für \texttt{n = 32} hätte das Diagramm \texttt{2³² ≈ 4,3·10⁹} Zellen — nicht zeichenbar, nicht visuell auswertbar.
+
+
+c) Gegenüberstellung:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Aspekt}} & {\color{white}\textbf{KV-Diagramm}} & {\color{white}\textbf{Quine-McCluskey}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+\textbf{Vorteil} & Sehr schnell und intuitiv für kleine \texttt{n} (≤ 4); maximale Blöcke sind visuell sofort erkennbar & Algorithmisch / programmierbar; funktioniert systematisch für beliebig große \texttt{n}; deterministisches Ergebnis \\
+\textbf{Nachteil} & Skaliert nicht über ca. 5–6 Variablen; Blockfindung „über die Kante" wird fehleranfällig & Aufwändig per Hand; Anzahl der Primimplikanten kann exponentiell wachsen (NP-hart in der Coverage-Phase) \\
+\textbf{Anwendung} & Manuelle Minimierung kleiner Schaltnetze, Lehre, Klausuren & Werkzeuggestützte Logiksynthese, EDA-Software, größere Funktionen \\
+\end{tabularx}
+}
+
+
+d) \textbf{Empfehlung:} Für \texttt{n=8} nicht das KV-Diagramm, sondern \textbf{Quine-McCluskey} (z. B. werkzeuggestützt).
+
+
+\textbf{Grenze von Quine-McCluskey:} Auch QMC ist im Worst-Case nicht polynomiell — die Anzahl der Primimplikanten kann mit \texttt{n} exponentiell wachsen, und die anschließende Überdeckungsauswahl ist NP-hart. Bei sehr großen Funktionen (z. B. \texttt{n ≥ 20} mit dichter Belegung) müssen heuristische Verfahren wie \textbf{Espresso} verwendet werden.
+
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{document}

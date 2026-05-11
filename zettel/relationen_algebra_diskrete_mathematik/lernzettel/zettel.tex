@@ -1,0 +1,1284 @@
+% ============================================================
+%  Lernzettel Template (my_dhbw Stil, analysis.tex)
+%  Eine Spalte, mit TOC, accent-Theme.
+%  Renderer: pdflatex (zweimal)
+% ============================================================
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+\usepackage[top=2cm, bottom=2cm, left=2cm, right=2cm, footskip=1cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{titletoc}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{tabularx}
+\usepackage{ltablex}
+\keepXColumns
+\usepackage{colortbl}
+\usepackage[most,breakable]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{pdflscape}
+\usepackage[colorlinks=true, linkcolor=accent, urlcolor=accent]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme (my_dhbw accent) ────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{242, 255, 242}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer ─────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0.4pt}
+\renewcommand{\sectionmark}[1]{\markboth{#1}{}}
+\fancyfoot[L]{\footnotesize\color{accent}\nouppercase{\leftmark}}
+\fancyfoot[R]{\footnotesize\color{accent}\thepage\,/\,\pageref{LastPage}}
+\fancypagestyle{plain}{%
+  \fancyhf{}%
+  \renewcommand{\headrulewidth}{0pt}%
+  \renewcommand{\footrulewidth}{0.4pt}%
+  \fancyfoot[L]{\footnotesize\color{accent}\nouppercase{\leftmark}}%
+  \fancyfoot[R]{\footnotesize\color{accent}\thepage\,/\,\pageref{LastPage}}%
+}
+
+% ── Typografie ────────────────────────────────────────────────
+\titleformat{\section}
+    {\color{accent}\large\bfseries}{}{0pt}{}
+    [\vspace{-4pt}\color{accent}\rule{\linewidth}{2pt}]
+\titleformat{\subsection}
+    {\normalsize\bfseries\color{accent!85!black}}{}{0pt}{}
+    [\vspace{-3pt}\color{accent!40}\rule{\linewidth}{0.4pt}]
+\titleformat{\subsubsection}
+    {\small\bfseries\color{accent!70!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{12pt}{4pt}
+\titlespacing*{\subsection}{0pt}{8pt}{2pt}
+\titlespacing*{\subsubsection}{0pt}{6pt}{1pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\renewcommand{\arraystretch}{1.25}
+\setlist[itemize]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.4em}
+\setlist[enumerate]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.6em}
+\setlist[itemize,2]{label=\textendash, leftmargin=1.4em}
+
+% ── Boxen ──────────────────────────────────────────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={Abbildung: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={Tabelle: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{solutionbox}[1]{
+  colback=solutionbg, colframe=green!60!black!60,
+  title={#1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=single, framerule=0pt,
+  xleftmargin=4pt, xrightmargin=4pt,
+  aboveskip=6pt, belowskip=6pt,
+  keepspaces=true
+}
+
+% ── TOC-Look ──────────────────────────────────────────────────
+\renewcommand{\contentsname}{\color{accent}Inhalt}
+
+\providecommand{\nichttitle}{Lernzettel}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Relationen, Algebra, Diskrete Mathematik}
+\renewcommand{\nichtsubtitle}{Lernzettel}
+
+
+\begin{document}
+
+\begin{center}
+{\bfseries\Large\color{accent}\nichttitle}\\[2pt]
+\color{accent}\rule{0.35\linewidth}{1pt}\color{black}
+\end{center}
+\vspace{2pt}
+
+{\small\tableofcontents}
+\newpage
+
+% ── BODY ──────────────────────────────────────────────────────
+
+\section{Logik}
+
+
+\subsection{Grundlagen}
+
+\begin{itemize}
+  \item \textbf{Logik}: Wissen darstellen, Schlussfolgerungen ziehen. Anwendung: Hardware, Programmiersprachen, DBs, Algorithmen, ML.
+  \item \textbf{Atomare Aussage}: Satz, eindeutig wahr (w) oder falsch (f). Verknüpfbar mit ∧, ∨, ¬.
+  \item \textbf{Aussagenvariablen}: a, b, c, … (nicht w/f).
+  \item \textbf{Belegung}: Zuordnung von Wahrheitswerten zu Variablen.
+\end{itemize}
+
+
+\subsubsection{Beispiele Aussage / keine Aussage}
+\begin{itemize}
+  \item "Berlin ist Hauptstadt Deutschlands" → wahr; "6+7=13" → wahr
+  \item "Bonn wird wieder Hauptstadt" → keine (nicht eindeutig); "Na sowas!" → keine; "Dieser Satz ist falsch" → Paradoxon
+\end{itemize}
+
+
+\subsection{Operatoren}
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Operator}} & {\color{white}\textbf{Symbol}} & {\color{white}\textbf{Bezeichnung}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+und & ∧ & Konjunktion \\
+oder & ∨ & Disjunktion (nicht "entweder…oder") \\
+nicht & ¬ & Negation \\
+wenn-dann & → & Implikation \\
+genau-dann-wenn & ↔ & Äquivalenz \\
+\end{tabularx}
+}
+
+
+\begin{itemize}
+  \item a ∧ b: wahr nur wenn beide wahr
+  \item a ∨ b: wahr wenn mind. eine wahr
+  \item a → b = ¬a ∨ b; wahr außer (w,f)
+  \item a ↔ b = (a ∧ b) ∨ (¬a ∧ ¬b)
+  \item Neutralelemente: w für ∧ (a ∧ w = a); f für ∨ (a ∨ f = a)
+\end{itemize}
+
+
+\subsection{Syntax / Semantik}
+
+\textbf{Syntax} (Bildung korrekter Formeln):
+
+\begin{enumerate}
+  \item Atomare Aussagen xᵢ sowie w, f sind Formeln
+  \item a, b Formeln → (a ∧ b), (a ∨ b) Formeln
+  \item a Formel → ¬a Formel
+\end{enumerate}
+
+\begin{quote}
+\textbf{Merke:} → und ↔ tauchen in Syntax nicht auf (durch ∧/∨/¬ darstellbar).
+\end{quote}
+
+\textbf{Semantik}: Abbildung aller Aussagevariablen einer Formel F(x₁,…,xₙ) auf \{w, f\}.
+
+
+\begin{itemize}
+  \item \textbf{Erfüllbar}: ∃ Belegung mit F = w
+  \item \textbf{Tautologie}: alle Belegungen → F = w
+  \item \textbf{Widerspruchsvoll}: keine Belegung → F = w
+  \item F Tautologie ↔ ¬F widerspruchsvoll
+  \item Bsp: x ∨ ¬x (Tautologie); x ∧ ¬x (widerspruchsvoll)
+\end{itemize}
+
+
+\subsection{Vorrangregeln}
+
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Operator}} & {\color{white}\textbf{Rang}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+( ) & 0 \\
+¬ & 1 \\
+∧ & 2 \\
+∨ & 3 \\
+→ & 4 \\
+↔ & 5 \\
+\end{tabularx}
+}
+
+
+\begin{itemize}
+  \item Klammern/∧ weglassen wie Multiplikation: a ∧ b → ab
+  \item Gleiche Verknüpfungen: links nach rechts
+\end{itemize}
+
+
+\subsection{Logische Gesetze}
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Nr}} & {\color{white}\textbf{Name}} & {\color{white}\textbf{Tautologie}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+1 & Idempotenz & a ∧ a ↔ a; a ∨ a ↔ a \\
+2 & Kommutativ & a ∧ b ↔ b ∧ a; a ∨ b ↔ b ∨ a \\
+3 & Assoziativ & (a ∧ b) ∧ c ↔ a ∧ (b ∧ c); analog ∨ \\
+4 & Absorption & a ∧ (a ∨ b) ↔ a; a ∨ (a ∧ b) ↔ a \\
+5 & Distributiv & a ∧ (b ∨ c) ↔ (a ∧ b) ∨ (a ∧ c); a ∨ (b ∧ c) ↔ (a ∨ b) ∧ (a ∨ c) \\
+6 & Doppelte Negation & ¬(¬a) ↔ a \\
+7 & DeMorgan & ¬(a ∧ b) ↔ ¬a ∨ ¬b; ¬(a ∨ b) ↔ ¬a ∧ ¬b \\
+\end{tabularx}
+}
+
+
+
+\subsection{Normalformen}
+
+\begin{itemize}
+  \item \textbf{Literal} xᵢ: Variable oder negierte Variable
+  \item \textbf{n-stelliger Konjunktionsterm K}: x₁ ∧ … ∧ xₙ
+  \item \textbf{n-stelliger Disjunktionsterm D}: x₁ ∨ … ∨ xₙ
+  \item Duplikate entfernen; n=1 erlaubt
+  \item \textbf{KN}: D₁ ∧ … ∧ Dₘ; \textbf{DN}: K₁ ∨ … ∨ Kₘ
+  \item \textbf{kDN/kKN} (kanonisch): jeder Term enthält ALLE Variablen → Minterme/Maxterme; eindeutig
+\end{itemize}
+
+
+\subsubsection{Verfahren DN/KN}
+\begin{enumerate}
+  \item ↔, → ersetzen durch ¬, ∨, ∧
+  \item DeMorgan, bis Negationen nur vor Variablen
+  \item Distributivgesetz (DN: ∧ über ∨; KN: ∨ über ∧)
+  \item Idempotenz: gleiche Terme zusammenfassen
+  \item Neutralelemente: ¬a∧a=f; ¬a∨a=w; a∧w=a; a∨f=a
+\end{enumerate}
+
+
+\subsubsection{Verfahren kDN/kKN}
+\begin{enumerate}
+  \item Term in DN/KN suchen, in dem Variable a fehlt
+  \item K → K ∧ (a ∨ ¬a) bzw. D → D ∨ (a ∧ ¬a)
+  \item Distributiv anwenden, Idempotenz
+  \item Bsp: f(a,b) = a → a ∧ (b ∨ ¬b) → ab ∨ a¬b
+\end{enumerate}
+
+
+\subsubsection{Sortierung}
+\begin{itemize}
+  \item Innerhalb K/D: lexikographisch / nach Index aufsteigend
+  \item Zwischen Termen: ¬x:=0, x:=1 → Binärzahl, aufsteigend
+\end{itemize}
+
+
+\subsubsection{Äquivalenz}
+Umformung in Normalform — gleiche Normalform = äquivalent.
+
+
+
+\subsection{Logisches Schließen}
+
+\begin{itemize}
+  \item \{(a→b),(b→c)\} ⊨ (a→c) — Voraussetzungen liefern Schlussfolgerung
+  \item Grundlage: (a→b) ∧ (b→c) → (a→c) ist Tautologie
+  \item \textbf{Kontraposition}: a→b ↔ ¬b→¬a; a→b ≠ ¬a→¬b
+\end{itemize}
+
+
+\subsection{Resolution}
+
+\begin{itemize}
+  \item \textbf{Beweis durch Widerspruch}: zeige (A₁ ∧ … ∧ Aₙ ∧ ¬b) widerspruchsvoll
+  \item Voraussetzung: KN
+  \item \textbf{Klausel}: Disjunktion von Literalen, geschrieben als Menge
+  \item KN → Klauselmenge: ∧ und ∨ entfernen, Mengen-Notation
+  \item \textbf{Resolvente}: A enthält a, B enthält ¬a → res\{A,B\} = (A∖\{a\}) ∪ (B∖\{¬a\})
+  \item Komplementäre Literale in Resolvente → verwerfen
+  \item \textbf{Leere Klausel} □: Widerspruch bewiesen
+  \item Pro Schritt nur EIN Literal entfernen
+  \item Einzelne Klausel kann nicht resolviert werden
+  \item Verwendete Klauseln bleiben in Menge
+  \item Kein weiterer Resolutionsschritt möglich und kein □ → Behauptung falsch
+\end{itemize}
+
+
+\subsubsection{Beispiel: \{(a→b),(b→c)\} ⊨ (a→c)}
+\begin{itemize}
+  \item KN: (¬a∨b) ∧ (¬b∨c) ∧ a ∧ ¬c
+  \item Klauselmenge: \{\{¬a,b\},\{¬b,c\},\{a\},\{¬c\}\}
+  \item res(\{¬a,b\},\{¬b,c\})=\{¬a,c\} → res(.,a)=\{c\} → res(c,¬c)=□
+\end{itemize}
+
+\begin{quote}
+\textbf{Merke:} Resolution für ↔-Vermutungen unhandlich → SAT-Algorithmen.
+\end{quote}
+
+
+\subsection{Prädikatenlogik}
+
+\begin{itemize}
+  \item \textbf{Individuen}: Objekte mit Eigenschaften
+  \item \textbf{n-stelliges Prädikat} P(x₁,…,xₙ): beschreibt Eigenschaft
+  \item \textbf{Quantoren}: ∀ (Allquantor), ∃ (Existenzquantor)
+  \item \textbf{Funktionsterme}: liefern Individuen
+\end{itemize}
+
+
+\subsubsection{Beispiele}
+\begin{itemize}
+  \item ∀x ∈ ℕ (Quadrat(x) ≥ x)
+  \item "Alle Menschen sind sterblich": ∀x(Mensch(x) → sterblich(x))
+  \item "Sokrates ist Mensch": Mensch(Sokrates) = w
+  \item "Es gibt keinen Menschen, der >20m springt": ¬∃x(Mensch(x) ∧ springt\_weiter(x,20))
+\end{itemize}
+
+Resolution übertragbar (Substitution, Unifikation, Umbenennungen).
+
+
+
+\section{Mengen}
+
+
+\subsection{Begriff \& Schreibweisen}
+
+\textbf{Menge (Cantor)}: Zusammenfassung unterscheidbarer Objekte; Objekte = Elemente. Mengen Großbuchstaben (M), Elemente klein (x).
+
+
+\begin{itemize}
+  \item Aufzählend: M = \{1, 2, 3\}
+  \item Beschreibend: M = \{x | x ∈ ℕ ∧ 1 ≤ x ≤ 3\}
+  \item Charakteristische Aussageform: M = \{x | A(x)\}
+  \item Grafisch: Venn-Diagramm
+  \item Ungültig: \{1,2,3,3\} (nicht unterscheidbar), Verwendung anderer Klammern als \{\}
+\end{itemize}
+
+
+\subsection{Zugehörigkeit \& Mächtigkeit}
+
+\begin{itemize}
+  \item a ∈ M / a ∉ M
+  \item |M|: Anzahl Elemente
+  \item |∅| = 0, |\{∅\}| = 1, |P(∅)| = 1, |P(\{∅\})| = 2
+\end{itemize}
+
+
+\subsection{Leere Menge ∅}
+
+\begin{itemize}
+  \item Schreibweise: ∅, \{\}
+  \item Teilmenge jeder Menge
+  \item Nicht Element jeder Menge (nur Element jeder Potenzmenge)
+\end{itemize}
+
+
+\subsection{Gleichheit \& Teilmenge}
+
+\begin{itemize}
+  \item Extensionalität: M = N ↔ ∀x(x ∈ M ↔ x ∈ N); Reihenfolge irrelevant
+  \item Echte Teilmenge: T ⊂ M (T ≠ M)
+  \item Unechte Teilmenge: T ⊆ M
+  \item Obermenge: M ⊇ T
+\end{itemize}
+
+
+\subsection{Zahlenmengen \& Intervalle}
+
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Menge}} & {\color{white}\textbf{Definition}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+ℕ & \{1,2,3,…\} \\
+ℕ₀ & \{0,1,2,…\} \\
+ℤ & \{…,−1,0,1,…\} \\
+ℚ & \{p/q \\
+ℝ & alle Dezimalbrüche a₀.a₁a₂…, a₀∈ℤ, aᵢ∈\{0,…,9\} \\
+ℂ & komplexe Zahlen \\
+\end{tabularx}
+}
+
+
+\begin{itemize}
+  \item [a,b]: abgeschlossen; (a,b): offen; (a,b], [a,b): halboffen
+\end{itemize}
+
+
+\subsection{Potenzmenge \& Komplement}
+
+\begin{itemize}
+  \item \textbf{P(M)} = \{x | x ⊆ M\}; |P(M)| = 2\textasciicircum{}|M|
+  \item \textbf{Grundmenge E}: enthält alle betrachteten Mengen
+  \item \textbf{Komplement}: C\_E(M) = M̄ = E ∖ M (M ⊆ E)
+  \item Bsp: E=\{1,…,5\}, M=\{2,4\} → C\_E(M)=\{1,3,5\}
+\end{itemize}
+
+
+\subsection{Mengenalgebra}
+
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Operation}} & {\color{white}\textbf{Definition}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Schnitt & M ∩ N = \{x \\
+Vereinigung & M ∪ N = \{x \\
+Differenz & M ∖ N = \{x \\
+Disjunkt & A ∩ B = ∅ \\
+Kartesisches Produkt & M × N = \{(x,y) \\
+\end{tabularx}
+}
+
+
+
+\subsubsection{Gesetze (analog Logik)}
+
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Name}} & {\color{white}\textbf{Gesetz}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Idempotenz & M ∩ M = M; M ∪ M = M \\
+Kommutativ & M ∩ N = N ∩ M; analog ∪ \\
+Assoziativ & (M∩N)∩W = M∩(N∩W) \\
+Absorption & M ∩ (M∪N) = M; M ∪ (M∩N) = M \\
+Distributiv & M ∩ (N∪W) = (M∩N) ∪ (M∩W) \\
+Doppeltes Komplement & C\_E(C\_E(M)) = M \\
+DeMorgan & C\_E(M∩N) = C\_E(M) ∪ C\_E(N); C\_E(M∪N) = C\_E(M) ∩ C\_E(N) \\
+\end{tabularx}
+}
+
+
+
+\section{Algebraische Strukturen}
+
+\textbf{Algebraische Struktur}: Menge M + Verknüpfungen + Axiome. Verknüpfung v: M × M → M.
+
+
+
+\subsection{Gruppe (G, +)}
+\begin{enumerate}
+  \item Abgeschlossenheit: a+b ∈ G
+  \item Assoziativ: (a+b)+c = a+(b+c)
+  \item Neutrales Element e: a+e = a
+  \item Inverses a\textit{: a+a} = e
+\end{enumerate}
+
+\textbf{Kommutative Gruppe}: zusätzlich a+b = b+a.
+
+\begin{itemize}
+  \item (ℝ,+), (ℤ,+) kommutative Gruppen
+  \item (ℕ₀,+) keine Gruppe (kein Inverses)
+  \item (ℝ∖\{0\}, ∗) kommutative Gruppe
+\end{itemize}
+
+
+\subsection{Körper (K, +, ∗)}
+\begin{enumerate}
+  \item + und ∗ definiert
+  \item (K, +) kommutative Gruppe
+  \item (K∖\{0\}, ∗) kommutative Gruppe
+  \item Distributiv: a∗(b+c) = (a∗b)+(a∗c)
+\end{enumerate}
+
+\begin{itemize}
+  \item (ℝ,+,∗) ist Körper
+\end{itemize}
+
+
+\section{Relationen}
+
+
+\subsection{Begriff}
+
+\textbf{Relation}: Beziehung zwischen Elementen — besteht / besteht nicht.
+
+
+\begin{itemize}
+  \item 2-stellig: R ⊆ M₁ × M₂; bei M=M₁=M₂: R ⊆ M²
+  \item Schreibweisen: (a,b) ∈ R, aRb, R(a,b)
+  \item Mathematische Operatoren <, >, ≤, ≥, =, ≠, ≈ sind Relationen
+  \item n-stellig: R ⊆ M₁ × … × Mₙ — Tupelmenge
+  \item Datenbankrelation = n-stellige Relation; Tabellenkopf = Schema
+\end{itemize}
+
+
+\subsection{Eigenschaften}
+
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Eigenschaft}} & {\color{white}\textbf{Bedingung}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Reflexiv & ∀x: xRx \\
+Irreflexiv & ∄x: xRx \\
+Symmetrisch & xRy → yRx \\
+Asymmetrisch & xRy → ¬yRx \\
+Antisymmetrisch & xRy ∧ yRx → x=y \\
+Transitiv & xRy ∧ yRz → xRz \\
+Linear & ∀x,y: xRy ∨ yRx \\
+Konnex & x≠y → xRy ∨ yRx \\
+\end{tabularx}
+}
+
+
+\begin{quote}
+\textbf{Merke:} asymmetrisch ⇒ antisymmetrisch.
+\end{quote}
+
+
+\subsection{Äquivalenz- \& Ordnungsrelationen}
+
+\textbf{Äquivalenzrelation}: reflexiv + symmetrisch + transitiv. Teilt Grundmenge in Äquivalenzklassen.
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Ordnung}} & {\color{white}\textbf{Irreflexiv}} & {\color{white}\textbf{Reflexiv}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Quasiordnung & irreflex. + transitiv & reflex. + transitiv \\
+Halbordnung & + asymmetrisch & + antisymmetrisch (Bsp. ≤) \\
+Vollordnung & + konnex (Bsp. <) & + linear (Bsp. ≤) \\
+\end{tabularx}
+}
+
+
+\begin{quote}
+\textbf{Merke:} "größer oder gleich groß" ist keine reflex. Halbordnung (nicht antisymmetrisch).
+\end{quote}
+
+
+\section{Abbildungen / Funktionen}
+
+\textbf{Abbildung = Funktion}: f: D → W, x ↦ f(x). Spezielle 2-stellige Relation.
+
+\begin{itemize}
+  \item D: Definitionsmenge, W: Wertemenge; y: Bild, x: Urbild
+  \item \textbf{Linksvollständig}: jedem x ∈ D ist etwas zugeordnet
+  \item \textbf{Rechtseindeutig}: höchstens ein Bild pro x
+\end{itemize}
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Eigenschaft}} & {\color{white}\textbf{Definition}} & {\color{white}\textbf{Anschauung}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Injektiv & f(x₁)=f(x₂) → x₁=x₂ & linkseindeutig; max. 1 Pfeil pro y \\
+Surjektiv & ∀y∈W ∃x: f(x)=y & rechtsvollständig; ≥1 Pfeil pro y \\
+Bijektiv & injektiv ∧ surjektiv & invertierbar; genau 1 Pfeil pro y \\
+\end{tabularx}
+}
+
+
+\begin{itemize}
+  \item Bsp: f:ℝ→ℝ, f(x)=x² → weder injektiv noch surjektiv
+  \item f:ℝ⁺→ℝ⁺, f(x)=x² → bijektiv
+  \item Bewertung hängt von gewählten D, W ab
+\end{itemize}
+
+
+\section{Relationale Datenbanken}
+
+\begin{itemize}
+  \item \textbf{Relation}: Tabelle
+  \item \textbf{Tupel}: Datensatz
+  \item \textbf{Schema}: Kopf
+  \item \textbf{Primärschlüssel}: Attribut(kombination), eindeutig + minimal
+  \item \textbf{Fremdschlüssel}: in anderer Relation Primärschlüssel; stellt Beziehungen her
+\end{itemize}
+
+
+\subsection{Probleme schlechter Entwürfe}
+
+\begin{itemize}
+  \item Alles in einer Tabelle → Redundanz, Update-Anomalien
+  \item Spalte je Sportart → viele 0-Felder, neue Sportart = neue Spalte
+  \item \textbf{Lösung}: Normalisierung (zwei Tabellen, FK-Verknüpfung)
+\end{itemize}
+
+
+\subsection{Relationenalgebra}
+
+\begin{itemize}
+  \item \textbf{Mengenoperationen} ∩, ∪, ∖: nur bei kompatiblem Schema; ∪ ohne Duplikate
+  \item \textbf{Kreuzprodukt} ×: ohne Kompatibilität, jedes Tupel mit jedem
+  \item \textbf{Selektion} σ\_F(r): Zeilen, die F erfüllen — SQL: \texttt{where}
+  \item \textbf{Projektion} Π\_Y(r): Spalten Y; mengentheoretisch ohne Duplikate — SQL: \texttt{select distinct}
+  \item \textbf{Join} ⋈: Verknüpfung über gleiche Spalten via Primär-/Fremdschlüssel
+  \item \textbf{Natural Join}: Spalten gleichen Namens \& Inhalts
+  \item \textbf{SQL inner join}: \texttt{from A,B where A.k=B.k}
+  \item \textbf{Weitere Joins}: left, right, outer, equi, semi
+\end{itemize}
+
+
+\section{Boolesche Algebra}
+
+\textbf{Boolesche Algebra} (M; ⊗, ⊕, ∼): Grundlage digitaler Schaltungen.
+
+\begin{itemize}
+  \item Menge M ≥ 2 Elemente
+  \item ⊗: M×M→M (Produkt), ⊕: M×M→M (Summe), ∼: M→M (Komplement)
+\end{itemize}
+
+
+\subsection{Axiome}
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Gesetz}} & {\color{white}\textbf{Form 1}} & {\color{white}\textbf{Form 2}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Kommutativ & a⊗b = b⊗a & a⊕b = b⊕a \\
+Distributiv & a⊗(b⊕c) = (a⊗b)⊕(a⊗c) & a⊕(b⊗c) = (a⊕b)⊗(a⊕c) \\
+Neutralelemente & ∃1: a⊗1 = a & ∃0: a⊕0 = a \\
+Komplement & a⊗∼a = 0 & a⊕∼a = 1 \\
+\end{tabularx}
+}
+
+
+\textbf{Dualitätsprinzip}: ⊗↔⊕, 0↔1; jeder Beweis gilt dual.
+
+
+
+\subsection{Abgeleitete Gesetze}
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Name}} & {\color{white}\textbf{Form 1}} & {\color{white}\textbf{Form 2}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Idempotenz & a⊗a = a & a⊕a = a \\
+Assoziativ & (a⊗b)⊗c = a⊗(b⊗c) & (a⊕b)⊕c = a⊕(b⊕c) \\
+Absorption & a⊗(a⊕b) = a & a⊕(a⊗b) = a \\
+Doppeltes Komplement & ∼(∼a) = a & — \\
+DeMorgan & ∼(a⊗b) = ∼a ⊕ ∼b & ∼(a⊕b) = ∼a ⊗ ∼b \\
+Neutrale komplementär & ∼0 = 1 & ∼1 = 0 \\
+0-1-Gesetze & a⊗0 = 0 & a⊕1 = 1 \\
+\end{tabularx}
+}
+
+
+
+\subsubsection{Beweis a⊗0 = 0}
+\begin{enumerate}
+  \item a⊗∼a = 0
+  \item a⊗(∼a ⊕ 0) = 0
+  \item (a⊗∼a) ⊕ (a⊗0) = 0
+  \item 0 ⊕ (a⊗0) = 0
+  \item a⊗0 = 0
+\end{enumerate}
+
+
+\subsection{Modelle}
+
+\begin{itemize}
+  \item \textbf{Mengenalgebra}: P(M) als Träger; ⊗≙∩, ⊕≙∪, ∼≙Komplement; Neutrale: M, ∅
+  \item \textbf{Schaltalgebra}: M = B = \{0,1\}; zweielementig; Schalter offen=0/zu=1
+\end{itemize}
+
+
+\subsection{Schaltalgebra-Operatoren}
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Operator}} & {\color{white}\textbf{Realisierung}} & {\color{white}\textbf{Lampe brennt wenn}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+a ∧ b & Reihenschaltung & beide zu \\
+a ∨ b & Parallelschaltung & mind. 1 zu \\
+a′ & Ruhekontakt & offen \\
+\end{tabularx}
+}
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{a}} & {\color{white}\textbf{b}} & {\color{white}\textbf{a∧b}} & {\color{white}\textbf{a∨b}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+0 & 0 & 0 & 0 \\
+0 & 1 & 0 & 1 \\
+1 & 0 & 0 & 1 \\
+1 & 1 & 1 & 1 \\
+\end{tabularx}
+}
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{a}} & {\color{white}\textbf{a′}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+0 & 1 \\
+1 & 0 \\
+\end{tabularx}
+}
+
+
+
+\subsection{Boolesche Terme}
+
+Syntax:
+
+\begin{enumerate}
+  \item Konstanten/Variablen sind Terme
+  \item A, B Terme → A′, (A∧B), (A∨B)
+  \item nur endlich viele Schritte
+\end{enumerate}
+
+Vorrang: ( ), ′, ∧, ∨ (1–3); ∧ weglassbar.
+
+
+
+\subsection{Boolesche Funktion}
+
+\textbf{f: Bⁿ → B}: 2ⁿ Belegungen → 2\textasciicircum{}(2ⁿ) mögliche Funktionen bei n Variablen.
+
+
+
+\subsubsection{Normalformen aus Wertetabelle}
+\begin{itemize}
+  \item \textbf{kDN}: alle Zeilen mit f=1; Minterm pro Zeile (a=0→a′, a=1→a); Minterme ∨-verbinden
+\begin{itemize}
+  \item Zeile 010 → a′bc′
+\end{itemize}
+  \item \textbf{kKN}: alle Zeilen mit f=0; Maxterm (a=0→a, a=1→a′); ∧-verbinden
+\begin{itemize}
+  \item Zeile 010 → a ∨ b′ ∨ c
+\end{itemize}
+\end{itemize}
+
+
+\subsection{Minimierung — KV-Diagramme (Karnaugh-Veitch)}
+
+\begin{itemize}
+  \item Spalten/Zeilen: Variablenbelegungen im Gray-Code (00, 01, 11, 10) — 1 Bit Änderung pro Schritt
+  \item Zellen = Funktionswerte; nur Einsen eintragen
+  \item Einserblöcke maximal groß identifizieren; dürfen über Kanten hinausgehen
+  \item Variable in Block durchgängig konstant → bleibt; wechselt → eliminiert
+  \item \textbf{Don't-care (d)}: irrelevant — beliebig nutzbar für größere Blöcke
+  \item Beispiel 4-Var: Block über Kante b′d′ → DM: f = b′d′
+  \item Beispiel 4-Var: Zeilen c=0,d=1 + a=1,d=1 → DM: f = ad ∨ c′d
+\end{itemize}
+
+\begin{quote}
+\textbf{Merke:} Skaliert nicht: 2³² ≈ 4,3·10⁹ Zeilen.
+\end{quote}
+
+Weitere Methode: \textbf{Quine-McCluskey} (komplexere Fälle).
+
+
+
+\section{Schaltnetze}
+
+\textbf{Schaltnetz}: F: Bⁿ → Bᵐ; verarbeitet n Eingänge → m Ausgänge.
+
+
+
+\subsection{Halbaddierer (HA)}
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{a}} & {\color{white}\textbf{b}} & {\color{white}\textbf{s}} & {\color{white}\textbf{ü}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+0 & 0 & 0 & 0 \\
+0 & 1 & 1 & 0 \\
+1 & 0 & 1 & 0 \\
+1 & 1 & 0 & 1 \\
+\end{tabularx}
+}
+
+
+\begin{itemize}
+  \item s = a′b ∨ ab′ = a ⊕ b
+  \item ü = ab
+\end{itemize}
+
+
+\subsection{Volladdierer (VA)}
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{a}} & {\color{white}\textbf{b}} & {\color{white}\textbf{ü₁}} & {\color{white}\textbf{s}} & {\color{white}\textbf{ü₂}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 1 & 1 & 0 \\
+0 & 1 & 0 & 1 & 0 \\
+0 & 1 & 1 & 0 & 1 \\
+1 & 0 & 0 & 1 & 0 \\
+1 & 0 & 1 & 0 & 1 \\
+1 & 1 & 0 & 0 & 1 \\
+1 & 1 & 1 & 1 & 1 \\
+\end{tabularx}
+}
+
+
+\begin{itemize}
+  \item s = a ⊕ b ⊕ ü₁
+  \item ü₂ = ab ∨ aü₁ ∨ bü₁
+\end{itemize}
+
+
+\subsection{Anwendung Spülmaschinensteuerung}
+
+f(a,b,c) = 1, wenn Tür offen ODER (Wasser zu niedrig UND Heizung an).
+
+
+
+\section{Graphen}
+
+
+\subsection{Grundlagen}
+
+\textbf{Graph}: G = (V, E) bzw. G = (V, E, W); V = Knoten, E = Kanten, W = Gewichte.
+
+
+\begin{itemize}
+  \item \textbf{Knoten}: Objekte (Städte, Personen, Computer)
+  \item \textbf{Kanten}: Beziehungen; können gerichtet sein
+  \item \textbf{Gewicht}: Kosten/Distanz/Wahrscheinlichkeit; bei gerichteten Graphen richtungsabhängig
+  \item \textbf{Knotengrad}: Anzahl angrenzender Kanten
+  \item Knotenposition irrelevant (außer bei räumlicher Verortung)
+\end{itemize}
+
+
+\subsection{Typen}
+
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Typ}} & {\color{white}\textbf{Merkmal}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Ungerichtet / gerichtet & mit/ohne Kantenrichtung \\
+Mit Gewichten & Kanten tragen Werte \\
+Multigraph & Mehrfachkanten zwischen 2 Knoten \\
+Leer & keine Kanten \\
+Vollständig & Kanten zwischen allen Knoten \\
+Baum & keine Zyklen \\
+Kreis & \textbackslash{} \\
+Stern & 1 Zentrum mit allen verbunden \\
+Bipartit & 2 Mengen, Kanten nur zwischen ihnen \\
+\end{tabularx}
+}
+
+
+
+\subsection{Darstellungsformen}
+
+\begin{itemize}
+  \item \textbf{Zeichnung}
+  \item \textbf{Adjazenzmatrix} A (n×n): aᵢⱼ ≠ 0 wenn Kante; Gewicht oder 0/1; Multigraph ohne Gewicht: aᵢⱼ = \#Kanten; ungerichtet → symmetrisch
+  \item \textbf{Adjazenzliste}: pro Knoten Liste benachbarter Knoten; gerichtet: 2 Listen (Vor-/Nachfolger); effizient bei spärlichen Graphen
+\end{itemize}
+
+
+\subsection{Pfade und Zyklen}
+
+\begin{itemize}
+  \item \textbf{Pfad}: Sequenz von Kanten; jeder Knoten höchstens einmal
+  \item \textbf{Zyklus}: geschlossener Pfad mit unterschiedlichen Kanten; Bäume zyklenfrei
+  \item \textbf{Eulerscher Pfad/Zyklus}: jede Kante genau einmal
+  \item \textbf{Hamiltonscher Pfad/Zyklus}: jeder Knoten genau einmal
+\end{itemize}
+
+
+\section{Kürzeste Pfade}
+
+\textbf{Definition}: Pfad zwischen zwei Knoten mit minimaler Gewichtssumme.
+
+
+
+\subsection{Lösungsstrategien}
+
+\begin{itemize}
+  \item \textbf{Brute Force}: alle Touren prüfen — optimal, aber exponentieller Aufwand (Bsp: 7 Knoten/12 Kanten → 29 Pfade)
+  \item \textbf{Greedy / Best-first}: nächste zulässige Kante mit geringstem Gewicht — oft suboptimal, Sackgassen möglich
+\end{itemize}
+
+
+\subsection{Dijkstra-Algorithmus}
+
+\textbf{Zweck}: Kürzeste Pfade von Startknoten s zu allen anderen Knoten.
+
+
+\textbf{Variablen}: d (Distanz), π (Status), α/previous (Vorgänger), u (aktuell), w(u,v) (Gewicht).
+
+
+\textbf{Einschränkungen}:
+
+\begin{itemize}
+  \item Funktioniert NICHT mit negativen Gewichten
+  \item Kein Zielknoten als Eingabe → ineffizient für Punkt-zu-Punkt (Abbruch möglich, sobald Zielknoten visited)
+\end{itemize}
+
+
+\subsubsection{Initialisierung}
+\begin{lstlisting}
+for v ∈ V: v.d = ∞; v.π = unvisited; v.α = none
+s.d = 0
+\end{lstlisting}
+
+
+
+\subsubsection{Update}
+\begin{lstlisting}
+update(u,v,w):
+  if v.d > u.d + w(u,v):
+    v.d = u.d + w(u,v); v.α = u
+\end{lstlisting}
+
+
+
+\subsubsection{Hauptschleife}
+\begin{lstlisting}
+u = s
+while ∃ v: v.π == unvisited (oder Zielknoten):
+  u.π = visited
+  for jeden unvisited Nachbar v: update(u,v,w)
+  u = unvisited Knoten mit minimalem d
+\end{lstlisting}
+
+
+
+\subsubsection{Sprachlich}
+\begin{enumerate}
+  \item d(s)=0, alle anderen ∞; alle unvisited
+  \item Aktueller = s
+  \item Solange nicht alle besucht: aktuellen markieren; für unbesuchte Nachbarn Distanz über aktuellen prüfen und ggf. updaten; nächster aktueller = unbesuchter mit kleinster d
+\end{enumerate}
+
+
+\subsection{A*-Algorithmus}
+
+\textbf{Zweck}: Effiziente Pfadsuche s→z mittels Heuristik.
+
+
+\textbf{Unterschied zu Dijkstra}:
+
+\begin{itemize}
+  \item Zusätzlich Priorität p = d + h(v,z)
+  \item h(v,z): Heuristik (z. B. Luftlinie zu z)
+  \item Knotenwahl nach minimalem p (nicht d)
+\end{itemize}
+
+\textbf{Nachteil}: falsche/überschätzende Heuristik → suboptimale Lösung.
+
+
+
+\subsubsection{Initialisierung}
+\begin{lstlisting}
+for v ∈ V: v.d=∞; v.p=∞; v.π=unvisited; v.α=none
+s.d=0; s.p=h(s,z)
+\end{lstlisting}
+
+
+
+\subsubsection{Update}
+\begin{lstlisting}
+update(u,v,w,z,h):
+  if v.d > u.d + w(u,v):
+    v.d = u.d + w(u,v); v.α = u; v.p = v.d + h(v,z)
+\end{lstlisting}
+
+
+
+\subsubsection{Hauptschleife}
+\begin{lstlisting}
+u=s
+while z.π == unvisited:
+  u.π = visited
+  for unvisited Nachbarn v: update(u,v,w,z,h)
+  u = unvisited Knoten mit minimalem p
+\end{lstlisting}
+
+
+
+\subsection{Vergleich}
+
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Algorithmus}} & {\color{white}\textbf{Eigenschaft}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Dijkstra & 1 Startknoten; gerichtet \& ungerichtet; keine negativen Gewichte \\
+Bellman–Ford & 1 Startknoten; negative Gewichte erlaubt \\
+A* & Start + Ziel; Heuristik \\
+Floyd–Warshall & Alle Paare; gerichtet, dichte Graphen \\
+Johnson & Alle Paare; gerichtet, spärliche Graphen \\
+\end{tabularx}
+}
+
+
+
+\subsection{R-Implementation (Datenstrukturen, gemeinsam für Dijkstra \& A*)}
+
+\begin{itemize}
+  \item \texttt{graph[x,y]} = Gewicht oder 0
+  \item \texttt{distances} (Inf), \texttt{visited} (FALSE), \texttt{previous} (NA), \texttt{priorities} (Inf, A*), \texttt{heuristic}
+\end{itemize}
+
+
+\subsubsection{\texttt{dijkstra(graph, start, end=FALSE)}}
+\begin{lstlisting}
+distances=rep(Inf,n); visited=rep(FALSE,n); previous=rep(NA,n)
+distances[start]=0; previous[start]=0; current=start
+while(any(!visited)):
+  visited[current]=TRUE
+  if(current==end) break
+  for i Nachbarn:
+    if graph[current,i]!=0 && !visited[i] && distances[i] > distances[current]+graph[current,i]:
+      distances[i]=distances[current]+graph[current,i]
+      previous[i]=current
+  current = unvisited Knoten mit kleinstem distances; sonst current=-1
+\end{lstlisting}
+
+\begin{itemize}
+  \item \texttt{end=FALSE}: kürzeste Pfade zu allen Knoten
+\end{itemize}
+
+
+\subsubsection{\texttt{A*(graph, start, end, heuristic)}}
+\begin{itemize}
+  \item Wie Dijkstra, plus \texttt{priorities[start]=heuristic[start]}
+  \item Update setzt zusätzlich \texttt{priorities[i] = distances[i] + heuristic[i]}
+  \item Knotenwahl: \texttt{min priorities[i]} über \texttt{!visited[i]}
+\end{itemize}
+
+
+\subsubsection{\texttt{getpath(previous, start, end)} — Pfadrekonstruktion}
+\begin{lstlisting}
+i=end; path=end
+while(i != 0):
+  ii=previous[i]; i=ii
+  if(i!=0) path=c(ii,path)
+return path
+\end{lstlisting}
+
+\begin{itemize}
+  \item Termination: \texttt{previous[start]=0}
+\end{itemize}
+
+
+\subsubsection{Wrapper \texttt{allpaths(graph)} — alle Paare}
+\begin{lstlisting}
+for s in 1:n:
+  results[[s]] = dijkstra(graph, start=s, end=FALSE)
+\end{lstlisting}
+
+\begin{itemize}
+  \item n Aufrufe (statt n²); ein Lauf liefert kürzeste Pfade von s zu allen anderen Knoten
+\end{itemize}
+
+
+\subsubsection{Vorlesungsbeispiel Ravensburg–Immenstaad (6 Knoten, ungerichtet)}
+
+
+{\footnotesize
+\begin{tabularx}{\linewidth}{XXXXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{}} & {\color{white}\textbf{1}} & {\color{white}\textbf{2}} & {\color{white}\textbf{3}} & {\color{white}\textbf{4}} & {\color{white}\textbf{5}} & {\color{white}\textbf{6}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+1 & 0 & 1 & 0 & 0 & 4 & 0 \\
+2 & 1 & 0 & 1 & 0 & 1 & 0 \\
+3 & 0 & 1 & 0 & 1 & 0 & 0 \\
+4 & 0 & 0 & 1 & 0 & 6 & 1 \\
+5 & 4 & 1 & 0 & 6 & 0 & 0 \\
+6 & 0 & 0 & 0 & 1 & 0 & 0 \\
+\end{tabularx}
+}
+
+
+\begin{itemize}
+  \item start=1, end=6
+  \item A*-Heuristik: c(1,0,0,0,1000,0) → Knoten 5 wird durch hohen Wert gemieden
+\end{itemize}
+
+
+\subsubsection{Visualisierung (R)}
+\begin{itemize}
+  \item Pakete: \texttt{network}, \texttt{ggnet}, \texttt{GGally}
+  \item \texttt{network(m, directed=F, names.eval="weights", ignore.eval=FALSE)}
+  \item \texttt{ggnet2(...,mode="fruchtermanreingold",size=10,label=T,edge.label="weights",arrow.gap=0.05)}
+  \item Pfadknoten rot; \texttt{set.seed(43)} für Reproduzierbarkeit
+\end{itemize}
+
+
+\section{TSP – Travelling Salesperson Problem}
+
+\textbf{Definition}: n Städte alle genau einmal besuchen, zur Startstadt zurück, minimale Tourlänge.
+
+\begin{itemize}
+  \item Graph: V=Städte, E=Strecken, W=Längen
+\end{itemize}
+
+
+\subsection{Anwendungen}
+\begin{itemize}
+  \item Logistik (VRP-Erweiterungen)
+  \item Mikrochip-Design, Leiterplattenbohrung
+  \item Genom-Sequenzierung (Knoten = DNA-Teilstränge)
+\end{itemize}
+
+
+\subsection{Verwandte Probleme}
+\begin{itemize}
+  \item TSP ohne Rückkehr
+  \item VRP (mehrere Reisende)
+  \item Traveling Thief (TSP + Knapsack)
+  \item Stochastisch / dynamisch
+\end{itemize}
+
+
+\subsection{Lösungsverfahren}
+
+\textbf{Brute Force}: alle Touren durchprobieren — optimal, exponentielle Laufzeit.
+
+
+\textbf{Nearest Neighbour Heuristik (NNA)}: Greedy-Verfahren ausgehend vom Startknoten.
+
+\begin{enumerate}
+  \item Start bei Startknoten
+  \item Nächster Knoten: günstigste Kante zu unbesuchtem Knoten
+  \item Wiederhole bis alle besucht
+  \item Startknotenabhängig, meist suboptimal
+  \item Verbesserung: jeden Knoten als Start probieren → bestes Ergebnis (Laufzeit ×n, weiterhin keine Garantie)
+\end{enumerate}
+
+\textbf{2-Opt Heuristik}: Lokale Suche zur Verbesserung einer vorhandenen Tour.
+
+\begin{enumerate}
+  \item Approximative Startlösung (z. B. NNA)
+  \item Iterativ Teilstück invertieren, falls neue Tour kürzer → übernehmen
+  \item Nächster Tausch
+  \item Approximativ
+\end{enumerate}
+
+\textbf{Weitere Verfahren} (nicht behandelt): lineares Programmieren, evolutionäre Algorithmen.
+
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{document}

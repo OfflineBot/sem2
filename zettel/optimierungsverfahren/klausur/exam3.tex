@@ -1,0 +1,654 @@
+% ============================================================
+%  Probeklausur Template (my_dhbw Stil, klausur_*.tex)
+%  Formell mit Deckblatt-Header; Lösungen als grüne tcolorbox.
+%  Renderer: pdflatex (zweimal)
+% ============================================================
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+\usepackage[top=2cm, bottom=2cm, left=2.4cm, right=2.4cm, footskip=1cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{ltablex}
+\keepXColumns
+\usepackage{colortbl}
+\usepackage[most,breakable]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{pdflscape}
+\usepackage{titlesec}
+\usepackage[colorlinks=true, linkcolor=accent, urlcolor=accent]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme ─────────────────────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{loesung}{RGB}{0, 100, 0}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{240, 252, 240}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer ─────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\footnotesize\color{accent}Modulprüfung -- \nichttitle}
+\fancyhead[R]{\footnotesize\color{accent}\nichtsubtitle}
+\fancyfoot[L]{\footnotesize\color{accent}Matrikelnr.: \rule{3cm}{0.4pt}}
+\fancyfoot[R]{\footnotesize\color{accent}Blatt \thepage\,/\,\pageref{LastPage}}
+
+% ── Typografie ────────────────────────────────────────────────
+\titleformat{\section}
+    {\color{accent}\large\bfseries}{}{0pt}{}
+    [\vspace{-4pt}\color{accent}\rule{\linewidth}{1.5pt}]
+\titleformat{\subsection}
+    {\normalsize\bfseries\color{accent!85!black}}{}{0pt}{}{}
+\titleformat{\subsubsection}
+    {\small\bfseries\color{accent!70!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{12pt}{4pt}
+\titlespacing*{\subsection}{0pt}{8pt}{2pt}
+\titlespacing*{\subsubsection}{0pt}{6pt}{1pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\renewcommand{\arraystretch}{1.25}
+\setlist[itemize]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.4em}
+\setlist[enumerate]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.6em}
+
+% ── Boxen ─────────────────────────────────────────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={Abbildung: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={Tabelle: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{solutionbox}[1]{
+  enhanced,
+  colback=solutionbg, colframe=loesung,
+  title={#1}, fonttitle=\small\bfseries,
+  coltitle=white, colbacktitle=loesung,
+  breakable, before skip=8pt, after skip=8pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=single, framerule=0pt,
+  xleftmargin=4pt, xrightmargin=4pt,
+  aboveskip=6pt, belowskip=6pt,
+  keepspaces=true
+}
+
+\providecommand{\nichttitle}{Probeklausur}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Optimierungsverfahren}
+\renewcommand{\nichtsubtitle}{Probeklausur 3}
+
+
+\begin{document}
+
+% Deckblatt
+\thispagestyle{empty}
+\begin{center}
+\vspace*{1cm}
+{\Huge\bfseries\color{accent}Probeklausur}\\[8pt]
+{\Large\color{accent}\nichttitle}\\[4pt]
+\ifx\nichtsubtitle\empty\else
+  {\large\color{accent!80!black}\nichtsubtitle}\\[6pt]
+\fi
+\color{accent}\rule{0.5\linewidth}{1pt}\color{black}
+\end{center}
+
+\vspace{1cm}
+\begin{tabularx}{\textwidth}{@{}l X@{}}
+\textbf{Studiengang:}      & \rule{6cm}{0.4pt} \\[6pt]
+\textbf{Matrikelnummer:}    & \rule{6cm}{0.4pt} \\[6pt]
+\textbf{Name, Vorname:}    & \rule{6cm}{0.4pt} \\[6pt]
+\textbf{Datum:}             & \rule{6cm}{0.4pt} \\[6pt]
+\textbf{Bearbeitungszeit:}  & 60 Minuten \\[6pt]
+\textbf{Hilfsmittel:}       & Taschenrechner (nicht programmierbar) \\
+\end{tabularx}
+
+\vspace{2cm}
+\begin{center}
+{\large\itshape Viel Erfolg!}
+\end{center}
+
+\newpage
+
+% ── BODY ──────────────────────────────────────────────────────
+
+\section{Probeklausur 3 — Optimierungsverfahren}
+
+\textbf{Bearbeitungszeit}: 60 Minuten | \textbf{Hilfsmittel}: keine | \textbf{Punkte}: 100
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 1 — Pareto-Dominanz, Filter \& Sampled Front \textit{(16 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben sei eine Population mit 6 Lösungen für ein Min-Min-Problem mit zwei Zielen:
+
+
+\begin{itemize}
+  \item ID: A · f1: 1 · f2: 6
+  \item ID: B · f1: 2 · f2: 4
+  \item ID: C · f1: 3 · f2: 5
+  \item ID: D · f1: 4 · f2: 2
+  \item ID: E · f1: 5 · f2: 3
+  \item ID: F · f1: 6 · f2: 5
+\end{itemize}
+a) \textit{(4 P)} Geben Sie die formale Definition der Pareto-Dominanz für ein Minimierungsproblem an (Bedingungen "noWorse" und "strictlyBetter").
+
+
+b) \textit{(8 P)} Führen Sie den Pareto-Filter manuell durch. Geben Sie für \textbf{jede} dominierte Lösung mindestens einen dominierenden Punkt an. Nennen Sie am Ende die Pareto-Menge.
+
+
+c) \textit{(4 P)} Skizzieren Sie verbal (Punkte und Kanten als \texttt{lineTo}/\texttt{moveTo}-Folge) den Treppenpfad der \textbf{Sampled Pareto Front} im Objective Space. Erklären Sie in einem Satz, was die "Dominated Region" geometrisch ist.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 — NSGA-II: Non-dominated Sorting \& Crowding Distance \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+Eine Population enthält folgende 8 Lösungen (Min, 2 Ziele):
+
+
+\begin{itemize}
+  \item ID: P1 · f1: 1 · f2: 9
+  \item ID: P2 · f1: 2 · f2: 6
+  \item ID: P3 · f1: 3 · f2: 4
+  \item ID: P4 · f1: 4 · f2: 2
+  \item ID: P5 · f1: 6 · f2: 1
+  \item ID: P6 · f1: 4 · f2: 7
+  \item ID: P7 · f1: 5 · f2: 5
+  \item ID: P8 · f1: 7 · f2: 6
+\end{itemize}
+a) \textit{(10 P)} Bestimmen Sie den \textbf{Non-dominated Sorting Rank (NDSR)} für alle Punkte. Zeigen Sie für jede Front, welche Punkte sie enthält und für die dominierten Punkte je einen Dominator.
+
+
+b) \textit{(8 P)} Berechnen Sie für \textbf{alle Punkte der ersten Front} die \textbf{Crowding Distance} mit der im Lernzettel definierten Skalierung über den Range jedes Zieles. Verwenden Sie als Skalierung den max-min innerhalb der Front.
+
+
+c) \textit{(2 P)} Aus Front 1 sollen 4 Lösungen für die nächste Generation überleben. Welche werden gewählt? Begründen Sie kurz.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 — Hypervolumen \& SMS-EMOA \textit{(16 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben sei eine Pareto-Stichprobe (Min, 2 Ziele) und Referenzpunkt R = (10, 10):
+
+
+\begin{itemize}
+  \item ID: A · f1: 1 · f2: 8
+  \item ID: B · f1: 2 · f2: 5
+  \item ID: C · f1: 5 · f2: 3
+  \item ID: D · f1: 8 · f2: 1
+\end{itemize}
+a) \textit{(8 P)} Berechnen Sie das \textbf{Hypervolumen} der Front bzgl. R durch die Treppen-Rechteck-Zerlegung. Geben Sie Breite und Höhe jedes Slabs explizit an.
+
+
+b) \textit{(6 P)} Berechnen Sie den \textbf{Hypervolumenbeitrag (HVB / S-Metric)} der \textbf{inneren} Punkte B und C. (Für Randpunkte muss kein Wert berechnet werden, kurze Begründung warum genügt.)
+
+
+c) \textit{(2 P)} SMS-EMOA muss in der Survivorselektion innerhalb dieser Front einen Punkt aussortieren. Welcher wird entfernt? Begründen Sie.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 — Gewichtete Summe \textit{(12 Punkte)}}\mbox{}\\[2pt]
+
+Betrachten Sie das im Lernzettel-Beispiel verwendete Problem:
+
+f1(x) = (x - 1)², f2(x) = (x + 1)², x ∈ ℝ.
+
+
+a) \textit{(3 P)} Erklären Sie in 2-3 Sätzen das Verfahren der \textbf{gewichteten Summe} zur Approximation einer Pareto-Front.
+
+
+b) \textit{(6 P)} Bilden Sie die Skalarisierung F(x) = w\_1 f1(x) + w\_2 f2(x) mit w\_1 + w\_2 = 1, w\_1, w\_2 ≥ 0. Bestimmen Sie das Optimum x\textit{(w\_1) }\textit{analytisch}* und zeigen Sie, dass die so erzeugte Lösungsmenge mit der bekannten Pareto-Menge [-1, 1] übereinstimmt.
+
+
+c) \textit{(3 P)} Nennen Sie den \textbf{strukturellen Hauptnachteil} der gewichteten Summe gegenüber NSGA-II oder SMS-EMOA und beschreiben Sie eine Pareto-Front-Geometrie, bei der das Verfahren versagt.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 — Methoden-Auswahl \& LP-Standardform \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+a) \textit{(12 P)} Wählen Sie für jedes Szenario aus der Methoden-Gesamtübersicht ein \textbf{passendes} Verfahren. Begründen Sie jeweils anhand mindestens dreier Eigenschaften (Globalität, Gradient-Bedarf, NB-Behandlung, Anzahl Ziele, Determinismus, Variablentyp).
+
+
+S1: Eine Brauerei plant ihren Produktionsmix mit ganzzahligen Mengen. Maximiert wird ein linearer Deckungsbeitrag unter linearen Kapazitätsschranken.
+
+
+S2: Eine teure CFD-Simulation liefert pro Auswertung eine skalare Zielgröße (≈30 Min/Run), kein Gradient verfügbar, 8 reelle Variablen ohne Nebenbedingungen.
+
+
+S3: Bei einem Karosseriedesign sollen \textbf{Crashsicherheit} und \textbf{Gewicht} gleichzeitig optimiert werden, kein Gradient, ohne NB, gewünscht ist eine ganze Approximation der Pareto-Front.
+
+
+b) \textit{(8 P)} Bringen Sie das folgende lineare Programm in die im Lernzettel geforderte \textbf{Simplex-Standardform} (min, alle Restriktionen "=", alle Variablen ≥ 0, alle bⱼ ≥ 0):
+
+
+\begin{lstlisting}
+max  z = 2x_1 + 3x_2
+s.t. x_1 + x_2 ≤ 4
+     2x_1 - x_2 ≥ -2
+     x_1 ≥ -1,  x_2 frei
+\end{lstlisting}
+
+
+Geben Sie alle Substitutionen, eingeführten Schlupfvariablen und das vollständige transformierte System explizit an.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 6 — Marching Squares \textit{(16 Punkte)}}\mbox{}\\[2pt]
+
+a) \textit{(4 P)} Erklären Sie in 3-4 Sätzen das \textbf{Marching-Squares-Verfahren} zur Iso-Linien-Visualisierung (Gitter, Zellen, 16 Fälle, Interpolation).
+
+
+b) \textit{(8 P)} Eine quadratische Zelle der Kantenlänge 1 hat folgende Funktionswerte an den Ecken (lokales Koordinatensystem mit Ursprung unten links):
+
+
+\begin{itemize}
+  \item A = unten links = 1.0
+\begin{itemize}
+  \item B = unten rechts = 4.0
+  \item C = oben rechts = 5.0
+  \item D = oben links = 2.0
+\end{itemize}
+\end{itemize}
+
+Threshold thr = 3.0.
+
+
+\begin{itemize}
+  \item Bestimmen Sie das Vorzeichenmuster (bitweise oberhalb/unterhalb von thr) für die Eckenreihenfolge (A, B, C, D).
+\begin{itemize}
+  \item Bestimmen Sie, auf welchen Kanten die Iso-Linie verläuft (Begründung mit Vorzeichenwechsel).
+  \item Berechnen Sie pro Schnittkante den \textbf{linearen Interpolationsparameter} t = (thr - vₐ)/(v\_b - vₐ) und die Schnittkoordinaten.
+  \item Geben Sie die Iso-Linie als zwei (x, y)-Punkte an.
+\end{itemize}
+\end{itemize}
+
+c) \textit{(4 P)} Erklären Sie, was die \textbf{mehrdeutigen Fälle} (Index 5 und 10) sind und wie der Algorithmus laut Lernzettel die Mehrdeutigkeit auflöst.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+
+\section{Musterlösung Klausur 3}
+
+\paragraph{Aufgabe 1 \textit{(16 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a) (4 P)} Pareto-Dominanz für Min: x⃗′ dominiert x⃗″ ⇔
+
+\begin{itemize}
+  \item ∀ i: fᵢ(x⃗′) ≤ fᵢ(x⃗″) (noWorse) \textbf{und}
+  \item ∃ i: fᵢ(x⃗′) < fᵢ(x⃗″) (strictlyBetter).
+\end{itemize}
+
+\textit{Bewertung}: 2 P noWorse-Bedingung, 2 P strictlyBetter-Bedingung. Ohne "und" zwischen beiden: -1 P.
+
+
+\textbf{b) (8 P)} Prüfe jeden Punkt:
+
+
+\begin{itemize}
+  \item A(1,6): kein anderer Punkt mit f1 ≤ 1 → \textbf{non-dominated}.
+  \item B(2,4): A hat f2=6 > 4, alle anderen haben f1 > 2 oder f2 > 4 → \textbf{non-dominated}.
+  \item C(3,5): B(2,4) hat f1=2<3 \textbf{und} f2=4<5 → \textbf{dominiert von B}.
+  \item D(4,2): keiner hat f1 ≤ 4 \textbf{und} f2 ≤ 2 → \textbf{non-dominated}.
+  \item E(5,3): D(4,2) hat f1=4<5 \textbf{und} f2=2<3 → \textbf{dominiert von D}.
+  \item F(6,5): D(4,2) hat f1<6 und f2<5 → \textbf{dominiert von D}.
+\end{itemize}
+
+\textbf{Pareto-Menge: \{ A, B, D \}}.
+
+
+\textit{Bewertung}: 1 P pro korrekt klassifizierten Punkt (6 P) + 2 P für vollständige Pareto-Menge. Bei dominierten Punkten muss ein Dominator angegeben sein.
+
+
+\textbf{c) (4 P)} Sortiert nach f1↑: A(1,6), B(2,4), D(4,2). Pfad:
+
+\texttt{moveTo(1,6) → lineTo(2,6) → lineTo(2,4) → lineTo(4,4) → lineTo(4,2)}.
+
+
+Dominated Region = Bereich rechts/oberhalb der Treppenkurve, also alle Punkte (y\_1, y\_2), die von mind. einem Pareto-Sample dominiert werden.
+
+
+\textit{Bewertung}: 3 P Treppenpfad korrekt, 1 P Dominated Region.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a) NDSR (10 P)}
+
+
+\textit{Front 1}: Prüfe alle 8 Punkte gegen alle anderen.
+
+\begin{itemize}
+  \item P1(1,9): kein f1<1 → non-dom.
+  \item P2(2,6): kein Punkt mit f1≤2 ∧ f2≤6 strikt → non-dom.
+  \item P3(3,4): non-dom (P2 hat f2=6>4).
+  \item P4(4,2): non-dom (P3 hat f2=4>2).
+  \item P5(6,1): non-dom (kein f2<1).
+  \item P6(4,7): P3(3,4): 3<4 ∧ 4<7 → \textbf{dominiert}.
+  \item P7(5,5): P3(3,4): 3<5 ∧ 4<5 → \textbf{dominiert}.
+  \item P8(7,6): P3(3,4): 3<7 ∧ 4<6 → \textbf{dominiert}.
+\end{itemize}
+
+→ \textbf{Front 1 (Rang 1): \{P1, P2, P3, P4, P5\}}.
+
+
+\textit{Front 2}: Punkte aus Front 1 entfernen. Verbleibend: P6, P7, P8.
+
+\begin{itemize}
+  \item P6(4,7) vs P7(5,5): keiner dominiert (4<5, aber 7>5).
+  \item P6 vs P8(7,6): keiner dominiert (4<7, aber 7>6).
+  \item P7(5,5) vs P8(7,6): 5<7 ∧ 5<6 → P7 dominiert P8.
+\end{itemize}
+
+→ \textbf{Front 2 (Rang 2): \{P6, P7\}}, \textbf{Front 3 (Rang 3): \{P8\}}.
+
+
+\textit{Bewertung}: Front 1 vollständig + korrekt 5 P, Front 2 + 3 jeweils 2 P, sauberer Dominator-Nachweis 1 P.
+
+
+\textbf{b) Crowding Distance Front 1 (8 P)}
+
+
+Sortiert nach f1↑: P1(1,9), P2(2,6), P3(3,4), P4(4,2), P5(6,1).
+
+Range f1 = 6 - 1 = 5; Range f2 = 9 - 1 = 8.
+
+
+\begin{itemize}
+  \item Punkt: P1 · f1-Beitrag: - · f2-Beitrag: - · CD: inf
+  \item Punkt: P5 · f1-Beitrag: - · f2-Beitrag: - · CD: inf
+  \item Punkt: P2 · f1-Beitrag: (3-1)/5 = 0.400 · f2-Beitrag: (9-4)/8 = 0.625 · CD: \textbf{1.025}
+  \item Punkt: P3 · f1-Beitrag: (4-2)/5 = 0.400 · f2-Beitrag: (6-2)/8 = 0.500 · CD: \textbf{0.900}
+  \item Punkt: P4 · f1-Beitrag: (6-3)/5 = 0.600 · f2-Beitrag: (4-1)/8 = 0.375 · CD: \textbf{0.975}
+\end{itemize}
+\textit{Bewertung}: pro Punkt (nicht-extrem) 2 P (1 P pro Ziel-Beitrag); 2 P für korrekte Behandlung der Extrempunkte mit inf.
+
+
+\textbf{c) Auswahl 4 von 5 (2 P)}
+
+
+Extrempunkte P1 und P5 (CD=inf) müssen überleben. Aus den restlichen werden absteigend nach CD gewählt: P2 (1.025) > P4 (0.975) > P3 (0.9). → Überlebende: \textbf{\{P1, P2, P4, P5\}}, eliminiert: \textbf{P3}.
+
+
+\textit{Bewertung}: 2 P bei korrekter Begründung über Extrempunkte + CD-Ranking.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 \textit{(16 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a) Hypervolumen (8 P)}
+
+
+Sortiert nach f1↑: A(1,8), B(2,5), C(5,3), D(8,1). R=(10,10).
+
+
+Slab-Zerlegung (Breite × (R2 - f2) für jeweils aktuelles Minimum von f2):
+
+
+\begin{itemize}
+  \item Slab in f1: [1, 2] (von A) · Breite: 1 · Höhe = R2 - f2: 10 - 8 = 2 · Fläche: 2
+  \item Slab in f1: [2, 5] (von B) · Breite: 3 · Höhe = R2 - f2: 10 - 5 = 5 · Fläche: 15
+  \item Slab in f1: [5, 8] (von C) · Breite: 3 · Höhe = R2 - f2: 10 - 3 = 7 · Fläche: 21
+  \item Slab in f1: [8, 10] (von D) · Breite: 2 · Höhe = R2 - f2: 10 - 1 = 9 · Fläche: 18
+\end{itemize}
+\textbf{HV = 2 + 15 + 21 + 18 = 56}.
+
+
+\textit{Bewertung}: 2 P Sortierung + Slab-Aufteilung, 4 P richtige Höhen/Breiten (1 P pro Slab), 2 P Endsumme.
+
+
+\textbf{b) HVB (6 P)}
+
+
+Für innere Punkte: HVB(i) = (f1\_\{i+1\} - f1\_i) · (f2\_\{i-1\} - f2\_i).
+
+
+\begin{itemize}
+  \item HVB(B) = (5 - 2) · (8 - 5) = 3 · 3 = \textbf{9}.
+  \item HVB(C) = (8 - 5) · (5 - 3) = 3 · 2 = \textbf{6}.
+\end{itemize}
+
+Randpunkte A und D: HVB hängt vom Referenzpunkt ab und ist hier endlich (in der Vorlesung wird der Randbeitrag als inf markiert, weil das Entfernen eines Randpunkts die nutzbare HV-Region je nach Referenzwahl beliebig stark verändert). Daher hier keine Berechnung gefordert.
+
+
+\textit{Bewertung}: je 2 P pro Berechnung mit korrekter Formel + Werten, 2 P Erklärung Randpunkte.
+
+
+\textbf{c) SMS-EMOA (2 P)}
+
+
+C hat den \textbf{kleineren HVB} (6 < 9), trägt also weniger zum Hypervolumen bei → C wird entfernt.
+
+
+\textit{Bewertung}: 1 P richtige Wahl, 1 P Begründung über HVB-Vergleich.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 \textit{(12 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a) (3 P)} Verfahren:
+
+\begin{enumerate}
+  \item Wähle eine Menge verschiedener Gewichtungs-Kombinationen (w\_1, …, wₘ) mit Σwᵢ = 1.
+  \item Pro Kombination: löse das skalare Einzielproblem min Σwᵢfᵢ(x⃗) mit einem Standardverfahren.
+  \item Vereinige die Optima → Approximation der Pareto-Front.
+\end{enumerate}
+
+\textit{Bewertung}: 1 P pro Schritt.
+
+
+\textbf{b) (6 P)}
+
+
+F(x) = w\_1(x - 1)² + w\_2(x + 1)².
+
+
+dF/dx = 2w\_1(x - 1) + 2w\_2(x + 1) = 2(w\_1 + w\_2)x - 2w\_1 + 2w\_2 = 2x - 2(w\_1 - w\_2),
+
+
+da w\_1 + w\_2 = 1.
+
+
+Nullsetzen: \textbf{x*(w\_1) = w\_1 - w\_2 = 2w\_1 - 1}.
+
+
+Variation w\_1 ∈ [0, 1] ⇒ x* durchläuft [-1, +1] = Pareto-Menge ✓.
+
+
+\textit{Bewertung}: 2 P Ableitung, 2 P Nullstelle/Auflösung, 2 P Argumentation Übereinstimmung mit [-1, 1].
+
+
+\textbf{c) (3 P)} Hauptnachteil: Bei \textbf{konkaven Pareto-Fronten} liegen alle Skalarisierungs-Optima nur an den Extrempunkten der Front; der konkave "Bauch" wird \textbf{niemals} gefunden, egal wie die Gewichte gewählt werden. Geometrisch: die Gewichtssumme entspricht einer linearen Tangentialen, die eine konkave Front nur an Endpunkten berührt.
+
+
+\textit{Bewertung}: 2 P konkav-Problem benannt, 1 P geometrische/analytische Begründung.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a) Methoden-Auswahl (12 P, je 4 P)}
+
+
+\textit{S1 (Brauerei): }\textit{Simplex}**. Linear (✅), Nebenbedingungen "alle" (✅), exakt und deterministisch, unterstützt ℤⁿ (Brauerei-Stückzahlen). Kein anderer Tabellen-Eintrag erfüllt "linear ✅ ∧ NB alle ∧ ℤⁿ".
+
+
+\textit{S2 (CFD-Simulation): }\textit{SMBO}\textit{ (Sequential Model-Based Optimization)}. Begründung: kein Gradient (✅), Black-Box, sehr \textbf{teure} Auswertungen → Surrogatmodell minimiert die Anzahl realer Auswertungen; global; für 8 reelle Variablen praktikabel. (Auch akzeptabel: DIRECT — global, deterministisch, ohne Gradient. Nelder-Mead nur lokal — nicht ideal.)
+
+
+\textit{S3 (Karosserie): }\textit{NSGA-II}\textit{ oder }\textit{SMS-EMOA}**. Zwei Ziele (>1), kein Gradient (❌), ohne NB, populationsbasiert → liefert ganze Front; ✅(?) global; nicht-deterministisch akzeptabel.
+
+
+\textit{Bewertung}: 2 P richtige Methode, 2 P Begründung mit ≥3 Eigenschaften aus der Tabelle. Andere zur Tabelle passende Methoden mit guter Begründung können volle Punkte erhalten.
+
+
+\textbf{b) Standardform-Transfer (8 P)}
+
+
+(1) \textbf{Maximierung → Minimierung}: min (-z) = min (-2x\_1 - 3x\_2).
+
+
+(2) \textbf{Variable mit unterer Schranke ≠ 0} (x\_1 ≥ -1): Substitution x\_1′ = x\_1 + 1 ≥ 0, also x\_1 = x\_1′ - 1.
+
+
+(3) \textbf{Freie Variable} x\_2: Aufteilung x\_2 = x\_2⁺ - x\_2⁻, mit x\_2⁺, x\_2⁻ ≥ 0.
+
+
+(4) \textbf{Restriktionen umschreiben:}
+
+
+R1: x\_1 + x\_2 ≤ 4 → (x\_1′ - 1) + (x\_2⁺ - x\_2⁻) ≤ 4 → x\_1′ + x\_2⁺ - x\_2⁻ ≤ 5
+
+→ mit Slack s\_1 ≥ 0: \textbf{x\_1′ + x\_2⁺ - x\_2⁻ + s\_1 = 5}, b = 5 ≥ 0 ✓.
+
+
+R2: 2x\_1 - x\_2 ≥ -2 → 2(x\_1′ - 1) - (x\_2⁺ - x\_2⁻) ≥ -2 → 2x\_1′ - x\_2⁺ + x\_2⁻ ≥ 0
+
+→ mit Surplus s\_2 ≥ 0: \textbf{2x\_1′ - x\_2⁺ + x\_2⁻ - s\_2 = 0}, b = 0 ≥ 0 ✓.
+
+
+(5) \textbf{Zielfunktion} (Konstante darf weggelassen werden):
+
+min -2(x\_1′ - 1) - 3(x\_2⁺ - x\_2⁻) = min (-2x\_1′ - 3x\_2⁺ + 3x\_2⁻) (+ Konstante 2).
+
+
+\textbf{Standardform:}
+
+\begin{lstlisting}
+min  -2x_1′ - 3x_2⁺ + 3x_2⁻
+s.t. x_1′ + x_2⁺ - x_2⁻ + s_1     = 5
+    2x_1′ - x_2⁺ + x_2⁻      - s_2 = 0
+    x_1′, x_2⁺, x_2⁻, s_1, s_2 ≥ 0
+\end{lstlisting}
+
+
+\textit{Bewertung}: 2 P min-Umformung, 1 P Variablen-Shift, 1 P freie Variable splitten, 2 P Slack/Surplus + Vorzeichen, 1 P bⱼ ≥ 0 sichergestellt, 1 P vollständig saubere Schlussform.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 6 \textit{(16 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a) (4 P)} Marching Squares legt ein gleichmäßiges Gitter über das Skalarfeld. Pro Zelle wird das Vorzeichen jedes Eckpunkts bzgl. eines Threshold thr in eine 4-Bit-Maske kodiert (16 Fälle, 0-15). Fälle 0 und 15 enthalten keine Iso-Linie. Auf Kanten mit Vorzeichenwechsel wird der Schnittpunkt linear interpoliert (t = (thr - vₐ)/(v\_b - vₐ)) und die Schnitte innerhalb der Zelle gemäß Fall-Tabelle verbunden.
+
+
+\textit{Bewertung}: 1 P Gitter, 1 P Bitmaske/16 Fälle, 1 P Triviale 0/15, 1 P lineare Interpolation.
+
+
+\textbf{b) (8 P)}
+
+
+Vorzeichen (1 = oberhalb thr=3, 0 = unterhalb):
+
+\begin{itemize}
+  \item A=1.0 < 3 → 0
+  \item B=4.0 > 3 → 1
+  \item C=5.0 > 3 → 1
+  \item D=2.0 < 3 → 0
+\end{itemize}
+
+Muster (A,B,C,D) = (0,1,1,0). Vorzeichenwechsel auf Kanten \textbf{A-B} (unten, 0→1) und \textbf{C-D} bzw. \textbf{D-C} (oben, 0→1). Kanten B-C (rechts, 1→1) und A-D (links, 0→0) haben keinen Wechsel.
+
+
+Schnittpunkte:
+
+\begin{itemize}
+  \item Kante A-B (von (0,0) nach (1,0)): t = (3 - 1)/(4 - 1) = 2/3. Punkt \textbf{P\_unten = (2/3, 0)}.
+  \item Kante D-C (von (0,1) nach (1,1)): t = (3 - 2)/(5 - 2) = 1/3. Punkt \textbf{P\_oben = (1/3, 1)}.
+\end{itemize}
+
+\textbf{Iso-Linie}: Strecke von (2/3, 0) nach (1/3, 1).
+
+
+\textit{Bewertung}: 2 P Vorzeichenmuster, 2 P richtige Kantenwahl mit Begründung, 2 P Interpolationsrechnung (1 P pro Kante), 2 P fertige Linien-Endpunkte.
+
+
+\textbf{c) (4 P)} Mehrdeutige Fälle treten auf, wenn die zwei "1"-Ecken \textbf{diagonal gegenüber} liegen (Index 5 und 10). Es gibt dann zwei topologisch verschiedene Möglichkeiten, die Kantenschnitte zu verbinden (zwei "getrennte Bögen" oder ein "Sattelpunkt-Durchgang"). Der Lernzettel löst dies, indem der \textbf{Mittelwert der vier Eckwerte} berechnet und mit thr verglichen wird; dieser entscheidet, welche der beiden Topologien die Iso-Linie wählt.
+
+
+\textit{Bewertung}: 2 P Identifikation Diagonalmuster + Index 5/10, 1 P zwei mögliche Topologien, 1 P Auflösung über Mittelwert vs. thr.
+
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{document}

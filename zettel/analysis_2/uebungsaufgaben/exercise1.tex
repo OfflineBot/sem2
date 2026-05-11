@@ -1,0 +1,498 @@
+% ============================================================
+%  Übungsaufgaben Template (my_dhbw Stil, uebung_*.tex)
+%  Header "Übungsblatt", grün eingefärbte <details>-Lösungen.
+%  Renderer: pdflatex (zweimal)
+% ============================================================
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+\usepackage[top=2cm, bottom=2cm, left=2.4cm, right=2.4cm, footskip=1cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{ltablex}
+\keepXColumns
+\usepackage{colortbl}
+\usepackage[most,breakable]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{pdflscape}
+\usepackage{titlesec}
+\usepackage[colorlinks=true, linkcolor=accent, urlcolor=accent]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme ─────────────────────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{loesung}{RGB}{0, 100, 0}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{240, 252, 240}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer ─────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\footnotesize\color{accent}\nichttitle}
+\fancyhead[R]{\footnotesize\color{accent}\nichtsubtitle}
+\fancyfoot[R]{\footnotesize\color{accent}Blatt \thepage\,/\,\pageref{LastPage}}
+
+% ── Typografie ────────────────────────────────────────────────
+\titleformat{\section}
+    {\color{accent}\large\bfseries}{}{0pt}{}
+    [\vspace{-4pt}\color{accent}\rule{\linewidth}{1.5pt}]
+\titleformat{\subsection}
+    {\normalsize\bfseries\color{accent!85!black}}{}{0pt}{}{}
+\titleformat{\subsubsection}
+    {\small\bfseries\color{accent!70!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{10pt}{3pt}
+\titlespacing*{\subsection}{0pt}{6pt}{2pt}
+\titlespacing*{\subsubsection}{0pt}{4pt}{1pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\renewcommand{\arraystretch}{1.2}
+\setlist[itemize]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.4em}
+\setlist[enumerate]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.6em}
+
+% ── Boxen: solutionbox = Lösungsbox in grün ──────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={Abbildung: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={Tabelle: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{solutionbox}[1]{
+  enhanced,
+  colback=solutionbg, colframe=loesung,
+  title={#1}, fonttitle=\small\bfseries,
+  coltitle=white, colbacktitle=loesung,
+  breakable, before skip=8pt, after skip=8pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=single, framerule=0pt,
+  xleftmargin=4pt, xrightmargin=4pt,
+  aboveskip=6pt, belowskip=6pt,
+  keepspaces=true
+}
+
+\providecommand{\nichttitle}{Übungsblatt}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Analysis 2}
+\renewcommand{\nichtsubtitle}{Übungsblatt 1}
+
+
+\begin{document}
+
+\begin{center}
+{\Large\bfseries\color{accent}\nichttitle}
+\ifx\nichtsubtitle\empty\else
+  \\[2pt]{\normalsize\color{accent!80!black}\nichtsubtitle}
+\fi
+\\[2pt]
+\color{accent}\rule{0.4\linewidth}{0.8pt}\color{black}
+\end{center}
+\vspace{4pt}
+
+% ── BODY ──────────────────────────────────────────────────────
+
+\section{Übungsblatt 1 — Grundlagen Differenzialrechnung}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 1 — Stetigkeit einer stückweisen Funktion \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben sei die Funktion
+
+
+\[
+f(x) = \begin{cases} x^2 + a & \text{für } x < 1 \\ 3x - 2 & \text{für } x \geq 1 \end{cases}
+\]
+
+
+a) Definiere präzise, wann eine Funktion an einer Stelle $x_0$ stetig ist. \textit{(3 P)}
+
+b) Bestimme den Parameter $a \in \mathbb{R}$ so, dass $f$ an der Stelle $x_0 = 1$ stetig ist. \textit{(6 P)}
+
+c) Begründe, ob die Funktion $g(x) = 1/(x-1)$ an der Stelle $x_0 = 1$ stetig sein kann, wenn man $g(1)$ beliebig festlegt. \textit{(6 P)}
+
+
+\textbf{Lösung:}
+
+
+a) $f$ ist stetig bei $x_0$, wenn $\lim_{x \to x_0} f(x) = f(x_0)$ gilt. Konkret: linksseitiger Grenzwert = rechtsseitiger Grenzwert = Funktionswert an $x_0$. Anschaulich: kein Sprung, keine Lücke.
+
+
+b) Linksseitiger Grenzwert bei $x_0 = 1$:
+
+\[
+\lim_{x \to 1^-} (x^2 + a) = 1 + a
+\]
+
+Rechtsseitiger Grenzwert (= Funktionswert, da $x \geq 1$ den Wert 1 enthält):
+
+\[
+\lim_{x \to 1^+} (3x - 2) = 3 \cdot 1 - 2 = 1
+\]
+
+Stetigkeitsbedingung: $1 + a = 1 \Rightarrow \boxed{a = 0}$.
+
+
+c) Für $g(x) = 1/(x-1)$ existiert weder linksseitiger noch rechtsseitiger endlicher Grenzwert bei $x_0 = 1$:
+
+\[
+\lim_{x \to 1^-} \frac{1}{x-1} = -\infty, \qquad \lim_{x \to 1^+} \frac{1}{x-1} = +\infty
+\]
+
+Da der Grenzwert $\lim_{x \to 1} g(x)$ nicht existiert (analog zum Beispiel $1/x$ bei 0), kann durch keine Festlegung von $g(1)$ Stetigkeit erreicht werden — der zentrale Bestandteil der Definition (Existenz eines beidseitigen, übereinstimmenden Grenzwerts) ist verletzt.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 — Ableitungsregeln im Schnelldurchgang \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+Bilde jeweils die erste Ableitung. Gib bei jedem Schritt an, welche Regel(n) du verwendest.
+
+
+a) $f_1(x) = 5x^4 - 7\ln(x) + 2e^x$ \textit{(4 P)}
+
+b) $f_2(x) = (3x^2 + 1)\cdot \ln(x)$ \textit{(4 P)}
+
+c) $f_3(x) = \dfrac{e^x}{x^2 + 1}$ \textit{(5 P)}
+
+d) $f_4(x) = \ln(4x^3 + 2x)$ \textit{(3 P)}
+
+e) $f_5(x) = e^{x^2 + 3x}$ \textit{(4 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Summen- und Potenz-/Logarithmus-/Exponentialregel:
+
+\[
+f_1'(x) = 5\cdot 4 x^3 - \frac{7}{x} + 2e^x = 20x^3 - \frac{7}{x} + 2e^x
+\]
+
+
+b) Produktregel mit $g = 3x^2+1$, $h = \ln x$, also $g' = 6x$, $h' = 1/x$:
+
+\[
+f_2'(x) = 6x \cdot \ln(x) + (3x^2+1)\cdot \frac{1}{x} = 6x\ln(x) + 3x + \frac{1}{x}
+\]
+
+
+c) Quotientenregel mit $g = e^x$, $h = x^2+1$, $g' = e^x$, $h' = 2x$:
+
+\[
+f_3'(x) = \frac{e^x(x^2+1) - e^x\cdot 2x}{(x^2+1)^2} = \frac{e^x(x^2 - 2x + 1)}{(x^2+1)^2} = \frac{e^x(x-1)^2}{(x^2+1)^2}
+\]
+
+
+d) Kettenregel als $(\ln u)' = u'/u$ mit $u = 4x^3 + 2x$, $u' = 12x^2 + 2$:
+
+\[
+f_4'(x) = \frac{12x^2 + 2}{4x^3 + 2x}
+\]
+
+
+e) Kettenregel: äußere Funktion $e^{(\cdot)}$, innere $u = x^2 + 3x$, $u' = 2x + 3$:
+
+\[
+f_5'(x) = e^{x^2 + 3x}\cdot (2x+3)
+\]
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 — Differenzierbarkeit am Knick \textit{(18 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben:
+
+
+\[
+f(x) = \begin{cases} x^2 & \text{für } x \leq 2 \\ b\cdot x + c & \text{für } x > 2 \end{cases}
+\]
+
+
+a) Welche zwei Bedingungen müssen erfüllt sein, damit $f$ an der Stelle $x_0 = 2$ differenzierbar ist? \textit{(4 P)}
+
+b) Bestimme $b, c \in \mathbb{R}$ so, dass $f$ bei $x_0 = 2$ differenzierbar ist. \textit{(8 P)}
+
+c) Ist $f$ mit deinen Werten aus b) auf ganz $\mathbb{R}$ stetig differenzierbar? Begründe. \textit{(6 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Differenzierbarkeit bei $x_0$ setzt Stetigkeit voraus. Erforderlich sind also:
+
+\begin{enumerate}
+  \item \textbf{Stetigkeit} bei $x_0=2$: linksseitiger Grenzwert = rechtsseitiger Grenzwert = $f(2)$.
+  \item \textbf{Übereinstimmende Ableitungen} von links und rechts (kein Knick): $\lim_{x\to 2^-} f'(x) = \lim_{x\to 2^+} f'(x)$.
+\end{enumerate}
+
+b) Stetigkeit bei $x_0 = 2$: $2^2 = b\cdot 2 + c \Rightarrow 2b + c = 4 \quad (\text{I})$.
+
+
+Ableitungen: $(x^2)' = 2x$, also linksseitig $f'(2^-) = 2\cdot 2 = 4$. Rechtsseitig $(bx+c)' = b$, also $f'(2^+) = b$.
+
+
+Differenzierbarkeit verlangt $b = 4 \quad (\text{II})$.
+
+
+Einsetzen in (I): $2\cdot 4 + c = 4 \Rightarrow c = -4$.
+
+
+Ergebnis: $\boxed{b = 4,\ c = -4}$, d.h. rechtsseitig $f(x) = 4x - 4$.
+
+
+c) Mit diesen Werten gilt:
+
+\begin{itemize}
+  \item $f$ ist stetig (durch (I) konstruiert) und differenzierbar an $x_0=2$ (durch (II)).
+  \item Auf $(-\infty, 2)$ ist $f'(x) = 2x$ — als Polynom stetig.
+  \item Auf $(2, \infty)$ ist $f'(x) = 4$ — konstant, also stetig.
+  \item Bei $x_0 = 2$: $\lim_{x\to 2^-} 2x = 4$ und $\lim_{x\to 2^+} 4 = 4 = f'(2)$, $f'$ also stetig.
+\end{itemize}
+
+Damit ist $f$ auf ganz $\mathbb{R}$ \textbf{stetig differenzierbar}.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 — Fehler finden in der Ableitung \textit{(12 Punkte)}}\mbox{}\\[2pt]
+
+Eine Studierende rechnet:
+
+
+\begin{quote}
+\textbf{Aufgabe:} Bestimme $f'(x)$ für $f(x) = \dfrac{\ln(x)}{x^3}$.
+\end{quote}
+>
+
+\begin{quote}
+\textbf{Lösung:}
+\end{quote}
+\begin{quote}
+Mit Quotientenregel und $g = \ln(x)$, $h = x^3$, $g' = 1/x$, $h' = 3x^2$:
+\end{quote}
+>
+
+\begin{quote}
+$f'(x) = \dfrac{g'\cdot h - g\cdot h'}{h} = \dfrac{\frac{1}{x}\cdot x^3 - \ln(x)\cdot 3x^2}{x^3} = \dfrac{x^2 - 3x^2\ln(x)}{x^3} = \dfrac{1 - 3\ln(x)}{x}$
+\end{quote}
+
+a) Identifiziere den Fehler in der Anwendung der Quotientenregel. \textit{(4 P)}
+
+b) Führe die korrekte Rechnung durch und vereinfache so weit wie möglich. \textit{(8 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Die Quotientenregel lautet
+
+\[
+\left(\frac{g}{h}\right)' = \frac{g'h - gh'}{h^2}
+\]
+
+Im Nenner muss $h^2$ stehen, nicht $h$. Die Studierende hat im Nenner $x^3$ statt $(x^3)^2 = x^6$ verwendet — der Faktor $x^3$ im Nenner fehlt.
+
+
+b) Korrekt:
+
+\[
+f'(x) = \frac{\frac{1}{x}\cdot x^3 - \ln(x)\cdot 3x^2}{(x^3)^2} = \frac{x^2 - 3x^2\ln(x)}{x^6} = \frac{x^2(1 - 3\ln(x))}{x^6} = \boxed{\frac{1 - 3\ln(x)}{x^4}}
+\]
+
+
+(Ergebnis der Studierenden $\frac{1-3\ln x}{x}$ unterscheidet sich um Faktor $x^3$ vom korrekten Wert.)
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 — Vergleich: Produkt- vs. Quotientenregel \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben: $f(x) = \dfrac{x^2 + 1}{e^x}$.
+
+
+a) Berechne $f'(x)$ mit der \textbf{Quotientenregel}. \textit{(5 P)}
+
+b) Schreibe $f$ um als $f(x) = (x^2+1)\cdot e^{-x}$ und berechne $f'(x)$ mit \textbf{Produkt- und Kettenregel}. \textit{(6 P)}
+
+c) Zeige durch Umformung, dass beide Ergebnisse übereinstimmen, und nenne ein Kriterium, wann du in der Praxis welchen Weg bevorzugen würdest. \textit{(4 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Quotientenregel mit $g = x^2+1$, $h = e^x$, $g' = 2x$, $h' = e^x$:
+
+\[
+f'(x) = \frac{2x\cdot e^x - (x^2+1)\cdot e^x}{(e^x)^2} = \frac{e^x(2x - x^2 - 1)}{e^{2x}} = \frac{2x - x^2 - 1}{e^x}
+\]
+
+
+b) Produktregel mit $g = x^2+1$, $h = e^{-x}$. Ableitung von $h$ via Kettenregel: $(e^{-x})' = e^{-x}\cdot(-1) = -e^{-x}$. Außerdem $g' = 2x$.
+
+\[
+f'(x) = 2x\cdot e^{-x} + (x^2+1)\cdot(-e^{-x}) = e^{-x}(2x - x^2 - 1)
+\]
+
+
+c) Wegen $e^{-x} = 1/e^x$ ist
+
+\[
+e^{-x}(2x - x^2 - 1) = \frac{2x - x^2 - 1}{e^x}
+\]
+
+also identisch zu (a).
+
+
+\textbf{Praxis-Kriterium:} Wenn der Nenner eine "einfache" Funktion ist, deren Reziprokes / negative Hochzahl bequem zu schreiben ist (wie $e^x \to e^{-x}$ oder $x^n \to x^{-n}$), ist Umformen auf Produkt + Kettenregel meist rechenökonomischer und vermeidet das Quadrat im Nenner. Bei "echten" Brüchen wie $\frac{\ln x}{x^2+1}$, wo der Nenner kein einfaches Potenzgesetz erlaubt, ist die Quotientenregel direkt und übersichtlicher.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 6 — Transfer: Tangente an einen Kostenverlauf \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+Ein Server-Lastmodell beschreibt die durchschnittliche Antwortzeit (in ms) in Abhängigkeit von der Anzahl gleichzeitiger Anfragen $x > 0$ durch
+
+
+\[
+T(x) = 2\cdot \ln(x) + \frac{1}{50}x^2
+\]
+
+
+a) Berechne $T'(x)$ und interpretiere die Bedeutung von $T'(x_0)$ im Kontext des Modells. \textit{(5 P)}
+
+b) Bestimme die Gleichung der Tangente an $T$ an der Stelle $x_0 = 10$ in der Form $y = m\cdot x + n$. \textit{(8 P)}
+
+c) Begründe rein mit den Begriffen aus dem Kapitel, warum $T$ auf ganz $(0, \infty)$ differenzierbar ist, an $x = 0$ aber \textbf{nicht einmal stetig fortsetzbar} ist. \textit{(7 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Mit Logarithmus- und Potenzregel sowie Summenregel:
+
+\[
+T'(x) = \frac{2}{x} + \frac{2x}{50} = \frac{2}{x} + \frac{x}{25}
+\]
+
+
+Interpretation: $T'(x_0)$ ist die momentane Änderungsrate der Antwortzeit. Bei $x_0$ gleichzeitigen Anfragen erhöht sich die Antwortzeit pro zusätzlicher Anfrage näherungsweise um $T'(x_0)$ ms (lokale Steigung des Antwortzeit-Verlaufs).
+
+
+b) Tangentensteigung:
+
+\[
+m = T'(10) = \frac{2}{10} + \frac{10}{25} = 0{,}2 + 0{,}4 = 0{,}6
+\]
+
+
+Funktionswert:
+
+\[
+T(10) = 2\ln(10) + \frac{100}{50} = 2\ln(10) + 2
+\]
+
+
+Tangentengleichung über Punkt-Steigungs-Form $y - T(10) = m(x - 10)$:
+
+\[
+y = 0{,}6(x - 10) + 2\ln(10) + 2 = 0{,}6\, x - 6 + 2\ln(10) + 2 = 0{,}6\,x + (2\ln(10) - 4)
+\]
+
+
+Numerisch: $2\ln(10) \approx 4{,}6052$, also $n \approx 0{,}6052$.
+
+
+\[
+\boxed{y = 0{,}6\,x + (2\ln(10) - 4) \approx 0{,}6\,x + 0{,}6052}
+\]
+
+
+c) Auf $(0, \infty)$:
+
+\begin{itemize}
+  \item $\ln(x)$ ist dort differenzierbar mit $(\ln x)' = 1/x$.
+  \item $\frac{1}{50}x^2$ ist als Polynom überall differenzierbar.
+  \item Die Summe differenzierbarer Funktionen ist (Summenregel) wieder differenzierbar.
+\end{itemize}
+
+Folglich ist $T$ auf $(0, \infty)$ differenzierbar und damit dort insbesondere stetig.
+
+
+An $x_0 = 0$: Differenzierbarkeit setzt Stetigkeit voraus. Es gilt jedoch
+
+\[
+\lim_{x\to 0^+} \ln(x) = -\infty
+\]
+
+und damit
+
+\[
+\lim_{x\to 0^+} T(x) = -\infty + 0 = -\infty
+\]
+
+Es existiert also kein endlicher rechtsseitiger Grenzwert, der gleich einem Funktionswert $T(0)$ sein könnte — analog zum Kapitel-Beispiel "$1/x$ ist nicht stetig bei 0". Daher lässt sich $T$ bei 0 nicht stetig fortsetzen, und Differenzierbarkeit an dieser Stelle ist erst recht unmöglich.
+
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{document}

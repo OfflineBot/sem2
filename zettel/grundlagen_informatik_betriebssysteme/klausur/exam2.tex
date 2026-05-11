@@ -1,0 +1,623 @@
+% ============================================================
+%  Probeklausur Template (my_dhbw Stil, klausur_*.tex)
+%  Formell mit Deckblatt-Header; Lösungen als grüne tcolorbox.
+%  Renderer: pdflatex (zweimal)
+% ============================================================
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+\usepackage[top=2cm, bottom=2cm, left=2.4cm, right=2.4cm, footskip=1cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{ltablex}
+\keepXColumns
+\usepackage{colortbl}
+\usepackage[most,breakable]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{pdflscape}
+\usepackage{titlesec}
+\usepackage[colorlinks=true, linkcolor=accent, urlcolor=accent]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme ─────────────────────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{loesung}{RGB}{0, 100, 0}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{240, 252, 240}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer ─────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\footnotesize\color{accent}Modulprüfung -- \nichttitle}
+\fancyhead[R]{\footnotesize\color{accent}\nichtsubtitle}
+\fancyfoot[L]{\footnotesize\color{accent}Matrikelnr.: \rule{3cm}{0.4pt}}
+\fancyfoot[R]{\footnotesize\color{accent}Blatt \thepage\,/\,\pageref{LastPage}}
+
+% ── Typografie ────────────────────────────────────────────────
+\titleformat{\section}
+    {\color{accent}\large\bfseries}{}{0pt}{}
+    [\vspace{-4pt}\color{accent}\rule{\linewidth}{1.5pt}]
+\titleformat{\subsection}
+    {\normalsize\bfseries\color{accent!85!black}}{}{0pt}{}{}
+\titleformat{\subsubsection}
+    {\small\bfseries\color{accent!70!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{12pt}{4pt}
+\titlespacing*{\subsection}{0pt}{8pt}{2pt}
+\titlespacing*{\subsubsection}{0pt}{6pt}{1pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\renewcommand{\arraystretch}{1.25}
+\setlist[itemize]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.4em}
+\setlist[enumerate]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.6em}
+
+% ── Boxen ─────────────────────────────────────────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={Abbildung: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={Tabelle: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{solutionbox}[1]{
+  enhanced,
+  colback=solutionbg, colframe=loesung,
+  title={#1}, fonttitle=\small\bfseries,
+  coltitle=white, colbacktitle=loesung,
+  breakable, before skip=8pt, after skip=8pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=single, framerule=0pt,
+  xleftmargin=4pt, xrightmargin=4pt,
+  aboveskip=6pt, belowskip=6pt,
+  keepspaces=true
+}
+
+\providecommand{\nichttitle}{Probeklausur}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Betriebssysteme}
+\renewcommand{\nichtsubtitle}{Probeklausur 2}
+
+
+\begin{document}
+
+% Deckblatt
+\thispagestyle{empty}
+\begin{center}
+\vspace*{1cm}
+{\Huge\bfseries\color{accent}Probeklausur}\\[8pt]
+{\Large\color{accent}\nichttitle}\\[4pt]
+\ifx\nichtsubtitle\empty\else
+  {\large\color{accent!80!black}\nichtsubtitle}\\[6pt]
+\fi
+\color{accent}\rule{0.5\linewidth}{1pt}\color{black}
+\end{center}
+
+\vspace{1cm}
+\begin{tabularx}{\textwidth}{@{}l X@{}}
+\textbf{Studiengang:}      & \rule{6cm}{0.4pt} \\[6pt]
+\textbf{Matrikelnummer:}    & \rule{6cm}{0.4pt} \\[6pt]
+\textbf{Name, Vorname:}    & \rule{6cm}{0.4pt} \\[6pt]
+\textbf{Datum:}             & \rule{6cm}{0.4pt} \\[6pt]
+\textbf{Bearbeitungszeit:}  & 60 Minuten \\[6pt]
+\textbf{Hilfsmittel:}       & Taschenrechner (nicht programmierbar) \\
+\end{tabularx}
+
+\vspace{2cm}
+\begin{center}
+{\large\itshape Viel Erfolg!}
+\end{center}
+
+\newpage
+
+% ── BODY ──────────────────────────────────────────────────────
+
+\section{Probeklausur 2 — Betriebssysteme}
+
+\textbf{Bearbeitungszeit}: 60 Minuten | \textbf{Hilfsmittel}: keine | \textbf{Punkte}: 100
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 1 — Race Conditions \& Semaphore \textit{(16 Punkte)}}\mbox{}\\[2pt]
+
+In einem Webshop führen zwei Threads gleichzeitig Buchungen auf demselben Lagerbestand \texttt{stock} durch. Beide Threads führen folgenden Pseudocode aus:
+
+
+\begin{lstlisting}
+1: tmp = stock        // Lese aktuellen Bestand
+2: tmp = tmp - 1      // Reserviere ein Stück
+3: stock = tmp        // Schreibe zurück
+\end{lstlisting}
+
+
+Initial gilt \texttt{stock = 5}. Thread A und Thread B starten ihre Buchung gleichzeitig.
+
+
+a) Definieren Sie den Begriff \textbf{Race Condition} und nennen Sie die beiden Voraussetzungen, unter denen sie auftritt. \textit{(3 P)}
+
+
+b) Konstruieren Sie eine konkrete Verschränkung der Anweisungen 1–3 von A und B, bei der der Endwert von \texttt{stock} \textbf{falsch} ist. Geben Sie die Reihenfolge der Anweisungen und nach jedem Schritt die Werte von \texttt{tmp\_A}, \texttt{tmp\_B}, \texttt{stock} an. Wie heißt dieser Fehler-Typ und welcher Endwert sollte korrekt herauskommen? \textit{(5 P)}
+
+
+c) Schützen Sie den kritischen Abschnitt mit einem \textbf{binären Semaphor} \texttt{mutex}. Schreiben Sie den korrigierten Pseudocode für einen Thread und erklären Sie für jede Operation \texttt{P()} / \texttt{V()}, was am Zähler und an der Warteschlange passiert, wenn der zweite Thread bei belegtem Mutex eintrifft. Begründen Sie zusätzlich, warum ein \textbf{Spinlock} in einem stark ausgelasteten Webshop hier eine schlechte Wahl wäre. \textit{(8 P)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 — Deadlock-Analyse im Betriebsmittelgraph \textit{(16 Punkte)}}\mbox{}\\[2pt]
+
+Vier Prozesse $P_1,\ldots,P_4$ nutzen vier exklusive Ressourcen $R_1,\ldots,R_4$ (Drucker, Scanner, Plotter, Brenner). Es gilt folgender Zustand:
+
+
+\begin{itemize}
+  \item $R_1$ ist von $P_1$ belegt, $P_2$ fordert $R_1$ an.
+  \item $R_2$ ist von $P_2$ belegt, $P_3$ fordert $R_2$ an.
+  \item $R_3$ ist von $P_3$ belegt, $P_4$ fordert $R_3$ an.
+  \item $R_4$ ist von $P_4$ belegt, $P_1$ fordert $R_4$ an.
+\end{itemize}
+
+a) Nennen Sie die \textbf{vier Bedingungen}, die \textit{gleichzeitig} erfüllt sein müssen, damit ein Deadlock entstehen kann. \textit{(4 P)}
+
+
+b) Skizzieren Sie den Betriebsmittelgraphen (Knoten + Kanten textuell oder als Skizze) und identifizieren Sie den Zyklus. Begründen Sie anhand der vier Bedingungen aus a), warum hier tatsächlich ein Deadlock vorliegt. \textit{(6 P)}
+
+
+c) Der Systemarchitekt schlägt zwei Maßnahmen vor:
+
+\begin{itemize}
+  \item \textbf{Maßnahme X}: Jeder Prozess muss alle benötigten Ressourcen \textit{gleichzeitig zu Beginn} anfordern, sonst keine.
+\begin{itemize}
+  \item \textbf{Maßnahme Y}: Das BS bricht im Deadlock-Fall einen beliebigen Prozess ab und entzieht ihm seine Ressourcen.
+\end{itemize}
+\end{itemize}
+
+Ordnen Sie jede Maßnahme einer der vier Strategien (Erkennen / Ignorieren / Vermeiden / Verhindern) zu, geben Sie an, welche der vier Deadlock-Bedingungen jeweils gebrochen wird, und nennen Sie je einen Nachteil. \textit{(6 P)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 — Virtueller Speicher vs. Swapping \textit{(12 Punkte)}}\mbox{}\\[2pt]
+
+Ein Notebook besitzt 4 GiB RAM. Eine Bildbearbeitung benötigt im Spitzenmoment 6 GiB Daten.
+
+
+a) Erklären Sie, wieso das Programm trotzdem laufen kann. Nennen Sie die Komponente, die die Adressübersetzung durchführt, und das Speichermedium, auf dem nicht-aktive Seiten zwischengelagert werden. \textit{(4 P)}
+
+
+b) Vergleichen Sie \textbf{Swapping} und \textbf{Paging} in einer Tabelle nach den Kriterien Granularität, Voraussetzung an die Hardware und Auswirkung auf externe Fragmentierung. \textit{(4 P)}
+
+
+c) Der Hersteller wirbt: \textit{„Mit virtuellem Speicher passen mehr Programme gleichzeitig in den RAM und die CPU-Auslastung steigt."} Erklären Sie, durch welchen Mechanismus dieser Effekt zustande kommt — d. h. warum nicht das vollständige Programm gleichzeitig im RAM liegen muss, damit es lauffähig bleibt. \textit{(4 P)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 — Seitentabellen \& Adressübersetzung \textit{(18 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben: Virtueller Adressraum 16 Bit, physischer Adressraum 15 Bit, Seitengröße 4 KiB.
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{i (hex)}} & {\color{white}\textbf{P/A}} & {\color{white}\textbf{f (hex)}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+0 & 1 & 5 \\
+1 & 1 & 2 \\
+2 & 0 & – \\
+3 & 1 & 7 \\
+4 & 1 & 1 \\
+5 & 1 & 6 \\
+6 & 0 & – \\
+7 & 1 & 0 \\
+\end{tabularx}
+}
+
+
+a) Wie viele Bits entfallen auf den \textbf{Seitenindex} $i$ und wie viele auf den \textbf{Offset} $d$? Wie viele Seiten und wie viele Frames hat das System? \textit{(4 P)}
+
+
+b) Übersetzen Sie folgende virtuelle Adressen Schritt für Schritt (Aufteilung in $i\,|\,d$, Tabellen-Lookup, resultierende reale Adresse). Markieren Sie Page Faults klar. \textit{(8 P)}
+
+\begin{itemize}
+  \item $0\text{x}3A4F$
+\begin{itemize}
+  \item $0\text{x}5800$
+  \item $0\text{x}2123$
+\end{itemize}
+\end{itemize}
+
+c) Bei einem 32-Bit-System mit 4 KiB-Seiten ergibt eine \textbf{einstufige} Tabelle ca. 1 Mio. Einträge pro Prozess. Beschreiben Sie, wie eine \textbf{mehrstufige} und eine \textbf{invertierte} Seitentabelle dieses Problem lösen, und nennen Sie für jede Variante einen typischen Nachteil. \textit{(6 P)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 — Seitenersetzung im Vergleich \textit{(22 Punkte)}}\mbox{}\\[2pt]
+
+Ein Prozess verfügt über \textbf{3 Seitenrahmen} (anfangs leer). Die Referenzfolge der Seiten lautet:
+
+
+\[
+1,\;2,\;3,\;4,\;1,\;2,\;5,\;1,\;2,\;3,\;4,\;5
+\]
+
+
+a) Definieren Sie \textbf{Page Fault} und beschreiben Sie den Ablauf der Seitenersetzung in 4 Schritten, falls \textbf{kein} freier Frame verfügbar ist und die Opfer-Seite zwischenzeitlich modifiziert wurde. \textit{(4 P)}
+
+
+b) Spielen Sie den Algorithmus \textbf{FIFO} für die Referenzfolge durch. Stellen Sie den Zustand der Frames nach jedem Zugriff in einer Tabelle dar, kennzeichnen Sie Page Faults mit „PF" und geben Sie die Gesamtzahl der Page Faults an. \textit{(8 P)}
+
+
+c) Spielen Sie für dieselbe Folge \textbf{LRU} durch (Tabelle inkl. „Stack" / Reihenfolge der letzten Nutzung) und vergleichen Sie das Ergebnis mit FIFO. Welcher Algorithmus ist hier besser, und wie passt das zur (üblichen) Behauptung, LRU sei FIFO theoretisch überlegen? Welcher Effekt liegt vor? \textit{(10 P)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 6 — Producer-Consumer mit Bug \textit{(16 Punkte)}}\mbox{}\\[2pt]
+
+Ein Praktikant implementiert einen \textbf{bounded buffer} mit Semaphoren für den Producer-Consumer:
+
+
+\begin{lstlisting}
+Semaphor mutex = 1     // exklusiver Pufferzugriff
+Semaphor empty = N     // freie Plätze
+Semaphor full  = 0     // belegte Plätze
+
+Producer:                     Consumer:
+  loop {                        loop {
+    item = produce()              P(mutex)
+    P(mutex)                      P(full)
+    P(empty)                      item = remove()
+    insert(item)                  V(mutex)
+    V(mutex)                      V(empty)
+    V(full)                       consume(item)
+  }                             }
+\end{lstlisting}
+
+
+a) Erklären Sie, welche der drei Semaphore wofür zuständig sind (jeweils ein Satz pro Semaphor). \textit{(3 P)}
+
+
+b) Der Code enthält einen \textbf{Deadlock-Bug}. Konstruieren Sie ein konkretes Szenario (Pufferzustand + Reihenfolge), in dem das System dauerhaft blockiert. Welche der vier Deadlock-Bedingungen aus Aufgabe 2 sind hier alle erfüllt? \textit{(7 P)}
+
+
+c) Geben Sie die \textbf{korrigierte} Reihenfolge der \texttt{P()}-Operationen für Producer und Consumer an und begründen Sie allgemein die Regel: \textit{„Mutex zuletzt, Bedingungs-Semaphor zuerst."} Würde stattdessen die Verwendung eines \textbf{Monitors} diesen Bug-Typ generell ausschließen? Begründen Sie. \textit{(6 P)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+
+\section{Musterlösung Klausur 2}
+
+\paragraph{Aufgabe 1 \textit{(16 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a) (3 P)} Eine Race Condition liegt vor, wenn das Ergebnis einer Berechnung von der zeitlichen Reihenfolge konkurrierender Zugriffe abhängt (1 P). Voraussetzungen: \textbf{Nebenläufigkeit} mehrerer Prozesse/Threads (1 P) \textbf{und} ein \textbf{gemeinsam genutztes Betriebsmittel} (1 P).
+
+
+\textbf{b) (5 P)} Konkrete Verschränkung („Lost Update", 1 P für Begriff):
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Schritt}} & {\color{white}\textbf{Aktion}} & {\color{white}\textbf{tmp\_A}} & {\color{white}\textbf{tmp\_B}} & {\color{white}\textbf{stock}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+1 & A: tmp = stock & 5 & – & 5 \\
+2 & B: tmp = stock & 5 & 5 & 5 \\
+3 & A: tmp -= 1 & 4 & 5 & 5 \\
+4 & B: tmp -= 1 & 4 & 4 & 5 \\
+5 & A: stock = tmp & 4 & 4 & 4 \\
+6 & B: stock = tmp & 4 & 4 & 4 \\
+\end{tabularx}
+}
+
+
+(2 P für korrekte Tabelle). Endwert ist 4, korrekt wären 3 (zwei Buchungen → 5−2) (1 P). Bewertung „Lost Update", weil A's dekrementierter Wert vor B's gleichlautendem Schreibvorgang liegt und B den ursprünglichen Wert „überschreibt" (1 P).
+
+
+\textbf{c) (8 P)}
+
+\begin{lstlisting}
+P(mutex)        // Anforderung
+  tmp = stock
+  tmp = tmp - 1
+  stock = tmp
+V(mutex)        // Freigabe
+\end{lstlisting}
+
+(2 P).
+
+\begin{itemize}
+  \item \texttt{P(mutex)} Thread 1: Zähler = 1 > 0 → Zähler-- = 0, Thread 1 läuft (1 P).
+  \item \texttt{P(mutex)} Thread 2 (während T1 drin): Zähler = 0 → T2 wird suspendiert und in Warteschlange des Semaphors eingereiht (1,5 P).
+  \item \texttt{V(mutex)} Thread 1: Zähler++ = 1; Scheduler prüft Warteschlange, weckt T2 auf, T2 bekommt den Mutex und setzt seinen P()-Aufruf erfolgreich fort (1,5 P).
+\end{itemize}
+
+Spinlock-Begründung (2 P): Bei stark belasteter Single-/wenig-Core-CPU würde ein Spinlock die CPU mit Busy-Waiting blockieren statt sie für andere bereite Threads (z. B. den, der den Lock hält!) freizugeben → CPU-Verschwendung und potenziell starkes Verlangsamen des kritischen Abschnitts. Semaphor mit Suspendieren ist hier deutlich effizienter.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 \textit{(16 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a) (4 P)} Mutual Exclusion (1 P), Hold and Wait (1 P), No Preemption (1 P), Circular Wait (1 P).
+
+
+\textbf{b) (6 P)} Graph (textuell, 3 P):
+
+\begin{lstlisting}
+P1 --hält--> R1 <--fordert-- P2
+P2 --hält--> R2 <--fordert-- P3
+P3 --hält--> R3 <--fordert-- P4
+P4 --hält--> R4 <--fordert-- P1
+\end{lstlisting}
+
+Zyklus: $P_1 \to R_4 \to P_4 \to R_3 \to P_3 \to R_2 \to P_2 \to R_1 \to P_1$ (1 P).
+
+Begründung Deadlock (2 P): Die Ressourcen sind exklusiv (Mutex), jeder Prozess hält mindestens eine und wartet auf die nächste (Hold and Wait), das BS entzieht keine (No Preemption), und die Warte-Beziehung ist zyklisch (Circular Wait) — alle vier Bedingungen erfüllt.
+
+
+\textbf{c) (6 P)}
+
+\begin{itemize}
+  \item \textbf{Maßnahme X = Verhindern} (1 P), bricht \textbf{Hold and Wait} (1 P). Nachteil: schlechte Ressourcennutzung; Ressourcen werden gehalten, obwohl nicht durchgehend gebraucht; vorab oft nicht klar, welche überhaupt nötig sind (1 P).
+  \item \textbf{Maßnahme Y = Erkennen} (mit Recovery durch Abbruch) (1 P), bricht \textbf{No Preemption} (1 P). Nachteil: Arbeit des abgebrochenen Prozesses geht verloren / muss neu gestartet werden; Erkennungsalgorithmus selbst ist aufwändig (1 P).
+\end{itemize}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 \textit{(12 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a) (4 P)} Mit virtuellem Speicher hat jeder Prozess einen \textit{eigenen virtuellen Adressraum}, der größer als der RAM sein darf (1 P). Aktuell benötigte Seiten liegen im RAM, der Rest auf Sekundärspeicher (Paging Area / Swapfile auf SSD/HDD) (1,5 P). Adressübersetzung erfolgt durch die \textbf{MMU} (1,5 P).
+
+
+\textbf{b) (4 P)}
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Kriterium}} & {\color{white}\textbf{Swapping}} & {\color{white}\textbf{Paging}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Granularität & ganzer Prozess & einzelne Seiten / Teile (1 P) \\
+Hardware & ohne MMU möglich & benötigt MMU + Seitentabellen (1 P) \\
+Externe Fragmentierung & tritt deutlich auf (variable Partitionen) & untergeordnet, da feste Frame-Größe (2 P) \\
+\end{tabularx}
+}
+
+
+\textbf{c) (4 P)} Begründung: Programme weisen \textbf{Lokalität} auf — zu jedem Zeitpunkt wird nur ein kleiner Teil des Codes/der Daten aktiv genutzt (Working Set, 80/20-Regel) (2 P). Daher reicht es, dieses Working Set im RAM zu halten; Zugriffe auf nicht-residente Seiten lösen einen Page Fault aus, der die Seite nachlädt (1 P). So passen Working Sets \textit{mehrerer} Programme parallel in den RAM, was die CPU besser auslastet, weil bei einem Block-I/O auf einem Prozess ein anderer rechenbereiter Prozess sofort die CPU übernehmen kann (1 P).
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 \textit{(18 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a) (4 P)} 4 KiB = $2^{12}$ Byte → Offset $d = 12$ Bit (1 P). Virtueller Adressraum 16 Bit → $i = 16-12 = 4$ Bit, also \textbf{16 Seiten} (1 P). Realer Adressraum 15 Bit → Frame-Nummer $= 15-12 = 3$ Bit, also \textbf{8 Frames} (2 P).
+
+
+\textbf{b) (8 P)} Pro Adresse: Aufteilung (0,5 P), Lookup (1 P), Ergebnis (1,5 P).
+
+
+\begin{itemize}
+  \item \textbf{0x3A4F} = \texttt{0011 | 1010 0100 1111} → $i = 3$, $d = 0\text{xA4F}$. Tabelle: $i=3$, P=1, $f=7$. Real = $7\,|\,0\text{xA4F}$ = \texttt{111 1010 0100 1111} = \textbf{0x7A4F} (3 P).
+  \item \textbf{0x5800} = \texttt{0101 | 1000 0000 0000} → $i = 5$, $d = 0\text{x800}$. Tabelle: $i=5$, P=1, $f=6$. Real = $6\,|\,0\text{x800}$ = \texttt{110 1000 0000 0000} = \textbf{0x6800} (3 P).
+  \item \textbf{0x2123} = \texttt{0010 | 0001 0010 0011} → $i = 2$, $d = 0\text{x123}$. Tabelle: $i=2$, \textbf{P=0} → \textbf{Page Fault}: MMU löst Trap aus, Kernel lädt die Seite aus der Paging Area in einen freien (oder durch SEA freigemachten) Frame, aktualisiert die Seitentabelle und wiederholt den Zugriff (2 P).
+\end{itemize}
+
+\textbf{c) (6 P)}
+
+\begin{itemize}
+  \item \textbf{Mehrstufig} (3 P): Adresse zerlegt in $i_1\,|\,i_2\,|\,d$. Top-Level-Tabelle verweist auf Second-Level-Tabellen, die nur dann angelegt/eingelagert werden müssen, wenn der zugehörige Adressbereich tatsächlich genutzt wird → drastisch weniger residenter Speicherbedarf. Nachteil: jede Übersetzung kostet zwei Speicherzugriffe (mehr Aufwand pro Lookup; durch TLB abgemildert).
+  \item \textbf{Invertiert} (3 P): genau ein Eintrag \textit{pro physischem Frame} (typ. (pid, i, f) + Kollisionsliste). Tabelle hängt nur von der RAM-Größe ab, nicht von der Anzahl Prozesse → kompakt, komplett im RAM. Nachteil: Suche nach (pid, i) ist nicht direkt indizierbar → Hashing + Kollisionsbehandlung; reverse-Lookup teuer.
+\end{itemize}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 \textit{(22 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a) (4 P)} Page Fault = Trap, der ausgelöst wird, wenn die MMU eine virtuelle Seite übersetzen soll, deren P-Bit = 0 ist (Seite nicht in einem Frame eingelagert) (2 P). Ablauf bei vollem Speicher mit modifizierter Opfer-Seite A:
+
+\begin{enumerate}
+  \item SEA wählt Opfer A in Frame X.
+  \item \textbf{A ist modifiziert (M=1)} → Inhalt von A wird in die Paging Area geschrieben.
+  \item Gewünschte Seite B wird aus der Paging Area in Frame X eingelagert.
+  \item Seitentabelleneinträge von A (P=0) und B (P=1, f=X) werden aktualisiert; Befehl wird wiederholt. (2 P)
+\end{enumerate}
+
+\textbf{b) FIFO (8 P)} — Frames als FIFO-Queue (vorne = älteste):
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{\#}} & {\color{white}\textbf{Ref}} & {\color{white}\textbf{Frames (alt → neu)}} & {\color{white}\textbf{Anmerkung}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+1 & 1 & [1] & PF \\
+2 & 2 & [1, 2] & PF \\
+3 & 3 & [1, 2, 3] & PF \\
+4 & 4 & [2, 3, 4] & PF (1 raus) \\
+5 & 1 & [3, 4, 1] & PF (2 raus) \\
+6 & 2 & [4, 1, 2] & PF (3 raus) \\
+7 & 5 & [1, 2, 5] & PF (4 raus) \\
+8 & 1 & [1, 2, 5] & hit \\
+9 & 2 & [1, 2, 5] & hit \\
+10 & 3 & [2, 5, 3] & PF (1 raus) \\
+11 & 4 & [5, 3, 4] & PF (2 raus) \\
+12 & 5 & [5, 3, 4] & hit \\
+\end{tabularx}
+}
+
+
+\textbf{Page Faults FIFO = 9} (5 P Tabelle korrekt, 1 P Faults markiert, 1 P Verdrängung dokumentiert, 1 P Summe).
+
+
+\textbf{c) LRU (10 P)} — Reihenfolge in Klammern (links = LRU = Opfer):
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{\#}} & {\color{white}\textbf{Ref}} & {\color{white}\textbf{Frames}} & {\color{white}\textbf{LRU-Reihenfolge}} & {\color{white}\textbf{Anmerkung}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+1 & 1 & [1] & (1) & PF \\
+2 & 2 & [1, 2] & (1, 2) & PF \\
+3 & 3 & [1, 2, 3] & (1, 2, 3) & PF \\
+4 & 4 & [2, 3, 4] & (2, 3, 4) & PF (1 LRU raus) \\
+5 & 1 & [3, 4, 1] & (3, 4, 1) & PF (2 LRU raus) \\
+6 & 2 & [4, 1, 2] & (4, 1, 2) & PF (3 LRU raus) \\
+7 & 5 & [1, 2, 5] & (1, 2, 5) & PF (4 LRU raus) \\
+8 & 1 & [1, 2, 5] & (2, 5, 1) & hit \\
+9 & 2 & [1, 2, 5] & (5, 1, 2) & hit \\
+10 & 3 & [1, 2, 3] & (1, 2, 3) & PF (5 LRU raus) \\
+11 & 4 & [2, 3, 4] & (2, 3, 4) & PF (1 LRU raus) \\
+12 & 5 & [3, 4, 5] & (3, 4, 5) & PF (2 LRU raus) \\
+\end{tabularx}
+}
+
+
+\textbf{Page Faults LRU = 10} (6 P).
+
+
+Vergleich/Bewertung (4 P): Hier ist \textbf{FIFO mit 9 PF besser als LRU mit 10 PF} (1 P), obwohl LRU normalerweise als überlegen gilt, weil es die \textit{Lokalitätsannahme} (kürzlich genutzt → bald wieder genutzt) berücksichtigt (1 P). Der Effekt ist hier nicht die Belady-Anomalie (die betrifft FIFO bei wachsender Frame-Zahl, nicht den Vergleich zweier Algorithmen) (1 P), sondern zeigt schlicht: \textbf{kein Algorithmus ist für jede Referenzfolge optimal}; nur OPT (Belady) ist beweisbar minimal, ist aber praktisch nicht implementierbar, da die Zukunft unbekannt ist (1 P).
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 6 \textit{(16 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a) (3 P)}
+
+\begin{itemize}
+  \item \texttt{mutex} (binär, init 1): exklusiver Zugriff auf die Pufferdatenstruktur (kritischer Abschnitt um insert/remove) (1 P).
+  \item \texttt{empty} (zählend, init N): zählt \textbf{freie} Plätze; \texttt{P(empty)} blockiert den Producer, wenn der Puffer voll ist (1 P).
+  \item \texttt{full} (zählend, init 0): zählt \textbf{belegte} Plätze; \texttt{P(full)} blockiert den Consumer, wenn der Puffer leer ist (1 P).
+\end{itemize}
+
+\textbf{b) (7 P)} Szenario: Puffer ist \textbf{voll} (alle N Plätze belegt). \texttt{empty = 0}, \texttt{full = N}, \texttt{mutex = 1}.
+
+\begin{enumerate}
+  \item Producer ruft \texttt{P(mutex)} → Zähler 0, Producer ist im KA (1 P).
+  \item Producer ruft \texttt{P(empty)} → empty = 0 → Producer wird \textbf{suspendiert, hält aber den Mutex weiter} (2 P).
+  \item Consumer möchte konsumieren, ruft \texttt{P(mutex)} → mutex = 0 → Consumer suspendiert (1 P).
+  \item Consumer kann \texttt{P(full)} nie erreichen, also auch nie \texttt{V(empty)} aufrufen → Producer wird nie geweckt → Deadlock (1 P).
+\end{enumerate}
+
+Erfüllte Bedingungen (2 P): Mutual Exclusion (mutex ist exklusiv), Hold and Wait (Producer hält mutex und wartet auf empty), No Preemption (Mutex wird nicht entzogen), Circular Wait (Producer wartet auf empty, das nur der Consumer freigibt; Consumer wartet auf mutex, den nur der Producer freigibt).
+
+
+\textbf{c) (6 P)} Korrigierte Reihenfolge (2 P):
+
+\begin{lstlisting}
+Producer:                 Consumer:
+  P(empty)                  P(full)
+  P(mutex)                  P(mutex)
+  insert(item)              item = remove()
+  V(mutex)                  V(mutex)
+  V(full)                   V(empty)
+\end{lstlisting}
+
+Regel-Begründung (2 P): Der Bedingungs-Semaphor (\texttt{empty}/\texttt{full}) wird \textit{vor} dem Mutex angefordert, damit ein blockierender Wartezustand niemals den exklusiven Zugriff auf die Puffer-Datenstruktur belegt hält. Würde man im Mutex blockieren, könnten andere Threads die Bedingung gar nicht mehr ändern → garantierter Deadlock.
+
+
+Monitor-Frage (2 P): Ein Monitor schützt zwar automatisch vor \textit{Race Conditions} auf den Daten (Compiler erzeugt den „Türsteher"), löst aber das Bedingungswarten über \texttt{wait(cond)}, das den Monitor \textbf{temporär verlässt}, damit ein anderer Prozess eintreten und \texttt{signal(cond)} rufen kann. Dieser strukturelle Vorteil schließt den hier gezeigten Bug-Typ („Mutex halten und auf Bedingung warten") konstruktionsbedingt aus — der Programmierer kann ihn mit Bedingungsvariablen nicht reproduzieren. Klassische Semaphore sind explizit als „fehleranfällig" einzustufen, gerade wegen genau solcher Reihenfolge-Fehler.
+
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{document}

@@ -1,0 +1,535 @@
+% ============================================================
+%  Lernzettel Template (my_dhbw Stil, analysis.tex)
+%  Eine Spalte, mit TOC, accent-Theme.
+%  Renderer: pdflatex (zweimal)
+% ============================================================
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+\usepackage[top=2cm, bottom=2cm, left=2cm, right=2cm, footskip=1cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{titletoc}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{tabularx}
+\usepackage{ltablex}
+\keepXColumns
+\usepackage{colortbl}
+\usepackage[most,breakable]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{pdflscape}
+\usepackage[colorlinks=true, linkcolor=accent, urlcolor=accent]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme (my_dhbw accent) ────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{242, 255, 242}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer ─────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0.4pt}
+\renewcommand{\sectionmark}[1]{\markboth{#1}{}}
+\fancyfoot[L]{\footnotesize\color{accent}\nouppercase{\leftmark}}
+\fancyfoot[R]{\footnotesize\color{accent}\thepage\,/\,\pageref{LastPage}}
+\fancypagestyle{plain}{%
+  \fancyhf{}%
+  \renewcommand{\headrulewidth}{0pt}%
+  \renewcommand{\footrulewidth}{0.4pt}%
+  \fancyfoot[L]{\footnotesize\color{accent}\nouppercase{\leftmark}}%
+  \fancyfoot[R]{\footnotesize\color{accent}\thepage\,/\,\pageref{LastPage}}%
+}
+
+% ── Typografie ────────────────────────────────────────────────
+\titleformat{\section}
+    {\color{accent}\large\bfseries}{}{0pt}{}
+    [\vspace{-4pt}\color{accent}\rule{\linewidth}{2pt}]
+\titleformat{\subsection}
+    {\normalsize\bfseries\color{accent!85!black}}{}{0pt}{}
+    [\vspace{-3pt}\color{accent!40}\rule{\linewidth}{0.4pt}]
+\titleformat{\subsubsection}
+    {\small\bfseries\color{accent!70!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{12pt}{4pt}
+\titlespacing*{\subsection}{0pt}{8pt}{2pt}
+\titlespacing*{\subsubsection}{0pt}{6pt}{1pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\renewcommand{\arraystretch}{1.25}
+\setlist[itemize]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.4em}
+\setlist[enumerate]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.6em}
+\setlist[itemize,2]{label=\textendash, leftmargin=1.4em}
+
+% ── Boxen ──────────────────────────────────────────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={Abbildung: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={Tabelle: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{solutionbox}[1]{
+  colback=solutionbg, colframe=green!60!black!60,
+  title={#1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=single, framerule=0pt,
+  xleftmargin=4pt, xrightmargin=4pt,
+  aboveskip=6pt, belowskip=6pt,
+  keepspaces=true
+}
+
+% ── TOC-Look ──────────────────────────────────────────────────
+\renewcommand{\contentsname}{\color{accent}Inhalt}
+
+\providecommand{\nichttitle}{Lernzettel}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Numerische Methoden}
+\renewcommand{\nichtsubtitle}{Lernzettel}
+
+
+\begin{document}
+
+\begin{center}
+{\bfseries\Large\color{accent}\nichttitle}\\[2pt]
+\color{accent}\rule{0.35\linewidth}{1pt}\color{black}
+\end{center}
+\vspace{2pt}
+
+{\small\tableofcontents}
+\newpage
+
+% ── BODY ──────────────────────────────────────────────────────
+
+\section{Numerische Methoden — Gesamtzettel}
+
+
+\subsection{1. Grundlagen}
+
+\textbf{Numerische Methoden}: Verfahren zur näherungsweisen Lösung mathematischer Probleme, die analytisch nicht oder nur unpraktikabel lösbar sind.
+
+\begin{itemize}
+  \item f(·) = exakte Lösung; f̃(·) = numerische Näherung
+  \item x = exakter Input; x̃ = gestörter Input
+  \item Notwendig bei: nichtlinearen Gleichungen, transzendenten Funktionen, großen LGS
+\end{itemize}
+
+\textbf{Transzendente Funktion}: Funktion ohne endliche Kombination algebraischer Operationen — keine geschlossene Lösung.
+
+\begin{itemize}
+  \item Beispiel Sigmoid: σ(x) = 1/(1+e⁻ˣ)
+\end{itemize}
+
+\textbf{Smooth}: Funktion mit Ableitungen aller Ordnungen.
+
+
+\textbf{Moore's Law}: Rechenleistung verdoppelt sich ca. alle 2 Jahre.
+
+
+\textbf{[a,b]}: geschlossenes Intervall (inkl. Endpunkte).
+
+
+
+\subsection{2. Diskretisierung}
+
+\textbf{Diskretisierung}: Zerlegung kontinuierlicher Domänen (Zeit, Raum) in endliche Schritte/Gitter.
+
+\begin{itemize}
+  \item Kontinuierlich: f(x), x ∈ [a,b]
+  \item Diskret: f(xᵢ), xᵢ = a + ih, i = 0,…,N
+  \item Schrittweite: h = (b−a)/N
+\end{itemize}
+
+
+\subsection{3. Floating-Point Arithmetik}
+
+
+\subsubsection{3.1 Fehlertypen}
+
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Fehler}} & {\color{white}\textbf{Ursache}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Modeling Error & Modell ist Vereinfachung der Realität \\
+Truncation/Approximation & Endliche Approximation unendlicher Prozesse \\
+Rounding Error & Endliche Stellenzahl bei Speicherung \\
+Overflow & Magnitude zu groß → ±∞ \\
+Underflow & Magnitude nahe Null → 0 \\
+\end{tabularx}
+}
+
+
+
+\subsubsection{3.2 Floating-Point Darstellung}
+
+\textbf{Formel}: x = (−1)ˢ · m · 2ᵉ — Standard IEEE 754.
+
+\begin{itemize}
+  \item s = Vorzeichenbit, m = Mantisse (Präzision), e = Exponent (Skalierung)
+\end{itemize}
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Format}} & {\color{white}\textbf{Bits}} & {\color{white}\textbf{Sign}} & {\color{white}\textbf{Exponent}} & {\color{white}\textbf{Mantisse}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+HALF & 16 & 1 & 6 & 9 \\
+SINGLE & 32 & 1 & 8 & 23 \\
+DOUBLE & 64 & 1 & 11 & 52 \\
+\end{tabularx}
+}
+
+
+\begin{itemize}
+  \item IEEE 754 Single: Bias = 127, e = E − 127; Exponentbereich 0…255, zentriert um 0
+  \item Größte Single ≈ 10³⁸ (log₁₀(2¹²⁸) ≈ 38.5)
+\end{itemize}
+
+\textbf{Mantisse}: t Bits → 2ᵗ Werte zwischen zwei Zweierpotenzen.
+
+\begin{itemize}
+  \item 2-Bit Beispiel: 0.00=0, 0.01=0.25, 0.10=0.5, 0.11=0.75
+\end{itemize}
+
+\textbf{Machine Epsilon (ε\_mach)}: Kleinste positive Zahl mit 1 + ε\_mach ≠ 1.
+
+\begin{itemize}
+  \item ε\_mach = 2⁻ᵗ
+  \item Single: ≈ 1.19 × 10⁻⁷; Double: ≈ 2.22 × 10⁻¹⁶
+  \item Absolute Präzision: ε\_mach · |x| (große Zahlen → größere Lücken)
+\end{itemize}
+
+\textbf{Fixed-Point}: Vorab feste Bits für Integer- und Fraktionsteil — konstante Präzision unabhängig von Magnitude.
+
+\begin{itemize}
+  \item Beispiel: Skalierung 10⁶, 1.234567 → 1234567; max. Rundungsfehler 0.5 × 10⁻⁶
+\end{itemize}
+
+
+\subsubsection{3.3 Loss of Significance}
+
+\textbf{Catastrophic Cancellation}: Rundungsfehlerverstärkung durch Subtraktion fast gleicher Zahlen — führende Stellen löschen sich, nur unzuverlässige niedrigwertige Stellen bleiben.
+
+\begin{itemize}
+  \item Beispiel 8 sig. Digits: a=12345678.5, b=12345678.0 → ã−b̃ = 1 statt 0.5
+  \item f(ε) = 1/(1+ε−1): bei kleinem ε divergiert Resultat
+\end{itemize}
+
+\textbf{Pseudo-Accuracy}: Künstlich hohes Detaillevel, das ungerechtfertigte Genauigkeit suggeriert.
+
+
+
+\subsection{4. Fehleranalyse — Charakterisierung numerischer Methoden}
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Begriff}} & {\color{white}\textbf{Formel}} & {\color{white}\textbf{Beschreibung}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+\textbf{Conditioning} κ & κ = \textbackslash{} & f(x) − f(x̃)\textbackslash{} \\
+\textbf{Stability} & \textbackslash{} & f̃(x̃) − f̃(x)\textbackslash{} \\
+\textbf{Consistency} & \textbackslash{} & f̃(x) − f(x)\textbackslash{} \\
+\textbf{Convergence} & \textbackslash{} & f̃(x̃) − f(x)\textbackslash{} \\
+\end{tabularx}
+}
+
+
+\begin{itemize}
+  \item κ unabhängig von numerischer Methode
+  \item Konvergenz strebt meist gegen 0; Nicht-Null = systematischer Bias
+  \item Stability = Conditioning des Systems für h → 0
+\end{itemize}
+
+
+\subsection{5. Brute-Force / Grid Search}
+
+\textbf{Grid Search}: Funktion an allen Gitterpunkten auswerten, bestes Ergebnis wählen.
+
+\begin{itemize}
+  \item Komplexität: O(Nᵈ)
+  \item Extrema auf [a,b] können an kritischen Punkten ODER Endpunkten liegen — beide prüfen
+\end{itemize}
+
+
+\subsubsection{5.1 Beispiel: min sin(x) auf [−3,1]}
+\begin{itemize}
+  \item Analytisch: f'(x) = cos(x) = 0 ⟹ x* = −π/2 ≈ −1.5708, sin(−π/2) = −1
+  \item Grid h=1: sin(−3)≈−0.1411, sin(−2)≈−0.9093, sin(−1)≈−0.8415, sin(0)=0, sin(1)≈0.8415
+  \item Numerisches Min: −0.9093 bei x=−2; Approximationsfehler: 0.0907
+\end{itemize}
+
+
+\subsubsection{5.2 LGS-Beispiel}
+[2,1;5,1]·[w,b]ᵀ = [11,13]ᵀ → w=2/3, b=29/3
+
+\begin{itemize}
+  \item Grid w,b ∈ \{0,2.5,5,7.5,10\}; error₁=|2w+b−11|, error₂=|5w+b−13|
+  \item Min bei w=0, b=10, akkumulierter Fehler = 4
+  \item Substitution skaliert nicht für große Systeme
+\end{itemize}
+
+
+\subsubsection{5.3 Conditioning/Stability auf min sin(x), x̃ = x ± 0.25}
+\begin{itemize}
+  \item Conditioning: κ(−1, +0.25) ≈ 0.1599; κ(−1, −0.25) ≈ 0.1074 (gut); κ(0, ±0.25) ≈ 0.2474 (schlecht)
+  \item Stability h=1: s ≈ 0; h=0.2 bei x=−1: s ≈ 0.4964
+  \item Consistency: c₁ ≥ 0.15853; c₀.₂ ≥ 0.05102 (besser bei kleinerem h)
+  \item Beide h konvergieren gleich; h=0.2 verbessert nicht wegen Stabilitätsproblemen
+\end{itemize}
+
+
+\subsection{6. Taylor-Expansion}
+
+\[
+f(x) = \sum_{k=0}^{\infty} \frac{f^{(k)}(x_n)}{k!}(x-x_n)^k
+\]
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Ordnung}} & {\color{white}\textbf{Polynom P(x)}} & {\color{white}\textbf{Bedingung}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+0. & f(xₙ) & P(xₙ) = f(xₙ) \\
+1. & f(xₙ) + f'(xₙ)(x−xₙ) & P'(xₙ) = f'(xₙ) \\
+2. & + f''(xₙ)/2·(x−xₙ)² & P''(xₙ) = f''(xₙ) \\
+\end{tabularx}
+}
+
+
+\begin{itemize}
+  \item Division durch k! kompensiert Mehrfachableitung
+  \item \textbf{Lokale} Approximation, verankert an xₙ
+\end{itemize}
+
+
+\subsection{7. Newton-Raphson Methode}
+
+\textbf{Ziel}: x\textit{ finden mit f(x}) = 0 mittels lokaler Steigungsinformation.
+
+
+\textbf{Lineare Approximation} (1. Ordnung Taylor): f(x) ≈ f(xₙ) + f'(xₙ)·(x − xₙ)
+
+
+\textbf{Iteration}:
+
+\[
+x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}
+\]
+
+
+\begin{quote}
+Linear genügt, weil wir f(x*)=0 suchen, nicht f(x) approximieren — erster nicht-konstanter Term mit Richtungsinformation.
+\end{quote}
+
+
+\subsubsection{7.1 Algorithmus 1 (Newton-Raphson)}
+\textbf{Require}: x₀, f, f', Toleranz ε
+
+\begin{enumerate}
+  \item x ← x₀
+  \item while |f(x)| > ε:
+  \item d ← f'(x)
+  \item if |d| < ε\_machine: error "Derivative too small"
+  \item x ← x − f(x)/d
+  \item return x
+\end{enumerate}
+
+
+\subsubsection{7.2 Quadratische Konvergenz}
+\begin{itemize}
+  \item eₙ = xₙ − x*
+  \item 2. Ordnung Taylor um x\textit{: f(xₙ) = f'(x})·eₙ + f''(ξ)/2·eₙ²
+  \item $e_{n+1} \approx -\frac{f''(\xi)}{2f'(x^*)} e_n^2$
+  \item Allgemein: |eₙ₊₁| ≤ C·|eₙ|²
+  \item Fehler quadriert pro Iteration: 10⁻¹ → 10⁻² → 10⁻³ → 10⁻⁶ → 10⁻¹²
+\end{itemize}
+
+
+\subsubsection{7.3 Beispiel √2, x₀ = 2}
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{n}} & {\color{white}\textbf{xₙ}} & {\color{white}\textbf{\textbackslash{}}} & {\color{white}\textbf{eₙ\textbackslash{}}} & {\color{white}\textbf{}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+0 & 2.000000000 & 5.86 × 10⁻¹ &  &  \\
+1 & 1.500000000 & 8.58 × 10⁻² &  &  \\
+2 & 1.416666667 & 2.45 × 10⁻³ &  &  \\
+3 & 1.414215686 & 2.13 × 10⁻⁶ &  &  \\
+4 & 1.414213562 & 4.5 × 10⁻¹² &  &  \\
+\end{tabularx}
+}
+
+
+
+\subsubsection{7.4 Beispiel sin(x)=0, x₀=3.5}
+\begin{itemize}
+  \item x₁ = 3.5 − (−0.351)/(−0.936) = 3.125
+  \item x₂ ≈ 3.14159; nach 2 Iterationen Fehler < 10⁻⁵
+  \item Vgl. Grid h=0.3: 6 Auswertungen, Fehler ≈ 0.042
+\end{itemize}
+
+
+\subsubsection{7.5 Beispiel f(x)=x³−x, x₀=1.4 (f'=3x²−1)}
+\begin{itemize}
+  \item x₁ = 1.4 − 1.344/4.88 ≈ 1.127
+  \item x₂ ≈ 0.976
+  \item x₃ ≈ 1.014
+\end{itemize}
+
+
+\subsubsection{7.6 Failure Modes}
+\begin{itemize}
+  \item \textbf{Zero derivative}: f'(xₙ)=0 → horizontale Tangente, kein Schnittpunkt
+  \item \textbf{Oszillation}: bei symmetrischen Funktionen Zyklus
+  \item \textbf{Ambiguous starting point}: x₀ bestimmt, welche Wurzel gefunden wird
+  \item \textbf{Lokales Optimum}: konvergiert zu nahem, nicht globalem Optimum
+  \item \textbf{Divergenz}: bei Ableitung nahe Null
+\end{itemize}
+
+
+\subsection{8. Secant Methode}
+
+\textbf{Motivation}: f'(x) nicht verfügbar (teuer, Black-Box, nicht differenzierbar).
+
+
+\textbf{Ableitungs-Approximation}: $f'(x_n) \approx \frac{f(x_n) - f(x_{n-1})}{x_n - x_{n-1}}$
+
+
+\textbf{Iteration}:
+
+\[
+x_{n+1} = x_n - f(x_n) \cdot \frac{x_n - x_{n-1}}{f(x_n) - f(x_{n-1})}
+\]
+
+
+\begin{itemize}
+  \item Benötigt \textbf{zwei} Startwerte x₀, x₁
+  \item Geometrisch: Sekantensteigung statt Tangente
+\end{itemize}
+
+
+\subsubsection{8.1 Algorithmus 2 (Secant Method)}
+\textbf{Require}: x₀, x₁, f, ε
+
+\begin{enumerate}
+  \item while |f(x₁)| > ε:
+  \item s ← (f(x₁) − f(x₀))/(x₁ − x₀)
+  \item x\_old ← x₁
+  \item x₁ ← x₁ − f(x₁)/s
+  \item x₀ ← x\_old
+  \item return x₁
+\end{enumerate}
+
+
+\subsubsection{8.2 Beispiel f(x)=x³−x, x₀=1.2, x₁=1.4}
+\begin{itemize}
+  \item x₂ ≈ 1.4 − 0.744·(0.2/0.616) ≈ 1.159
+  \item x₃ ≈ 1.011
+\end{itemize}
+
+
+\subsection{9. Vergleich der Methoden}
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Methode}} & {\color{white}\textbf{Info-Bedarf}} & {\color{white}\textbf{Startwerte}} & {\color{white}\textbf{Konvergenz}} & {\color{white}\textbf{Komplexität}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Grid Search & nur f(x) & Intervall & linear/blind & O(Nᵈ) \\
+Newton-Raphson & f(x), f'(x) & 1 (x₀) & quadratisch & wenige Iter., schneller \\
+Secant & nur f(x) & 2 (x₀, x₁) & superlinear & kein f' nötig \\
+\end{tabularx}
+}
+
+
+
+\subsection{10. Anwendung — ML/DL Bezug}
+
+\begin{itemize}
+  \item Newton 1. Ordnung = \textbf{Gradient Descent} in ML/DL
+  \item \textbf{Backpropagation}: verteilt Gradient durch Netz-Schichten
+  \item Lokale Methoden finden lokale Lösungen — Konvergenz zum nächsten Optimum, kann bei f'=0 oszillieren/divergieren
+\end{itemize}
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{document}

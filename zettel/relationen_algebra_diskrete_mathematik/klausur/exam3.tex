@@ -1,0 +1,904 @@
+% ============================================================
+%  Probeklausur Template (my_dhbw Stil, klausur_*.tex)
+%  Formell mit Deckblatt-Header; Lösungen als grüne tcolorbox.
+%  Renderer: pdflatex (zweimal)
+% ============================================================
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+\usepackage[top=2cm, bottom=2cm, left=2.4cm, right=2.4cm, footskip=1cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{ltablex}
+\keepXColumns
+\usepackage{colortbl}
+\usepackage[most,breakable]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{pdflscape}
+\usepackage{titlesec}
+\usepackage[colorlinks=true, linkcolor=accent, urlcolor=accent]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme ─────────────────────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{loesung}{RGB}{0, 100, 0}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{240, 252, 240}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer ─────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\footnotesize\color{accent}Modulprüfung -- \nichttitle}
+\fancyhead[R]{\footnotesize\color{accent}\nichtsubtitle}
+\fancyfoot[L]{\footnotesize\color{accent}Matrikelnr.: \rule{3cm}{0.4pt}}
+\fancyfoot[R]{\footnotesize\color{accent}Blatt \thepage\,/\,\pageref{LastPage}}
+
+% ── Typografie ────────────────────────────────────────────────
+\titleformat{\section}
+    {\color{accent}\large\bfseries}{}{0pt}{}
+    [\vspace{-4pt}\color{accent}\rule{\linewidth}{1.5pt}]
+\titleformat{\subsection}
+    {\normalsize\bfseries\color{accent!85!black}}{}{0pt}{}{}
+\titleformat{\subsubsection}
+    {\small\bfseries\color{accent!70!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{12pt}{4pt}
+\titlespacing*{\subsection}{0pt}{8pt}{2pt}
+\titlespacing*{\subsubsection}{0pt}{6pt}{1pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\renewcommand{\arraystretch}{1.25}
+\setlist[itemize]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.4em}
+\setlist[enumerate]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.6em}
+
+% ── Boxen ─────────────────────────────────────────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={Abbildung: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={Tabelle: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{solutionbox}[1]{
+  enhanced,
+  colback=solutionbg, colframe=loesung,
+  title={#1}, fonttitle=\small\bfseries,
+  coltitle=white, colbacktitle=loesung,
+  breakable, before skip=8pt, after skip=8pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=single, framerule=0pt,
+  xleftmargin=4pt, xrightmargin=4pt,
+  aboveskip=6pt, belowskip=6pt,
+  keepspaces=true
+}
+
+\providecommand{\nichttitle}{Probeklausur}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Relationen, Algebra, Diskrete Mathematik}
+\renewcommand{\nichtsubtitle}{Probeklausur 3}
+
+
+\begin{document}
+
+% Deckblatt
+\thispagestyle{empty}
+\begin{center}
+\vspace*{1cm}
+{\Huge\bfseries\color{accent}Probeklausur}\\[8pt]
+{\Large\color{accent}\nichttitle}\\[4pt]
+\ifx\nichtsubtitle\empty\else
+  {\large\color{accent!80!black}\nichtsubtitle}\\[6pt]
+\fi
+\color{accent}\rule{0.5\linewidth}{1pt}\color{black}
+\end{center}
+
+\vspace{1cm}
+\begin{tabularx}{\textwidth}{@{}l X@{}}
+\textbf{Studiengang:}      & \rule{6cm}{0.4pt} \\[6pt]
+\textbf{Matrikelnummer:}    & \rule{6cm}{0.4pt} \\[6pt]
+\textbf{Name, Vorname:}    & \rule{6cm}{0.4pt} \\[6pt]
+\textbf{Datum:}             & \rule{6cm}{0.4pt} \\[6pt]
+\textbf{Bearbeitungszeit:}  & 60 Minuten \\[6pt]
+\textbf{Hilfsmittel:}       & Taschenrechner (nicht programmierbar) \\
+\end{tabularx}
+
+\vspace{2cm}
+\begin{center}
+{\large\itshape Viel Erfolg!}
+\end{center}
+
+\newpage
+
+% ── BODY ──────────────────────────────────────────────────────
+
+\section{Probeklausur 3 — Relationen, Algebra, Diskrete Mathematik}
+
+\textbf{Bearbeitungszeit}: 60 Minuten | \textbf{Hilfsmittel}: keine | \textbf{Punkte}: 100
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 1 — Boolesche Algebra \textit{(18 Punkte)}}\mbox{}\\[2pt]
+
+a) \textit{(3 P)} Notieren Sie beide Formen der DeMorgan-Gesetze sowie das Dualitätsprinzip in einem Satz.
+
+
+b) \textit{(5 P)} Beweisen Sie das Absorptionsgesetz \textbf{a ⊗ (a ⊕ b) = a} ausschließlich aus den Axiomen (Kommutativ, Distributiv, Neutralelement, Komplement) sowie dem 0-1-Gesetz \textbf{0 ⊗ b = 0}. Geben Sie zu jeder Umformung das verwendete Gesetz an.
+
+
+c) \textit{(10 P)} Gegeben sei die Boolesche Funktion f(a, b, c, d) durch folgende Wertetabelle (nur 1-Zeilen aufgelistet, alle übrigen Belegungen liefern 0):
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{a}} & {\color{white}\textbf{b}} & {\color{white}\textbf{c}} & {\color{white}\textbf{d}} & {\color{white}\textbf{f}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+0 & 0 & 0 & 0 & 1 \\
+0 & 0 & 0 & 1 & 1 \\
+1 & 0 & 0 & 0 & 1 \\
+1 & 0 & 0 & 1 & 1 \\
+1 & 0 & 1 & 1 & 1 \\
+1 & 1 & 0 & 1 & 1 \\
+1 & 1 & 1 & 1 & 1 \\
+\end{tabularx}
+}
+
+
+\begin{itemize}
+  \item (c1, 3 P) Geben Sie die kanonische disjunktive Normalform (kDN) an.
+\begin{itemize}
+  \item (c2, 5 P) Zeichnen Sie das KV-Diagramm (4 Variablen, Gray-Code) und identifizieren Sie alle maximalen Einserblöcke grafisch.
+  \item (c3, 2 P) Lesen Sie aus dem KV-Diagramm die disjunktive Minimalform (DM) ab.
+\end{itemize}
+\end{itemize}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 — Schaltnetze: 2-Bit-Addierer \textit{(14 Punkte)}}\mbox{}\\[2pt]
+
+a) \textit{(4 P)} Stellen Sie die Wahrheitstabelle eines Volladdierers (Eingänge a, b, ü₁) vollständig auf und leiten Sie die Booleschen Ausdrücke für die Summe s und den Ausgangsübertrag ü₂ aus dem Lernzettel ab.
+
+
+b) \textit{(6 P)} Konstruieren Sie ein Schaltnetz zur Addition zweier 2-Bit-Zahlen (a₁a₀) + (b₁b₀) → (s₂s₁s₀). Verwenden Sie genau \textbf{einen Halbaddierer (HA)} und \textbf{einen Volladdierer (VA)}. Skizzieren Sie das Blockschaltbild, beschriften Sie alle Signalleitungen (insbesondere den Übertragspfad) und geben Sie die resultierenden Booleschen Ausdrücke für s₀, s₁ und s₂ an.
+
+
+c) \textit{(4 P)} Begründen Sie ausführlich, warum für die niederwertigste Stelle ein Halbaddierer ausreicht und kein Volladdierer benötigt wird. Erläutern Sie dabei, was an dieser Stelle bezüglich des Eingangsübertrags gilt.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 — Graphen: Eigenschaften und Darstellung \textit{(12 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben sei der ungerichtete Graph G = (V, E) mit V = \{A, B, C, D, E\} und folgenden gewichteten Kanten:
+
+
+E = \{ (A,B,3), (A,C,2), (B,C,4), (B,D,1), (C,E,5), (D,E,2) \}
+
+
+a) \textit{(4 P)} Erstellen Sie sowohl die \textbf{Adjazenzmatrix} (5 × 5, mit Gewichten) als auch die \textbf{Adjazenzliste} des Graphen.
+
+
+b) \textit{(4 P)} Bestimmen Sie für jeden Knoten den Knotengrad. Untersuchen Sie anschließend, ob G ein Multigraph, ein vollständiger Graph oder ein bipartiter Graph ist. Begründen Sie jede Antwort.
+
+
+c) \textit{(4 P)} Existiert in G ein \textbf{Eulerscher Pfad}? Beantworten Sie die Frage mithilfe der Knotengrade aus (b), benennen Sie das verwendete Kriterium und geben Sie ggf. Anfangs- und Endknoten eines möglichen Eulerschen Pfades an.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 — Dijkstra-Algorithmus \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben sei der ungerichtete, gewichtete Graph mit V = \{1, 2, 3, 4, 5\} und Kanten:
+
+
+(1,2,4), (1,3,2), (2,3,1), (2,4,5), (3,4,8), (3,5,10), (4,5,2)
+
+
+a) \textit{(3 P)} Geben Sie die Initialwerte für d(v), π(v) und α(v) für alle v ∈ V bei Startknoten s = 1 an.
+
+
+b) \textit{(12 P)} Führen Sie den Dijkstra-Algorithmus vollständig durch. Dokumentieren Sie nach jeder Knotenwahl in einer Tabelle die aktuellen Werte (d, α) für alle Knoten sowie den als nächstes zu besuchenden Knoten.
+
+
+c) \textit{(3 P)} Rekonstruieren Sie den kürzesten Pfad 1 → 5 anhand der α-Werte.
+
+
+d) \textit{(2 P)} Angenommen, die Kante (3, 5) hätte das Gewicht \textbf{−3} statt 10. Welcher Schritt im Dijkstra-Algorithmus würde versagen? Welcher Algorithmus aus dem Vergleichsabschnitt wäre stattdessen geeignet?
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 — A\textit{-Algorithmus und Heuristik-Bewertung }(14 Punkte)*}\mbox{}\\[2pt]
+
+a) \textit{(3 P)} Erläutern Sie den Hauptunterschied zwischen Dijkstra und A* in Bezug auf (i) die zusätzlich gespeicherte Knotengröße und (ii) das Kriterium der Knotenwahl in der Hauptschleife.
+
+
+b) \textit{(4 P)} Was ist eine Heuristik h(v, z) im Kontext von A\textit{? Welche Eigenschaft muss sie erfüllen, damit A} garantiert die optimale Lösung findet? Was geschieht laut Lernzettel, wenn diese Eigenschaft verletzt wird?
+
+
+c) \textit{(7 P)} Für den Graphen aus Aufgabe 4 (Ziel z = 5) sei folgende Heuristik gegeben:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Knoten v}} & {\color{white}\textbf{h(v, 5)}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+1 & 9 \\
+2 & 6 \\
+3 & 8 \\
+4 & 1 \\
+5 & 0 \\
+\end{tabularx}
+}
+
+
+Bestimmen Sie für jeden Knoten v die \textbf{tatsächliche} kürzeste Distanz d\textit{(v, 5) und entscheiden Sie tabellarisch, ob h(v, 5) ≤ d}(v, 5) gilt. Begründen Sie abschließend, ob A* mit dieser Heuristik die optimale Lösung liefern wird.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 6 — TSP: Nearest-Neighbour \& 2-Opt \textit{(22 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben seien fünf Städte A, B, C, D, E mit folgender symmetrischer Distanzmatrix:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{}} & {\color{white}\textbf{A}} & {\color{white}\textbf{B}} & {\color{white}\textbf{C}} & {\color{white}\textbf{D}} & {\color{white}\textbf{E}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+A & 0 & 2 & 4 & 1 & 7 \\
+B & 2 & 0 & 3 & 5 & 4 \\
+C & 4 & 3 & 0 & 6 & 2 \\
+D & 1 & 5 & 6 & 0 & 8 \\
+E & 7 & 4 & 2 & 8 & 0 \\
+\end{tabularx}
+}
+
+
+a) \textit{(4 P)} Definieren Sie das TSP formal (Eingabe, gesuchte Ausgabe, Zielgröße). Nennen Sie zwei aus dem Lernzettel bekannte Anwendungsgebiete und ein verwandtes Problem.
+
+
+b) \textit{(8 P)} Wenden Sie die \textbf{Nearest-Neighbour-Heuristik (NNA)} mit Startknoten \textbf{A} an. Dokumentieren Sie den aktuellen Knoten, die zur Auswahl stehenden Kanten und die jeweils gewählte Kante in jedem Schritt. Geben Sie am Ende die vollständige Tour und ihre Gesamtlänge an.
+
+
+c) \textit{(8 P)} Wenden Sie auf das NNA-Ergebnis aus (b) \textbf{einen 2-Opt-Schritt} an: Prüfen Sie alle Inversionen einer zusammenhängenden Subsequenz der \textbf{Länge 2} (also Vertauschungen zweier aufeinanderfolgender innerer Knoten). Berechnen Sie für jede Variante die neue Tourlänge und geben Sie die beste Verbesserung samt resultierender Tour an.
+
+
+d) \textit{(2 P)} Begründen Sie kurz, warum NNA das globale Optimum nicht garantieren kann, und nennen Sie eine im Lernzettel genannte einfache Erweiterung, die die Lösungsqualität verbessert.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+
+\section{Musterlösung Klausur 3}
+
+\paragraph{Aufgabe 1 \textit{(18 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a) DeMorgan und Dualität (3 P)}
+
+
+\begin{itemize}
+  \item ∼(a ⊗ b) = ∼a ⊕ ∼b \textit{(1 P)}
+  \item ∼(a ⊕ b) = ∼a ⊗ ∼b \textit{(1 P)}
+  \item Dualitätsprinzip: Vertauscht man in einer gültigen Aussage gleichzeitig ⊗ ↔ ⊕ und 0 ↔ 1, so entsteht erneut eine gültige Aussage. \textit{(1 P)}
+\end{itemize}
+
+\textbf{b) Beweis Absorption a ⊗ (a ⊕ b) = a (5 P)}
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Schritt}} & {\color{white}\textbf{Ausdruck}} & {\color{white}\textbf{Begründung}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+1 & a ⊗ (a ⊕ b) & Ausgangsausdruck \\
+2 & (a ⊕ 0) ⊗ (a ⊕ b) & Neutralelement: a = a ⊕ 0 \\
+3 & a ⊕ (0 ⊗ b) & Distributivgesetz Form 2 rückwärts \\
+4 & a ⊕ 0 & 0-1-Gesetz: 0 ⊗ b = 0 \\
+5 & a & Neutralelement: a ⊕ 0 = a \\
+\end{tabularx}
+}
+
+
+\textit{Bewertung: pro korrekt benannter Umformung 1 P (5 × 1 P).} Alternative Beweise (z. B. via Distributiv Form 1 + Idempotenz + Absorption Form 2) werden nicht akzeptiert, sofern sie ein noch nicht bewiesenes Absorptionsgesetz benutzen (zirkulär).
+
+
+\textbf{c) Boolesche Funktion f(a, b, c, d)}
+
+
+\textbf{c1) kDN (3 P)} — pro Zeile mit f = 1 ein Minterm; gesamt 7 Minterme:
+
+
+f = a′b′c′d′ ∨ a′b′c′d ∨ ab′c′d′ ∨ ab′c′d ∨ ab′cd ∨ abc′d ∨ abcd
+
+
+\textit{Bewertung: 7 korrekte Minterme = 3 P; pro fehlendem/falschem Minterm −0,5 P.}
+
+
+\textbf{c2) KV-Diagramm (5 P)} — Spalten cd ∈ \{00, 01, 11, 10\}, Zeilen ab ∈ \{00, 01, 11, 10\}:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{ab\textbackslash{}cd}} & {\color{white}\textbf{00}} & {\color{white}\textbf{01}} & {\color{white}\textbf{11}} & {\color{white}\textbf{10}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+\textbf{00} & 1 & 1 & 0 & 0 \\
+\textbf{01} & 0 & 0 & 0 & 0 \\
+\textbf{11} & 0 & 1 & 1 & 0 \\
+\textbf{10} & 1 & 1 & 1 & 0 \\
+\end{tabularx}
+}
+
+
+Maximale Einserblöcke:
+
+\begin{itemize}
+  \item \textbf{Block 1} (4er-Block): Zeilen ab ∈ \{00, 10\}, Spalten cd ∈ \{00, 01\} → b und c konstant 0; a und d wechseln → bleibt \textbf{b′c′}.
+  \item \textbf{Block 2} (4er-Block): Zeilen ab ∈ \{11, 10\}, Spalten cd ∈ \{01, 11\} → a konstant 1, d konstant 1; b und c wechseln → bleibt \textbf{ad}.
+\end{itemize}
+
+Beide Blöcke sind notwendig; jede 1-Zelle wird abgedeckt. \textit{(KV korrekt 2 P, beide Blöcke korrekt identifiziert je 1,5 P)}
+
+
+\textbf{c3) Disjunktive Minimalform (2 P)}
+
+
+f = b′c′ ∨ ad
+
+
+\textit{Bewertung: vollständig korrekt 2 P; fehlender Term oder falsche Variable −1 P.}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 \textit{(14 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a) Volladdierer-Wahrheitstabelle und Funktionen (4 P)}
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{a}} & {\color{white}\textbf{b}} & {\color{white}\textbf{ü₁}} & {\color{white}\textbf{s}} & {\color{white}\textbf{ü₂}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 1 & 1 & 0 \\
+0 & 1 & 0 & 1 & 0 \\
+0 & 1 & 1 & 0 & 1 \\
+1 & 0 & 0 & 1 & 0 \\
+1 & 0 & 1 & 0 & 1 \\
+1 & 1 & 0 & 0 & 1 \\
+1 & 1 & 1 & 1 & 1 \\
+\end{tabularx}
+}
+
+
+Funktionen:
+
+\begin{itemize}
+  \item s = a ⊕ b ⊕ ü₁
+  \item ü₂ = ab ∨ aü₁ ∨ bü₁
+\end{itemize}
+
+\textit{Bewertung: Tabelle korrekt 2 P; s 1 P; ü₂ 1 P.}
+
+
+\textbf{b) 2-Bit-Addierer (a₁a₀) + (b₁b₀) (6 P)}
+
+
+Blockschaltbild:
+
+
+\begin{lstlisting}
+   a₀ ──┐         a₁ ──┐
+        │              │
+   b₀ ──┤    HA   b₁ ──┤    VA   ── s₂ (= ü₂)
+        │ ──┐          │
+        ▼   │ s₀       ▼
+        ü ──┘─────────→ü₁                ── s₁
+\end{lstlisting}
+
+
+\begin{itemize}
+  \item HA für die niederwertigste Stelle: Eingänge a₀, b₀ → Ausgänge s₀, ü.
+  \item ü wird als Eingangsübertrag ü₁ in den VA geführt.
+  \item VA für die obere Stelle: Eingänge a₁, b₁, ü₁ → Ausgänge s₁, ü₂; ü₂ wird zu s₂.
+\end{itemize}
+
+Boolesche Ausdrücke:
+
+\begin{itemize}
+  \item s₀ = a₀ ⊕ b₀
+  \item ü = a₀ ⊗ b₀
+  \item s₁ = a₁ ⊕ b₁ ⊕ ü
+  \item s₂ = a₁b₁ ∨ a₁ü ∨ b₁ü
+\end{itemize}
+
+\textit{Bewertung: Skizze mit korrekter Übertragsleitung 2 P; korrekte Zuordnung HA/VA 1 P; vier Boolesche Ausdrücke je 0,75 P (s₀, ü/Übertrag, s₁, s₂) = 3 P.}
+
+
+\textbf{c) Begründung HA für die LSB (4 P)}
+
+
+An der niederwertigsten Stelle gibt es \textbf{keinen Eingangsübertrag} aus einer noch niedrigeren Stelle (die Addition beginnt dort). Ein Volladdierer hätte in seinem dritten Eingang ü₁ stets den konstanten Wert 0. Mit ü₁ = 0 vereinfacht sich die VA-Funktion zu:
+
+\begin{itemize}
+  \item s = a ⊕ b ⊕ 0 = a ⊕ b
+  \item ü₂ = ab ∨ a·0 ∨ b·0 = ab
+\end{itemize}
+
+Das entspricht genau der Funktion eines Halbaddierers. Daher ist der HA an der LSB ausreichend, ohne Funktionalität zu verlieren — er spart Gatter und damit Fläche/Verbrauch ein.
+
+
+\textit{Bewertung: kein Eingangsübertrag an LSB 1 P; Reduktion VA → HA gezeigt 2 P; Effizienzargument 1 P.}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 \textit{(12 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a) Darstellungen (4 P)}
+
+
+Adjazenzmatrix (Reihenfolge A, B, C, D, E; Gewichte; 0 = keine Kante):
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{}} & {\color{white}\textbf{A}} & {\color{white}\textbf{B}} & {\color{white}\textbf{C}} & {\color{white}\textbf{D}} & {\color{white}\textbf{E}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+\textbf{A} & 0 & 3 & 2 & 0 & 0 \\
+\textbf{B} & 3 & 0 & 4 & 1 & 0 \\
+\textbf{C} & 2 & 4 & 0 & 0 & 5 \\
+\textbf{D} & 0 & 1 & 0 & 0 & 2 \\
+\textbf{E} & 0 & 0 & 5 & 2 & 0 \\
+\end{tabularx}
+}
+
+
+Adjazenzliste:
+
+\begin{itemize}
+  \item A → [(B, 3), (C, 2)]
+  \item B → [(A, 3), (C, 4), (D, 1)]
+  \item C → [(A, 2), (B, 4), (E, 5)]
+  \item D → [(B, 1), (E, 2)]
+  \item E → [(C, 5), (D, 2)]
+\end{itemize}
+
+\textit{Bewertung: Matrix symmetrisch und korrekt 2 P; Adjazenzliste korrekt 2 P.}
+
+
+\textbf{b) Knotengrade \& Eigenschaften (4 P)}
+
+
+Knotengrade: deg(A) = 2, deg(B) = 3, deg(C) = 3, deg(D) = 2, deg(E) = 2 \textit{(1 P)}
+
+
+\begin{itemize}
+  \item \textbf{Multigraph?} Nein. Zwischen je zwei Knoten existiert höchstens eine Kante. \textit{(1 P)}
+  \item \textbf{Vollständig?} Nein. Ein vollständiger Graph mit 5 Knoten besäße C(5,2) = 10 Kanten; hier sind es nur 6. \textit{(1 P)}
+  \item \textbf{Bipartit?} Nein. Die Knoten \{A, B, C\} bilden ein Dreieck (A–B, B–C, A–C) — ein ungerader Zyklus. Ein bipartiter Graph enthält keine ungeraden Zyklen. \textit{(1 P)}
+\end{itemize}
+
+\textbf{c) Eulerscher Pfad (4 P)}
+
+
+Kriterium: Ein zusammenhängender ungerichteter Graph besitzt genau dann einen Eulerschen Pfad, wenn die Anzahl der Knoten mit ungeradem Grad \textbf{0 oder 2} beträgt. \textit{(2 P)}
+
+
+Knoten ungeraden Grades: B (Grad 3) und C (Grad 3) → genau 2 → \textbf{Eulerscher Pfad existiert}. \textit{(1 P)}
+
+
+Anfangs- und Endknoten: B und C (in beliebiger Richtung). \textit{(1 P)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a) Initialisierung (3 P)}
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{v}} & {\color{white}\textbf{d(v)}} & {\color{white}\textbf{π(v)}} & {\color{white}\textbf{α(v)}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+1 & 0 & unvisited & none \\
+2 & ∞ & unvisited & none \\
+3 & ∞ & unvisited & none \\
+4 & ∞ & unvisited & none \\
+5 & ∞ & unvisited & none \\
+\end{tabularx}
+}
+
+
+Aktueller Knoten: u = 1.
+
+
+\textit{Bewertung: korrekte d-Werte 1 P; π = unvisited für alle 1 P; s.d = 0 / s als Start 1 P.}
+
+
+\textbf{b) Schrittweise Ausführung (12 P)}
+
+
+Notation: nach jeder Visite wird der besuchte Knoten markiert; Tabellenzeile zeigt Werte \textbf{nach} Update der Nachbarn.
+
+
+\textbf{Schritt 1 — Besuche Knoten 1 (d = 0):}
+
+Updates: 2.d = min(∞, 0+4) = 4 (α=1), 3.d = min(∞, 0+2) = 2 (α=1).
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{v}} & {\color{white}\textbf{1}} & {\color{white}\textbf{2}} & {\color{white}\textbf{3}} & {\color{white}\textbf{4}} & {\color{white}\textbf{5}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+d & 0 & 4 & 2 & ∞ & ∞ \\
+α & – & 1 & 1 & – & – \\
+\end{tabularx}
+}
+
+
+Nächster: \textbf{3} (kleinstes d unter unvisited = 2). \textit{(2,5 P)}
+
+
+\textbf{Schritt 2 — Besuche Knoten 3 (d = 2):}
+
+Updates Nachbarn (1 visited): 2.d = min(4, 2+1) = 3 (α=3), 4.d = min(∞, 2+8) = 10 (α=3), 5.d = min(∞, 2+10) = 12 (α=3).
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{v}} & {\color{white}\textbf{1}} & {\color{white}\textbf{2}} & {\color{white}\textbf{3}} & {\color{white}\textbf{4}} & {\color{white}\textbf{5}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+d & 0 & 3 & 2 & 10 & 12 \\
+α & – & 3 & 1 & 3 & 3 \\
+\end{tabularx}
+}
+
+
+Nächster: \textbf{2} (d = 3). \textit{(2,5 P)}
+
+
+\textbf{Schritt 3 — Besuche Knoten 2 (d = 3):}
+
+Updates Nachbarn (1, 3 visited): 4.d = min(10, 3+5) = 8 (α=2).
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{v}} & {\color{white}\textbf{1}} & {\color{white}\textbf{2}} & {\color{white}\textbf{3}} & {\color{white}\textbf{4}} & {\color{white}\textbf{5}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+d & 0 & 3 & 2 & 8 & 12 \\
+α & – & 3 & 1 & 2 & 3 \\
+\end{tabularx}
+}
+
+
+Nächster: \textbf{4} (d = 8). \textit{(2,5 P)}
+
+
+\textbf{Schritt 4 — Besuche Knoten 4 (d = 8):}
+
+Updates Nachbarn (2, 3 visited): 5.d = min(12, 8+2) = 10 (α=4).
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{v}} & {\color{white}\textbf{1}} & {\color{white}\textbf{2}} & {\color{white}\textbf{3}} & {\color{white}\textbf{4}} & {\color{white}\textbf{5}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+d & 0 & 3 & 2 & 8 & 10 \\
+α & – & 3 & 1 & 2 & 4 \\
+\end{tabularx}
+}
+
+
+Nächster: \textbf{5} (d = 10). \textit{(2,5 P)}
+
+
+\textbf{Schritt 5 — Besuche Knoten 5 (d = 10):} Keine unvisited Nachbarn mehr → fertig. \textit{(2 P)}
+
+
+\textbf{c) Pfadrekonstruktion 1 → 5 (3 P)}
+
+
+α-Kette: 5 ← 4 ← 2 ← 3 ← 1. Kürzester Pfad: \textbf{1 → 3 → 2 → 4 → 5} mit Länge 2 + 1 + 5 + 2 = 10. \textit{(Pfad korrekt 2 P; Länge 1 P)}
+
+
+\textbf{d) Negative Kantengewichte (2 P)}
+
+
+Mit w(3,5) = −3 würde die Update-Regel verletzt: Knoten 3 wird in Schritt 2 als visited markiert; ein späterer kürzerer Weg über die negative Kante könnte 3 nicht mehr aktualisieren, weil Dijkstra besuchte Knoten nicht mehr re-prüft. Der Algorithmus liefert dann i. A. nicht die optimale Distanz. Geeignet ist \textbf{Bellman–Ford} (laut Vergleichstabelle der einzige Single-Source-Algorithmus, der negative Gewichte erlaubt). \textit{(Begründung 1 P; Bellman–Ford 1 P)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 \textit{(14 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a) Unterschied Dijkstra ↔ A* (3 P)}
+
+
+(i) A\textit{ speichert pro Knoten v zusätzlich zur Distanz d(v) eine }\textit{Priorität}\textit{ p(v) = d(v) + h(v, z). }(1,5 P)*
+
+(ii) In der Hauptschleife wählt A\textit{ als nächsten aktuellen Knoten denjenigen unvisited Knoten mit }\textit{minimaler Priorität p}\textit{ (statt minimalem d wie bei Dijkstra). }(1,5 P)*
+
+
+\textbf{b) Heuristik \& Zulässigkeit (4 P)}
+
+
+Eine Heuristik h(v, z) ist eine \textbf{Schätzung der Restdistanz} vom Knoten v zum Zielknoten z (z. B. Luftlinie). \textit{(1,5 P)}
+
+
+Damit A\textit{ das Optimum garantiert findet, muss h }\textit{zulässig (admissible)}\textit{ sein: h(v, z) darf die tatsächliche kürzeste Distanz v → z }\textit{nie überschätzen}\textit{, d. h. h(v, z) ≤ d}(v, z). \textit{(1,5 P)}
+
+
+Wird die Eigenschaft verletzt (Heuristik überschätzt), liefert A\textit{ laut Lernzettel u. U. eine }\textit{suboptimale Lösung}\textit{, weil ein an sich optimaler Knoten zu spät bzw. gar nicht expandiert wird. }(1 P)*
+
+
+\textbf{c) Zulässigkeitsprüfung (7 P)}
+
+
+Tatsächliche kürzeste Distanzen v → 5 anhand des Graphen aus Aufgabe 4:
+
+\begin{itemize}
+  \item d*(1, 5) = 10 (Pfad 1-3-2-4-5)
+  \item d*(2, 5) = 7 (Pfad 2-4-5)
+  \item d*(3, 5) = 8 (Pfad 3-2-4-5: 1+5+2)
+  \item d*(4, 5) = 2 (Pfad 4-5)
+  \item d*(5, 5) = 0
+\end{itemize}
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{v}} & {\color{white}\textbf{h(v, 5)}} & {\color{white}\textbf{d*(v, 5)}} & {\color{white}\textbf{h ≤ d* ?}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+1 & 9 & 10 & ✓ \\
+2 & 6 & 7 & ✓ \\
+3 & 8 & 8 & ✓ (=) \\
+4 & 1 & 2 & ✓ \\
+5 & 0 & 0 & ✓ \\
+\end{tabularx}
+}
+
+
+Alle Heuristikwerte erfüllen h(v, 5) ≤ d\textit{(v, 5) → die Heuristik ist }\textit{zulässig}\textit{. Folglich wird A} mit dieser Heuristik den optimalen Pfad 1 → 5 mit Gesamtkosten 10 finden.
+
+
+\textit{Bewertung: korrekte d}-Werte je 1 P (5 × 1 P), korrekte Tabellenauswertung 1 P, korrekte Schlussfolgerung 1 P.*
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 6 \textit{(22 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a) TSP-Definition (4 P)}
+
+
+\textbf{Eingabe}: Ein vollständiger gewichteter Graph G = (V, E, W) mit |V| = n Knoten (Städte) und nicht-negativen Kantengewichten (Distanzen). \textit{(1 P)}
+
+\textbf{Gesuchte Ausgabe}: Eine geschlossene Tour, die \textbf{jede Stadt genau einmal} besucht und zur Startstadt zurückkehrt (Hamiltonscher Zyklus). \textit{(1 P)}
+
+\textbf{Zielgröße}: Minimierung der Summe der Kantengewichte entlang der Tour. \textit{(0,5 P)}
+
+
+Anwendungen: Logistik / Vehicle-Routing-Problem; Mikrochip-Design / Leiterplattenbohrung; Genom-Sequenzierung \textit{(2 davon, je 0,5 P = 1 P)}.
+
+Verwandtes Problem: TSP ohne Rückkehr / VRP / Traveling Thief / stochastisches TSP \textit{(0,5 P)}.
+
+
+\textbf{b) Nearest-Neighbour-Heuristik (NNA) ab A (8 P)}
+
+
+
+{\footnotesize
+\begin{tabularx}{\linewidth}{XXXXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Schritt}} & {\color{white}\textbf{Aktuell}} & {\color{white}\textbf{Unvisited}} & {\color{white}\textbf{Distanzen (Auswahl)}} & {\color{white}\textbf{Gewählt}} & {\color{white}\textbf{Tour bisher}} & {\color{white}\textbf{Länge}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+1 & A & \{B, C, D, E\} & B:2, C:4, \textbf{D:1}, E:7 & A → D & A–D & 1 \\
+2 & D & \{B, C, E\} & B:5, C:6, E:8 & D → B (5) & A–D–B & 6 \\
+3 & B & \{C, E\} & C:3, E:4 & B → C (3) & A–D–B–C & 9 \\
+4 & C & \{E\} & E:2 & C → E (2) & A–D–B–C–E & 11 \\
+5 & E & – (Rückkehr A) & A:7 & E → A (7) & A–D–B–C–E–A & \textbf{18} \\
+\end{tabularx}
+}
+
+
+\textbf{Tour: A → D → B → C → E → A}, Gesamtlänge \textbf{1 + 5 + 3 + 2 + 7 = 18}.
+
+
+\textit{Bewertung: pro Schritt mit korrekter Auswahl und Begründung 1 P (5 × 1 P); korrekte Endtour 1 P; korrekte Länge 2 P.}
+
+
+\textbf{c) 2-Opt-Schritt (8 P)}
+
+
+Innere Knoten der NNA-Tour: D, B, C, E. Inversionen einer Subsequenz der Länge 2:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Inversion}} & {\color{white}\textbf{Neue Tour}} & {\color{white}\textbf{Längenrechnung}} & {\color{white}\textbf{Länge}} & {\color{white}\textbf{Δ vs. 18}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+(D, B) & A–B–D–C–E–A & 2+5+6+2+7 & 22 & +4 \\
+(B, C) & A–D–C–B–E–A & 1+6+3+4+7 & 21 & +3 \\
+(C, E) & A–D–B–E–C–A & 1+5+4+2+4 & \textbf{16} & \textbf{−2} \\
+\end{tabularx}
+}
+
+
+Beste Verbesserung: Inversion \textbf{(C, E)} liefert die neue Tour \textbf{A → D → B → E → C → A} mit Länge \textbf{16} (Verbesserung um 2). \textit{(je Berechnung 2 P; korrekte Auswahl + neue Tour 2 P)}
+
+
+\textbf{d) Suboptimalität von NNA (2 P)}
+
+
+NNA wählt in jedem Schritt nur die lokal kürzeste Kante (Greedy / Best-First) und berücksichtigt keine späteren Kosten. Insbesondere kann die letzte Rückkehrkante zur Startstadt sehr lang werden (im Beispiel E→A mit 7), was eine vermeintlich kostengünstige Auswahl im Nachhinein teuer macht. Außerdem ist das Ergebnis \textbf{startknotenabhängig}.
+
+
+Verbesserung laut Lernzettel: \textbf{Jeden Knoten als Startknoten ausprobieren} und die kürzeste der n NNA-Touren wählen (Laufzeit × n, weiterhin keine Optimalitätsgarantie).
+
+
+\textit{Bewertung: Begründung Suboptimalität 1 P; Erweiterung 1 P.}
+
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{document}

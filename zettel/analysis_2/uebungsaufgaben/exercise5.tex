@@ -1,0 +1,412 @@
+% ============================================================
+%  Übungsaufgaben Template (my_dhbw Stil, uebung_*.tex)
+%  Header "Übungsblatt", grün eingefärbte <details>-Lösungen.
+%  Renderer: pdflatex (zweimal)
+% ============================================================
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+\usepackage[top=2cm, bottom=2cm, left=2.4cm, right=2.4cm, footskip=1cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{ltablex}
+\keepXColumns
+\usepackage{colortbl}
+\usepackage[most,breakable]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{pdflscape}
+\usepackage{titlesec}
+\usepackage[colorlinks=true, linkcolor=accent, urlcolor=accent]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme ─────────────────────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{loesung}{RGB}{0, 100, 0}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{240, 252, 240}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer ─────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\footnotesize\color{accent}\nichttitle}
+\fancyhead[R]{\footnotesize\color{accent}\nichtsubtitle}
+\fancyfoot[R]{\footnotesize\color{accent}Blatt \thepage\,/\,\pageref{LastPage}}
+
+% ── Typografie ────────────────────────────────────────────────
+\titleformat{\section}
+    {\color{accent}\large\bfseries}{}{0pt}{}
+    [\vspace{-4pt}\color{accent}\rule{\linewidth}{1.5pt}]
+\titleformat{\subsection}
+    {\normalsize\bfseries\color{accent!85!black}}{}{0pt}{}{}
+\titleformat{\subsubsection}
+    {\small\bfseries\color{accent!70!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{10pt}{3pt}
+\titlespacing*{\subsection}{0pt}{6pt}{2pt}
+\titlespacing*{\subsubsection}{0pt}{4pt}{1pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\renewcommand{\arraystretch}{1.2}
+\setlist[itemize]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.4em}
+\setlist[enumerate]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.6em}
+
+% ── Boxen: solutionbox = Lösungsbox in grün ──────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={Abbildung: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={Tabelle: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{solutionbox}[1]{
+  enhanced,
+  colback=solutionbg, colframe=loesung,
+  title={#1}, fonttitle=\small\bfseries,
+  coltitle=white, colbacktitle=loesung,
+  breakable, before skip=8pt, after skip=8pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=single, framerule=0pt,
+  xleftmargin=4pt, xrightmargin=4pt,
+  aboveskip=6pt, belowskip=6pt,
+  keepspaces=true
+}
+
+\providecommand{\nichttitle}{Übungsblatt}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Analysis 2}
+\renewcommand{\nichtsubtitle}{Übungsblatt 5}
+
+
+\begin{document}
+
+\begin{center}
+{\Large\bfseries\color{accent}\nichttitle}
+\ifx\nichtsubtitle\empty\else
+  \\[2pt]{\normalsize\color{accent!80!black}\nichtsubtitle}
+\fi
+\\[2pt]
+\color{accent}\rule{0.4\linewidth}{0.8pt}\color{black}
+\end{center}
+\vspace{4pt}
+
+% ── BODY ──────────────────────────────────────────────────────
+
+\section{Übungsblatt 5 — Komplexe Zahlen}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 1 — Grundlagen und Konsequenzen \textit{(10 Punkte)}}\mbox{}\\[2pt]
+
+a) Definieren Sie die imaginäre Einheit i und die Menge ℂ formal. Geben Sie für eine komplexe Zahl z = a+ib Real- und Imaginärteil an. \textit{(3 P)}
+
+
+b) Begründen Sie anhand der Definition von i, warum die Gleichung x² = −25 in ℝ keine, in ℂ aber genau zwei Lösungen besitzt. Geben Sie diese an. \textit{(3 P)}
+
+
+c) Zeigen Sie allgemein: Für jede komplexe Zahl z gilt z·z̄ = |z|². Folgern Sie daraus, dass z·z̄ stets reell und nicht-negativ ist. \textit{(4 P)}
+
+
+\textbf{Lösung:}
+
+
+a) i ist definiert durch i = √−1, d. h. i² = −1. Damit ist ℂ = \{a+ib | a,b ∈ ℝ\}. Für z = a+ib heißt Re(z) = a der Realteil und Im(z) = b der Imaginärteil.
+
+
+b) In ℝ existiert keine Zahl mit Quadrat −25, da Quadrate reeller Zahlen ≥ 0 sind. In ℂ gilt mit i² = −1:
+
+(5i)² = 25·i² = −25 und (−5i)² = 25·i² = −25.
+
+Lösungen sind also x₁ = 5i und x₂ = −5i.
+
+
+c) Sei z = a+ib, dann z̄ = a−ib. Es folgt:
+
+z·z̄ = (a+ib)(a−ib) = a² − (ib)² = a² − i²b² = a² + b².
+
+Da a,b ∈ ℝ, ist a²+b² ∈ ℝ und ≥ 0. Außerdem gilt nach Definition |z| = √(a²+b²), also z·z̄ = |z|². ☐
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 — Rechenoperationen \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben: z₁ = 3+4i, z₂ = 1−2i, z₃ = −2+2i.
+
+
+a) Berechnen Sie z₁+z₂, z₁·z₂ und z₁² jeweils in kartesischer Form. \textit{(5 P)}
+
+
+b) Berechnen Sie z₁/z₂ in der Form a+ib. Geben Sie den genauen Rechenweg über Erweiterung mit dem konjugiert Komplexen an. \textit{(5 P)}
+
+
+c) Bestimmen Sie |z₃| sowie das Argument φ = arg(z₃) und schreiben Sie z₃ in Polarform r·$e^{iφ}$. \textit{(5 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Addition:
+
+z₁+z₂ = (3+1)+i(4−2) = 4+2i.
+
+
+Multiplikation mit Formel (a₁a₂−b₁b₂)+i(a₁b₂+a₂b₁):
+
+z₁·z₂ = (3·1 − 4·(−2)) + i(3·(−2) + 1·4) = (3+8) + i(−6+4) = 11 − 2i.
+
+
+Quadrieren mit (a²−b²)+2ab·i:
+
+z₁² = (9−16) + 2·3·4·i = −7 + 24i.
+
+
+b) Erweitern mit z̄₂ = 1+2i:
+
+z₁/z₂ = (3+4i)(1+2i) / ((1−2i)(1+2i))
+
+= (3+6i+4i+8i²) / (1+4)
+
+= (3−8 + 10i) / 5
+
+= (−5+10i)/5
+
+= −1 + 2i.
+
+
+c) Betrag:
+
+|z₃| = √((−2)² + 2²) = √8 = 2√2.
+
+
+Argument: z₃ liegt im 2. Quadranten (Re < 0, Im > 0). arctan(2/(−2)) = arctan(−1) = −π/4, durch Korrektur um +π:
+
+φ = π − π/4 = 3π/4.
+
+
+Polarform: z₃ = 2√2 · $e^{i·3π/4}$.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 — Eulersche Formel und Potenzieren \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+a) Schreiben Sie z = 1+i in Polarform und bestimmen Sie damit z⁸ in kartesischer Form. \textit{(6 P)}
+
+
+b) Eine Wechselgröße werde durch w(t) = 5·$e^{i·ωt}$ mit ω = π/3 (Einheit 1/s) modelliert. Berechnen Sie w(2) als komplexe Zahl in kartesischer Form, sowie |w(t)| für beliebiges t. \textit{(6 P)}
+
+
+c) Begründen Sie mit der Eulerschen Formel, weshalb die Multiplikation einer komplexen Zahl z = r·$e^{iφ}$ mit i einer Drehung um 90° entspricht und der Betrag dabei unverändert bleibt. \textit{(8 P)}
+
+
+\textbf{Lösung:}
+
+
+a) z = 1+i: r = √(1+1) = √2, φ = arctan(1/1) = π/4 (1. Quadrant). Also z = √2 · $e^{iπ/4}$.
+
+
+Mit zˣ = rˣ·$e^{iφx}$:
+
+z⁸ = (√2)⁸ · $e^{i·8·π/4}$ = 2⁴ · $e^{i·2π}$ = 16 · (cos 2π + i sin 2π) = 16·1 = 16.
+
+
+Also z⁸ = 16.
+
+
+b) w(2) = 5·$e^{i·π/3·2}$ = 5·$e^{i·2π/3}$ = 5·(cos(2π/3) + i·sin(2π/3))
+
+= 5·(−1/2 + i·√3/2) = −5/2 + i·5√3/2.
+
+
+Betrag: |w(t)| = |5·$e^{iωt}$| = 5·|$e^{iωt}$| = 5·√(cos²(ωt)+sin²(ωt)) = 5·1 = 5 (zeitunabhängig).
+
+
+c) i hat in Polarform den Betrag 1 und das Argument π/2, denn:
+
+i = 0 + 1·i = 1·(cos(π/2) + i·sin(π/2)) = $e^{iπ/2}$.
+
+
+Mit den Potenzregeln der Exponentialfunktion folgt:
+
+z·i = r·$e^{iφ}$ · $e^{iπ/2}$ = r · $e^{i(φ+π/2}$).
+
+
+Daraus liest man ab:
+
+\begin{itemize}
+  \item Der neue Betrag ist r — also unverändert.
+  \item Das neue Argument ist φ + π/2 — also eine Drehung um genau 90° gegen den Uhrzeigersinn.
+\end{itemize}
+
+Geometrisch entspricht die Multiplikation in der Polarform einer Multiplikation der Beträge und einer Addition der Argumente; mit |i|=1 wirkt nur die Winkeladdition. ☐
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 — Transfer: n-te Einheitswurzeln \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+Im Kapitel wurde gezeigt, dass für z = r·$e^{iφ}$ gilt: zⁿ = rⁿ·$e^{iφn}$. Wenden Sie dies an, um alle Lösungen w ∈ ℂ der Gleichung w⁴ = 16 zu bestimmen.
+
+
+a) Argumentieren Sie zunächst, warum jede Lösung den Betrag |w| = 2 haben muss. \textit{(4 P)}
+
+
+b) Schreiben Sie die rechte Seite 16 in Polarform und nutzen Sie aus, dass $e^{iφ}$ = $e^{i(φ+2πk}$) für k ∈ ℤ gilt, um alle möglichen Argumente φₖ der Lösungen zu finden. \textit{(8 P)}
+
+
+c) Geben Sie alle vier Lösungen sowohl in Polar- als auch in kartesischer Form an. Verifizieren Sie eine davon durch Einsetzen in w⁴ = 16. \textit{(8 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Sei w = r·$e^{iφ}$. Dann w⁴ = r⁴·$e^{i4φ}$. Aus w⁴ = 16 folgt für die Beträge:
+
+|w⁴| = r⁴ = |16| = 16, also r = √[4]\{16\} = 2 (r ≥ 0 als Betrag).
+
+
+b) 16 = 16·$e^{i·0}$ = 16·$e^{i·2πk}$ für k ∈ ℤ. Damit:
+
+r⁴·$e^{i4φ}$ = 16·$e^{i·2πk}$ ⇒ r=2, 4φ = 2πk ⇒ φₖ = πk/2.
+
+
+Für k = 0,1,2,3 erhält man vier verschiedene Werte (k=4 wiederholt k=0 mod 2π):
+
+φ₀ = 0, φ₁ = π/2, φ₂ = π, φ₃ = 3π/2.
+
+
+c) Polarform: wₖ = 2·$e^{iπk/2}$.
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{k}} & {\color{white}\textbf{Polarform}} & {\color{white}\textbf{kartesisch}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+0 & 2·$e^{i·0}$ & 2 \\
+1 & 2·$e^{iπ/2}$ & 2i \\
+2 & 2·$e^{iπ}$ & −2 \\
+3 & 2·$e^{i·3π/2}$ & −2i \\
+\end{tabularx}
+}
+
+
+Verifikation für w₁ = 2i: (2i)⁴ = 2⁴·i⁴ = 16·(i²)² = 16·(−1)² = 16·1 = 16. ✓
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 — Fehler finden \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Eine Studentin rechnet folgendes Beispiel mit a = −8+6i, b = 12−9i und c = 1+i (Werte aus dem Kapitel). Sie behauptet:
+
+
+\begin{lstlisting}
+Schritt 1:  c² = (1+i)² = 1² + i² = 1 − 1 = 0
+Schritt 2:  |a| = √(−8² + 6²) = √(−64+36) = √−28
+Schritt 3:  a/b = (−8+6i)/(12−9i) = −8/12 + 6i/(−9i) = −2/3 − 2/3
+\end{lstlisting}
+
+
+a) Identifizieren Sie in jedem der drei Schritte den Fehler und benennen Sie die jeweils verletzte Regel. \textit{(9 P)}
+
+
+b) Berechnen Sie alle drei Ausdrücke korrekt. Bei a/b reicht das Ergebnis aus dem Kapitel — bestätigen Sie dieses durch Erweiterung mit b̄. \textit{(6 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Schritt 1: Beim Quadrieren einer Summe muss die binomische Formel (x+y)² = x²+2xy+y² benutzt werden. Der gemischte Term 2·1·i fehlt.
+
+Schritt 2: Es wurde −8² statt (−8)² gerechnet. Wegen der Operatorpräferenz steht −8² für −(8²) = −64; korrekt ist (−8)² = 64.
+
+Schritt 3: Komplexe Division ist nicht komponentenweise. Es muss mit dem konjugiert Komplexen erweitert werden, denn der Nenner muss reell gemacht werden.
+
+
+b) Korrekt:
+
+
+c² = (1+i)² = 1² + 2·1·i + i² = 1 + 2i − 1 = 2i.
+
+
+|a| = √((−8)² + 6²) = √(64+36) = √100 = 10.
+
+
+a/b = (−8+6i)/(12−9i) erweitern mit b̄ = 12+9i:
+
+Zähler: (−8+6i)(12+9i) = −96 − 72i + 72i + 54i² = −96 + 54·(−1) = −150.
+
+Nenner: (12−9i)(12+9i) = 12² + 9² = 144+81 = 225.
+
+Damit a/b = −150/225 = −2/3 (rein reell), in Übereinstimmung mit dem Kapitel.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{document}

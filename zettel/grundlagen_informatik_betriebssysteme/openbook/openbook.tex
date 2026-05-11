@@ -1,0 +1,1452 @@
+% ============================================================
+%  Openbook / Formelsammlung Template — strikt nach my_dhbw
+%  Stil: 2-spaltig, kompakt, scriptsize Tabellen, dünne Regeln.
+%  Renderer: lualatex (zweimal, wg. Unicode-Inhalt)
+% ============================================================
+\documentclass[10pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+
+\usepackage[top=0.8cm, bottom=0.8cm, left=0.8cm, right=0.8cm, footskip=0.4cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{multicol}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{microtype}
+\usepackage{etoolbox}
+
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+% ltablex/longtable bewusst NICHT geladen — kollidiert mit multicols.
+\usepackage{colortbl}
+\usepackage[most]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{adjustbox}
+\usepackage[colorlinks=false]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme (my_dhbw accent) ────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{242, 255, 242}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer — wie my_dhbw formelsammlung.tex ────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0.3pt}
+\fancyfoot[L]{\tiny\color{accent}\nichttitle}
+\fancyfoot[R]{\tiny\color{accent}\thepage\,/\,\pageref{LastPage}}
+
+% ── Typografie — wie formelsammlung.tex ───────────────────────
+\titleformat{\section}
+    {\color{accent}\footnotesize\bfseries}{}{0pt}{}
+    [\vspace{-2pt}\color{accent!50}\rule{\linewidth}{0.4pt}]
+\titleformat{\subsection}
+    {\scriptsize\bfseries\color{accent!85!black}}{}{0pt}{}{}
+\titleformat{\subsubsection}
+    {\scriptsize\itshape\color{accent!60!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{4pt}{1pt}
+\titlespacing*{\subsection}{0pt}{3pt}{0pt}
+\titlespacing*{\subsubsection}{0pt}{2pt}{0pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1pt}
+\renewcommand{\arraystretch}{1.0}
+\setlist{noitemsep, topsep=0pt, parsep=0pt, leftmargin=1.1em}
+
+\setlength{\columnsep}{6mm}
+\setlength{\columnseprule}{0.2pt}
+
+% Globaler scriptsize-Body. Tabellen zusätzlich auf scriptsize zwingen.
+\AtBeginEnvironment{tabularx}{\scriptsize}
+\AtBeginEnvironment{tabular}{\scriptsize}
+
+% ── Boxen (kompakt) ───────────────────────────────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={\scriptsize Abbildung: #1}, fonttitle=\scriptsize\bfseries,
+  fontupper=\scriptsize, sharp corners,
+  boxsep=2pt, left=3pt, right=3pt, top=2pt, bottom=2pt,
+  before skip=3pt, after skip=3pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={\scriptsize Tabelle: #1}, fonttitle=\scriptsize\bfseries,
+  fontupper=\scriptsize, sharp corners,
+  boxsep=2pt, left=3pt, right=3pt, top=2pt, bottom=2pt,
+  before skip=3pt, after skip=3pt
+}
+\newtcolorbox{solutionbox}[1]{
+  colback=solutionbg, colframe=green!60!black!60,
+  title={\scriptsize #1}, fonttitle=\scriptsize\bfseries,
+  fontupper=\scriptsize, sharp corners,
+  boxsep=2pt, left=3pt, right=3pt, top=2pt, bottom=2pt,
+  before skip=3pt, after skip=3pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\tiny,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=none,
+  xleftmargin=2pt, xrightmargin=2pt,
+  aboveskip=2pt, belowskip=2pt,
+  keepspaces=true
+}
+
+\providecommand{\nichttitle}{Formelsammlung}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Betriebssysteme}
+\renewcommand{\nichtsubtitle}{Formelsammlung}
+
+
+\begin{document}
+
+\begin{center}
+{\small\bfseries\color{accent}\nichttitle}
+\end{center}
+\vspace{-6pt}
+
+\scriptsize
+\begin{multicols}{2}
+
+% ── BODY ──────────────────────────────────────────────────────
+
+\section{Grundlagen}
+
+\textbf{BS}: Schnittstelle HW↔SW; steuert Programmabwicklung, regelt Rechnerbetrieb, stellt Dienste bereit. Kern = \textbf{Kernel}.
+
+
+\textbf{Aufgaben}: Prozess-, Speicher-, Geräte-, Datei-, Energieverwaltung.
+
+
+
+{\small
+\begin{adjustbox}{max width=\linewidth}
+{\scriptsize
+\begin{tabular}{ll}
+\toprule
+\textbf{Programmart} & \textbf{Zweck} \\
+\midrule
+Anwendung & löst Benutzer-Probleme \\
+Systemprogramm & verwaltet Rechnerbetrieb \\
+BS & elementare Dienste \\
+\bottomrule
+\end{tabular}
+}
+\end{adjustbox}
+}
+
+
+\textbf{Schnittstellen}: GUI (grafisch), CLI (Kommandozeile), TUI (zeichen), VUI (Sprache), NUI (natürlich).
+
+
+
+\section{Rechnerarchitektur}
+
+\textbf{Hierarchie} (schnell↓/groß↑): Register → Cache → RAM/ROM → Sekundär.
+
+
+\textbf{CPU}: Steuerwerk (Befehl), ALU/Rechenwerk (Daten + Flags + Akku); Register IR/MBR/PC/MAR; Systembus = Adress+Daten+Steuer.
+
+
+\textbf{Registerbreite}: 4/8/16/32/64 Bit; 64-Bit-OS adressiert 2⁶⁴.
+
+
+
+\section{Modi \& Syscall}
+
+
+{\small
+\begin{adjustbox}{max width=\linewidth}
+{\scriptsize
+\begin{tabular}{lll}
+\toprule
+\textbf{} & \textbf{User} & \textbf{Kernel} \\
+\midrule
+Privileg & nicht-priv. & privilegiert \\
+Befehlssatz & eingeschränkt & beliebig \\
+Speicher & kein Kernel & gesamt + alle BM \\
+\bottomrule
+\end{tabular}
+}
+\end{adjustbox}
+}
+
+
+\begin{itemize}
+  \item Kernel→User: unproblematisch via BS
+  \item User→Kernel: nur über \textbf{Syscall}
+\end{itemize}
+
+\textbf{Syscall-Ablauf}: Aufruf → Kernel-Mode → Sicherheitsprüfung → Ausführen/Ablehnen → Rückkehr User-Mode.
+
+
+Bsp.: \texttt{open}, \texttt{read}, \texttt{write}, \texttt{close}.
+
+
+
+\section{Betriebsmittel}
+
+
+{\small
+\begin{adjustbox}{max width=\linewidth}
+{\scriptsize
+\begin{tabular}{lll}
+\toprule
+\textbf{Art} & \textbf{Eigenschaft} & \textbf{Bsp.} \\
+\midrule
+Entziehbar & jederzeit ohne Schaden & CPU \\
+Nicht entziehbar & bis Beendigung & Drucker \\
+Exklusiv & max. 1 Prozess & — \\
+Gemeinsam & quasi-gleichzeitig & Festplatte \\
+\bottomrule
+\end{tabular}
+}
+\end{adjustbox}
+}
+
+
+\textbf{BS-Kategorien}: Mainframe (z/OS), Server, PC, Echtzeit, Embedded, Tablet, Handheld, Smartcard.
+
+
+
+\section{Prozess}
+
+\textbf{Prozess}: Programm zur Laufzeit; dynamische Aktionsfolge; Adressraum = Userspace + Kernelspace.
+
+
+\textbf{Programm}: statische Verfahrensvorschrift.
+
+
+\textbf{Erzeugung}: Code laden → PID zuordnen → PCB anlegen. Syscalls: Unix \texttt{fork}, Windows \texttt{CreateProcess}.
+
+
+\textbf{Kenndaten}: PID (≥0, eindeutig), PPID, UID/GID, EUID/EGID, PRI, Zustand, CPU-Zeit.
+
+
+
+{\small
+\begin{adjustbox}{max width=\linewidth}
+{\scriptsize
+\begin{tabular}{lll}
+\toprule
+\textbf{BS} & \textbf{PID 0} & \textbf{PID 1} \\
+\midrule
+Unix & Idle & Init \\
+Windows & nicht vergeben & nicht vergeben \\
+\bottomrule
+\end{tabular}
+}
+\end{adjustbox}
+}
+
+
+
+\subsection{PCB-Inhalt}
+Zustand, PC, PID, init+dyn. Priorität, CPU-Zeit, BM, Register, HW-Kontext (PC/IR/Stack/Flags, MMU, Stack/Heap/Code).
+
+
+\textbf{Kontextwechsel}: HW-Kontext A sichern (PCB\_A) → HW-Kontext B laden (PCB\_B).
+
+
+
+\subsection{Zustände}
+\textbf{Bereit, Aktiv, Blockiert, Beendet}.
+
+\begin{enumerate}
+  \item Aktivieren (Bereit→Aktiv)
+  \item Deaktivieren (Aktiv→Bereit)
+  \item Blockieren (Aktiv→Blockiert) — wartet I/O
+  \item Deblockieren (Blockiert→Bereit)
+  \item Terminieren
+\end{enumerate}
+
+\textbf{Sonderzustände}:
+
+\begin{itemize}
+  \item \textbf{Zombie}: beendet, noch in Tabelle; Eltern muss austragen
+  \item \textbf{Daemon}: Hintergrund, terminalunabhängig
+\end{itemize}
+
+
+\subsection{Thread}
+
+\textbf{Thread}: kleinste Ausführungseinheit; Prozess = ≥1 Thread (Main); Threads teilen Code/Daten/Heap.
+
+
+
+{\small
+\begin{adjustbox}{max width=\linewidth}
+{\scriptsize
+\begin{tabular}{lll}
+\toprule
+\textbf{} & \textbf{Prozess} & \textbf{Thread} \\
+\midrule
+Gewicht & schwer & leicht \\
+Adressraum & eigen & gemeinsam \\
+Speicherschutz & ja & nein \\
+Kontextwechsel & aufwendig & schnell \\
+\bottomrule
+\end{tabular}
+}
+\end{adjustbox}
+}
+
+
+\textbf{Vorteile}: schneller KW, Modularisierung. \textbf{Nachteile}: Sync nötig, kein Schutz, schwerer zu programmieren.
+
+
+\textbf{Zustände}: Laufend, Bereit, Wartend.
+
+
+
+{\small
+\begin{adjustbox}{max width=\linewidth}
+{\scriptsize
+\begin{tabular}{ll}
+\toprule
+\textbf{System} & \textbf{Prio-Bereich} \\
+\midrule
+Windows & 0 System; 1–15 Timesharing; 16–31 Realtime \\
+Linux & 0–99 Realtime; 100–139 Timesharing \\
+\bottomrule
+\end{tabular}
+}
+\end{adjustbox}
+}
+
+
+\textbf{GC}: niedrige Prio, läuft bei Leerlauf/Knappheit.
+
+
+
+\section{Scheduling}
+
+\textbf{Scheduler}: wer bekommt CPU. \textbf{Dispatcher}: führt KW aus. \textbf{Prozessmanager} = Scheduler + Dispatcher.
+
+
+\textbf{Horizonte}: kurzfristig (CPU), mittelfristig (Speicher), langfristig (eingehend).
+
+
+
+{\small
+\begin{adjustbox}{max width=\linewidth}
+{\scriptsize
+\begin{tabular}{ll}
+\toprule
+\textbf{Klasse} & \textbf{Bedeutung} \\
+\midrule
+Non-preemptive & nicht-verdrängend; nur bei Block/Freigabe/Ende \\
+Preemptive & verdrängend; jederzeit entziehbar \\
+\bottomrule
+\end{tabular}
+}
+\end{adjustbox}
+}
+
+
+\textbf{Ziele}: Fairness, Effizienz, min. Antwort-/Warte-/Durchlaufzeit, max. Durchsatz, Vorhersehbarkeit.
+
+
+
+{\small
+\begin{adjustbox}{max width=\linewidth}
+{\scriptsize
+\begin{tabular}{ll}
+\toprule
+\textbf{Begriff} & \textbf{Definition} \\
+\midrule
+Antwortzeit & Wartezeit Anwender auf Bearbeitung \\
+Wartezeit & Σ aller Wartezeiträume \\
+Durchsatz & Prozesse/Zeit \\
+Durchlaufzeit & Bedienzeit + Warten \\
+Bedienzeit & CPU-Haltezeit \\
+\bottomrule
+\end{tabular}
+}
+\end{adjustbox}
+}
+
+
+
+\subsection{Algorithmen}
+
+
+{\small
+\begin{adjustbox}{max width=\linewidth}
+{\scriptsize
+\begin{tabular}{lll}
+\toprule
+\textbf{Verfahren} & \textbf{Typ} & \textbf{Prinzip} \\
+\midrule
+FCFS & Batch & Reihenfolge Eintreffen \\
+SJF/SPF/SPN & Batch & kürzester zuerst \\
+SRTN & Batch, preempt & preemptive SJF \\
+Round Robin & Dialog & FCFS + Quantum \\
+PS & Dialog & höchste Prio zuerst \\
+FSS & Dialog & 1/n CPU; schlechtestes Verhältnis zuerst \\
+Lottery & Dialog & n Verlosungen/s, m ms CPU \\
+EDF/MDF & RT & kleinste Deadline \\
+Polled Loop & RT & zyklische Abfrage \\
+Interrupt-gest. & RT & ISR auf Ereignis \\
+\bottomrule
+\end{tabular}
+}
+\end{adjustbox}
+}
+
+
+\begin{quote}
+SJF/SRTN: Bedienzeit unbekannt; \textbf{Starvation} möglich.
+\end{quote}
+
+\textbf{Quantum}: typ. \textbf{10–200 ms}; zu kurz=Overhead, zu lang=Verzögerung; höhere Taktrate→kürzer; E/A-intensiv höher, rechenintensiv kürzer.
+
+
+\textbf{Priorität}: statisch + dynamisch (kombiniert).
+
+
+
+{\small
+\begin{adjustbox}{max width=\linewidth}
+{\scriptsize
+\begin{tabular}{ll}
+\toprule
+\textbf{RT-Typ} & \textbf{Bedeutung} \\
+\midrule
+Hard & feste Schranke; Fehler bei Verspätung \\
+Soft & weiche Schranke; Verspätung lästig \\
+\bottomrule
+\end{tabular}
+}
+\end{adjustbox}
+}
+
+
+
+\subsection{Multi-Level}
+
+
+{\small
+\begin{adjustbox}{max width=\linewidth}
+{\scriptsize
+\begin{tabular}{ll}
+\toprule
+\textbf{Prio} & \textbf{Klasse} \\
+\midrule
+0 & System \\
+1 & Interaktiv \\
+2 & Allgemein \\
+4 & Batch \\
+\bottomrule
+\end{tabular}
+}
+\end{adjustbox}
+}
+
+
+Pro Stufe Queue; innerhalb RR. \textbf{Multi-Level-Feedback}: Klassenwechsel möglich (Praxis).
+
+
+
+\section{Interrupts}
+
+\textbf{Interrupt}: Unterbrechung sequenzieller Ausführung; Kontrolle an \textbf{ISR}.
+
+
+\textbf{Befehlszyklus}: Fetch → Execute → IRQ-Prüfung → ggf. PC=ISR-Adresse.
+
+
+
+{\small
+\begin{adjustbox}{max width=\linewidth}
+{\scriptsize
+\begin{tabular}{lll}
+\toprule
+\textbf{Verfahren} & \textbf{+} & \textbf{−} \\
+\midrule
+Polling & leicht & CPU-Verschwendung \\
+Interrupt & effizient & komplex \\
+\bottomrule
+\end{tabular}
+}
+\end{adjustbox}
+}
+
+
+
+{\small
+\begin{adjustbox}{max width=\linewidth}
+{\scriptsize
+\begin{tabular}{lll}
+\toprule
+\textbf{Klasse} & \textbf{Eigenschaft} & \textbf{Bsp.} \\
+\midrule
+Asynchron & unvorhersehbar & HW-IRQ (Platte, Netz) \\
+Synchron (Exception) & reproduzierbar & Syscall, Trap, Fault \\
+\bottomrule
+\end{tabular}
+}
+\end{adjustbox}
+}
+
+
+\begin{itemize}
+  \item \textbf{Fault}: Unterbrechung \textbf{vor} Ausführung (Page Fault)
+  \item \textbf{Trap}: Unterbrechung \textbf{nach} Ausführung (Div/0)
+\end{itemize}
+
+
+\subsection{Komponenten}
+\begin{itemize}
+  \item \textbf{IC} (Interrupt Controller): Signale → CPU
+  \item \textbf{ISR}: pro Interrupt-Typ; bei Geräten im Treiber
+  \item \textbf{IVT}: Kernelspeicher; Eintrag = ISR-Adresse, Index = Interrupt-Nr.
+  \item \textbf{IL}: Priorität pro Interrupt
+\end{itemize}
+
+\textbf{Ablauf}: IRQ (wenn IL erlaubt) → Status auf Stack → ISR via IVT (Kernel) → Bestätigung IC → Status wiederherstellen.
+
+
+\begin{quote}
+\textbf{Merke}: Ergebnis darf nicht von IRQ-Auftreten abhängen. Gleich-/niedriger-priorisierte werden während Bearbeitung nicht angenommen.
+\end{quote}
+
+
+\subsection{Maskierung}
+\begin{itemize}
+  \item \textbf{IMR}: Bit=1 → Interrupt aus; IC wiederholt bis angenommen
+\end{itemize}
+
+
+{\small
+\begin{adjustbox}{max width=\linewidth}
+{\scriptsize
+\begin{tabular}{ll}
+\toprule
+\textbf{Typ} & \textbf{Bedeutung} \\
+\midrule
+MI & maskierbar \\
+NMI & nicht maskierbar \\
+Präzise & komplett oder gar nicht \\
+Unpräzise & teilweise möglich \\
+\bottomrule
+\end{tabular}
+}
+\end{adjustbox}
+}
+
+
+
+\section{Synchronisation}
+
+\textbf{Nebenläufigkeit}: quasi-parallel (1 Kern) / echt-parallel (mehrere).
+
+
+\textbf{Probleme}: Blockieren, Verhungern, Verklemmung.
+
+
+\textbf{Race Condition}: Ergebnis hängt von Zugriffsreihenfolge ab. Voraussetzung: Nebenläufigkeit + gemeinsame BM.
+
+
+\textbf{Lost Update}: A=0, B=0, A schreibt, B schreibt → A verloren.
+
+
+
+\subsection{Kritischer Abschnitt}
+
+\textbf{KA}: nur 1 Prozess gleichzeitig.
+
+
+\textbf{Atomar}: logisch nicht unterbrechbar.
+
+
+\textbf{Mutex-Bedingungen}:
+
+\begin{enumerate}
+  \item Mutual Exclusion
+  \item Keine Annahmen über Geschwindigkeit/Anzahl CPUs
+  \item Außerhalb darf niemand andere blockieren
+  \item Fairness — jeder Wartende kommt rein
+\end{enumerate}
+
+\textbf{Implementierung}: Busy Waiting (CPU-Verschwendung) | Schlafen+Aufwecken.
+
+
+
+\subsection{Konzepte}
+\begin{enumerate}
+  \item Software (selten)
+  \item Interrupts sperren — bei MP unpraktisch
+  \item HW-Befehle (TSL/TAS)
+\end{enumerate}
+
+\textbf{Sperrvariable}: 0=frei, 1=belegt. \textbf{Spinlock}: Warteschleife (kurze Wartezeit).
+
+
+\textbf{TSL/TAS}: Test+Set ununterbrechbar in 1 Maschinenbefehl, 1 Speicherzyklus, CPU blockiert Bus, MP-tauglich.
+
+
+
+\subsection{Semaphor}
+
+Zähler + Warteschlange.
+
+
+
+{\small
+\begin{adjustbox}{max width=\linewidth}
+{\scriptsize
+\begin{tabular}{ll}
+\toprule
+\textbf{Op} & \textbf{Wirkung} \\
+\midrule
+\textbf{P() / Down} & Z>0: Z−−; sonst suspendieren \\
+\textbf{V() / Up} & Z++; ggf. aufwecken \\
+\bottomrule
+\end{tabular}
+}
+\end{adjustbox}
+}
+
+
+\begin{itemize}
+  \item \textbf{Mutex / Binär}: Z∈\{0,1\}
+  \item \textbf{Zählsemaphor}: max. n im KA
+\end{itemize}
+
+\texttt{P();KA;V();} | \texttt{V();...P();} → alle drin | \texttt{P();...P();} → niemand
+
+
+\begin{quote}
+Semaphore fehleranfällig.
+\end{quote}
+
+
+\subsection{Monitor}
+
+Objekt mit gem. Daten + Methoden + Türsteher (1 aktiv); Compiler erzeugt Sync.
+
+
+\textbf{Bedingungsvariablen} mit \texttt{wait(cond)} (warten, Monitor verlassen) / \texttt{signal(cond)} (aufwecken).
+
+
+
+{\small
+\begin{adjustbox}{max width=\linewidth}
+{\scriptsize
+\begin{tabular}{lll}
+\toprule
+\textbf{Konzept} & \textbf{Typ} & \textbf{Verhalten} \\
+\midrule
+Signal-and-Continue & Mesa & Signalisierender arbeitet weiter \\
+Signal-and-Wait & Hoare & Signalisierender verlässt sofort \\
+\bottomrule
+\end{tabular}
+}
+\end{adjustbox}
+}
+
+
+
+\section{Deadlock}
+
+\textbf{Deadlock}: Prozesse halten BM und warten auf weitere → Zyklus.
+
+
+
+{\small
+\begin{adjustbox}{max width=\linewidth}
+{\scriptsize
+\begin{tabular}{ll}
+\toprule
+\textbf{Begriff} & \textbf{Definition} \\
+\midrule
+Blockieren & P2 wartet auf von P1 gehaltene Ressource \\
+Verhungern & trotz Bereitschaft keine CPU \\
+\bottomrule
+\end{tabular}
+}
+\end{adjustbox}
+}
+
+
+
+\subsection{4 Bedingungen (alle gleichzeitig)}
+\begin{enumerate}
+  \item Mutual Exclusion
+  \item Hold and Wait
+  \item No Preemption
+  \item Circular Wait
+\end{enumerate}
+
+
+\subsection{Strategien}
+\begin{enumerate}
+  \item \textbf{Erkennen}: Betriebsmittelgraph + Zyklussuche
+  \item \textbf{Ignorieren} (Vogel-Strauß): extern abbrechen
+  \item \textbf{Vermeiden}: BS so bauen, dass unmöglich
+  \item \textbf{Verhindern}: Anforderung nur ohne zukünftigen DL
+\end{enumerate}
+
+
+\subsection{Klassische Probleme}
+\begin{itemize}
+  \item \textbf{Producer-Consumer} (Bounded Buffer)
+  \item \textbf{Reader-Writer}
+  \item \textbf{Dining Philosophers}: 5 Phil., 5 Gabeln, 2 nötig, max 2 essen, niemand verhungert
+\end{itemize}
+
+
+\section{Speicher — Grundlagen}
+
+\textbf{Realer AR}: physisch verbaut. \textbf{Phys. Adresse}: im phys. Speicher. \textbf{AR-Größe}: z.B. 4 GB=\{0…2³²−1\}.
+
+
+\textbf{Inhalte}: statisch (Code, Konstanten, init/uninit Daten) | dynamisch (Heap↑, Stack↓).
+
+
+\textbf{Techniken}: Mono → Multi feste Partitionen → Multi variable + Swapping → Multi virtuell + Paging.
+
+
+
+\section{Virtueller Speicher}
+
+\textbf{Virt. AR}: pro Prozess; aktuell genutzt im RAM, Rest auf Sekundärspeicher; Bedarf > RAM erlaubt.
+
+
+\textbf{Vorteile}: Programme>RAM, mehr Programme im RAM, AR>physisch, externe Fragmentierung untergeordnet.
+
+
+\textbf{Page}: virt. Block. \textbf{Page Frame}: RAM-Block. Gleich groß: typ. \textbf{1, 4, 8, 16, 64 KiB}.
+
+
+\textbf{Paging Area / Schattenspeicher}: HDD-Bereich für ausgelagerte Pages.
+
+
+
+{\small
+\begin{adjustbox}{max width=\linewidth}
+{\scriptsize
+\begin{tabular}{lll}
+\toprule
+\textbf{} & \textbf{Swapping} & \textbf{Paging} \\
+\midrule
+Granularität & ganzer Prozess & Teile \\
+MMU & ohne & mit \\
+\bottomrule
+\end{tabular}
+}
+\end{adjustbox}
+}
+
+
+
+\section{MMU}
+
+CPU-Funktionseinheit für virt→real; ersetzt Basis/Limit; Pfad: \texttt{CPU→virt→MMU→real→RAM}; greift auf Seitentabellen zu.
+
+
+
+\section{Seitentabellen}
+
+Pro virt. AR eine; enthält \textbf{Verweise auf Frames}, nicht Daten.
+
+
+\textbf{Adressaufbau}: virt = \texttt{i | d} → real = \texttt{f | d}.
+
+
+
+{\small
+\begin{adjustbox}{max width=\linewidth}
+{\scriptsize
+\begin{tabular}{ll}
+\toprule
+\textbf{Feld} & \textbf{Bedeutung} \\
+\midrule
+P/A & Present/Absent \\
+Protection (C/R/M) & r/w/x \\
+Frame f & Verweis \\
+M (Dirty) & verändert \\
+R (Reference) & Zugriff \\
+C & Caching \\
+\bottomrule
+\end{tabular}
+}
+\end{adjustbox}
+}
+
+
+
+{\small
+\begin{adjustbox}{max width=\linewidth}
+{\scriptsize
+\begin{tabular}{llll}
+\toprule
+\textbf{Art} & \textbf{Aufbau} & \textbf{+} & \textbf{−} \\
+\midrule
+Einstufig & Index→Frame & direkt & enormer Speicher (32-Bit/4KiB→>10⁶) \\
+Mehrstufig & `i1\textbackslash{} & i2\textbackslash{} & d` (32-Bit: 10+10+12) \\
+Invertiert & pro Frame; `pid\textbackslash{} & i\textbackslash{} & f`+Kollisionsliste; 12-Bit Hash \\
+\bottomrule
+\end{tabular}
+}
+\end{adjustbox}
+}
+
+
+\textbf{TLB}: CPU-Cache aktiver (virt→frame). Hit→direkt; Miss→Tabellenlookup.
+
+
+
+\section{Page Fault \& Ersetzung}
+
+\textbf{Page Fault}: Trap, Seite nicht im Frame; Bearbeitung im Kernel.
+
+
+
+{\small
+\begin{adjustbox}{max width=\linewidth}
+{\scriptsize
+\begin{tabular}{ll}
+\toprule
+\textbf{Begriff} & \textbf{Definition} \\
+\midrule
+Eingelagert & in Frame \\
+Ausgelagert & nicht in Frame \\
+Modifiziert & M=1 \\
+\bottomrule
+\end{tabular}
+}
+\end{adjustbox}
+}
+
+
+\begin{quote}
+Modifizierte Seiten nicht ohne Sicherung ersetzen.
+\end{quote}
+
+
+{\small
+\begin{adjustbox}{max width=\linewidth}
+{\scriptsize
+\begin{tabular}{lll}
+\toprule
+\textbf{} & \textbf{Demand} & \textbf{Prepaging} \\
+\midrule
+Politik & nur auf Anforderung & spekulativ \\
++ & nur Benötigtes & nutzt Lokalität \\
+\bottomrule
+\end{tabular}
+}
+\end{adjustbox}
+}
+
+
+\textbf{Ersetzungsablauf}: PF → kein freier Frame → SEA → Opfer A → wenn modifiziert: in Paging Area → B in Frame X.
+
+
+
+\section{SEA (Seitenersetzungsalgorithmen)}
+
+
+{\small
+\begin{adjustbox}{max width=\linewidth}
+{\scriptsize
+\begin{tabular}{ll}
+\toprule
+\textbf{Algo} & \textbf{Prinzip} \\
+\midrule
+\textbf{Optimal (Belady)} & längste Zukunft ungenutzt — nur Referenz \\
+\textbf{FIFO} & älteste eingelagert; R nicht nötig; ignoriert Nutzung \\
+\textbf{NRU} & 4 Klassen aus (R,M); R period. reset (\textasciitilde{}20 ms); Klasse 1 zuerst \\
+\textbf{Second Chance} & FIFO+R: R=1→R:=0+ans Ende; R=0→raus \\
+\textbf{Clock Page} & Second Chance zirkulär mit Zeiger; max 1 Runde \\
+\textbf{LRU} & längste ungenutzte; Matrix (n×n) oder Zeitstempel; teuer \\
+\textbf{NFU} & Zähler kleinster raus; Z+=R, R:=0; alte Zähler problematisch \\
+\textbf{Aging} & NFU + Bit-Shift vor Add; R = MSB; ≈ LRU \\
+\textbf{Working Set} & aktuell nötige Seiten ständig im RAM; Δ = Distanz \\
+\bottomrule
+\end{tabular}
+}
+\end{adjustbox}
+}
+
+
+\textbf{NRU-Klassen}:
+
+
+{\small
+\begin{adjustbox}{max width=\linewidth}
+{\scriptsize
+\begin{tabular}{llll}
+\toprule
+\textbf{Klasse} & \textbf{R} & \textbf{M} & \textbf{Verhalten} \\
+\midrule
+1 & 0 & 0 & keine Sicherung \\
+2 & 0 & 1 & schreiben \\
+3 & 1 & 0 & wahrsch. wieder \\
+4 & 1 & 1 & schreiben+wieder \\
+\bottomrule
+\end{tabular}
+}
+\end{adjustbox}
+}
+
+
+\textbf{LRU-Matrix}: Zugriff k → Zeile k=1, Spalte k=0; Max=zuletzt; Min=Opfer.
+
+
+\textbf{Pseudo-LRU}: Clock, Second Chance.
+
+
+\textbf{Lokalität (80/20)}: kleiner Code-Teil aktiv.
+
+
+
+\section{Lokalität}
+
+
+{\small
+\begin{adjustbox}{max width=\linewidth}
+{\scriptsize
+\begin{tabular}{lll}
+\toprule
+\textbf{} & \textbf{Zeitlich} & \textbf{Räumlich} \\
+\midrule
+Bezug & Zeit & Abstand \\
+Aussage & Adresse bald wieder & Nachbar bald \\
+Optim. & im Cache halten & Nachbarn mitladen \\
+\bottomrule
+\end{tabular}
+}
+\end{adjustbox}
+}
+
+
+
+\section{Fragmentierung}
+
+
+{\small
+\begin{adjustbox}{max width=\linewidth}
+{\scriptsize
+\begin{tabular}{lll}
+\toprule
+\textbf{Art} & \textbf{Wo} & \textbf{Bedeutung} \\
+\midrule
+Intern & innerhalb Block & Block>Bedarf (Ø 50\% letzte Seite) \\
+Extern & zwischen Blöcken & Lücken einzeln zu klein \\
+\bottomrule
+\end{tabular}
+}
+\end{adjustbox}
+}
+
+
+\begin{itemize}
+  \item RAM/HDD: beide; SSD: v.a. intern
+  \item \textbf{Defrag}: Blöcke zusammenhängend → Performance ↑ (HDD)
+\end{itemize}
+
+
+\section{Placement}
+
+\textbf{Verwaltung freier Bereiche}:
+
+\begin{itemize}
+  \item \textbf{Bitmap}: 1 Bit/Frame (1=belegt, 0=frei); freie = 0-Folgen
+  \item \textbf{Verkettete Liste}
+\end{itemize}
+
+
+{\small
+\begin{adjustbox}{max width=\linewidth}
+{\scriptsize
+\begin{tabular}{ll}
+\toprule
+\textbf{Strategie} & \textbf{Vorgehen} \\
+\midrule
+First-Fit & erster passend \\
+Next-Fit & First ab letzter Pos \\
+Best-Fit & kleinste passende \\
+Worst-Fit & größte Lücke \\
+Buddy & 2ᵏ-Halbierung \\
+Quick-Fit & Buddy, nicht doppelt \\
+\bottomrule
+\end{tabular}
+}
+\end{adjustbox}
+}
+
+
+
+\subsection{Buddy}
+\begin{itemize}
+  \item 2ᵏ-Blöcke; Anforderung auf 2ᵏ aufgerundet
+  \item Halbierung; benachbarte gleich-große freie = Buddies → Verschmelzen
+  \item + gegen externe Frag; − interne Frag durch Aufrundung
+\end{itemize}
+
+
+\subsection{Quick-Fit}
+Buddy ohne Verdopplung; Verschmelzen aufwändiger.
+
+
+
+\section{Festplatten / Cluster}
+
+\textbf{Cluster}: benachbarte Sektoren; kleinste Adressierungseinheit; ≥1 pro Datei.
+
+
+
+{\small
+\begin{adjustbox}{max width=\linewidth}
+{\scriptsize
+\begin{tabular}{ll}
+\toprule
+\textbf{Slack} & \textbf{Bedeutung} \\
+\midrule
+File Slack & ungenutzt im letzten Cluster \\
+RAM Slack & EOF→Sektorende, mit RAM-Inhalt \\
+Drive Slack & Sektoren bis Clustergrenze, mit HDD-Daten \\
+\bottomrule
+\end{tabular}
+}
+\end{adjustbox}
+}
+
+
+\begin{itemize}
+  \item Linux: Zufallszahlen statt RAM/Drive
+  \item Forensik: wertvoll
+  \item Große Partition→große Cluster→Slack↑
+\end{itemize}
+
+
+\section{Geräteverwaltung}
+
+Schnittstelle Geräte↔BS; Prozesse nur via Syscall.
+
+
+\textbf{Aufgaben}: Kommandos senden, IRQ-Bearbeitung, Fehlerbehandlung.
+
+
+\textbf{Architektur}: Northbridge (RAM, AGP) | Southbridge (PCI, S-ATA, SCSI, USB).
+
+
+\textbf{Transferraten}:
+
+
+{\small
+\begin{adjustbox}{max width=\linewidth}
+{\scriptsize
+\begin{tabular}{ll}
+\toprule
+\textbf{Gerät} & \textbf{Rate} \\
+\midrule
+Keyboard & \textasciitilde{}10 B/s \\
+Maus & \textasciitilde{}100 B/s \\
+Laserdrucker & \textasciitilde{}100 KB/s \\
+ISA & 16 MB/s \\
+USB1/2/3 & 12 / 480 Mbit/s / 5 Gbit/s \\
+Fast/Gigabit Ethernet & 100 Mbit/s / bis 10 Gbit/s \\
+PCIe & 32 Gbit/s \\
+ATA / SATA & 130 MB/s / \textasciitilde{}2 GB/s \\
+\bottomrule
+\end{tabular}
+}
+\end{adjustbox}
+}
+
+
+
+\subsection{Treiber}
+\textbf{Aufgaben}: bekanntmachen, Controller init, Befehle übersetzen, Pufferung, ISR, Sync.
+
+
+
+{\small
+\begin{adjustbox}{max width=\linewidth}
+{\scriptsize
+\begin{tabular}{llll}
+\toprule
+\textbf{Klasse} & \textbf{Übertragung} & \textbf{Bsp.} & \textbf{Funktionen} \\
+\midrule
+Block & komplette Blöcke 512–32768 B, adressierbar & HDD, Band, CD/DVD & initDevice, readBlock, writeBlock, handleInterrupt \\
+Zeichen & Datenstrom & Maus, Tastatur, NIC, ser/par/USB & initDevice, readChar, writeChar, handleInterrupt \\
+\bottomrule
+\end{tabular}
+}
+\end{adjustbox}
+}
+
+
+
+\subsection{Controller}
+Register: Schreiben→Befehl; Lesen→Status. Syscalls: open/close/read/write.
+
+
+
+{\small
+\begin{adjustbox}{max width=\linewidth}
+{\scriptsize
+\begin{tabular}{llll}
+\toprule
+\textbf{Methode} & \textbf{Adressraum} & \textbf{+} & \textbf{−} \\
+\midrule
+\textbf{I/O-Port} & getrennt (8/16-Bit Portnr.) & einfach & spez. Port-Befehle \\
+\textbf{Memory-Mapped I/O} & gemeinsam (oben) & Zugriff wie RAM, leichter Schutz & echt/gemappt aufwändig \\
+\bottomrule
+\end{tabular}
+}
+\end{adjustbox}
+}
+
+
+\begin{quote}
+Beide kosten viel CPU-Zeit.
+\end{quote}
+
+
+\subsection{DMA}
+
+Block-Transfer Controller↔RAM via DMA-Controller; CPU nur Anfang/Ende.
+
+
+\textbf{+}: CPU-Entlastung, Geschwindigkeit↑, weniger IRQ (1 statt 1/Wort), spezialisiert.
+
+
+\textbf{Ablauf (Lesen)}: CPU programmiert DMA (Quelle, Ziel, n) → Lese-Cmd an Platten-Ctrl → DMA fordert an → Platte→DMA→RAM → Abschluss → \textbf{1 IRQ} → ISR.
+
+
+
+\section{Dateiverwaltung}
+
+\textbf{CRUD}: Create, Read, Update, Delete.
+
+
+\textbf{Dienste}: Datei/Katalog Erzeugen/Löschen/Kopieren, Verknüpfungen, Umbenennen.
+
+
+
+\section{Dateisystem}
+
+\textbf{Aufgaben}: CRUD, Frei/Belegt-Verwaltung, Strukturierung, Verzeichnisse, Attribute, Rechte.
+
+
+
+{\small
+\begin{adjustbox}{max width=\linewidth}
+{\scriptsize
+\begin{tabular}{ll}
+\toprule
+\textbf{Speicherung} & \textbf{Eigenschaft} \\
+\midrule
+n aufeinanderfolgende Bytes & Größenänderung→Verschiebung \\
+Aufteilung in Blöcke & Standard, flexibel \\
+\bottomrule
+\end{tabular}
+}
+\end{adjustbox}
+}
+
+
+
+{\small
+\begin{adjustbox}{max width=\linewidth}
+{\scriptsize
+\begin{tabular}{ll}
+\toprule
+\textbf{BS} & \textbf{Dateisysteme} \\
+\midrule
+Apple & DOS, ProDOS, MFS, HFS/HFSX/HFS+, APFS \\
+Linux & ext, ext2, ext3, ext4, ReiserFS \\
+Windows & FAT12/16/32, exFAT, VFAT, NTFS, ReFS \\
+\bottomrule
+\end{tabular}
+}
+\end{adjustbox}
+}
+
+
+
+\section{Dateisystemcheck}
+
+\textbf{Optionen}: 1) immer konsistent halten | 2) Journal/Log.
+
+
+
+\subsection{Journaling}
+
+\begin{quote}
+Log-Eintrag \textbf{immer vor} Änderung.
+\end{quote}
+
+\textbf{Transaktion}: atomar (komplett/nicht). Bsp.: Erzeugen/Löschen/Erweitern/Verkürzen/Umbenennen, Attribute.
+
+
+\textbf{Inkonsistenzen}: Stromausfall, HW-Ausfall, Absturz (z.B. Verzeichniseintrag fehlt; Block belegt aber nicht markiert).
+
+
+\textbf{Wiederherstellung}: beim Boot Protokoll abgleichen.
+
+
+
+{\small
+\begin{adjustbox}{max width=\linewidth}
+{\scriptsize
+\begin{tabular}{lll}
+\toprule
+\textbf{Art} & \textbf{Inhalt} & \textbf{Eigenschaft} \\
+\midrule
+Meta-Daten & Operationen ohne Inhalt & Datenverlust möglich \\
+Vollständig/Data & inkl. Daten & doppeltes Schreiben, Original gesichert \\
+\bottomrule
+\end{tabular}
+}
+\end{adjustbox}
+}
+
+
+Meta-Daten: Verzeichnisreferenz, Rechte, Eigentümer, Blöcke.
+
+
+
+\subsection{Log-structured}
+
+Ganze Platte = Log; \textbf{Copy-on-Write}; Verweise umgebogen.
+
+
+\textbf{Aufbau}: Log Head → Daten → Empty → Daten → Log Tail.
+
+
+\textbf{Schreiben}: RAM-Puffer → periodisch als Segment ans Ende.
+
+
+\textbf{Cleaner}: Zusammenfassung erstes Segment lesen → I-Node-Map prüfen → aktuell: in Speicher+neu schreiben | nicht: löschen+freigeben.
+
+
+\textbf{Nachteile}: Springen Log↔Daten; doppeltes Schreiben (Data-J.); starke Fragmentierung (Log-struct.).
+
+
+
+\section{Backup}
+
+
+{\small
+\begin{adjustbox}{max width=\linewidth}
+{\scriptsize
+\begin{tabular}{llll}
+\toprule
+\textbf{Art} & \textbf{Basis} & \textbf{Speicher} & \textbf{Restore} \\
+\midrule
+Voll & — & sehr hoch & nur Voll \\
+Inkrementell & letztes Backup & niedrig & Voll + alle Inkremente \\
+Differentiell & letztes Vollbackup & mittel & Voll + gewünschtes Diff \\
+\bottomrule
+\end{tabular}
+}
+\end{adjustbox}
+}
+
+
+\begin{itemize}
+  \item Inkrementell: fehlt eines → Dateien fehlen
+  \item Differentiell: einmal verändert → bei jedem Diff erneut
+\end{itemize}
+
+
+\section{Meltdown \& Spectre}
+
+\textbf{Meltdown}: liest geschützten RAM via CPU-Designfehler; Google PZ 28.7.2017, public 3.1.2018; alle Intel ab 1995; \textbf{Seitenkanal über Cache}.
+
+
+
+\subsection{Grundlagen}
+
+
+{\small
+\begin{adjustbox}{max width=\linewidth}
+{\scriptsize
+\begin{tabular}{ll}
+\toprule
+\textbf{Modus} & \textbf{Rechte} \\
+\midrule
+Kernel & uneingeschränkt, gesamte HW+Speicher \\
+User & nur via API \\
+\bottomrule
+\end{tabular}
+}
+\end{adjustbox}
+}
+
+
+\textbf{Speicherisolation}: pro Prozess virt. AR + Page-Table; KW=Flush+Laden (teuer).
+
+
+\textbf{Kernel-Einbettung}: Performance → Kernel-AR + ges. phys. Speicher in \textbf{jeder} User-PT, geschützt durch \textbf{Supervisor-Bit}. User→Kernel-Adresse = \textbf{Seg-Fault}.
+
+
+
+\subsection{CPU-Optimierungen}
+
+\textbf{Pipelining (5)}: FETCH | DECODE | LOAD | EXECUTE | WRITE.
+
+
+\textbf{Out-of-Order}: Befehle umsortiert, wenn Daten warten.
+
+
+\textbf{Speculative}: rät vorab; Fehl → verworfen, \textbf{aber Cache/TLB nicht zurückgesetzt}; Schutzregel gilt nicht → Exploit.
+
+
+
+\subsection{Angriff}
+
+\textbf{Prinzip}: Speculative + Cache bleibt + Cache-Timing.
+
+
+\begin{enumerate}
+  \item Speculative greift auf Kernel-Adresse zu
+  \item Daten in Cache
+  \item Seg-Fault — Cache befüllt
+  \item Flush\&Reload (Thread 2) misst Latenz
+\end{enumerate}
+
+\textbf{Probe-Array}:
+
+\begin{lstlisting}
+ProbeArray = [ASCII];
+secret = readCharacter[5000];
+character = ProbeArray[secret];
+\end{lstlisting}
+
+Schnellster Index = Geheimnis → iterieren.
+
+
+
+\subsection{Reparatur}
+
+
+{\small
+\begin{adjustbox}{max width=\linewidth}
+{\scriptsize
+\begin{tabular}{ll}
+\toprule
+\textbf{Maßnahme} & \textbf{Wirkung} \\
+\midrule
+HW-Abschaltung OoO/Branch/Spec & drastischer Performance-Verlust \\
+OS-Patch & \textasciitilde{}5–30\% Einbuße \\
+\textbf{KASLR} & zufällige Kernel-Adressen \\
+\textbf{KAISER/KPTI} & 2 AR (User vs. Kernel); Kernel nicht mehr in User-PT \\
+Hardsplit (Zukunft) & feste HW-Hälften \\
+AMD & keine Spekulation auf geschützten Bereich \\
+\bottomrule
+\end{tabular}
+}
+\end{adjustbox}
+}
+
+
+\begin{itemize}
+  \item KASLR-Schwäche: Spraying + Side-Channel
+  \item KAISER verlangsamt Syscalls + IRQ
+\end{itemize}
+
+\begin{quote}
+Spectre deutlich schwerer zu patchen.
+\end{quote}
+
+
+\subsection{Recap}
+\begin{itemize}
+  \item Designfehler, kein SW-Bug
+  \item Löschen/verschlüsseln keine Daten
+  \item Nicht remote — Code muss lokal laufen
+  \item Hebelt Isolation Prozess↔Prozess + Prozess↔Kernel auf
+  \item Meltdown: leichter ausnutzbar + leichter behebbar als Spectre
+\end{itemize}
+
+
+\section{Geschichte (Eckdaten)}
+
+
+{\small
+\begin{adjustbox}{max width=\linewidth}
+{\scriptsize
+\begin{tabular}{ll}
+\toprule
+\textbf{Jahr} & \textbf{Ereignis} \\
+\midrule
+70 v.Chr. & Antikythera \\
+1623 & Schickard \\
+1642 & Pascaline (6-stellig Add.) \\
+1801 & Jacquard-Webstuhl \\
+1832 & Babbage; Lovelace (Bernoulli) \\
+1887 & Hollerith → IBM \\
+1905 & Vakuumdiode (Fleming) \\
+1938/41 & Zuse Z1/Z3 \\
+1944 & Harvard Mark I \\
+1946 & ENIAC \\
+1947 & Williams-Kilburn; Transistor \\
+1958/59 & IC (Kilby/Noyce) \\
+1964 & IBM OS/360 \\
+1968 & Unix; Maus (Engelbart) \\
+1969 & ARPANET; Apollo 11 \\
+1971 & Intel 4004 \\
+1976 & Apple I; IP \\
+1981 & IBM 5150 \\
+1985 & Windows 1.0 \\
+1987/90 & Minix → Linux \\
+1995 & Win95 (32-Bit) \\
+2007 & iPhone \\
+2023 & Frontier 1,194 EFLOPS \\
+\bottomrule
+\end{tabular}
+}
+\end{adjustbox}
+}
+
+
+\textbf{Fehler-Fälle}: Ariane 5 (64→16-Bit Overflow), Mars Climate Orbiter (SI vs. imperial Faktor 4,45), F-16 (negative Breitengrade), Spectre/Meltdown.
+
+
+
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{multicols}
+\end{document}

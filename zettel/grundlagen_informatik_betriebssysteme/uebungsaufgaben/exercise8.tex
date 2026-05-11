@@ -1,0 +1,436 @@
+% ============================================================
+%  Übungsaufgaben Template (my_dhbw Stil, uebung_*.tex)
+%  Header "Übungsblatt", grün eingefärbte <details>-Lösungen.
+%  Renderer: pdflatex (zweimal)
+% ============================================================
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+\usepackage[top=2cm, bottom=2cm, left=2.4cm, right=2.4cm, footskip=1cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{ltablex}
+\keepXColumns
+\usepackage{colortbl}
+\usepackage[most,breakable]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{pdflscape}
+\usepackage{titlesec}
+\usepackage[colorlinks=true, linkcolor=accent, urlcolor=accent]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme ─────────────────────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{loesung}{RGB}{0, 100, 0}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{240, 252, 240}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer ─────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\footnotesize\color{accent}\nichttitle}
+\fancyhead[R]{\footnotesize\color{accent}\nichtsubtitle}
+\fancyfoot[R]{\footnotesize\color{accent}Blatt \thepage\,/\,\pageref{LastPage}}
+
+% ── Typografie ────────────────────────────────────────────────
+\titleformat{\section}
+    {\color{accent}\large\bfseries}{}{0pt}{}
+    [\vspace{-4pt}\color{accent}\rule{\linewidth}{1.5pt}]
+\titleformat{\subsection}
+    {\normalsize\bfseries\color{accent!85!black}}{}{0pt}{}{}
+\titleformat{\subsubsection}
+    {\small\bfseries\color{accent!70!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{10pt}{3pt}
+\titlespacing*{\subsection}{0pt}{6pt}{2pt}
+\titlespacing*{\subsubsection}{0pt}{4pt}{1pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\renewcommand{\arraystretch}{1.2}
+\setlist[itemize]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.4em}
+\setlist[enumerate]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.6em}
+
+% ── Boxen: solutionbox = Lösungsbox in grün ──────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={Abbildung: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={Tabelle: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{solutionbox}[1]{
+  enhanced,
+  colback=solutionbg, colframe=loesung,
+  title={#1}, fonttitle=\small\bfseries,
+  coltitle=white, colbacktitle=loesung,
+  breakable, before skip=8pt, after skip=8pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=single, framerule=0pt,
+  xleftmargin=4pt, xrightmargin=4pt,
+  aboveskip=6pt, belowskip=6pt,
+  keepspaces=true
+}
+
+\providecommand{\nichttitle}{Übungsblatt}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Betriebssysteme}
+\renewcommand{\nichtsubtitle}{Übungsblatt 8}
+
+
+\begin{document}
+
+\begin{center}
+{\Large\bfseries\color{accent}\nichttitle}
+\ifx\nichtsubtitle\empty\else
+  \\[2pt]{\normalsize\color{accent!80!black}\nichtsubtitle}
+\fi
+\\[2pt]
+\color{accent}\rule{0.4\linewidth}{0.8pt}\color{black}
+\end{center}
+\vspace{4pt}
+
+% ── BODY ──────────────────────────────────────────────────────
+
+\section{Übungsblatt 8 — Interrupts}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 1 — Klassifikation und Konsequenz \textit{(10 Punkte)}}\mbox{}\\[2pt]
+
+a) Erklären Sie den Unterschied zwischen \textbf{synchronen} und \textbf{asynchronen} Interrupts und nennen Sie für jede Klasse je ein Beispiel aus dem Kapitel. \textit{(4 P.)}
+
+
+b) Ordnen Sie die folgenden Ereignisse jeweils einer der Unterklassen \textbf{Fault} oder \textbf{Trap} zu und begründen Sie Ihre Wahl mit Bezug auf den Befehlszyklus (Fetch → Execute → IRQ-Prüfung):
+
+\begin{itemize}
+  \item Zugriff auf eine ausgelagerte Speicherseite
+\begin{itemize}
+  \item Division \texttt{42 / 0} in einer ALU-Operation
+  \item Ausführung eines \texttt{INT 0x80}-Systemcalls \textit{(6 P.)}
+\end{itemize}
+\end{itemize}
+
+\textbf{Lösung:}
+
+
+a) \textbf{Asynchrone} Interrupts treten nicht vorhersehbar und nicht reproduzierbar auf, weil sie von externen Quellen ausgelöst werden, die unabhängig vom laufenden Programm arbeiten (z. B. Hardware-Taktgeber, Plattenblock-Fertigmeldung, Netzwerkkarte). \textbf{Synchrone} Interrupts (Exceptions) sind direkt durch die aktuelle Befehlsausführung verursacht, also vorhersehbar und reproduzierbar (z. B. Systemcalls, Traps, Faults).
+
+
+b)
+
+\begin{itemize}
+  \item \textbf{Page Fault (ausgelagerte Seite)} → \textbf{Fault}: Die Adressübersetzung scheitert \textit{vor} erfolgreicher Ausführung des Speicherzugriffs. Der Befehl muss nach Einlagern der Seite wiederholt werden, daher Unterbrechung \textbf{vor} Ausführung.
+  \item \textbf{Division durch 0} → \textbf{Trap}: Die Division wird gestartet (Operanden gelesen, ALU aktiviert) und liefert dabei das ungültige Ergebnis — die Unterbrechung tritt \textbf{nach} Ausführung auf; ein Wiederholen des Befehls würde nichts ändern.
+  \item \textbf{\texttt{INT 0x80}-Systemcall} → \textbf{Trap}: Der Befehl wird vollständig ausgeführt und löst dabei beabsichtigt den Wechsel in den Kernelmodus aus. Der PC zeigt nach Rückkehr auf den Folgebefehl, die Unterbrechung erfolgt \textbf{nach} Ausführung.
+\end{itemize}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 — Polling vs. Interrupt: Berechnung \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Eine eingebettete CPU läuft mit 200 MHz (also 200 · 10⁶ Zyklen/Sekunde). Ein Sensor liefert im Mittel \textbf{500 Ereignisse pro Sekunde}.
+
+
+\begin{itemize}
+  \item \textbf{Polling-Variante}: Die CPU prüft alle 1 µs ein Statusbit. Ein Polling-Check kostet 8 Zyklen.
+  \item \textbf{Interrupt-Variante}: Pro Ereignis fallen an: Status sichern (40 Zyklen), IVT-Lookup (6 Zyklen), ISR-Ausführung (120 Zyklen), Bestätigung an IC (4 Zyklen), Status wiederherstellen (40 Zyklen).
+\end{itemize}
+
+a) Berechnen Sie für beide Verfahren die CPU-Last (Anteil der Zyklen pro Sekunde, der für die Sensorbearbeitung draufgeht). \textit{(8 P.)}
+
+
+b) Bei welcher Ereignisrate λ (Ereignisse/s) wären beide Verfahren gleich teuer? Welches Verfahren ist oberhalb dieser Rate günstiger? \textit{(5 P.)}
+
+
+c) Begründen Sie mit Bezug auf das Kapitel, warum diese „Break-Even-Rate" in der Praxis trotzdem selten der allein entscheidende Faktor ist. \textit{(2 P.)}
+
+
+\textbf{Lösung:}
+
+
+a) Verfügbar: 200 · 10⁶ Zyklen/s.
+
+
+\textbf{Polling}: Prüfung alle 1 µs ⇒ 10⁶ Checks/s · 8 Zyklen = \textbf{8 · 10⁶ Zyklen/s}.
+
+Last = 8 · 10⁶ / 200 · 10⁶ = \textbf{4,0 \%}.
+
+
+\textbf{Interrupt}: Kosten pro Ereignis = 40 + 6 + 120 + 4 + 40 = \textbf{210 Zyklen}.
+
+Bei 500 Ereignissen/s: 500 · 210 = \textbf{105 000 Zyklen/s}.
+
+Last = 1,05 · 10⁵ / 2 · 10⁸ ≈ \textbf{0,053 \%}.
+
+
+Interrupt ist hier ca. \textbf{76× günstiger} — exakt der Vorteil aus der Tabelle „Polling: CPU-Verschwendung; Interrupt: effizient".
+
+
+b) Gleich teuer, wenn 210 · λ = 8 · 10⁶
+
+⇒ λ = 8 · 10⁶ / 210 ≈ \textbf{38 095 Ereignisse/s}.
+
+
+Oberhalb von \textasciitilde{}38 kHz wird \textbf{Polling günstiger}, weil dann die Pro-Ereignis-Kosten des Interrupts (Kontextsicherung, IVT, …) den festen Polling-Overhead übersteigen.
+
+
+c) Das Kapitel betont, dass Interrupt-Bearbeitung \textbf{komplexer} ist (Priorisierung, Maskierung, ISR pro Typ, Kernelmodus-Wechsel). Polling vermeidet diese Komplexität, ist aber bei seltenen Ereignissen Verschwendung. Bei sehr hohen Raten kollabiert die Interrupt-Variante zudem in „Interrupt-Sturm"-Szenarien (jeder neue IRQ kommt vor Abschluss des vorigen) — die reine Zyklenrechnung ignoriert Latenz, Determinismus und Echtzeitanforderungen.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 — IVT und Prioritäten durchspielen \textit{(18 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben sei folgende (vereinfachte) Interrupt-Vektor-Tabelle eines Systems. Aktuelles \textbf{Interrupt-Level der CPU = 3} (d. h. nur Interrupts mit IL > 3 werden angenommen).
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Nr.}} & {\color{white}\textbf{Quelle}} & {\color{white}\textbf{IL}} & {\color{white}\textbf{ISR-Adresse}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+0 & Timer & 7 & 0x1000 \\
+1 & Tastatur & 4 & 0x1080 \\
+2 & Festplatte & 5 & 0x1100 \\
+3 & Netzwerk & 6 & 0x1180 \\
+4 & Drucker & 2 & 0x1200 \\
+\end{tabularx}
+}
+
+
+Bei \texttt{t = 0} läuft ein Anwenderprogramm (Userspace). Folgende IRQs treffen ein:
+
+
+\begin{lstlisting}
+t = 10 µs : Drucker (Nr. 4)
+t = 12 µs : Festplatte (Nr. 2)
+t = 13 µs : Timer (Nr. 0)         ← während Festplatten-ISR
+t = 14 µs : Tastatur (Nr. 1)      ← während Timer-ISR
+\end{lstlisting}
+
+
+Jede ISR braucht 5 µs reine Bearbeitungszeit (Sichern/Wiederherstellen vernachlässigt).
+
+
+a) Geben Sie für jeden IRQ an, ob er angenommen, verzögert (vom IC wiederholt) oder ignoriert wird. Begründen Sie mit Bezug auf IL und CPU-Zustand. \textit{(8 P.)}
+
+
+b) Zeichnen Sie als Tabelle den zeitlichen Ablauf (Spalten: Zeitintervall, ausgeführte Routine, Modus). \textit{(7 P.)}
+
+
+c) Welche ISR wird \textbf{als letzte} abgeschlossen und zu welchem Zeitpunkt? \textit{(3 P.)}
+
+
+\textbf{Lösung:}
+
+
+a)
+
+\begin{itemize}
+  \item \textbf{t = 10, Drucker (IL = 2)}: CPU-IL = 3 ⇒ IL der Quelle ≤ 3 ⇒ \textbf{abgewiesen / nicht angenommen}. Laut Kapitel: „gleich- oder niedriger-priorisierte werden während der Bearbeitung nicht angenommen" — Sinngemäß auch im Userspace, wenn CPU-IL bereits ≥ Quelle-IL gesetzt ist; der IC \textbf{wiederholt die Anfrage}, bis das CPU-IL gesenkt wird.
+  \item \textbf{t = 12, Festplatte (IL = 5)}: 5 > 3 ⇒ \textbf{angenommen}. CPU-IL wird auf 5 angehoben.
+  \item \textbf{t = 13, Timer (IL = 7)}: 7 > 5 ⇒ \textbf{angenommen} (verdrängt Festplatten-ISR — geschachtelter Interrupt). CPU-IL = 7.
+  \item \textbf{t = 14, Tastatur (IL = 4)}: 4 < 7 ⇒ während Timer-ISR \textbf{abgewiesen}, IC wiederholt. Sobald CPU-IL ≤ 3 wird, wird sie angenommen.
+\end{itemize}
+
+b)
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Zeit (µs)}} & {\color{white}\textbf{Aktivität}} & {\color{white}\textbf{Modus}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+0–12 & Anwenderprogramm & User \\
+12–13 & ISR Festplatte (1 µs gelaufen) & Kernel \\
+13–18 & ISR Timer (volle 5 µs) & Kernel \\
+18–22 & ISR Festplatte fortgesetzt (4 µs) & Kernel \\
+22–27 & ISR Tastatur (war pending, IL = 4) & Kernel \\
+27–32 & ISR Drucker (war pending, IL = 2) & Kernel \\
+ab 32 & Anwenderprogramm fortgesetzt & User \\
+\end{tabularx}
+}
+
+
+(Anmerkung: Drucker-IRQ wird angenommen, sobald CPU-IL wieder ≤ 2 ist — also nach Abschluss aller höher-priorisierten ISRs.)
+
+
+c) \textbf{ISR Drucker} wird als letzte um \textbf{t = 32 µs} abgeschlossen.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 — Transfer: ISR-Design für eine neue Hardware \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+Sie integrieren eine neue Beschleunigerkarte (NPU) in ein bestehendes Betriebssystem. Die Karte signalisiert „Inferenz fertig" per IRQ. Eine Inferenz dauert ca. 2 ms; das Ergebnis muss anschließend in einen User-Buffer kopiert werden (≈ 200 µs Kopierzeit).
+
+
+a) Skizzieren Sie als Pseudocode eine \textbf{kurze, korrekte ISR} für diesen IRQ. Welche der fünf Schritte aus dem Kapitel-Ablauf (1. Unterbrechen — 5. Wiederherstellen) erledigt die ISR selbst, welche das BS/die Hardware? \textit{(8 P.)}
+
+
+b) Begründen Sie, warum der \textbf{Datenkopiervorgang (200 µs) NICHT} in die ISR gehört. Beziehen Sie sich auf den Merksatz „Ergebnis darf nicht von Interrupt-Auftreten abhängen" und auf die Maskierungsregel. \textit{(6 P.)}
+
+
+c) Wo wird die ISR-Adresse eingetragen, und welche Komponente sorgt dafür, dass beim Eintreffen des IRQ genau diese ISR aufgerufen wird? \textit{(3 P.)}
+
+
+d) Sollte dieser IRQ als \textbf{MI} oder \textbf{NMI} konfiguriert werden? Begründen Sie. \textit{(3 P.)}
+
+
+\textbf{Lösung:}
+
+
+a) Pseudocode (innerhalb des Treibers, im Kernelmodus):
+
+
+\begin{lstlisting}
+ISR_NPU():
+    ack_npu_hardware()                  // Quittung an die Karte (Pegel löschen)
+    result_ptr = read_npu_result_register()
+    enqueue_deferred_work(result_ptr)   // späteren Kopiervorgang anstoßen
+    send_eoi_to_interrupt_controller()  // Schritt 4: Bestätigung an IC
+    return                              // löst Schritt 5 aus (iret)
+\end{lstlisting}
+
+
+Aufgaben-Verteilung der fünf Schritte aus dem Kapitel:
+
+\begin{itemize}
+  \item \textbf{(1)} Unterbrechen, falls IL erlaubt → \textbf{Hardware/CPU}
+  \item \textbf{(2)} Prozessorstatus auf Stack sichern → \textbf{Hardware/CPU}
+  \item \textbf{(3)} ISR via IVT suchen und im Kernelmodus ausführen → \textbf{CPU + ISR-Code} (ISR selbst ist Schritt 3)
+  \item \textbf{(4)} Bestätigung an IC → \textbf{ISR} (\texttt{send\_eoi})
+  \item \textbf{(5)} Status wiederherstellen, Rücksprung → \textbf{CPU} (durch \texttt{iret})
+\end{itemize}
+
+b) Während der ISR-Bearbeitung sind gleich-/niedriger-priorisierte IRQs \textbf{maskiert}. Würden 200 µs in der ISR verbracht, blockiert das systemweit alle Geräte vergleichbarer Priorität → Latenz-Spikes, ggf. verlorene IRQs anderer Geräte (z. B. Tastatur, Timer-Tick → Scheduler-Drift). Genau das verletzt den Merksatz: \textbf{Das Ergebnis des Systems würde davon abhängen, wann der NPU-IRQ kommt} (lange ISR ⇒ verzögerter Timer-Tick ⇒ andere Prozesse erhalten weniger Rechenzeit). Daher: ISR nur quittieren und Arbeit als deferred/Bottom-Half/Tasklet \textbf{außerhalb der maskierten Phase} ausführen.
+
+
+c) Eintrag in die \textbf{Interrupt-Vektor-Tabelle (IVT)} an einer vom BS festgelegten Stelle im Kernelspeicher, Index = Interrupt-Nummer. Der \textbf{Interrupt Controller (IC)} empfängt das Signal der NPU, bildet das Hardware-IRQ auf eine Interrupt-Nummer ab und meldet diese der CPU; die CPU benutzt sie als Index in die IVT und springt zur dort eingetragenen ISR-Adresse.
+
+
+d) \textbf{MI (Maskable Interrupt)}. NMI ist reserviert für nicht ignorierbare, sicherheitskritische Ereignisse (Hardwarefehler, Watchdog). Eine fertige NPU-Inferenz ist funktional, aber nicht systemkritisch — sie muss maskierbar sein, damit z. B. während kurzer kritischer Sektionen des Schedulers keine Verdrängung passiert.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 — Code-Analyse: Was ist hier kaputt? \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Ein Praktikant hat folgende ISR für einen seriellen Eingabe-Interrupt geschrieben (vereinfachter Pseudocode, x86-artig):
+
+
+\begin{lstlisting}
+ISR_Serial:
+    ; (kein Sichern von Registern)
+    mov  al, [UART_DATA]          ; Byte aus UART lesen
+    call printf                    ; "Got byte: %x\n", al  -- Ausgabe via libc
+    cmp  al, 0x04                  ; EOT?
+    je   shutdown_system           ; ggf. Shutdown
+    ; (kein EOI an Interrupt-Controller)
+    ret                            ; einfaches ret, kein iret
+\end{lstlisting}
+
+
+Finden Sie \textbf{mindestens vier} Fehler bzw. gravierende Mängel und erklären Sie jeweils mit Bezug auf das Kapitel, was schiefläuft und wie es zu beheben ist. \textit{(15 P.)}
+
+
+\textbf{Lösung:}
+
+
+\begin{enumerate}
+  \item \textbf{Kein Sichern des Prozessorstatus}: Schritt 2 des Kapitel-Ablaufs („Prozessorstatus sichern") wird übersprungen. Zwar pusht die CPU bei Interrupt-Eintritt automatisch Flags/CS/IP, aber \textbf{General-Purpose-Register} (hier \texttt{al}/\texttt{eax}) werden überschrieben, ohne sie zu retten. Folge: Das unterbrochene Programm liest danach falsche Werte. \textbf{Fix}: \texttt{pushad} / \texttt{pusha} am Anfang, \texttt{popad} vor \texttt{iret}.
+\end{enumerate}
+
+\begin{enumerate}
+  \item \textbf{\texttt{call printf} aus einer ISR}: \texttt{printf} ist eine \textbf{Userspace-Bibliotheksfunktion}, nicht reentrant, allokiert ggf. Locks/Heap und macht Syscalls. ISRs laufen jedoch im \textbf{Kernelmodus} (Schritt 3). Das ist ein Modusbruch und führt zu Deadlocks (z. B. wenn der Interrupt eine printf-Ausgabe selbst unterbricht und denselben Lock will). \textbf{Fix}: maximal in einen Kernel-Ringpuffer schreiben, Logging deferred erledigen.
+\end{enumerate}
+
+\begin{enumerate}
+  \item \textbf{Kein EOI / keine Bestätigung an den Interrupt-Controller}: Schritt 4 fehlt. Laut Kapitel „IC wiederholt Anfrage bis angenommen" — ohne Quittung feuert der Controller den IRQ erneut, die ISR wird endlos getriggert (Interrupt-Sturm). \textbf{Fix}: vor dem Rücksprung EOI an den IC senden.
+\end{enumerate}
+
+\begin{enumerate}
+  \item \textbf{\texttt{ret} statt \texttt{iret}}: Ein normales \texttt{ret} poppt nur die Rücksprungadresse, \textbf{nicht} Flags und ggf. CS — der von der CPU gesicherte Interrupt-Frame bleibt auf dem Stack liegen, der CPU-Status (insb. Interrupt-Enable-Flag, Privilegmodus) wird nicht korrekt restauriert. Schritt 5 schlägt fehl. \textbf{Fix}: \texttt{iret} benutzen.
+\end{enumerate}
+
+\begin{enumerate}
+  \item \textit{(Bonus)} \textbf{\texttt{shutdown\_system} direkt aus der ISR}: Lange/blockierende Aktion in maskierter Phase — verletzt das Maskierungsprinzip und verzögert höher-priorisierte Interrupts. Sollte in eine Deferred-Routine ausgelagert werden.
+\end{enumerate}
+
+\begin{enumerate}
+  \item \textit{(Bonus)} \textbf{Lesen aus \texttt{[UART\_DATA]} ohne Statusprüfung}: Wenn dieselbe ISR auch andere UART-Ursachen abdeckt (Line-Status etc.), unterscheidet der Code nicht — die ISR reagiert gleich auf unterschiedliche Ursachen, was den Merksatz „pro Interrupt-Typ eine ISR" sinngemäß verletzt.
+\end{enumerate}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{document}

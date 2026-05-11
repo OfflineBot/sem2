@@ -1,0 +1,637 @@
+% ============================================================
+%  Probeklausur Template (my_dhbw Stil, klausur_*.tex)
+%  Formell mit Deckblatt-Header; Lösungen als grüne tcolorbox.
+%  Renderer: pdflatex (zweimal)
+% ============================================================
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+\usepackage[top=2cm, bottom=2cm, left=2.4cm, right=2.4cm, footskip=1cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{ltablex}
+\keepXColumns
+\usepackage{colortbl}
+\usepackage[most,breakable]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{pdflscape}
+\usepackage{titlesec}
+\usepackage[colorlinks=true, linkcolor=accent, urlcolor=accent]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme ─────────────────────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{loesung}{RGB}{0, 100, 0}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{240, 252, 240}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer ─────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\footnotesize\color{accent}Modulprüfung -- \nichttitle}
+\fancyhead[R]{\footnotesize\color{accent}\nichtsubtitle}
+\fancyfoot[L]{\footnotesize\color{accent}Matrikelnr.: \rule{3cm}{0.4pt}}
+\fancyfoot[R]{\footnotesize\color{accent}Blatt \thepage\,/\,\pageref{LastPage}}
+
+% ── Typografie ────────────────────────────────────────────────
+\titleformat{\section}
+    {\color{accent}\large\bfseries}{}{0pt}{}
+    [\vspace{-4pt}\color{accent}\rule{\linewidth}{1.5pt}]
+\titleformat{\subsection}
+    {\normalsize\bfseries\color{accent!85!black}}{}{0pt}{}{}
+\titleformat{\subsubsection}
+    {\small\bfseries\color{accent!70!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{12pt}{4pt}
+\titlespacing*{\subsection}{0pt}{8pt}{2pt}
+\titlespacing*{\subsubsection}{0pt}{6pt}{1pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\renewcommand{\arraystretch}{1.25}
+\setlist[itemize]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.4em}
+\setlist[enumerate]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.6em}
+
+% ── Boxen ─────────────────────────────────────────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={Abbildung: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={Tabelle: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{solutionbox}[1]{
+  enhanced,
+  colback=solutionbg, colframe=loesung,
+  title={#1}, fonttitle=\small\bfseries,
+  coltitle=white, colbacktitle=loesung,
+  breakable, before skip=8pt, after skip=8pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=single, framerule=0pt,
+  xleftmargin=4pt, xrightmargin=4pt,
+  aboveskip=6pt, belowskip=6pt,
+  keepspaces=true
+}
+
+\providecommand{\nichttitle}{Probeklausur}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Analysis 2}
+\renewcommand{\nichtsubtitle}{Probeklausur 2}
+
+
+\begin{document}
+
+% Deckblatt
+\thispagestyle{empty}
+\begin{center}
+\vspace*{1cm}
+{\Huge\bfseries\color{accent}Probeklausur}\\[8pt]
+{\Large\color{accent}\nichttitle}\\[4pt]
+\ifx\nichtsubtitle\empty\else
+  {\large\color{accent!80!black}\nichtsubtitle}\\[6pt]
+\fi
+\color{accent}\rule{0.5\linewidth}{1pt}\color{black}
+\end{center}
+
+\vspace{1cm}
+\begin{tabularx}{\textwidth}{@{}l X@{}}
+\textbf{Studiengang:}      & \rule{6cm}{0.4pt} \\[6pt]
+\textbf{Matrikelnummer:}    & \rule{6cm}{0.4pt} \\[6pt]
+\textbf{Name, Vorname:}    & \rule{6cm}{0.4pt} \\[6pt]
+\textbf{Datum:}             & \rule{6cm}{0.4pt} \\[6pt]
+\textbf{Bearbeitungszeit:}  & 60 Minuten \\[6pt]
+\textbf{Hilfsmittel:}       & Taschenrechner (nicht programmierbar) \\
+\end{tabularx}
+
+\vspace{2cm}
+\begin{center}
+{\large\itshape Viel Erfolg!}
+\end{center}
+
+\newpage
+
+% ── BODY ──────────────────────────────────────────────────────
+
+\section{Probeklausur 2 — Analysis 2}
+
+\textbf{Bearbeitungszeit}: 60 Minuten | \textbf{Hilfsmittel}: keine | \textbf{Punkte}: 100
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 1 — Harmonische Schwingung \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Eine elektrische Wechselspannung wird durch
+
+\[
+u(t) = 4 \cdot \sin(6\pi t) \quad [\text{V},\ t\ \text{in s}]
+\]
+
+beschrieben.
+
+
+a) \textit{(3 P)} Bestimme Kreisfrequenz $\omega$, Frequenz $f$ und Wellenlänge $\lambda$ (= Periodendauer in Sekunden).
+
+
+b) \textit{(4 P)} Berechne $u''(t)$ und zeige, dass $u''(t) = -\omega^2 \cdot u(t)$ gilt.
+
+
+c) \textit{(4 P)} Schreibe $u(t)$ als Kosinusfunktion mit Phasenverschiebung. Begründe deinen Ansatz mit der Identität zwischen Sinus und Kosinus.
+
+
+d) \textit{(4 P)} Bestimme alle Zeitpunkte $t \in [0,\ \tfrac{1}{6}]$, an denen $u(t) = 2$ V gilt. Gib die Lösungen als exakte Brüche (über $\arcsin$ hergeleitet) an.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 — Komplexe Zahlen \textit{(18 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben sind $z_1 = 3+4i$ und $z_2 = 1-2i$.
+
+
+a) \textit{(3 P)} Berechne $|z_1|$ und stelle $z_1$ in Polarform $r \cdot e^{i\varphi}$ dar (Winkel auf 4 Nachkommastellen).
+
+
+b) \textit{(5 P)} Berechne $z_1 \cdot z_2$ und $\dfrac{z_1}{z_2}$ in kartesischer Form. Erläutere bei der Division kurz, warum die konjugierte Zahl $\overline{z_2}$ benutzt wird.
+
+
+c) \textit{(4 P)} Berechne $z_1^3$ einmal direkt durch zweimaliges Multiplizieren in kartesischer Form \textbf{und} kontrolliere das Ergebnis mit der Polarform.
+
+
+d) \textit{(4 P)} Bestimme alle $w \in \mathbb{C}$ mit $w^2 = -5+12i$.
+
+
+e) \textit{(2 P)} Begründe knapp (1–2 Sätze) mit der Eulerschen Formel, warum die Multiplikation einer komplexen Zahl mit $i$ einer Drehung um \$90°\$ um den Ursprung entspricht.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 — Integrationstechniken \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+Berechne die folgenden Integrale. Gib bei unbestimmten Integralen die Konstante $+C$ an.
+
+
+a) \textit{(5 P)} $\displaystyle \int x^2 e^x\, dx$ mittels partieller Integration.
+
+
+b) \textit{(4 P)} $\displaystyle \int \frac{2x+1}{x^2+x+5}\, dx$ mittels Substitution.
+
+
+c) \textit{(4 P)} $\displaystyle \int_0^{\pi/2} \sin(x)\cos^2(x)\, dx$.
+
+
+d) \textit{(4 P)} $\displaystyle \int \frac{1}{x \cdot \ln(x)}\, dx$ für $x>1$.
+
+
+e) \textit{(3 P)} Berechne $\dfrac{\partial}{\partial x}\big[\arctan(3x)\big]$ und gib dabei die Ableitungsformel der Umkehrfunktion an.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 — Mittlere Temperatur (Doppelintegral) \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Auf einer rechteckigen Heizplatte $[0,2] \times [0,3]$ (Längen in m) misst man die stationäre Temperatur
+
+\[
+T(x,y) = 20 + 5x - 2y^2 \quad [\text{°C}].
+\]
+
+
+a) \textit{(2 P)} Werte $T(1,2)$ aus.
+
+
+b) \textit{(8 P)} Bestimme die mittlere Temperatur
+
+\[
+\overline{T} = \frac{1}{|A|} \iint_A T(x,y)\, dA
+\]
+
+durch sukzessives Integrieren von innen nach außen.
+
+
+c) \textit{(5 P)} Lässt sich das Doppelintegral als \textbf{Produkt} zweier eindimensionaler Integrale faktorisieren? Begründe und unterscheide klar: rein-multiplikativ separabel ($f(x)\cdot g(y)$) vs. additiv separabel ($f(x)+g(y)$). Welche Eigenschaft liegt hier vor?
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 — Fehleranalyse Substitution \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Ein Studierender berechnet $\displaystyle \int x \cdot \sin(x^2)\, dx$ und reicht ein:
+
+
+\begin{quote}
+\textit{„Ich substituiere $u = x^2$, also $du = dx$. Damit}
+\end{quote}
+\begin{quote}
+$\int x\cdot\sin(x^2)\,dx = \int x\cdot\sin(u)\,du = x \cdot (-\cos(u)) = -x\cos(x^2) + C.$"
+\end{quote}
+
+a) \textit{(5 P)} Identifiziere \textbf{alle} Fehler in dieser Rechnung. Mindestens zwei Fehler sind zu finden und jeweils zu erklären.
+
+
+b) \textit{(4 P)} Führe die Substitution korrekt durch und gib die richtige Stammfunktion an.
+
+
+c) \textit{(3 P)} Verifiziere dein Ergebnis durch Differenzieren (Kettenregel sichtbar machen).
+
+
+d) \textit{(3 P)} Wende dieselbe Methode an, um $\displaystyle \int 2x\cdot\cos(x^2+1)\, dx$ zu lösen.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 6 — Polarform, Potenzen und Hyperbel \textit{(17 Punkte)}}\mbox{}\\[2pt]
+
+a) \textit{(4 P)} Formuliere die Eulersche Formel und erläutere in 2–3 Sätzen, weshalb sie kartesische und Polardarstellung verbindet. Welche Identität ergibt sich für $\varphi = \pi$?
+
+
+b) \textit{(5 P)} Sei $z = -1 + i\sqrt{3}$. Bringe $z$ in Polarform (achte auf den Quadranten!) und berechne damit $z^6$.
+
+
+c) \textit{(4 P)} Vergleiche den Rechenaufwand für $z^6$ in kartesischer vs. Polarform: Schätze die Anzahl reeller Multiplikationen/Additionen ab und begründe, warum die Polarform für hohe Potenzen die effizientere Wahl ist.
+
+
+d) \textit{(4 P)} Beweise mit den Definitionen $\sinh(t) = \tfrac{e^t-e^{-t}}{2}$, $\cosh(t)=\tfrac{e^t+e^{-t}}{2}$ die hyperbolische Identität
+
+\[
+\cosh^2(t) - \sinh^2(t) = 1.
+\]
+
+
+
+\subsection{---}
+
+
+
+\section{Musterlösung Klausur 2}
+
+\paragraph{Aufgabe 1 \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a) (3 P)} Aus der Standardform $A\sin(\omega t)$ liest man $\omega = 6\pi\ \text{rad/s}$ ab. Damit
+
+\[
+f = \frac{\omega}{2\pi} = 3\ \text{Hz}, \qquad \lambda = \frac{1}{f} = \frac{1}{3}\ \text{s}.
+\]
+
+\textit{Bewertung}: $\omega$ 1 P, $f$ 1 P, $\lambda$ 1 P.
+
+
+\textbf{b) (4 P)} Ableitungs-Zyklus $\sin\to\cos\to-\sin$:
+
+\[
+u'(t) = 4\cdot 6\pi\cos(6\pi t) = 24\pi\cos(6\pi t),
+\]
+
+\[
+u''(t) = -4\cdot(6\pi)^2\sin(6\pi t) = -144\pi^2\sin(6\pi t).
+\]
+
+Mit $\omega^2 = 36\pi^2$ und $u(t)=4\sin(6\pi t)$:
+
+\[
+-\omega^2 u(t) = -36\pi^2\cdot 4\sin(6\pi t) = -144\pi^2\sin(6\pi t) = u''(t).\ \checkmark
+\]
+
+\textit{Bewertung}: $u'$ 1 P, $u''$ 2 P, Vergleich/Identität 1 P.
+
+
+\textbf{c) (4 P)} Aus $\sin(x) = \cos(x-\tfrac{\pi}{2})$ (folgt aus $\cos(t) = \sin(t+\tfrac{\pi}{2})$) erhält man
+
+\[
+u(t) = 4\cos\!\Big(6\pi t - \tfrac{\pi}{2}\Big).
+\]
+
+\textit{Bewertung}: Identität 2 P, korrekte Phase 2 P.
+
+
+\textbf{d) (4 P)} $4\sin(6\pi t) = 2 \Longleftrightarrow \sin(6\pi t) = \tfrac{1}{2}$. Mit $\arcsin(\tfrac{1}{2}) = \tfrac{\pi}{6}$ folgt
+
+\[
+6\pi t = \tfrac{\pi}{6} + 2k\pi \quad\text{oder}\quad 6\pi t = \pi - \tfrac{\pi}{6} + 2k\pi = \tfrac{5\pi}{6} + 2k\pi,
+\]
+
+also $t = \tfrac{1}{36}+\tfrac{k}{3}$ oder $t = \tfrac{5}{36}+\tfrac{k}{3}$. Für $t\in[0,\tfrac{1}{6}]$ ($=\tfrac{6}{36}$):
+
+\[
+t_1 = \tfrac{1}{36}\ \text{s},\qquad t_2 = \tfrac{5}{36}\ \text{s}.
+\]
+
+\textit{Bewertung}: Gleichung umformen 1 P, beide Lösungsfamilien 2 P, Intervallauswahl 1 P.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 \textit{(18 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a) (3 P)} $|z_1| = \sqrt{9+16}=5$. $\varphi = \arctan(\tfrac{4}{3}) \approx 0{,}9273$ (1. Quadrant, $\text{Re}>0$). Polar: $z_1 = 5\cdot e^{i\cdot 0{,}9273}$.
+
+\textit{Bewertung}: Betrag 1 P, Winkel 1 P, Form 1 P.
+
+
+\textbf{b) (5 P)}
+
+\[
+z_1 z_2 = (3+4i)(1-2i) = 3-6i+4i-8i^2 = 3-2i+8 = 11-2i.
+\]
+
+Division durch Erweitern mit $\overline{z_2} = 1+2i$ (macht den Nenner reell, da $z_2\overline{z_2}=|z_2|^2$):
+
+\[
+\frac{z_1}{z_2} = \frac{(3+4i)(1+2i)}{(1-2i)(1+2i)} = \frac{3+6i+4i+8i^2}{1+4} = \frac{-5+10i}{5} = -1+2i.
+\]
+
+\textit{Bewertung}: Multiplikation 2 P, Division mit Konjugierten-Begründung 3 P.
+
+
+\textbf{c) (4 P)} Kartesisch: $z_1^2 = (3+4i)^2 = 9-16+24i = -7+24i$. Dann
+
+\[
+z_1^3 = (-7+24i)(3+4i) = -21-28i+72i+96i^2 = -117+44i.
+\]
+
+Polar: $r^3 = 125$, $3\varphi \approx 2{,}7819$. Kontrolle:
+
+\[
+125\cos(2{,}7819) \approx -117,\quad 125\sin(2{,}7819) \approx 44.\ \checkmark
+\]
+
+\textit{Bewertung}: Quadrat 1 P, Kubierung 2 P, Polarkontrolle 1 P.
+
+
+\textbf{d) (4 P)} Ansatz $w=a+bi$:
+
+\[
+a^2-b^2=-5,\qquad 2ab=12 \Rightarrow b=\tfrac{6}{a}.
+\]
+
+Einsetzen: $a^2 - \tfrac{36}{a^2} = -5 \Rightarrow a^4+5a^2-36=0$. Mit $u=a^2$: $u^2+5u-36=0 \Rightarrow u = \tfrac{-5\pm 13}{2}$. Nur $u=4$ liefert reelles $a$: $a=\pm 2$, $b=\pm 3$ (gleiches Vorzeichen wegen $2ab=12>0$). Also
+
+\[
+w_1 = 2+3i,\qquad w_2 = -2-3i.
+\]
+
+\textit{Bewertung}: System 1 P, biquadratische Gleichung 1 P, beide Lösungen 2 P.
+
+
+\textbf{e) (2 P)} Es gilt $i = e^{i\pi/2}$. Damit ist $z\cdot i = r\,e^{i\varphi}\cdot e^{i\pi/2} = r\,e^{i(\varphi+\pi/2)}$: Der Betrag bleibt, der Winkel wächst um $\pi/2 = 90°$ — geometrisch eine Drehung um den Ursprung.
+
+\textit{Bewertung}: Eulersche Begründung 2 P.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a) (5 P)} PI mit $u=x^2$, $dv=e^x dx$ ⇒ $du=2x\,dx$, $v=e^x$:
+
+\[
+\int x^2 e^x dx = x^2 e^x - \int 2x e^x dx.
+\]
+
+Erneut PI auf $\int 2xe^x dx$ mit $u=2x$, $dv=e^x dx$: $= 2xe^x - 2e^x$. Insgesamt:
+
+\[
+\int x^2 e^x dx = e^x(x^2-2x+2)+C.
+\]
+
+\textit{Bewertung}: 1. PI 2 P, 2. PI 2 P, Endform 1 P.
+
+
+\textbf{b) (4 P)} $u=x^2+x+5$, $du=(2x+1)\,dx$:
+
+\[
+\int \frac{2x+1}{x^2+x+5}dx = \int \frac{du}{u} = \ln|x^2+x+5| + C.
+\]
+
+($x^2+x+5>0$, Diskriminante negativ, daher Betrag entbehrlich.)
+
+\textit{Bewertung}: Substitution erkannt 2 P, Stammfunktion 2 P.
+
+
+\textbf{c) (4 P)} $u=\cos(x)$, $du=-\sin(x)\,dx$. Grenzen: $x=0\to u=1$, $x=\tfrac{\pi}{2}\to u=0$.
+
+\[
+\int_0^{\pi/2}\sin(x)\cos^2(x)\,dx = -\int_1^0 u^2 du = \int_0^1 u^2 du = \tfrac{1}{3}.
+\]
+
+\textit{Bewertung}: Substitution + Grenzen 2 P, Auswerten 2 P.
+
+
+\textbf{d) (4 P)} $u=\ln(x)$, $du=\tfrac{1}{x}\,dx$:
+
+\[
+\int \frac{1}{x\ln(x)}dx = \int \frac{du}{u} = \ln|\ln(x)| + C.
+\]
+
+\textit{Bewertung}: Substitution 2 P, Stammfunktion 2 P.
+
+
+\textbf{e) (3 P)} Allgemein $\dfrac{\partial}{\partial t}\arctan(t) = \dfrac{1}{t^2+1}$. Mit Kettenregel ($g(x)=3x$, $g'=3$):
+
+\[
+\frac{\partial}{\partial x}\arctan(3x) = \frac{3}{(3x)^2+1} = \frac{3}{9x^2+1}.
+\]
+
+\textit{Bewertung}: Formel 1 P, Kettenregel 1 P, Endergebnis 1 P.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a) (2 P)} $T(1,2) = 20+5\cdot 1-2\cdot 4 = 20+5-8 = 17\ °C$.
+
+\textit{Bewertung}: 2 P bei korrektem Wert.
+
+
+\textbf{b) (8 P)} Fläche $|A|=2\cdot 3 = 6$. Inneres Integral nach $y$:
+
+\[
+\int_0^3 (20+5x-2y^2)\,dy = \big[20y+5xy-\tfrac{2}{3}y^3\big]_0^3 = 60+15x-18 = 42+15x.
+\]
+
+Äußeres Integral nach $x$:
+
+\[
+\int_0^2 (42+15x)\,dx = \big[42x+\tfrac{15}{2}x^2\big]_0^2 = 84+30 = 114.
+\]
+
+\[
+\overline{T} = \frac{114}{6} = 19\ °C.
+\]
+
+\textit{Bewertung}: Inneres Integral 3 P, äußeres 3 P, Mittelung 2 P. Bei richtigem Endwert trotz Rechenfehler intermediär max. 6 P.
+
+
+\textbf{c) (5 P)} Reine Produktform $T = f(x)\cdot g(y)$ liegt \textbf{nicht} vor (man kann $20+5x-2y^2$ nicht als Produkt einer reinen $x$-Funktion mit einer reinen $y$-Funktion schreiben). Es liegt aber \textbf{additive Separation} vor:
+
+\[
+T(x,y) = \underbrace{(20+5x)}_{f(x)} + \underbrace{(-2y^2)}_{g(y)}.
+\]
+
+Bei additiver Separation gilt
+
+\[
+\iint_A (f(x)+g(y))\,dx\,dy = (b{-}a)\!\int_c^d g(y)\,dy + (d{-}c)\!\int_a^b f(x)\,dx,
+\]
+
+also Aufspaltung in zwei eindimensionale Integrale (jeweils mit Längenfaktor). Eine Faktorisierung in das Produkt zweier 1D-Integrale ist hier nicht möglich.
+
+\textit{Bewertung}: Unterscheidung add./mult. 2 P, korrekte Einordnung des Beispiels 2 P, Begründung mit Längenfaktor 1 P.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a) (5 P)} Drei Fehler:
+
+\begin{enumerate}
+  \item \textbf{Falsches Differential}: aus $u=x^2$ folgt $du = 2x\,dx$, \textbf{nicht} $du=dx$.
+  \item \textbf{Variablenmix}: nach Substitution darf die ursprüngliche Variable $x$ nicht mehr im Integranden stehen ($x$ muss durch $u$ bzw. $du$ vollständig ersetzt werden).
+  \item \textbf{Falsche Anti-Ableitung}: das verbliebene $x$ wird wie eine Konstante vor das Integral gezogen — das ist es aber nicht, da $x$ von der Integrationsvariablen abhängt.
+\end{enumerate}
+\textit{Bewertung}: pro identifiziertem Fehler mit kurzer Erklärung 1,5–2 P (max. 5 P).
+
+
+\textbf{b) (4 P)} $u=x^2 \Rightarrow du = 2x\,dx \Rightarrow x\,dx = \tfrac{1}{2}du$:
+
+\[
+\int x\sin(x^2)\,dx = \tfrac{1}{2}\int \sin(u)\,du = -\tfrac{1}{2}\cos(u)+C = -\tfrac{1}{2}\cos(x^2)+C.
+\]
+
+\textit{Bewertung}: Differential umstellen 2 P, Stammfunktion 2 P.
+
+
+\textbf{c) (3 P)} Ableiten mit Kettenregel:
+
+\[
+\frac{d}{dx}\Big[-\tfrac{1}{2}\cos(x^2)\Big] = -\tfrac{1}{2}\cdot(-\sin(x^2))\cdot 2x = x\sin(x^2).\ \checkmark
+\]
+
+\textit{Bewertung}: Kettenregel sichtbar 2 P, Übereinstimmung 1 P.
+
+
+\textbf{d) (3 P)} $u=x^2+1 \Rightarrow du=2x\,dx$:
+
+\[
+\int 2x\cos(x^2+1)\,dx = \int \cos(u)\,du = \sin(u)+C = \sin(x^2+1)+C.
+\]
+
+\textit{Bewertung}: Substitution 1 P, Stammfunktion 2 P.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 6 \textit{(17 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a) (4 P)} Eulersche Formel: $e^{i\varphi} = \cos(\varphi)+i\sin(\varphi)$. Sie verbindet kartesische Form ($a+ib$) und Polarform ($r\,e^{i\varphi}$): jede komplexe Zahl ist $z = r\cos\varphi + i\,r\sin\varphi = r\,e^{i\varphi}$. Für $\varphi=\pi$ folgt die berühmte Identität $e^{i\pi}+1=0$.
+
+\textit{Bewertung}: Formel 2 P, Verbindung erläutert 1 P, $e^{i\pi}+1=0$ 1 P.
+
+
+\textbf{b) (5 P)} $r = \sqrt{(-1)^2+(\sqrt{3})^2} = \sqrt{4} = 2$. Da $\text{Re}(z)<0$ und $\text{Im}(z)>0$, liegt $z$ im \textbf{2. Quadranten}: $\varphi = \pi - \arctan(\sqrt{3}/1) = \pi - \tfrac{\pi}{3} = \tfrac{2\pi}{3}$. Also
+
+\[
+z = 2\,e^{i\,2\pi/3}.
+\]
+
+Damit $z^6 = 2^6\cdot e^{i\cdot 6\cdot 2\pi/3} = 64\cdot e^{i\,4\pi} = 64\cdot 1 = 64$.
+
+\textit{Bewertung}: Betrag 1 P, Winkel mit Quadrantenbegründung 2 P, $z^6$ 2 P.
+
+
+\textbf{c) (4 P)} Kartesisch: jede komplexe Multiplikation $(a+ib)(c+id)$ verlangt 4 reelle Multiplikationen + 2 Additionen. Für $z^6$ z. B. $z\to z^2\to z^3 \to \dots$ mit 5 komplexen Multiplikationen, also $\approx 20$ Mult. + 10 Add. — die Werte wachsen, Genauigkeit kann leiden.
+
+Polar: $z^n = r^n\,e^{i n\varphi}$ — eine Potenzierung des Radius (1 Operation) und eine Multiplikation des Winkels (1 Operation), eventuell eine Schluss-Rückrechnung in kartesische Form (2 trigonometrische Auswertungen). Kosten \textbf{konstant} in $n$, vs. \textbf{linear in $n$} beim direkten Multiplizieren ⇒ Polarform skaliert deutlich besser, insbesondere bei großen Exponenten.
+
+\textit{Bewertung}: Aufwand kartesisch 1 P, Aufwand polar 1 P, Skalierungsbegründung 2 P.
+
+
+\textbf{d) (4 P)}
+
+\[
+\cosh^2(t)-\sinh^2(t) = \frac{(e^t+e^{-t})^2}{4} - \frac{(e^t-e^{-t})^2}{4}.
+\]
+
+Die Klammern ausmultipliziert:
+
+\[
+(e^t+e^{-t})^2 = e^{2t}+2+e^{-2t},\quad (e^t-e^{-t})^2 = e^{2t}-2+e^{-2t}.
+\]
+
+Differenz: $(e^{2t}+2+e^{-2t}) - (e^{2t}-2+e^{-2t}) = 4$. Also $\cosh^2-\sinh^2 = \tfrac{4}{4} = 1.\ \checkmark$
+
+\textit{Bewertung}: Quadrate 2 P, Subtraktion 1 P, Schluss 1 P.
+
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{document}

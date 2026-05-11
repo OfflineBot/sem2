@@ -1,0 +1,657 @@
+% ============================================================
+%  Übungsaufgaben Template (my_dhbw Stil, uebung_*.tex)
+%  Header "Übungsblatt", grün eingefärbte <details>-Lösungen.
+%  Renderer: pdflatex (zweimal)
+% ============================================================
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+\usepackage[top=2cm, bottom=2cm, left=2.4cm, right=2.4cm, footskip=1cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{ltablex}
+\keepXColumns
+\usepackage{colortbl}
+\usepackage[most,breakable]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{pdflscape}
+\usepackage{titlesec}
+\usepackage[colorlinks=true, linkcolor=accent, urlcolor=accent]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme ─────────────────────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{loesung}{RGB}{0, 100, 0}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{240, 252, 240}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer ─────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\footnotesize\color{accent}\nichttitle}
+\fancyhead[R]{\footnotesize\color{accent}\nichtsubtitle}
+\fancyfoot[R]{\footnotesize\color{accent}Blatt \thepage\,/\,\pageref{LastPage}}
+
+% ── Typografie ────────────────────────────────────────────────
+\titleformat{\section}
+    {\color{accent}\large\bfseries}{}{0pt}{}
+    [\vspace{-4pt}\color{accent}\rule{\linewidth}{1.5pt}]
+\titleformat{\subsection}
+    {\normalsize\bfseries\color{accent!85!black}}{}{0pt}{}{}
+\titleformat{\subsubsection}
+    {\small\bfseries\color{accent!70!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{10pt}{3pt}
+\titlespacing*{\subsection}{0pt}{6pt}{2pt}
+\titlespacing*{\subsubsection}{0pt}{4pt}{1pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\renewcommand{\arraystretch}{1.2}
+\setlist[itemize]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.4em}
+\setlist[enumerate]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.6em}
+
+% ── Boxen: solutionbox = Lösungsbox in grün ──────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={Abbildung: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={Tabelle: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{solutionbox}[1]{
+  enhanced,
+  colback=solutionbg, colframe=loesung,
+  title={#1}, fonttitle=\small\bfseries,
+  coltitle=white, colbacktitle=loesung,
+  breakable, before skip=8pt, after skip=8pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=single, framerule=0pt,
+  xleftmargin=4pt, xrightmargin=4pt,
+  aboveskip=6pt, belowskip=6pt,
+  keepspaces=true
+}
+
+\providecommand{\nichttitle}{Übungsblatt}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Optimierungsverfahren}
+\renewcommand{\nichtsubtitle}{Übungsblatt 9}
+
+
+\begin{document}
+
+\begin{center}
+{\Large\bfseries\color{accent}\nichttitle}
+\ifx\nichtsubtitle\empty\else
+  \\[2pt]{\normalsize\color{accent!80!black}\nichtsubtitle}
+\fi
+\\[2pt]
+\color{accent}\rule{0.4\linewidth}{0.8pt}\color{black}
+\end{center}
+\vspace{4pt}
+
+% ── BODY ──────────────────────────────────────────────────────
+
+\section{Übungsblatt 9 — 9. Beispielfragen}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 1 — Standardformat-Transformation komplett \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben sei das folgende lineare Programm:
+
+
+\$\$
+
+\textbackslash{}begin\{aligned\}
+
+\textbackslash{}text\{maximiere \} \& f(x\_1, x\_2, x\_3) = 3x\_1 + 2x\_2 - x\_3 \textbackslash{}\textbackslash{}
+
+\textbackslash{}text\{u. d. N. \} \& 2x\_1 + x\_2 + x\_3 \textbackslash{}leq 10 \textbackslash{}\textbackslash{}
+
+\& x\_1 - x\_2 + 2x\_3 \textbackslash{}geq 4 \textbackslash{}\textbackslash{}
+
+\& x\_1 + x\_2 + x\_3 = 6 \textbackslash{}\textbackslash{}
+
+\& x\_1 \textbackslash{}geq 0,\textbackslash{}quad x\_2 \textbackslash{}in [-3, 5],\textbackslash{}quad x\_3 \textbackslash{}geq -2
+
+\textbackslash{}end\{aligned\}
+
+\$\$
+
+
+a) Welche vier Anforderungen muss ein LP erfüllen, damit es im Standardformat vorliegt? \textit{(4 P)}
+
+b) Wandle die Zielfunktion und alle Ungleichungen in die geforderte Form um. Benenne die eingeführten Slack-Variablen klar. \textit{(8 P)}
+
+c) Behandle die Variablen $x_2$ und $x_3$ so, dass alle Variablen die Nichtnegativitätsbedingung erfüllen. \textit{(6 P)}
+
+d) Schreibe das resultierende Standard-LP vollständig auf. \textit{(2 P)}
+
+
+\textbf{Lösung:}
+
+
+\textbf{a)} Standardformat-Anforderungen:
+
+\begin{enumerate}
+  \item Zielfunktion ist eine \textbf{Minimierung} (min).
+  \item Alle Nebenbedingungen sind \textbf{Gleichungen} (=).
+  \item Alle Variablen erfüllen $x_i \geq 0$.
+  \item Alle rechten Seiten erfüllen $b_j \geq 0$.
+\end{enumerate}
+
+\textbf{b)} Schrittweise Umformung:
+
+
+\textit{Zielfunktion (max → min mittels $-f$):}
+
+\[
+\min\ -f = -3x_1 - 2x_2 + x_3
+\]
+
+
+\textit{Erste NB ($\leq$ → Slack $s_1 \geq 0$ addieren):}
+
+\[
+2x_1 + x_2 + x_3 + s_1 = 10
+\]
+
+
+\textit{Zweite NB ($\geq$ → Slack $s_2 \geq 0$ subtrahieren):}
+
+\[
+x_1 - x_2 + 2x_3 - s_2 = 4
+\]
+
+
+\textit{Dritte NB:} bereits Gleichung, bleibt:
+
+\[
+x_1 + x_2 + x_3 = 6
+\]
+
+
+Alle rechten Seiten (10, 4, 6) sind bereits $\geq 0$, keine Vorzeichenanpassung nötig.
+
+
+\textbf{c)} Variablensubstitution:
+
+
+\textit{$x_2 \in [-3, 5]$, untere Schranke $a = -3 < 0$:} Substitution $x_2' = x_2 - a = x_2 + 3$, also $x_2 = x_2' - 3$ mit $x_2' \geq 0$ (die obere Schranke $x_2' \leq 8$ wird als zusätzliche NB ergänzt).
+
+
+\textit{$x_3 \geq -2$, $a = -2 < 0$:} Substitution $x_3' = x_3 + 2$, also $x_3 = x_3' - 2$ mit $x_3' \geq 0$.
+
+
+Einsetzen in alle Ausdrücke (Konstanten wandern auf die rechte Seite):
+
+
+\begin{itemize}
+  \item Zielfunktion: $-3x_1 - 2(x_2' - 3) + (x_3' - 2) = -3x_1 - 2x_2' + x_3' + 4$. Die Konstante $+4$ kann weggelassen werden (verschiebt nur den Optimalwert).
+  \item NB 1: $2x_1 + (x_2' - 3) + (x_3' - 2) + s_1 = 10 \Rightarrow 2x_1 + x_2' + x_3' + s_1 = 15$
+  \item NB 2: $x_1 - (x_2' - 3) + 2(x_3' - 2) - s_2 = 4 \Rightarrow x_1 - x_2' + 2x_3' - s_2 = 5$
+  \item NB 3: $x_1 + (x_2' - 3) + (x_3' - 2) = 6 \Rightarrow x_1 + x_2' + x_3' = 11$
+  \item Obere Schranke: $x_2' \leq 8 \Rightarrow x_2' + s_3 = 8$ mit $s_3 \geq 0$.
+\end{itemize}
+
+\textbf{d)} Standardformat:
+
+
+\$\$
+
+\textbackslash{}begin\{aligned\}
+
+\textbackslash{}min\textbackslash{} \& -3x\_1 - 2x\_2' + x\_3' \textbackslash{}\textbackslash{}
+
+\textbackslash{}text\{u. d. N. \} \& 2x\_1 + x\_2' + x\_3' + s\_1 = 15 \textbackslash{}\textbackslash{}
+
+\& x\_1 - x\_2' + 2x\_3' - s\_2 = 5 \textbackslash{}\textbackslash{}
+
+\& x\_1 + x\_2' + x\_3' = 11 \textbackslash{}\textbackslash{}
+
+\& x\_2' + s\_3 = 8 \textbackslash{}\textbackslash{}
+
+\& x\_1, x\_2', x\_3', s\_1, s\_2, s\_3 \textbackslash{}geq 0
+
+\textbackslash{}end\{aligned\}
+
+\$\$
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 — Slack-Variablen interpretieren \textit{(12 Punkte)}}\mbox{}\\[2pt]
+
+Eine Bäckerei produziert $x_1$ Brötchen und $x_2$ Brote pro Tag. Die Mehlrestriktion lautet:
+
+
+\[
+50 x_1 + 500 x_2 \leq 25\,000\ \text{[g Mehl]}
+\]
+
+
+a) Erkläre den Zweck einer Slack-Variablen anhand dieser Ungleichung. Was bedeutet die Differenz zwischen LHS und RHS inhaltlich? \textit{(4 P)}
+
+b) Schreibe die Restriktion als Gleichung mit Slack $s$. \textit{(2 P)}
+
+c) Berechne den Wert von $s$ für die Produktionspläne (i) $(x_1, x_2) = (200, 30)$ und (ii) $(x_1, x_2) = (100, 40)$. Interpretiere jeweils. \textit{(4 P)}
+
+d) Welcher Wert von $s$ kennzeichnet eine \textbf{bindende} Restriktion? Was bedeutet das ökonomisch? \textit{(2 P)}
+
+
+\textbf{Lösung:}
+
+
+\textbf{a)} Eine Slack-Variable misst die \textbf{Differenz zwischen rechter und linker Seite} einer $\leq$-Ungleichung. Sie wandelt eine Ungleichung in eine Gleichung um, ohne die zulässige Menge zu verändern, und macht so das LP simplex-tauglich. Inhaltlich beschreibt sie die \textbf{ungenutzte Ressourcenmenge} — hier: das übrige Mehl, das in der Produktion nicht verbraucht wurde.
+
+
+\textbf{b)} $\quad 50 x_1 + 500 x_2 + s = 25\,000,\quad s \geq 0$
+
+
+\textbf{c)}
+
+(i) $50 \cdot 200 + 500 \cdot 30 = 10\,000 + 15\,000 = 25\,000 \Rightarrow s = 0$. Das gesamte Mehl wird verbraucht.
+
+(ii) $50 \cdot 100 + 500 \cdot 40 = 5\,000 + 20\,000 = 25\,000 \Rightarrow s = 0$. Auch hier ist die Restriktion exakt ausgeschöpft.
+
+
+Hätte man stattdessen $(150, 30)$ gewählt: $50 \cdot 150 + 500 \cdot 30 = 22\,500$, also $s = 2\,500$ g Mehl bleiben übrig.
+
+
+\textbf{d)} $s = 0$ kennzeichnet eine \textbf{bindende} Restriktion. Ökonomisch bedeutet das: die Ressource ist ein \textbf{Engpass} — eine Erhöhung des Vorrats würde die Zielfunktion verbessern, der Schattenpreis ist (typischerweise) positiv.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 — Fehler im Standardisierungsprozess finden \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Ein Studi behauptet, das folgende LP
+
+
+\$\$
+
+\textbackslash{}begin\{aligned\}
+
+\textbackslash{}max\textbackslash{} \& 4x\_1 + 5x\_2 \textbackslash{}\textbackslash{}
+
+\textbackslash{}text\{u. d. N. \} \& 3x\_1 + 2x\_2 \textbackslash{}geq 12 \textbackslash{}\textbackslash{}
+
+\& x\_1 + 4x\_2 \textbackslash{}leq -8 \textbackslash{}\textbackslash{}
+
+\& x\_1 \textbackslash{}geq 0,\textbackslash{}quad x\_2 \textbackslash{}geq 0
+
+\textbackslash{}end\{aligned\}
+
+\$\$
+
+
+sei wie folgt im Standardformat:
+
+
+\$\$
+
+\textbackslash{}begin\{aligned\}
+
+\textbackslash{}min\textbackslash{} \& -4x\_1 - 5x\_2 \textbackslash{}\textbackslash{}
+
+\textbackslash{}text\{u. d. N. \} \& 3x\_1 + 2x\_2 + s\_1 = 12 \textbackslash{}\textbackslash{}
+
+\& x\_1 + 4x\_2 + s\_2 = -8 \textbackslash{}\textbackslash{}
+
+\& x\_1, x\_2, s\_1, s\_2 \textbackslash{}geq 0
+
+\textbackslash{}end\{aligned\}
+
+\$\$
+
+
+a) Identifiziere \textbf{drei} Fehler in der Transformation. \textit{(6 P)}
+
+b) Korrigiere jeden Fehler einzeln und gib das richtige Standardformat an. \textit{(7 P)}
+
+c) Was würde geschehen, falls eine rechte Seite tatsächlich negativ bleibt und einer Slack-Variablen ein negativer Anfangswert zugewiesen werden müsste? \textit{(2 P)}
+
+
+\textbf{Lösung:}
+
+
+\textbf{a)} Fehler:
+
+\begin{enumerate}
+  \item \textbf{Erste NB falsch:} $\geq$ wird durch \textbf{Subtraktion} einer Slack-Variablen zur Gleichung, nicht durch Addition. Korrekt: $3x_1 + 2x_2 - s_1 = 12$.
+  \item \textbf{Zweite NB hat negative rechte Seite} (-8). Standardformat fordert $b_j \geq 0$: die ganze Gleichung muss mit -1 multipliziert werden (Vorzeichen aller Terme dreht sich, Ungleichungsrichtung würde drehen).
+  \item \textbf{Reihenfolge missachtet:} zuerst muss die Vorzeichenkorrektur ($\cdot (-1)$) erfolgen, \textbf{dann} die Slack-Einführung — sonst wird die falsche Slack-Variablen-Operation gewählt. Konkret: $x_1 + 4x_2 \leq -8 \overset{\cdot(-1)}{\Longrightarrow} -x_1 - 4x_2 \geq 8$, dann \textbf{Subtraktion} von $s_2$.
+\end{enumerate}
+
+\textbf{b)} Korrigiertes Standardformat:
+
+
+\$\$
+
+\textbackslash{}begin\{aligned\}
+
+\textbackslash{}min\textbackslash{} \& -4x\_1 - 5x\_2 \textbackslash{}\textbackslash{}
+
+\textbackslash{}text\{u. d. N. \} \& 3x\_1 + 2x\_2 - s\_1 = 12 \textbackslash{}\textbackslash{}
+
+\& -x\_1 - 4x\_2 - s\_2 = 8 \textbackslash{}\textbackslash{}
+
+\& x\_1, x\_2, s\_1, s\_2 \textbackslash{}geq 0
+
+\textbackslash{}end\{aligned\}
+
+\$\$
+
+
+\textbf{c)} Eine negative rechte Seite würde im Simplex-Startbasispunkt $x_i = 0$ einen Slack-Wert $s_j = b_j < 0$ erzwingen, was die Bedingung $s_j \geq 0$ verletzt. Die Startbasislösung wäre damit \textbf{nicht zulässig} — der Simplex könnte ohne Sonderverfahren (z. B. Big-M oder Zwei-Phasen-Methode) nicht starten.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 — Variablensubstitution für freie Variable \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Die Variable $y \in \mathbb{R}$ (frei, also keine Vorzeichenbeschränkung) tritt in einem LP wie folgt auf:
+
+
+\$\$
+
+\textbackslash{}begin\{aligned\}
+
+\textbackslash{}min\textbackslash{} \& 2y + 3x \textbackslash{}\textbackslash{}
+
+\textbackslash{}text\{u. d. N. \} \& y + x = 7 \textbackslash{}\textbackslash{}
+
+\& y - 2x \textbackslash{}leq 4 \textbackslash{}\textbackslash{}
+
+\& x \textbackslash{}geq 0
+
+\textbackslash{}end\{aligned\}
+
+\$\$
+
+
+Im Kapitel wurde der Trick $x' = x - a$ für Variablen mit unterer Schranke $a < 0$ eingeführt. Eine \textbf{freie} Variable hat aber keine endliche untere Schranke.
+
+
+a) Übertrage die Idee aus dem Kapitel: Welche Substitution kann $y \in \mathbb{R}$ in zwei nichtnegative Variablen zerlegen? Begründe, warum jeder reelle Wert darstellbar ist. \textit{(5 P)}
+
+b) Wende die Substitution auf das LP an und überführe es vollständig ins Standardformat. \textit{(8 P)}
+
+c) Sei in einer Lösung $y^+ = 5,\ y^- = 2$. Welcher Wert für $y$ ergibt sich? Ist diese Darstellung eindeutig? \textit{(2 P)}
+
+
+\textbf{Lösung:}
+
+
+\textbf{a)} Zerlegung in Differenz zweier nichtnegativer Variablen:
+
+\[
+y = y^+ - y^-,\quad y^+, y^- \geq 0
+\]
+
+
+Jede reelle Zahl ist darstellbar: für $y \geq 0$ wähle $y^+ = y,\ y^- = 0$; für $y < 0$ wähle $y^+ = 0,\ y^- = -y$. Die Idee ist eine Verallgemeinerung von $x' = x - a$: statt die Achse um eine bekannte Konstante $a$ zu verschieben, wird $y$ als Differenz zweier nichtnegativer Achsenanteile dargestellt.
+
+
+\textbf{b)} Einsetzen $y = y^+ - y^-$:
+
+
+\textit{Zielfunktion:} $2(y^+ - y^-) + 3x = 2y^+ - 2y^- + 3x$ (bereits min-Form).
+
+
+\textit{NB 1:} $(y^+ - y^-) + x = 7 \Rightarrow y^+ - y^- + x = 7$ (Gleichung, ok).
+
+
+\textit{NB 2:} $(y^+ - y^-) - 2x \leq 4 \Rightarrow y^+ - y^- - 2x + s_1 = 4$ mit $s_1 \geq 0$.
+
+
+Standardformat:
+
+
+\$\$
+
+\textbackslash{}begin\{aligned\}
+
+\textbackslash{}min\textbackslash{} \& 2y\textasciicircum{}+ - 2y\textasciicircum{}- + 3x \textbackslash{}\textbackslash{}
+
+\textbackslash{}text\{u. d. N. \} \& y\textasciicircum{}+ - y\textasciicircum{}- + x = 7 \textbackslash{}\textbackslash{}
+
+\& y\textasciicircum{}+ - y\textasciicircum{}- - 2x + s\_1 = 4 \textbackslash{}\textbackslash{}
+
+\& y\textasciicircum{}+, y\textasciicircum{}-, x, s\_1 \textbackslash{}geq 0
+
+\textbackslash{}end\{aligned\}
+
+\$\$
+
+
+\textbf{c)} $y = y^+ - y^- = 5 - 2 = 3$.
+
+
+Die Darstellung ist \textbf{nicht eindeutig}: z. B. $y^+ = 6,\ y^- = 3$ ergibt ebenfalls $y = 3$. In optimalen Basislösungen des Simplex tritt jedoch typischerweise mindestens eine der beiden Variablen mit Wert 0 auf (kanonische Darstellung), da $y^+$ und $y^-$ nicht gleichzeitig basisch in einem nichtdegenerierten Optimum sein müssen.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 — Vergleich: $\leq$-Slack vs. $\geq$-Surplus \textit{(10 Punkte)}}\mbox{}\\[2pt]
+
+Zwei Restriktionen einer Produktionsplanung:
+
+
+\begin{itemize}
+  \item (R1) Maschinenstunden: $4x_1 + 6x_2 \leq 240$
+  \item (R2) Mindestabsatz Premium: $x_1 + x_2 \geq 30$
+\end{itemize}
+
+a) Wandle beide in Gleichungen um und benenne die zusätzlichen Variablen als \textbf{Slack} bzw. \textbf{Surplus}. \textit{(3 P)}
+
+b) Stelle die beiden Variablentypen in einer Tabelle gegenüber: Vorzeichen der Operation (+/−), inhaltliche Bedeutung, Wert bei bindender NB. \textit{(4 P)}
+
+c) Begründe: Warum reicht es nicht, eine $\geq$-NB einfach mit -1 zu multiplizieren und dann eine Slack-Variable wie bei $\leq$ zu addieren? \textit{(3 P)}
+
+
+\textbf{Lösung:}
+
+
+\textbf{a)}
+
+\begin{itemize}
+  \item (R1): $4x_1 + 6x_2 + s_1 = 240$, $s_1 \geq 0$ — \textbf{Slack} (ungenutzte Maschinenstunden).
+  \item (R2): $x_1 + x_2 - s_2 = 30$, $s_2 \geq 0$ — \textbf{Surplus} (Übererfüllung des Mindestabsatzes).
+\end{itemize}
+
+\textbf{b)}
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Aspekt}} & {\color{white}\textbf{Slack ($\leq$)}} & {\color{white}\textbf{Surplus ($\geq$)}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Operation & LHS \textbf{+} $s$ = RHS & LHS \textbf{−} $s$ = RHS \\
+Bedeutung & ungenutzte Ressource & Übererfüllung der Mindestschwelle \\
+Wert bei bindender NB & $s = 0$ & $s = 0$ \\
+Wert bei nicht bindender NB & $s = $ RHS − LHS $> 0$ & $s = $ LHS − RHS $> 0$ \\
+\end{tabularx}
+}
+
+
+\textbf{c)} Die Multiplikation mit -1 würde aus $x_1 + x_2 \geq 30$ die Form $-x_1 - x_2 \leq -30$ machen. Eine nun addierte Slack-Variable $s$ wäre zwar formal korrekt verknüpft ($-x_1 - x_2 + s = -30$), die rechte Seite verletzt aber $b_j \geq 0$. Würde man zusätzlich nochmals mit -1 multiplizieren, landet man bei $x_1 + x_2 - s = 30$ — exakt der Surplus-Form. Der Umweg über $\cdot(-1)$ ist also redundant; direkter Surplus-Abzug ist der saubere Standardweg.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 6 — Vollständige Standardisierung mit allen Tricks \textit{(18 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben:
+
+
+\$\$
+
+\textbackslash{}begin\{aligned\}
+
+\textbackslash{}max\textbackslash{} \& z = x\_1 - 2x\_2 + 4x\_3 \textbackslash{}\textbackslash{}
+
+\textbackslash{}text\{u. d. N. \} \& x\_1 + x\_2 - x\_3 \textbackslash{}leq -5 \textbackslash{}\textbackslash{}
+
+\& 2x\_1 - x\_2 + x\_3 \textbackslash{}geq 8 \textbackslash{}\textbackslash{}
+
+\& -x\_1 + 3x\_2 = -6 \textbackslash{}\textbackslash{}
+
+\& x\_1 \textbackslash{}in [-4, \textbackslash{}infty),\textbackslash{}quad x\_2 \textbackslash{}geq 0,\textbackslash{}quad x\_3 \textbackslash{}in \textbackslash{}mathbb\{R\}
+
+\textbackslash{}end\{aligned\}
+
+\$\$
+
+
+Überführe das LP in vollständiges Standardformat. Dokumentiere jeden Schritt (Reihenfolge: max→min, Variablensubstitutionen, Vorzeichenkorrektur der RS, Slack/Surplus-Einführung). \textit{(15 P)}
+
+
+b) Wieviele Variablen (inkl. Slack/Surplus/Substitutionen) enthält das endgültige LP? \textit{(3 P)}
+
+
+\textbf{Lösung:}
+
+
+\textbf{Schritt 1: Maximierung → Minimierung.}
+
+\[
+\min\ -z = -x_1 + 2x_2 - 4x_3
+\]
+
+
+\textbf{Schritt 2: Variablensubstitutionen.}
+
+\begin{itemize}
+  \item $x_1 \in [-4, \infty)$, untere Schranke $a = -4 < 0$: $x_1' = x_1 + 4$, also $x_1 = x_1' - 4$ mit $x_1' \geq 0$.
+  \item $x_2 \geq 0$: bleibt unverändert.
+  \item $x_3 \in \mathbb{R}$ (frei): $x_3 = x_3^+ - x_3^-$ mit $x_3^+, x_3^- \geq 0$.
+\end{itemize}
+
+Einsetzen in alle Ausdrücke:
+
+
+\textit{Zielfunktion:} $-(x_1' - 4) + 2x_2 - 4(x_3^+ - x_3^-) = -x_1' + 2x_2 - 4x_3^+ + 4x_3^- + 4$. Konstante $+4$ wird ignoriert.
+
+
+\textit{NB 1:} $(x_1' - 4) + x_2 - (x_3^+ - x_3^-) \leq -5 \Rightarrow x_1' + x_2 - x_3^+ + x_3^- \leq -1$
+
+
+\textit{NB 2:} $2(x_1' - 4) - x_2 + (x_3^+ - x_3^-) \geq 8 \Rightarrow 2x_1' - x_2 + x_3^+ - x_3^- \geq 16$
+
+
+\textit{NB 3:} $-(x_1' - 4) + 3x_2 = -6 \Rightarrow -x_1' + 3x_2 = -10$
+
+
+\textbf{Schritt 3: Negative rechte Seiten korrigieren ($\cdot (-1)$).}
+
+
+\textit{NB 1:} $-x_1' - x_2 + x_3^+ - x_3^- \geq 1$ (Richtung dreht sich)
+
+\textit{NB 3:} $x_1' - 3x_2 = 10$ (Gleichung, Richtung egal)
+
+
+NB 2 bleibt: $2x_1' - x_2 + x_3^+ - x_3^- \geq 16$.
+
+
+\textbf{Schritt 4: Slack/Surplus.}
+
+
+\begin{itemize}
+  \item NB 1 ($\geq$): Surplus $s_1 \geq 0$ subtrahieren: $-x_1' - x_2 + x_3^+ - x_3^- - s_1 = 1$
+  \item NB 2 ($\geq$): Surplus $s_2 \geq 0$: $2x_1' - x_2 + x_3^+ - x_3^- - s_2 = 16$
+  \item NB 3 (=): keine Slack-Variable.
+\end{itemize}
+
+\textbf{Endgültiges Standardformat:}
+
+
+\$\$
+
+\textbackslash{}begin\{aligned\}
+
+\textbackslash{}min\textbackslash{} \& -x\_1' + 2x\_2 - 4x\_3\textasciicircum{}+ + 4x\_3\textasciicircum{}- \textbackslash{}\textbackslash{}
+
+\textbackslash{}text\{u. d. N. \} \& -x\_1' - x\_2 + x\_3\textasciicircum{}+ - x\_3\textasciicircum{}- - s\_1 = 1 \textbackslash{}\textbackslash{}
+
+\& 2x\_1' - x\_2 + x\_3\textasciicircum{}+ - x\_3\textasciicircum{}- - s\_2 = 16 \textbackslash{}\textbackslash{}
+
+\& x\_1' - 3x\_2 = 10 \textbackslash{}\textbackslash{}
+
+\& x\_1', x\_2, x\_3\textasciicircum{}+, x\_3\textasciicircum{}-, s\_1, s\_2 \textbackslash{}geq 0
+
+\textbackslash{}end\{aligned\}
+
+\$\$
+
+
+\textbf{b)} Insgesamt \textbf{6 Variablen}: $x_1', x_2, x_3^+, x_3^-, s_1, s_2$. (Aus den ursprünglichen drei Variablen wurden vier durch Substitution; hinzu kamen zwei Surplus-Variablen — eine Slack-Variable entstand nicht, weil nach der Vorzeichenkorrektur keine $\leq$-NB mehr übrig blieb.)
+
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{document}

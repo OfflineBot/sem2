@@ -1,0 +1,480 @@
+% ============================================================
+%  Übungsaufgaben Template (my_dhbw Stil, uebung_*.tex)
+%  Header "Übungsblatt", grün eingefärbte <details>-Lösungen.
+%  Renderer: pdflatex (zweimal)
+% ============================================================
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+\usepackage[top=2cm, bottom=2cm, left=2.4cm, right=2.4cm, footskip=1cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{ltablex}
+\keepXColumns
+\usepackage{colortbl}
+\usepackage[most,breakable]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{pdflscape}
+\usepackage{titlesec}
+\usepackage[colorlinks=true, linkcolor=accent, urlcolor=accent]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme ─────────────────────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{loesung}{RGB}{0, 100, 0}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{240, 252, 240}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer ─────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\footnotesize\color{accent}\nichttitle}
+\fancyhead[R]{\footnotesize\color{accent}\nichtsubtitle}
+\fancyfoot[R]{\footnotesize\color{accent}Blatt \thepage\,/\,\pageref{LastPage}}
+
+% ── Typografie ────────────────────────────────────────────────
+\titleformat{\section}
+    {\color{accent}\large\bfseries}{}{0pt}{}
+    [\vspace{-4pt}\color{accent}\rule{\linewidth}{1.5pt}]
+\titleformat{\subsection}
+    {\normalsize\bfseries\color{accent!85!black}}{}{0pt}{}{}
+\titleformat{\subsubsection}
+    {\small\bfseries\color{accent!70!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{10pt}{3pt}
+\titlespacing*{\subsection}{0pt}{6pt}{2pt}
+\titlespacing*{\subsubsection}{0pt}{4pt}{1pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\renewcommand{\arraystretch}{1.2}
+\setlist[itemize]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.4em}
+\setlist[enumerate]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.6em}
+
+% ── Boxen: solutionbox = Lösungsbox in grün ──────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={Abbildung: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={Tabelle: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{solutionbox}[1]{
+  enhanced,
+  colback=solutionbg, colframe=loesung,
+  title={#1}, fonttitle=\small\bfseries,
+  coltitle=white, colbacktitle=loesung,
+  breakable, before skip=8pt, after skip=8pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=single, framerule=0pt,
+  xleftmargin=4pt, xrightmargin=4pt,
+  aboveskip=6pt, belowskip=6pt,
+  keepspaces=true
+}
+
+\providecommand{\nichttitle}{Übungsblatt}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Numerische Methoden}
+\renewcommand{\nichtsubtitle}{Übungsblatt 1}
+
+
+\begin{document}
+
+\begin{center}
+{\Large\bfseries\color{accent}\nichttitle}
+\ifx\nichtsubtitle\empty\else
+  \\[2pt]{\normalsize\color{accent!80!black}\nichtsubtitle}
+\fi
+\\[2pt]
+\color{accent}\rule{0.4\linewidth}{0.8pt}\color{black}
+\end{center}
+\vspace{4pt}
+
+% ── BODY ──────────────────────────────────────────────────────
+
+\section{Übungsblatt 1 — Numerische Methoden — Gesamtzettel}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 1 — Floating-Point-Darstellung und Maschinengenauigkeit \textit{(18 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben sei das IEEE-754 SINGLE-Format (32 Bit, 1 Sign / 8 Exponent / 23 Mantisse, Bias 127).
+
+
+a) \textit{(4 P)} Erkläre kurz, warum bei Floating-Point die \textbf{absolute} Präzision von der Magnitude der Zahl abhängt, während sie bei Fixed-Point konstant ist. Nenne jeweils eine praktische Konsequenz.
+
+
+b) \textit{(6 P)} Berechne ε\_mach für SINGLE und gib an, ab welcher Größenordnung |x| die absolute Lücke zwischen zwei darstellbaren Zahlen größer als 1 wird.
+
+
+c) \textit{(8 P)} Eine Sensorgröße liegt im Bereich 10⁻³ … 10⁻¹ mit gewünschter absoluter Präzision 10⁻⁹. Entscheide begründet, ob SINGLE-Floating-Point oder ein Fixed-Point-Format mit Skalierung 10⁹ besser geeignet ist. Begründe mit konkreten Zahlen aus (a) und (b).
+
+
+\textbf{Lösung:}
+
+
+a) Floating-Point: x = (−1)ˢ·m·2ᵉ. Die Mantisse hat t Bits, also 2ᵗ gleichabständige Werte zwischen aufeinanderfolgenden Zweierpotenzen. Die absolute Lücke skaliert mit 2ᵉ, also mit |x|: absolute Präzision ≈ ε\_mach·|x|. Konsequenz: Bei sehr großen Zahlen werden ganze Integer-Bereiche „übersprungen" (z. B. bei 10¹⁶ ist die Lücke in DOUBLE bereits \textasciitilde{}2). Fixed-Point reserviert eine feste Anzahl Bits für den Bruchteil → Lücke konstant (bei Skalierung 10⁶ z. B. 10⁻⁶, unabhängig von der Magnitude). Konsequenz: gleichmäßige Genauigkeit, aber kleiner Wertebereich.
+
+
+b) SINGLE hat 23 Mantissenbits, also ε\_mach = 2⁻²³ ≈ 1.19·10⁻⁷. Die absolute Lücke beträgt ε\_mach·|x|. Sie wird größer als 1, sobald |x| > 1/ε\_mach = 2²³ ≈ 8.39·10⁶. Ab ca. 10⁷ kann SINGLE keine Ganzzahlen mehr exakt unterscheiden.
+
+
+c) Anforderung: absolute Präzision 10⁻⁹, |x| ≤ 10⁻¹.
+
+\begin{itemize}
+  \item SINGLE: absolute Präzision ε\_mach·|x| ≈ 1.19·10⁻⁷·10⁻¹ = 1.19·10⁻⁸. Das ist \textbf{gröber} als gefordert (10⁻⁹) — SINGLE reicht nicht.
+  \item Fixed-Point Skalierung 10⁹: maximaler Rundungsfehler 0.5·10⁻⁹ < 10⁻⁹ ✓. Wertebereich konstant, ausreichend für [10⁻³, 10⁻¹].
+\end{itemize}
+
+Entscheidung: \textbf{Fixed-Point mit Skalierung 10⁹}, weil die geforderte absolute Präzision unabhängig von |x| sein muss und SINGLE für kleine |x| zu wenig absolute Auflösung bietet. (Alternativ: DOUBLE mit ε\_mach ≈ 2.22·10⁻¹⁶ würde ebenfalls reichen — Fixed-Point ist aber speichereffizienter, wenn der Bereich begrenzt ist.)
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 — Grid Search vs. analytische Lösung \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Betrachte f(x) = cos(x) auf dem Intervall [0, 4] und suche das Minimum.
+
+
+a) \textit{(3 P)} Bestimme das exakte Minimum analytisch.
+
+
+b) \textit{(6 P)} Führe eine Grid Search mit Schrittweite h = 0.5 durch (Gitterpunkte x₀ = 0, 0.5, 1.0, …, 4.0). Fülle die Tabelle aus (4 Nachkommastellen) und gib das numerische Minimum sowie den Approximationsfehler |f̃(x̃) − f(x*)| an.
+
+
+c) \textit{(3 P)} Welcher Schrittweite h würde nötig sein, damit der Approximationsfehler garantiert unter 0.01 fällt? (Konsistenzbetrachtung — argumentiere mit der maximalen Steigung von cos auf dem Intervall.)
+
+
+d) \textit{(3 P)} Vergleiche die Komplexität deiner Lösung aus (c) mit der einer eindimensionalen Newton-Iteration auf demselben Problem.
+
+
+\textbf{Lösung:}
+
+
+a) f'(x) = −sin(x) = 0 auf [0, 4] ⟹ x* = π ≈ 3.14159; f(π) = −1.
+
+
+b) Gitterauswertung:
+
+
+
+\begin{landscape}
+
+{\scriptsize
+\begin{tabularx}{\linewidth}{XXXXXXXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{x}} & {\color{white}\textbf{0.0}} & {\color{white}\textbf{0.5}} & {\color{white}\textbf{1.0}} & {\color{white}\textbf{1.5}} & {\color{white}\textbf{2.0}} & {\color{white}\textbf{2.5}} & {\color{white}\textbf{3.0}} & {\color{white}\textbf{3.5}} & {\color{white}\textbf{4.0}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+cos & 1.0 & 0.8776 & 0.5403 & 0.0707 & −0.4161 & −0.8011 & −0.9900 & −0.9365 & −0.6536 \\
+\end{tabularx}
+}
+\end{landscape}
+
+
+Numerisches Minimum: f̃ = −0.9900 bei x̃ = 3.0. Approximationsfehler: |−0.9900 − (−1)| = 0.0100.
+
+
+c) Auf [0, 4] gilt |f'(x)| = |sin(x)| ≤ 1. Eine Konsistenz-Schranke ist c ≤ |f'|\_max · h/2 (lokal-linearer worst case zwischen zwei Gitterpunkten am Minimum, wo cos quadratisch wächst — schärfere Schranke: c ≤ ½·|f''|\_max·(h/2)² mit |f''| ≤ 1, also c ≤ h²/8). Forderung h²/8 < 0.01 ⟹ h < √0.08 ≈ 0.283. Gewählt z. B. h = 0.25 → N = 17 Punkte.
+
+
+d) Grid: O(N) = 17 Funktionsauswertungen für Fehler < 0.01. Newton: bei quadratischer Konvergenz reichen typischerweise 4–5 Iterationen für Fehler < 10⁻⁶, jede Iteration eine f- und f'-Auswertung — also \textasciitilde{}10 Auswertungen für \textbf{wesentlich höhere} Genauigkeit. Newton skaliert deutlich besser, benötigt aber f'(x).
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 — Newton-Raphson auf einer kubischen Wurzel \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+Wir wollen die positive reelle Nullstelle von f(x) = x³ − 7 finden (also ∛7).
+
+
+a) \textit{(4 P)} Stelle die Newton-Iterationsformel xₙ₊₁ = g(xₙ) explizit her.
+
+
+b) \textit{(8 P)} Führe ausgehend von x₀ = 2 die Iteration für n = 1, 2, 3 von Hand durch (mind. 8 Nachkommastellen). Tabelliere xₙ und |eₙ| = |xₙ − ∛7| mit ∛7 ≈ 1.91293118.
+
+
+c) \textit{(4 P)} Belege anhand deiner Fehlerwerte aus (b), dass die Konvergenz quadratisch ist (Quotient |eₙ₊₁|/|eₙ|² sollte ungefähr konstant sein).
+
+
+d) \textit{(4 P)} Was passiert, wenn man x₀ = 0 wählt? Welcher Failure Mode aus dem Kapitel greift?
+
+
+\textbf{Lösung:}
+
+
+a) f'(x) = 3x². Newton: xₙ₊₁ = xₙ − (xₙ³ − 7)/(3xₙ²) = (2xₙ³ + 7)/(3xₙ²).
+
+
+b) Iteration ab x₀ = 2:
+
+
+
+\begin{landscape}
+
+{\footnotesize
+\begin{tabularx}{\linewidth}{XXXXXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{n}} & {\color{white}\textbf{xₙ}} & {\color{white}\textbf{xₙ³}} & {\color{white}\textbf{f(xₙ)}} & {\color{white}\textbf{xₙ₊₁}} & {\color{white}\textbf{\textbackslash{}}} & {\color{white}\textbf{eₙ\textbackslash{}}} & {\color{white}\textbf{}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+0 & 2.00000000 & 8.00000000 & 1.00000000 & (16+7)/12 = 1.91666667 & 8.71·10⁻² &  &  \\
+1 & 1.91666667 & 7.04108796 & 0.04108796 & 1.91294019 & 3.74·10⁻³ &  &  \\
+2 & 1.91294019 & 7.00009909 & 0.00009909 & 1.91293118 & 9.01·10⁻⁶ &  &  \\
+3 & 1.91293118 & 7.00000000… & \textasciitilde{}0 & 1.91293118 & <10⁻¹⁰ &  &  \\
+\end{tabularx}
+}
+\end{landscape}
+
+
+c) Quotient |eₙ₊₁|/|eₙ|²:
+
+\begin{itemize}
+  \item n=0→1: 3.74·10⁻³ / (8.71·10⁻²)² ≈ 3.74·10⁻³ / 7.59·10⁻³ ≈ 0.493
+  \item n=1→2: 9.01·10⁻⁶ / (3.74·10⁻³)² ≈ 9.01·10⁻⁶ / 1.40·10⁻⁵ ≈ 0.644
+  \item n=2→3: \textasciitilde{}10⁻¹⁰ / (9.01·10⁻⁶)² ≈ 10⁻¹⁰ / 8.12·10⁻¹¹ ≈ \textasciitilde{}1
+\end{itemize}
+
+Der Quotient bleibt in derselben Größenordnung (≈ 0.5–1), während sich |eₙ| pro Schritt etwa quadriert (10⁻² → 10⁻³ → 10⁻⁵ → 10⁻¹⁰). Theoriewert: C = |f''(x\textit{)|/(2·|f'(x})|) = 6·∛7/(2·3·(∛7)²) = 1/∛7 ≈ 0.523 — konsistent.
+
+
+d) Bei x₀ = 0 ist f'(0) = 3·0² = 0. Im Algorithmus 1 greift Schritt 4: |d| < ε\_machine → \textbf{„Derivative too small / zero derivative"}-Failure: die Tangente ist horizontal, kein Schnittpunkt mit der x-Achse, die Iteration ist undefiniert (Division durch 0).
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 — Catastrophic Cancellation und numerische Umformulierung \textit{(14 Punkte)}}\mbox{}\\[2pt]
+
+Zur Auswertung von f(x) = (1 − cos x)/x² nahe x = 0 wird folgendes Snippet vorgeschlagen:
+
+
+\begin{lstlisting}
+def f(x):
+    return (1.0 - math.cos(x)) / (x*x)
+\end{lstlisting}
+
+
+Bei x = 10⁻⁴ liefert dieser Code in SINGLE-Präzision z. B. 0.0 oder einen stark verrauschten Wert, obwohl der mathematisch korrekte Grenzwert lim\_\{x→0\} f(x) = 1/2 ist.
+
+
+a) \textit{(4 P)} Erkläre, welcher Fehlertyp aus dem Kapitel hier dominiert und warum er bei kleinen x besonders stark wirkt.
+
+
+b) \textit{(6 P)} Schlage eine numerisch stabilere Umformung vor (Hinweis: Taylor-Entwicklung von cos x um 0). Begründe, warum sie das Problem aus (a) umgeht.
+
+
+c) \textit{(4 P)} Welche Größenordnung von ε\_mach·|x|⁻² in SINGLE würde man bei x = 10⁻⁴ als groben relativen Fehler des naiven Codes erwarten? Vergleiche mit dem korrekten Wert 0.5.
+
+
+\textbf{Lösung:}
+
+
+a) \textbf{Catastrophic Cancellation} (Loss of Significance). Für kleines x ist cos x ≈ 1, also 1 − cos x sehr klein. In Floating-Point werden 1 und cos x beide mit relativer Genauigkeit ε\_mach gespeichert; bei der Subtraktion löschen sich die führenden Stellen, und der absolute Fehler aus der Speicherung von cos x (≈ ε\_mach) bleibt — relativ zum kleinen Resultat 1 − cos x ≈ x²/2 ist er enorm. Anschließendes Teilen durch x² (selbst klein) verstärkt diesen Fehler nicht zusätzlich, aber das Ergebnis ist bereits zerstört.
+
+
+b) Taylor: cos x = 1 − x²/2 + x⁴/24 − x⁶/720 ± …
+
+⟹ 1 − cos x = x²/2 − x⁴/24 + x⁶/720 − …
+
+⟹ f(x) = (1 − cos x)/x² = 1/2 − x²/24 + x⁴/720 − …
+
+
+Stabile Implementierung für kleine x:
+
+\begin{lstlisting}
+def f(x):
+    if abs(x) < 1e-3:
+        return 0.5 - x*x/24.0 + x**4/720.0
+    return (1.0 - math.cos(x)) / (x*x)
+\end{lstlisting}
+
+Begründung: Es findet keine Subtraktion fast gleicher Zahlen mehr statt — die problematische Differenz wurde \textbf{analytisch} aufgelöst und durch eine direkte Polynomauswertung ersetzt.
+
+
+c) In SINGLE ist ε\_mach ≈ 1.19·10⁻⁷. Der absolute Fehler von (1 − cos x) liegt bei ≈ ε\_mach (cos x ist auf ε\_mach genau). Geteilt durch x² = 10⁻⁸ ergibt das einen absoluten Fehler ≈ ε\_mach/x² ≈ 1.19·10⁻⁷/10⁻⁸ ≈ 12. Der korrekte Wert ist 0.5 — der Fehler übersteigt den Wert um den Faktor \textasciitilde{}24, das Ergebnis ist also komplett unbrauchbar (Vorzeichen kann sogar zufällig kippen). Genau das deckt sich mit dem beobachteten Verhalten („0.0 oder verrauscht").
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 — Newton vs. Sekante: Methodenwahl \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+Eine Black-Box-Routine \texttt{evaluate(x)} liefert den Ausfluss eines hydraulischen Systems als Funktion eines Ventilstellwerts x ∈ [0, 5]. Ein Aufruf kostet 1.2 s. Eine analytische Ableitung ist nicht verfügbar; eine numerische Ableitung über zentrale Differenzen würde pro Iteration zwei zusätzliche Auswertungen kosten. Gesucht ist x\textit{ mit `evaluate(x}) = 0`.
+
+
+a) \textit{(4 P)} Vergleiche Newton-Raphson, Sekanten-Methode und Grid Search bezüglich Informationsbedarf, Startwerten und Konvergenzordnung (Tabelle aus dem Kapitel).
+
+
+b) \textit{(8 P)} Schätze die Gesamtlaufzeit für Genauigkeit ε = 10⁻⁶ ab, wenn pro Methode folgende Iterationszahlen realistisch sind: Newton (mit numerischer Ableitung) 5 Iterationen, Sekante 7 Iterationen, Grid Search h = 5·10⁻⁶. Welche Methode wählst du?
+
+
+c) \textit{(4 P)} Angenommen, evaluate ist verrauscht (jede Auswertung enthält Gaußsches Rauschen σ = 10⁻⁴). Welche der drei Methoden wird am anfälligsten — und warum? Verbinde mit den Begriffen Stability und Conditioning.
+
+
+d) \textit{(4 P)} Skizziere eine pragmatische Hybrid-Strategie: Wie würdest du die Vorteile von Grid Search und Sekante kombinieren?
+
+
+\textbf{Lösung:}
+
+
+a)
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Methode}} & {\color{white}\textbf{Info}} & {\color{white}\textbf{Startwerte}} & {\color{white}\textbf{Konvergenz}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Grid Search & f & Intervall & blind/linear \\
+Newton & f, f' & 1 & quadratisch \\
+Sekante & f & 2 & superlinear (\textasciitilde{}1.618) \\
+\end{tabularx}
+}
+
+
+b) Kosten pro f-Auswertung: 1.2 s.
+
+\begin{itemize}
+  \item \textbf{Newton mit numerischer Ableitung}: 5 Iterationen · 3 Auswertungen (1 für f + 2 für zentrale Differenz) = 15 Auswertungen → 18 s.
+  \item \textbf{Sekante}: 7 Iterationen + 1 Initialwert = 8 Auswertungen → 9.6 s. (Die Sekantenmethode wiederverwendet den vorherigen f-Wert!)
+  \item \textbf{Grid Search} mit h = 5·10⁻⁶ auf [0, 5]: N = 5/5·10⁻⁶ + 1 = 10⁶ + 1 Auswertungen → ≈ 1.2·10⁶ s ≈ 14 Tage. \textbf{Nicht praktikabel.}
+\end{itemize}
+
+Wahl: \textbf{Sekante} — schnellste, weil sie keine separate Ableitungsberechnung benötigt und superlinear konvergiert.
+
+
+c) \textbf{Sekante} ist am anfälligsten. Sie berechnet die Steigung als (f(x₁) − f(x₀))/(x₁ − x₀). Wenn x₁ − x₀ klein wird (was bei Konvergenz unvermeidlich ist), wirkt das Rauschen σ massiv im Zähler — klassische Catastrophic Cancellation in der Steigungsschätzung. Begrifflich: Das \textbf{Problem} (Nullstelle) hat ein festes κ (Conditioning); die \textbf{Methode} Sekante hat aber niedrige \textbf{Stability}, weil ihr Schritt sehr empfindlich auf gestörte f-Werte reagiert (s ≫ 1 nahe Konvergenz). Newton mit zentralen Differenzen hat dasselbe Problem in der Ableitungsschätzung. Grid Search ist gegenüber Rauschen am robustesten (kein Differenzbildung), wäre aber unbezahlbar langsam.
+
+
+d) \textbf{Hybrid}: Erst grobe Grid Search mit h = 0.1 (\textasciitilde{}50 Auswertungen, 60 s), um eine Region mit Vorzeichenwechsel zu lokalisieren — das liefert ein gutes Startpaar (x₀, x₁) mit f(x₀)·f(x₁) < 0 und vermeidet Failure Modes (mehrdeutiger Startpunkt, Konvergenz zur falschen Wurzel). Dann Sekante mit Abbruchkriterium |f| < 10·σ statt 10⁻⁶, weil Genauigkeit unter dem Rauschniveau ohnehin nicht erreichbar ist. Gesamtkosten: \textasciitilde{}70 s — robust und schnell.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 6 — Fehler in Pseudocode finden \textit{(13 Punkte)}}\mbox{}\\[2pt]
+
+Ein Studi reicht folgenden Pseudocode für die Sekantenmethode ein:
+
+
+\begin{lstlisting}
+Require: x0, x1, f, eps
+1: while |x1 - x0| > eps:
+2:     s ← (f(x1) - f(x0)) / (x1 - x0)
+3:     x1 ← x1 - f(x0) / s
+4:     x0 ← x1
+5: return x1
+\end{lstlisting}
+
+
+a) \textit{(7 P)} Identifiziere \textbf{drei} unabhängige Fehler im Pseudocode und beschreibe für jeden, welches Verhalten er konkret verursachen würde.
+
+
+b) \textit{(3 P)} Gib eine korrigierte Version an (Algorithmus 2 aus dem Kapitel).
+
+
+c) \textit{(3 P)} Welcher zusätzliche Sicherheitscheck — analog zu Schritt 4 in Algorithmus 1 (Newton) — wäre auch hier sinnvoll? Begründe.
+
+
+\textbf{Lösung:}
+
+
+a)
+
+\begin{enumerate}
+  \item \textbf{Falsches Abbruchkriterium} (Zeile 1): \texttt{|x1 - x0| > eps} prüft die Schrittgröße, nicht die Funktionswertgröße. Korrekt ist \texttt{|f(x1)| > eps} (siehe Algorithmus 2). Folge: Bei flachen Funktionen kann |x1 − x0| schnell klein werden, obwohl f(x1) noch weit von 0 entfernt ist — vorzeitiger Abbruch.
+\end{enumerate}
+
+\begin{enumerate}
+  \item \textbf{Falscher Funktionswert im Update} (Zeile 3): Die Iteration lautet xₙ₊₁ = xₙ − f(xₙ)·(xₙ−xₙ₋₁)/(f(xₙ)−f(xₙ₋₁)) — also \texttt{f(x1)/s}, nicht \texttt{f(x0)/s}. Folge: Die Methode konvergiert nicht zur korrekten Nullstelle, sondern führt einen falschen Korrekturschritt aus, der typischerweise divergiert oder zur falschen Lösung läuft.
+\end{enumerate}
+
+\begin{enumerate}
+  \item \textbf{Zustand wird falsch fortgeschrieben} (Zeilen 3–4): \texttt{x1 ← x1 − …} überschreibt x1, anschließend \texttt{x0 ← x1} kopiert den \textbf{neuen} x1 nach x0 — der alte x1 (der ja zum nächsten x0 werden müsste) ist verloren. Folge: Im nächsten Schritt sind x0 und x1 identisch ⟹ Division durch 0 in \texttt{(x1 − x0)}.
+\end{enumerate}
+
+b) Korrigierte Version (Algorithmus 2):
+
+\begin{lstlisting}
+Require: x0, x1, f, eps
+1: while |f(x1)| > eps:
+2:     s ← (f(x1) - f(x0)) / (x1 - x0)
+3:     x_old ← x1
+4:     x1 ← x1 - f(x1) / s
+5:     x0 ← x_old
+6: return x1
+\end{lstlisting}
+
+
+c) Analog zu Newtons \texttt{if |d| < ε\_machine: error}: Vor Zeile 4 prüfen, ob \texttt{|s| < ε\_machine} bzw. ob \texttt{|f(x1) − f(x0)| < ε\_machine}. Begründung: Nähern sich x0 und x1 derart an, dass die Differenz der Funktionswerte unter Maschinenpräzision fällt, kommt es zu Catastrophic Cancellation im Zähler von s — die Steigung wird ungenau, die Division \texttt{f(x1)/s} divergiert oder produziert NaN. Der Sicherheitscheck verhindert diesen Failure Mode und ermöglicht einen kontrollierten Abbruch oder Neustart.
+
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{document}

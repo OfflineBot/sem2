@@ -1,0 +1,564 @@
+% ============================================================
+%  Übungsaufgaben Template (my_dhbw Stil, uebung_*.tex)
+%  Header "Übungsblatt", grün eingefärbte <details>-Lösungen.
+%  Renderer: pdflatex (zweimal)
+% ============================================================
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+\usepackage[top=2cm, bottom=2cm, left=2.4cm, right=2.4cm, footskip=1cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{ltablex}
+\keepXColumns
+\usepackage{colortbl}
+\usepackage[most,breakable]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{pdflscape}
+\usepackage{titlesec}
+\usepackage[colorlinks=true, linkcolor=accent, urlcolor=accent]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme ─────────────────────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{loesung}{RGB}{0, 100, 0}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{240, 252, 240}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer ─────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\footnotesize\color{accent}\nichttitle}
+\fancyhead[R]{\footnotesize\color{accent}\nichtsubtitle}
+\fancyfoot[R]{\footnotesize\color{accent}Blatt \thepage\,/\,\pageref{LastPage}}
+
+% ── Typografie ────────────────────────────────────────────────
+\titleformat{\section}
+    {\color{accent}\large\bfseries}{}{0pt}{}
+    [\vspace{-4pt}\color{accent}\rule{\linewidth}{1.5pt}]
+\titleformat{\subsection}
+    {\normalsize\bfseries\color{accent!85!black}}{}{0pt}{}{}
+\titleformat{\subsubsection}
+    {\small\bfseries\color{accent!70!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{10pt}{3pt}
+\titlespacing*{\subsection}{0pt}{6pt}{2pt}
+\titlespacing*{\subsubsection}{0pt}{4pt}{1pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\renewcommand{\arraystretch}{1.2}
+\setlist[itemize]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.4em}
+\setlist[enumerate]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.6em}
+
+% ── Boxen: solutionbox = Lösungsbox in grün ──────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={Abbildung: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={Tabelle: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{solutionbox}[1]{
+  enhanced,
+  colback=solutionbg, colframe=loesung,
+  title={#1}, fonttitle=\small\bfseries,
+  coltitle=white, colbacktitle=loesung,
+  breakable, before skip=8pt, after skip=8pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=single, framerule=0pt,
+  xleftmargin=4pt, xrightmargin=4pt,
+  aboveskip=6pt, belowskip=6pt,
+  keepspaces=true
+}
+
+\providecommand{\nichttitle}{Übungsblatt}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Optimierungsverfahren}
+\renewcommand{\nichtsubtitle}{Übungsblatt 8}
+
+
+\begin{document}
+
+\begin{center}
+{\Large\bfseries\color{accent}\nichttitle}
+\ifx\nichtsubtitle\empty\else
+  \\[2pt]{\normalsize\color{accent!80!black}\nichtsubtitle}
+\fi
+\\[2pt]
+\color{accent}\rule{0.4\linewidth}{0.8pt}\color{black}
+\end{center}
+\vspace{4pt}
+
+% ── BODY ──────────────────────────────────────────────────────
+
+\section{Übungsblatt 8 — 7. Mehrzieloptimierung (MO)}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 1 — Pareto-Filter und Treppenpfad \textit{(12 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben sei ein Min–Min-Problem mit folgenden Stichproben im Objective Space:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Punkt}} & {\color{white}\textbf{f₁}} & {\color{white}\textbf{f₂}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+A & 2 & 7 \\
+B & 3 & 5 \\
+C & 4 & 6 \\
+D & 5 & 3 \\
+E & 1 & 8 \\
+F & 6 & 4 \\
+\end{tabularx}
+}
+
+
+\textbf{a)} Wende den Pareto-Filter (O(n²)) an. Gib für jeden dominierten Punkt explizit den Dominator und den Dominanz-Grund an. \textit{(6 P)}
+
+
+\textbf{b)} Liste die sortierte Pareto-Front (nach f₁↑) und konstruiere den Treppenpfad gemäß dem Skript-Algorithmus (\texttt{moveTo} / \texttt{lineTo}). \textit{(6 P)}
+
+
+\textbf{Lösung:}
+
+
+\textbf{a)} Für jedes Paar (i,j): prüfe ob j den Punkt i dominiert (j noWorse i in beiden Zielen UND in mind. einem Ziel strictlyBetter).
+
+
+\begin{itemize}
+  \item \textbf{A=(2,7)}: kein j mit f₁≤2 ∧ f₂≤7 außer A selbst → \textbf{Pareto-optimal}
+  \item \textbf{B=(3,5)}: kein j erfüllt f₁≤3 ∧ f₂≤5 → \textbf{Pareto-optimal}
+  \item \textbf{C=(4,6)}: B=(3,5) dominiert C, da 3≤4, 5≤6 (noWorse) und 3<4 (strictlyBetter) → \textbf{dominiert}
+  \item \textbf{D=(5,3)}: kein j mit f₁≤5 ∧ f₂≤3 → \textbf{Pareto-optimal}
+  \item \textbf{E=(1,8)}: kein j mit f₁≤1 → \textbf{Pareto-optimal}
+  \item \textbf{F=(6,4)}: D=(5,3) dominiert F, da 5≤6, 3≤4 und 5<6 → \textbf{dominiert}
+\end{itemize}
+
+Pareto-Menge: \textbf{\{A, B, D, E\}}.
+
+
+\textbf{b)} Sortiert nach f₁↑: E(1,8), A(2,7), B(3,5), D(5,3).
+
+
+Treppenpfad:
+
+\begin{lstlisting}
+moveTo(1, 8)
+lineTo(2, 8) → lineTo(2, 7)     // A
+lineTo(3, 7) → lineTo(3, 5)     // B
+lineTo(5, 5) → lineTo(5, 3)     // D
+\end{lstlisting}
+
+Polygonzug: (1,8) → (2,8) → (2,7) → (3,7) → (3,5) → (5,5) → (5,3).
+
+Begründung: pro Pareto-Punkt erst horizontal nach rechts (auf Höhe yᵢ₋₁) bis xᵢ, dann vertikal hinunter auf yᵢ — das erzeugt die monoton fallende Treppenform der Sampled Pareto Front.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 — NSGA-II: Non-dominated Sorting \& Crowding Distance \textit{(22 Punkte)}}\mbox{}\\[2pt]
+
+Eine Population besteht aus 8 Individuen (Min–Min):
+
+
+
+{\footnotesize
+\begin{tabularx}{\linewidth}{XXXXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{ID}} & {\color{white}\textbf{f₁}} & {\color{white}\textbf{f₂}} & {\color{white}\textbf{}} & {\color{white}\textbf{ID}} & {\color{white}\textbf{f₁}} & {\color{white}\textbf{f₂}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+P₁ & 1 & 9 &  & P₅ & 2 & 9 \\
+P₂ & 3 & 5 &  & P₆ & 4 & 7 \\
+P₃ & 5 & 2 &  & P₇ & 6 & 4 \\
+P₄ & 7 & 1 &  & P₈ & 8 & 3 \\
+\end{tabularx}
+}
+
+
+\textbf{a)} Bestimme den Non-dominated Sorting Rank (NDSR) jedes Individuums. Gib für jeden Punkt aus Rang ≥ 2 einen Dominator aus der vorigen Front an. \textit{(8 P)}
+
+
+\textbf{b)} Berechne die Crowding Distance (CD) aller Punkte aus Rang 1. Verwende Skalierung mit der Range innerhalb der Front pro Ziel. \textit{(8 P)}
+
+
+\textbf{c)} Es soll eine Überlebenden-Population der Größe \textbf{6} gewählt werden. Welche Individuen werden gewählt? Begründe die Selektionsregel von NSGA-II. \textit{(6 P)}
+
+
+\textbf{Lösung:}
+
+
+\textbf{a)} Iterative Rangzuweisung:
+
+
+\textit{Rang 1} — non-dominated bezüglich der gesamten Population:
+
+\begin{itemize}
+  \item P₁=(1,9): keiner hat f₁<1 → Rang 1
+  \item P₂=(3,5): keiner aus Population erfüllt f₁≤3 ∧ f₂≤5 strictly → Rang 1
+  \item P₃=(5,2): analog → Rang 1
+  \item P₄=(7,1): keiner hat f₂<1 → Rang 1
+\end{itemize}
+
+\textit{Rang 2} — non-dominated nach Entfernen von Rang 1:
+
+\begin{itemize}
+  \item P₅=(2,9): wird durch P₁=(1,9) dominiert (1≤2, 9≤9, strictly 1<2) → \textbf{Rang ≥ 2}. Nach Entfernen von Rang 1 nicht mehr dominiert → \textbf{Rang 2}.
+  \item P₆=(4,7): dominiert von P₂=(3,5); nach Entfernen → \textbf{Rang 2}.
+  \item P₇=(6,4): dominiert von P₃=(5,2); → \textbf{Rang 2}.
+  \item P₈=(8,3): dominiert von P₄=(7,1); → \textbf{Rang 2}.
+\end{itemize}
+
+Ergebnis: Rang 1 = \{P₁, P₂, P₃, P₄\}, Rang 2 = \{P₅, P₆, P₇, P₈\}.
+
+
+\textbf{b)} Sortierung Rang 1 nach f₁↑: P₁(1,9), P₂(3,5), P₃(5,2), P₄(7,1).
+
+Range innerhalb der Front: Δf₁ = 7−1 = 6, Δf₂ = 9−1 = 8.
+
+
+\begin{itemize}
+  \item \textbf{P₁} (f₁-Extrempunkt) → \textbf{CD = ∞}
+  \item \textbf{P₄} (f₁-Extrempunkt) → \textbf{CD = ∞}
+  \item \textbf{P₂}: (f₁(P₃)−f₁(P₁))/6 + (f₂(P₁)−f₂(P₃))/8 = (5−1)/6 + (9−2)/8 = 4/6 + 7/8 = 16/24 + 21/24 = \textbf{37/24 ≈ 1.542}
+  \item \textbf{P₃}: (f₁(P₄)−f₁(P₂))/6 + (f₂(P₂)−f₂(P₄))/8 = (7−3)/6 + (5−1)/8 = 4/6 + 1/2 = 4/6 + 3/6 = \textbf{7/6 ≈ 1.167}
+\end{itemize}
+
+\textbf{c)} NSGA-II-Selektion: zuerst alle vollständigen Fronts in aufsteigender Rangordnung; sobald die nächste Front nicht mehr ganz hineinpasst, wähle daraus diejenigen mit der \textbf{höchsten} CD.
+
+
+\begin{itemize}
+  \item Rang 1 enthält 4 Individuen → alle übernehmen (\{P₁, P₂, P₃, P₄\}).
+  \item Es fehlen 2 Plätze → 2 Punkte aus Rang 2 mit höchster CD.
+  \item CD Rang 2 (sort. f₁↑: P₅(2,9), P₆(4,7), P₇(6,4), P₈(8,3); Δf₁=6, Δf₂=6):
+\begin{itemize}
+  \item P₅: ∞ (Extrempunkt), P₈: ∞ (Extrempunkt)
+  \item P₆ = 4/6 + 5/6 = 1.500
+  \item P₇ = 4/6 + 4/6 = 1.333
+\end{itemize}
+  \item Höchste CD haben \textbf{P₅ und P₈} (∞).
+\end{itemize}
+
+Überlebende Population: \textbf{\{P₁, P₂, P₃, P₄, P₅, P₈\}}. Begründung: NSGA-II priorisiert Konvergenz (über NDSR) und nutzt CD als Tie-Breaker zur Erhaltung der Diversität — Extrempunkte werden dabei stets bevorzugt, um die Front-Spannweite zu sichern.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 — Hypervolumenbeitrag und SMS-EMOA vs. NSGA-II \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+Die aktuelle Front einer SMS-EMOA-Iteration besteht aus 4 Lösungen (Min–Min) mit Referenzpunkt R=(6,6):
+
+
+A=(1,5), B=(2,3), C=(4,2), D=(5,1).
+
+
+\textbf{a)} Berechne den Gesamt-Hypervolumen (HV) sowie den Hypervolumenbeitrag (HVB) jedes einzelnen Punkts gemäß der Slice-Vorschrift „Rechteck (f₁ᵢ, prev\_f₂) bis (next\_f₁, f₂ᵢ)". \textit{(8 P)}
+
+
+\textbf{b)} Welcher Punkt würde von SMS-EMOA als Ausscheider markiert? Diskutiere ggf. auftretende Mehrdeutigkeiten. \textit{(4 P)}
+
+
+\textbf{c)} Berechne zusätzlich die Crowding Distance der vier Punkte und gib an, welcher Punkt durch reines NSGA-II als Ausscheider gewählt würde. Vergleiche das Ergebnis mit b) und benenne \textbf{zwei} Trade-offs zwischen den Indikatoren CD und HVB aus dem Skript. \textit{(8 P)}
+
+
+\textbf{Lösung:}
+
+
+\textbf{a)} Sortiert nach f₁↑: A(1,5), B(2,3), C(4,2), D(5,1). prev\_f₂ des ersten Slices ist die Referenzkomponente r₂=6, next\_f₁ des letzten Slices ist r₁=6.
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Punkt}} & {\color{white}\textbf{Breite (next\_f₁ − f₁ᵢ)}} & {\color{white}\textbf{Höhe (prev\_f₂ − f₂ᵢ)}} & {\color{white}\textbf{HVB}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+A & 2 − 1 = 1 & 6 − 5 = 1 & \textbf{1} \\
+B & 4 − 2 = 2 & 5 − 3 = 2 & \textbf{4} \\
+C & 5 − 4 = 1 & 3 − 2 = 1 & \textbf{1} \\
+D & 6 − 5 = 1 & 2 − 1 = 1 & \textbf{1} \\
+\end{tabularx}
+}
+
+
+HV = 1 + 4 + 1 + 1 = \textbf{7}.
+
+
+\textbf{b)} SMS-EMOA entfernt den Punkt mit dem \textbf{niedrigsten HVB} innerhalb der schlechtesten Front. Hier liegt ein \textbf{Tie} zwischen A, C und D vor (alle HVB = 1). In der Praxis wird über ein Sekundärkriterium (z. B. zufällige Wahl, Reihenfolge in der Population, sekundärer ϵ-Indikator) entschieden. \textbf{B bleibt sicher erhalten}, da B mit HVB = 4 den größten exklusiven Volumenbeitrag liefert.
+
+
+\textbf{c)} Sortiert nach f₁: A(1,5), B(2,3), C(4,2), D(5,1); Δf₁ = 5−1 = 4, Δf₂ = 5−1 = 4.
+
+
+\begin{itemize}
+  \item A: f₁-Extrempunkt → CD = ∞
+  \item D: f₂-Extrempunkt → CD = ∞
+  \item B: (4−1)/4 + (5−2)/4 = 3/4 + 3/4 = \textbf{1.5}
+  \item C: (5−2)/4 + (3−1)/4 = 3/4 + 2/4 = \textbf{1.25}
+\end{itemize}
+
+NSGA-II würde \textbf{C} (kleinste CD) als Ausscheider markieren — eindeutig.
+
+
+Vergleich: HVB markiert C als gleichwertig mit den Randpunkten A und D zum Ausscheiden, weil C nur ein 1×1-Rechteck exklusiv beiträgt; CD bevorzugt hingegen Randpunkte (CD = ∞). Trade-offs:
+
+
+\begin{enumerate}
+  \item \textbf{Pareto-Compliance}: HVB ist Pareto-konform (eine echt bessere Front hat größeren HV) — CD ist es nicht; CD misst nur Verteilung, nicht Konvergenz.
+  \item \textbf{Referenzpunkt vs. Skalenunabhängigkeit}: HVB benötigt einen Referenzpunkt und ist sensitiv gegenüber dessen Wahl, dafür skalenunabhängig (Volumen). CD ist referenzfrei und damit einfacher, aber bei vielen Zielen wenig aussagekräftig. Außerdem ist die Rechenzeit für HVB bei vielen Zielen deutlich höher als für CD.
+\end{enumerate}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 — Marching Squares \& Heatmap-Farbe \textit{(18 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben sei eine einzelne Gitterzelle mit den Eckwerten
+
+
+\begin{lstlisting}
+TL = 1     TR = 5
+BL = 2     BR = 7
+\end{lstlisting}
+
+
+(BL = (0,0), BR = (1,0), TR = (1,1), TL = (0,1)). Schwellwert für die Iso-Linie: \textbf{thr = 4}.
+
+
+\textbf{a)} Bestimme den Marching-Squares-Index der Zelle. Verwende die Bit-Konvention bit₀ = BL, bit₁ = BR, bit₂ = TR, bit₃ = TL (jedes Bit ist 1, falls Eckwert ≥ thr). Liegt einer der mehrdeutigen Fälle (5, 10) vor? \textit{(4 P)}
+
+
+\textbf{b)} Berechne die Schnittpunkte der Iso-Linie mit den Zellkanten gemäß der linearen Interpolation \texttt{t = (thr − vA) / (vB − vA)}. Gib die Endpunkte des Liniensegments in Zellkoordinaten an. \textit{(8 P)}
+
+
+\textbf{c)} In derselben Zelle soll der Wert \textbf{v = 4} als Heatmap-Farbe gerendert werden (Datenbereich min = 1, max = 8). Berechne die normalisierte Position t und ermittle die RGB-Farbe per linearer Interpolation in der Skript-Palette \texttt{[18,136,184] → [255,247,214] → [180,35,24]}. \textit{(6 P)}
+
+
+\textbf{Lösung:}
+
+
+\textbf{a)} Vergleiche jeden Eckwert mit thr = 4:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Ecke}} & {\color{white}\textbf{Wert}} & {\color{white}\textbf{≥ 4 ?}} & {\color{white}\textbf{Bit}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+BL & 2 & nein & 0 \\
+BR & 7 & ja & 1 \\
+TR & 5 & ja & 1 \\
+TL & 1 & nein & 0 \\
+\end{tabularx}
+}
+
+
+Index = 0·1 + 1·2 + 1·4 + 0·8 = \textbf{6}. Index 6 ≠ 5, 10 → \textbf{kein mehrdeutiger Fall}. Index 6 schneidet zwei gegenüberliegende Kanten (untere und obere).
+
+
+\textbf{b)} Übergänge entlang der Kanten (0→1 oder 1→0 erzeugen einen Schnitt):
+
+
+\begin{itemize}
+  \item \textbf{Untere Kante BL→BR} (2 → 7): t = (4 − 2)/(7 − 2) = 2/5 = 0.4 → P₁ = (0.4, 0).
+  \item \textbf{Rechte Kante BR→TR} (7 → 5): beide ≥ 4 → kein Schnitt.
+  \item \textbf{Obere Kante TR→TL} (5 → 1): t = (4 − 5)/(1 − 5) = (−1)/(−4) = 0.25 → P₂ = TR + 0.25·(TL − TR) = (1 − 0.25, 1) = (0.75, 1).
+  \item \textbf{Linke Kante TL→BL} (1 → 2): beide < 4 → kein Schnitt.
+\end{itemize}
+
+Iso-Linie: \textbf{P₁ = (0.4, 0)} ⟶ \textbf{P₂ = (0.75, 1)}.
+
+
+\textbf{c)} Normalisierung: t = (v − min)/(max − min) = (4 − 1)/(8 − 1) = \textbf{3/7 ≈ 0.4286}.
+
+t < 0.5 → erste Hälfte der Palette zwischen C₀ = [18,136,184] und C₁ = [255,247,214] mit lokalem s = t/0.5 = 6/7.
+
+
+\begin{lstlisting}
+R = (1 − 6/7)·18  + (6/7)·255 = 18/7  + 1530/7 = 1548/7 ≈ 221
+G = (1 − 6/7)·136 + (6/7)·247 = 136/7 + 1482/7 = 1618/7 ≈ 231
+B = (1 − 6/7)·184 + (6/7)·214 = 184/7 + 1284/7 = 1468/7 ≈ 210
+\end{lstlisting}
+
+
+Heatmap-Farbe: \textbf{RGB ≈ (221, 231, 210)} — ein blass-gelblicher Grünton, plausibel im Übergang von Türkisblau zu Hellgelb.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 — Gewichtete Summe in der Pfadplanung \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Ein autonomer Lieferroboter hat drei Kandidatenpfade, jeweils bewertet nach Energieverbrauch f₁ [Wh] und Fahrzeit f₂ [min]:
+
+
+P₁ = (20, 15),  P₂ = (10, 30),  P₃ = (15, 20)  \textit{(beides minimieren)}.
+
+
+\textbf{a)} Zeige, dass alle drei Pfade Pareto-optimal sind. \textit{(3 P)}
+
+
+\textbf{b)} Wende die gewichtete Summe mit Gewichten \textbf{w = (0.7, 0.3)} an. Welcher Pfad wird gewählt? \textit{(4 P)}
+
+
+\textbf{c)} Bestimme das Intervall der Gewichtung w₁ ∈ (0,1) (mit w₂ = 1 − w₁), für das \textbf{P₃} das Minimum der gewichteten Summe wird. Diskutiere allgemeiner: Liefert die gewichtete Summe \textbf{immer} alle Pareto-optimalen Lösungen, wenn man w über [0,1] variiert? Begründe. \textit{(8 P)}
+
+
+\textbf{Lösung:}
+
+
+\textbf{a)} Paarweise Dominanzprüfung:
+
+\begin{itemize}
+  \item P₁ vs. P₂: 20 > 10 (P₁ schlechter in f₁), 15 < 30 (P₁ besser in f₂) → unvergleichbar.
+  \item P₁ vs. P₃: 20 > 15 und 15 < 20 → unvergleichbar.
+  \item P₂ vs. P₃: 10 < 15 und 30 > 20 → unvergleichbar.
+\end{itemize}
+
+Kein Pfad wird dominiert → alle drei sind \textbf{Pareto-optimal}.
+
+
+\textbf{b)} GS(Pᵢ) = 0.7·f₁ + 0.3·f₂:
+
+\begin{itemize}
+  \item GS(P₁) = 0.7·20 + 0.3·15 = 14 + 4.5 = \textbf{18.5}
+  \item GS(P₂) = 0.7·10 + 0.3·30 = 7 + 9 = \textbf{16.0}
+  \item GS(P₃) = 0.7·15 + 0.3·20 = 10.5 + 6 = \textbf{16.5}
+\end{itemize}
+
+Das Minimum ist GS(P₂) = 16 → \textbf{P₂ wird gewählt}.
+
+
+\textbf{c)} Mit w₁ = w, w₂ = 1 − w:
+
+
+GS(P₁) = 20w + 15(1−w) = 5w + 15
+
+GS(P₂) = 10w + 30(1−w) = −20w + 30
+
+GS(P₃) = 15w + 20(1−w) = −5w + 20
+
+
+P₃ < P₁ ⟺ −5w + 20 < 5w + 15 ⟺ 5 < 10w ⟺ \textbf{w > 0.5}
+
+P₃ < P₂ ⟺ −5w + 20 < −20w + 30 ⟺ 15w < 10 ⟺ \textbf{w < 2/3}
+
+
+Also wird P₃ für \textbf{w ∈ (0.5, 2/3)} gewählt. (Bei w = 0.7 hingegen ist 0.7 > 2/3 ≈ 0.667, daher gewinnt P₂ — konsistent mit b).)
+
+
+\textbf{Allgemeine Diskussion}: Nein, die gewichtete Summe findet \textbf{nicht zwangsläufig alle} Pareto-optimalen Lösungen. GS realisiert eine Stützhyperebene mit Normalenvektor w; geometrisch gewinnt nur derjenige Pareto-Punkt, an den eine solche Hyperebene tangential angelegt werden kann. Liegt die Pareto-Front in einem \textbf{nicht-konvexen} Bereich, so sind dortige Pareto-Punkte „eingedellt": jede für sie tangentiale GS-Linie schneidet auch andere Pareto-Punkte mit kleinerem Wert, sodass der eingedellte Punkt für \textbf{kein} w optimal ist. GS findet daher nur Pareto-Punkte auf der konvexen Hülle der Front. Im konkreten Beispiel sind alle drei Punkte auf der konvexen Hülle (man kann tangentiale Geraden anlegen), daher ist jeder Pfad für ein passendes w optimal.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 6 — Form der Pareto-Front und Treppen-Charakter der Dominated Region \textit{(13 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a)} Definiere präzise (jeweils 1 Satz): Decision Space, Objective Space, Pareto-Menge, Pareto-Front. \textit{(4 P)}
+
+
+\textbf{b)} Zeige formal, warum eine Pareto-Front bei einem Min–Min-Problem im Objective Space \textbf{monoton fallend} verläuft („unten links"). Nutze ausschließlich die Pareto-Dominanz-Definition. \textit{(4 P)}
+
+
+\textbf{c)} Begründe, weshalb die Sampled Pareto Front (und damit die Dominated Region) als \textbf{Treppenfunktion} dargestellt wird statt als schräge Verbindung benachbarter Pareto-Stichproben. Welche fehlerhafte Aussage über noch unbekannte Werte würde eine schräge Verbindung implizieren? \textit{(5 P)}
+
+
+\textbf{Lösung:}
+
+
+\textbf{a)}
+
+\begin{itemize}
+  \item \textbf{Decision Space}: Raum aller Entscheidungsvariablen x⃗, über den optimiert wird.
+  \item \textbf{Objective Space}: Raum der Zielwerte y⃗ = f(x⃗) ∈ ℝᵐ, in den der Decision Space durch f abgebildet wird.
+  \item \textbf{Pareto-Menge}: Menge aller Pareto-optimalen (non-dominierten) Lösungen im Decision Space.
+  \item \textbf{Pareto-Front}: Bild der Pareto-Menge unter f im Objective Space.
+\end{itemize}
+
+\textbf{b)} Seien y⃗′ = (f₁′, f₂′) und y⃗″ = (f₁″, f₂″) zwei verschiedene Punkte der Pareto-Front mit f₁′ < f₁″. Angenommen, es gälte zusätzlich f₂′ ≤ f₂″. Dann wäre y⃗′ noWorse als y⃗″ in beiden Komponenten und strictlyBetter in der ersten Komponente — also würde y⃗′ den Punkt y⃗″ Pareto-dominieren, im Widerspruch zur Annahme, dass y⃗″ Pareto-optimal ist. Folglich muss f₂′ > f₂″ gelten. Also: aus f₁′ < f₁″ folgt f₂′ > f₂″ — die Front ist streng monoton fallend in (f₁, f₂). □
+
+
+\textbf{c)} Die Dominated Region eines einzelnen Pareto-Samples p = (p₁, p₂) ist der \textbf{achsenparallele Quadrant} \{y ∈ ℝ² : y₁ ≥ p₁ ∧ y₂ ≥ p₂\} (Vereinigungsweise: alle Punkte, die in jedem Ziel mind. so groß sind wie p). Die Dominated Region der gesamten Sampled Pareto Front ist die \textbf{Vereinigung} dieser Quadranten — und Vereinigungen achsenparalleler Rechtecke ergeben zwangsläufig eine Treppenform (alle Begrenzungssegmente sind achsenparallel).
+
+
+Eine \textbf{schräge Verbindung} zwischen zwei Sample-Punkten p\_i und p\_\{i+1\} (sortiert nach f₁↑) würde implizieren, dass alle Punkte unterhalb dieser Schräge (in Richtung Origin) \textbf{nicht dominiert} seien — d. h. man würde behaupten, dort existierten erreichbare Lösungen mit besseren Werten. Über die unbekannten Bereiche zwischen zwei Stichproben hat man jedoch keine Information; nur die zwei tatsächlichen Pareto-Punkte sind gesichert. Konservativ darf man also nur das dominieren, was beide Achsen-Komponenten ≥ einem realen Sample erfüllt — das ergibt exakt die Treppenkante. Die Treppenform ist somit die korrekt \textbf{konservative Untergrenze} der wahren (unbekannten) Pareto-Front.
+
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{document}

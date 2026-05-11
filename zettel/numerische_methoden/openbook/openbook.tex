@@ -1,0 +1,513 @@
+% ============================================================
+%  Openbook / Formelsammlung Template — strikt nach my_dhbw
+%  Stil: 2-spaltig, kompakt, scriptsize Tabellen, dünne Regeln.
+%  Renderer: lualatex (zweimal, wg. Unicode-Inhalt)
+% ============================================================
+\documentclass[10pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+
+\usepackage[top=0.8cm, bottom=0.8cm, left=0.8cm, right=0.8cm, footskip=0.4cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{multicol}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{microtype}
+\usepackage{etoolbox}
+
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+% ltablex/longtable bewusst NICHT geladen — kollidiert mit multicols.
+\usepackage{colortbl}
+\usepackage[most]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{adjustbox}
+\usepackage[colorlinks=false]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme (my_dhbw accent) ────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{242, 255, 242}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer — wie my_dhbw formelsammlung.tex ────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0.3pt}
+\fancyfoot[L]{\tiny\color{accent}\nichttitle}
+\fancyfoot[R]{\tiny\color{accent}\thepage\,/\,\pageref{LastPage}}
+
+% ── Typografie — wie formelsammlung.tex ───────────────────────
+\titleformat{\section}
+    {\color{accent}\footnotesize\bfseries}{}{0pt}{}
+    [\vspace{-2pt}\color{accent!50}\rule{\linewidth}{0.4pt}]
+\titleformat{\subsection}
+    {\scriptsize\bfseries\color{accent!85!black}}{}{0pt}{}{}
+\titleformat{\subsubsection}
+    {\scriptsize\itshape\color{accent!60!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{4pt}{1pt}
+\titlespacing*{\subsection}{0pt}{3pt}{0pt}
+\titlespacing*{\subsubsection}{0pt}{2pt}{0pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1pt}
+\renewcommand{\arraystretch}{1.0}
+\setlist{noitemsep, topsep=0pt, parsep=0pt, leftmargin=1.1em}
+
+\setlength{\columnsep}{6mm}
+\setlength{\columnseprule}{0.2pt}
+
+% Globaler scriptsize-Body. Tabellen zusätzlich auf scriptsize zwingen.
+\AtBeginEnvironment{tabularx}{\scriptsize}
+\AtBeginEnvironment{tabular}{\scriptsize}
+
+% ── Boxen (kompakt) ───────────────────────────────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={\scriptsize Abbildung: #1}, fonttitle=\scriptsize\bfseries,
+  fontupper=\scriptsize, sharp corners,
+  boxsep=2pt, left=3pt, right=3pt, top=2pt, bottom=2pt,
+  before skip=3pt, after skip=3pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={\scriptsize Tabelle: #1}, fonttitle=\scriptsize\bfseries,
+  fontupper=\scriptsize, sharp corners,
+  boxsep=2pt, left=3pt, right=3pt, top=2pt, bottom=2pt,
+  before skip=3pt, after skip=3pt
+}
+\newtcolorbox{solutionbox}[1]{
+  colback=solutionbg, colframe=green!60!black!60,
+  title={\scriptsize #1}, fonttitle=\scriptsize\bfseries,
+  fontupper=\scriptsize, sharp corners,
+  boxsep=2pt, left=3pt, right=3pt, top=2pt, bottom=2pt,
+  before skip=3pt, after skip=3pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\tiny,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=none,
+  xleftmargin=2pt, xrightmargin=2pt,
+  aboveskip=2pt, belowskip=2pt,
+  keepspaces=true
+}
+
+\providecommand{\nichttitle}{Formelsammlung}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Numerische Methoden}
+\renewcommand{\nichtsubtitle}{Formelsammlung}
+
+
+\begin{document}
+
+\begin{center}
+{\small\bfseries\color{accent}\nichttitle}
+\end{center}
+\vspace{-6pt}
+
+\scriptsize
+\begin{multicols}{2}
+
+% ── BODY ──────────────────────────────────────────────────────
+
+\section{Numerische Methoden — Spickzettel}
+
+
+\subsection{1. Grundlagen}
+
+\textbf{Numerische Methoden}: näherungsweise Lösung mathematisch nicht/unpraktikabel analytisch lösbarer Probleme.
+
+\begin{itemize}
+  \item f(·)=exakt, f̃(·)=Näherung; x=exakt, x̃=gestört
+  \item Nötig bei: nichtlinearen Gln., transzendenten Fkt., großen LGS
+\end{itemize}
+
+\textbf{Transzendente Funktion}: keine endliche Kombi algebraischer Operationen → keine geschlossene Lösung. Bsp. σ(x)=1/(1+e⁻ˣ)
+
+\textbf{Smooth}: Ableitungen aller Ordnungen existieren.
+
+\textbf{Moore's Law}: Rechenleistung verdoppelt sich \textasciitilde{}alle 2 Jahre.
+
+\textbf{[a,b]}: geschlossenes Intervall (inkl. Endpunkte).
+
+
+
+\subsection{2. Diskretisierung}
+
+\textbf{Diskretisierung}: kontinuierliche Domäne → endliche Schritte/Gitter.
+
+\begin{itemize}
+  \item Kontinuierlich f(x), x∈[a,b] → Diskret f(xᵢ), xᵢ=a+ih, i=0,…,N
+  \item Schrittweite \textbf{h = (b−a)/N}
+\end{itemize}
+
+
+\subsection{3. Floating-Point Arithmetik}
+
+
+\subsubsection{3.1 Fehlertypen}
+
+{\small
+\begin{adjustbox}{max width=\linewidth}
+{\scriptsize
+\begin{tabular}{ll}
+\toprule
+\textbf{Fehler} & \textbf{Ursache} \\
+\midrule
+Modeling Error & Modell vereinfacht Realität \\
+Truncation/Approximation & endliche Approx. unendlicher Prozesse \\
+Rounding Error & endliche Stellenzahl \\
+Overflow & Magnitude zu groß → ±∞ \\
+Underflow & Magnitude nahe 0 → 0 \\
+\bottomrule
+\end{tabular}
+}
+\end{adjustbox}
+}
+
+
+
+\subsubsection{3.2 Floating-Point Darstellung}
+\textbf{x = (−1)ˢ · m · 2ᵉ} (IEEE 754); s=Vorzeichen, m=Mantisse, e=Exponent.
+
+
+
+{\small
+\begin{adjustbox}{max width=\linewidth}
+{\scriptsize
+\begin{tabular}{lllll}
+\toprule
+\textbf{Format} & \textbf{Bits} & \textbf{Sign} & \textbf{Exponent} & \textbf{Mantisse} \\
+\midrule
+HALF & 16 & 1 & 6 & 9 \\
+SINGLE & 32 & 1 & 8 & 23 \\
+DOUBLE & 64 & 1 & 11 & 52 \\
+\bottomrule
+\end{tabular}
+}
+\end{adjustbox}
+}
+
+
+\begin{itemize}
+  \item IEEE 754 Single: Bias=127, e=E−127; E∈0…255
+  \item Größte Single ≈ 10³⁸ (log₁₀(2¹²⁸)≈38.5)
+  \item Mantisse t Bits → 2ᵗ Werte zwischen zwei Zweierpotenzen
+  \item 2-Bit Bsp: 0.00=0, 0.01=0.25, 0.10=0.5, 0.11=0.75
+\end{itemize}
+
+\textbf{Machine Epsilon ε\_mach}: kleinste pos. Zahl mit 1+ε\_mach≠1.
+
+\begin{itemize}
+  \item \textbf{ε\_mach = 2⁻ᵗ}
+  \item Single ≈ 1.19×10⁻⁷; Double ≈ 2.22×10⁻¹⁶
+  \item Absolute Präzision: ε\_mach·|x| (große x → größere Lücken)
+\end{itemize}
+
+\textbf{Fixed-Point}: feste Bits Integer-/Fraktionsteil → konstante Präzision.
+
+\begin{itemize}
+  \item Skalierung 10⁶: 1.234567 → 1234567; max. Rundungsfehler 0.5×10⁻⁶
+\end{itemize}
+
+
+\subsubsection{3.3 Loss of Significance}
+\textbf{Catastrophic Cancellation}: Subtraktion fast gleicher Zahlen löscht führende Stellen.
+
+\begin{itemize}
+  \item 8 sig. Digits: a=12345678.5, b=12345678.0 → ã−b̃=1 statt 0.5
+  \item f(ε)=1/(1+ε−1) divergiert bei kleinem ε
+\end{itemize}
+
+\textbf{Pseudo-Accuracy}: künstliches Detail suggeriert ungerechtfertigte Genauigkeit.
+
+
+
+\subsection{4. Fehleranalyse}
+
+
+{\small
+\begin{adjustbox}{max width=\linewidth}
+{\scriptsize
+\begin{tabular}{lll}
+\toprule
+\textbf{Begriff} & \textbf{Formel} & \textbf{Bedeutung} \\
+\midrule
+\textbf{Conditioning} κ & κ=\textbackslash{} & f(x)−f(x̃)\textbackslash{} \\
+\textbf{Stability} & \textbackslash{} & f̃(x̃)−f̃(x)\textbackslash{} \\
+\textbf{Consistency} & \textbackslash{} & f̃(x)−f(x)\textbackslash{} \\
+\textbf{Convergence} & \textbackslash{} & f̃(x̃)−f(x)\textbackslash{} \\
+\bottomrule
+\end{tabular}
+}
+\end{adjustbox}
+}
+
+
+\begin{itemize}
+  \item κ unabhängig von Methode
+  \item Konvergenz meist →0; Nicht-Null = systematischer Bias
+  \item Stability = Conditioning des Systems für h→0
+\end{itemize}
+
+
+\subsection{5. Brute-Force / Grid Search}
+
+\textbf{Grid Search}: f an allen Gitterpunkten auswerten, Bestes wählen.
+
+\begin{itemize}
+  \item Komplexität \textbf{O(Nᵈ)}
+  \item Extrema auf [a,b]: kritische Punkte ODER Endpunkte prüfen
+\end{itemize}
+
+
+\subsubsection{5.1 min sin(x) auf [−3,1]}
+\begin{itemize}
+  \item Analytisch: cos(x)=0 ⟹ x*=−π/2≈−1.5708, sin(−π/2)=−1
+  \item Grid h=1: sin(−3)≈−0.1411, sin(−2)≈−0.9093, sin(−1)≈−0.8415, sin(0)=0, sin(1)≈0.8415
+  \item Num. Min: −0.9093 bei x=−2; Approx.fehler 0.0907
+\end{itemize}
+
+
+\subsubsection{5.2 LGS-Beispiel}
+[2,1;5,1]·[w,b]ᵀ=[11,13]ᵀ → w=2/3, b=29/3
+
+\begin{itemize}
+  \item Grid w,b∈\{0,2.5,5,7.5,10\}; error₁=|2w+b−11|, error₂=|5w+b−13|
+  \item Min bei w=0, b=10, akkum. Fehler=4
+  \item Substitution skaliert nicht für große Systeme
+\end{itemize}
+
+
+\subsubsection{5.3 Conditioning/Stability min sin(x), x̃=x±0.25}
+\begin{itemize}
+  \item κ(−1,+0.25)≈0.1599; κ(−1,−0.25)≈0.1074 (gut); κ(0,±0.25)≈0.2474 (schlecht)
+  \item Stability h=1: s≈0; h=0.2 bei x=−1: s≈0.4964
+  \item Consistency: c₁≥0.15853; c₀.₂≥0.05102 (besser)
+  \item Beide h gleich konvergent; h=0.2 nutzt nichts wegen Stabilität
+\end{itemize}
+
+
+\subsection{6. Taylor-Expansion}
+
+\[
+f(x)=\sum_{k=0}^{\infty}\frac{f^{(k)}(x_n)}{k!}(x-x_n)^k
+\]
+
+
+
+{\small
+\begin{adjustbox}{max width=\linewidth}
+{\scriptsize
+\begin{tabular}{lll}
+\toprule
+\textbf{Ordnung} & \textbf{P(x)} & \textbf{Bedingung} \\
+\midrule
+0. & f(xₙ) & P(xₙ)=f(xₙ) \\
+1. & f(xₙ)+f'(xₙ)(x−xₙ) & P'(xₙ)=f'(xₙ) \\
+2. & + f''(xₙ)/2·(x−xₙ)² & P''(xₙ)=f''(xₙ) \\
+\bottomrule
+\end{tabular}
+}
+\end{adjustbox}
+}
+
+
+\begin{itemize}
+  \item /k! kompensiert Mehrfachableitung
+  \item \textbf{Lokale} Approx., verankert an xₙ
+\end{itemize}
+
+
+\subsection{7. Newton-Raphson}
+
+\textbf{Ziel}: f(x*)=0 via lokaler Steigung.
+
+\textbf{Lin. Approx.}: f(x)≈f(xₙ)+f'(xₙ)(x−xₙ)
+
+
+\[
+x_{n+1}=x_n-\frac{f(x_n)}{f'(x_n)}
+\]
+
+
+\begin{quote}
+Merke: Linear reicht, weil wir f(x*)=0 suchen, nicht f(x) approximieren.
+\end{quote}
+
+
+\subsubsection{7.1 Algorithmus 1}
+\textbf{Require}: x₀, f, f', ε
+
+\begin{enumerate}
+  \item x ← x₀
+  \item while |f(x)|>ε:
+  \item   d ← f'(x)
+  \item   if |d|<ε\_machine: error "Derivative too small"
+  \item   x ← x − f(x)/d
+  \item return x
+\end{enumerate}
+
+
+\subsubsection{7.2 Quadratische Konvergenz}
+\begin{itemize}
+  \item eₙ=xₙ−x\textit{; f(xₙ)=f'(x})·eₙ+f''(ξ)/2·eₙ²
+  \item $e_{n+1}\approx-\frac{f''(\xi)}{2f'(x^*)}e_n^2$
+  \item \textbf{|eₙ₊₁|≤C·|eₙ|²}; Fehler quadriert: 10⁻¹→10⁻²→10⁻³→10⁻⁶→10⁻¹²
+\end{itemize}
+
+
+\subsubsection{7.3 √2, x₀=2}
+
+{\small
+\begin{adjustbox}{max width=\linewidth}
+{\scriptsize
+\begin{tabular}{lllll}
+\toprule
+\textbf{n} & \textbf{xₙ} & {\color{white}\textbf{\textbackslash{}}} & {\color{white}\textbf{eₙ\textbackslash{}}} & \textbf{} \\
+\midrule
+0 & 2.000000000 & 5.86×10⁻¹ &  &  \\
+1 & 1.500000000 & 8.58×10⁻² &  &  \\
+2 & 1.416666667 & 2.45×10⁻³ &  &  \\
+3 & 1.414215686 & 2.13×10⁻⁶ &  &  \\
+4 & 1.414213562 & 4.5×10⁻¹² &  &  \\
+\bottomrule
+\end{tabular}
+}
+\end{adjustbox}
+}
+
+
+
+\subsubsection{7.4 sin(x)=0, x₀=3.5}
+\begin{itemize}
+  \item x₁=3.5−(−0.351)/(−0.936)=3.125
+  \item x₂≈3.14159; nach 2 Iter. Fehler<10⁻⁵
+  \item Vgl. Grid h=0.3: 6 Auswertungen, Fehler≈0.042
+\end{itemize}
+
+
+\subsubsection{7.5 f(x)=x³−x, x₀=1.4 (f'=3x²−1)}
+\begin{itemize}
+  \item x₁=1.4−1.344/4.88≈1.127
+  \item x₂≈0.976; x₃≈1.014
+\end{itemize}
+
+
+\subsubsection{7.6 Failure Modes}
+\begin{itemize}
+  \item \textbf{Zero derivative}: f'(xₙ)=0 → horizontale Tangente
+  \item \textbf{Oszillation}: symmetrische Fkt. → Zyklus
+  \item \textbf{Ambiguous starting point}: x₀ entscheidet Wurzel
+  \item \textbf{Lokales Optimum}: nahes ≠ globales
+  \item \textbf{Divergenz}: bei f' nahe 0
+\end{itemize}
+
+
+\subsection{8. Secant Methode}
+
+\textbf{Motivation}: f'(x) nicht verfügbar (teuer/Black-Box/nicht diff.bar).
+
+\textbf{Approx. f'(xₙ)} ≈ (f(xₙ)−f(xₙ₋₁))/(xₙ−xₙ₋₁)
+
+
+\[
+x_{n+1}=x_n-f(x_n)\cdot\frac{x_n-x_{n-1}}{f(x_n)-f(x_{n-1})}
+\]
+
+
+\begin{itemize}
+  \item \textbf{2 Startwerte} x₀, x₁
+  \item Geometrisch: Sekantensteigung statt Tangente
+\end{itemize}
+
+
+\subsubsection{8.1 Algorithmus 2}
+\textbf{Require}: x₀, x₁, f, ε
+
+\begin{enumerate}
+  \item while |f(x₁)|>ε:
+  \item   s ← (f(x₁)−f(x₀))/(x₁−x₀)
+  \item   x\_old ← x₁
+  \item   x₁ ← x₁ − f(x₁)/s
+  \item   x₀ ← x\_old
+  \item return x₁
+\end{enumerate}
+
+
+\subsubsection{8.2 f(x)=x³−x, x₀=1.2, x₁=1.4}
+\begin{itemize}
+  \item x₂≈1.4−0.744·(0.2/0.616)≈1.159
+  \item x₃≈1.011
+\end{itemize}
+
+
+\subsection{9. Vergleich}
+
+
+{\small
+\begin{adjustbox}{max width=\linewidth}
+{\scriptsize
+\begin{tabular}{lllll}
+\toprule
+\textbf{Methode} & \textbf{Info} & \textbf{Startwerte} & \textbf{Konvergenz} & \textbf{Komplexität} \\
+\midrule
+Grid Search & f(x) & Intervall & linear/blind & O(Nᵈ) \\
+Newton-Raphson & f(x), f'(x) & 1 (x₀) & quadratisch & wenige Iter. \\
+Secant & f(x) & 2 (x₀,x₁) & superlinear & kein f' nötig \\
+\bottomrule
+\end{tabular}
+}
+\end{adjustbox}
+}
+
+
+
+\subsection{10. ML/DL Bezug}
+
+\begin{itemize}
+  \item Newton 1. Ordnung = \textbf{Gradient Descent}
+  \item \textbf{Backpropagation}: verteilt Gradient durch Netz-Schichten
+  \item Lokale Methoden → lokale Lösungen; bei f'=0 oszillieren/divergieren
+\end{itemize}
+
+
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{multicols}
+\end{document}

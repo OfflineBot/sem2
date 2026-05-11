@@ -1,0 +1,531 @@
+% ============================================================
+%  Übungsaufgaben Template (my_dhbw Stil, uebung_*.tex)
+%  Header "Übungsblatt", grün eingefärbte <details>-Lösungen.
+%  Renderer: pdflatex (zweimal)
+% ============================================================
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+\usepackage[top=2cm, bottom=2cm, left=2.4cm, right=2.4cm, footskip=1cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{ltablex}
+\keepXColumns
+\usepackage{colortbl}
+\usepackage[most,breakable]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{pdflscape}
+\usepackage{titlesec}
+\usepackage[colorlinks=true, linkcolor=accent, urlcolor=accent]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme ─────────────────────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{loesung}{RGB}{0, 100, 0}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{240, 252, 240}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer ─────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\footnotesize\color{accent}\nichttitle}
+\fancyhead[R]{\footnotesize\color{accent}\nichtsubtitle}
+\fancyfoot[R]{\footnotesize\color{accent}Blatt \thepage\,/\,\pageref{LastPage}}
+
+% ── Typografie ────────────────────────────────────────────────
+\titleformat{\section}
+    {\color{accent}\large\bfseries}{}{0pt}{}
+    [\vspace{-4pt}\color{accent}\rule{\linewidth}{1.5pt}]
+\titleformat{\subsection}
+    {\normalsize\bfseries\color{accent!85!black}}{}{0pt}{}{}
+\titleformat{\subsubsection}
+    {\small\bfseries\color{accent!70!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{10pt}{3pt}
+\titlespacing*{\subsection}{0pt}{6pt}{2pt}
+\titlespacing*{\subsubsection}{0pt}{4pt}{1pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\renewcommand{\arraystretch}{1.2}
+\setlist[itemize]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.4em}
+\setlist[enumerate]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.6em}
+
+% ── Boxen: solutionbox = Lösungsbox in grün ──────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={Abbildung: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={Tabelle: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{solutionbox}[1]{
+  enhanced,
+  colback=solutionbg, colframe=loesung,
+  title={#1}, fonttitle=\small\bfseries,
+  coltitle=white, colbacktitle=loesung,
+  breakable, before skip=8pt, after skip=8pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=single, framerule=0pt,
+  xleftmargin=4pt, xrightmargin=4pt,
+  aboveskip=6pt, belowskip=6pt,
+  keepspaces=true
+}
+
+\providecommand{\nichttitle}{Übungsblatt}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Digitale Betriebswirtschaftslehre}
+\renewcommand{\nichtsubtitle}{Übungsblatt 1}
+
+
+\begin{document}
+
+\begin{center}
+{\Large\bfseries\color{accent}\nichttitle}
+\ifx\nichtsubtitle\empty\else
+  \\[2pt]{\normalsize\color{accent!80!black}\nichtsubtitle}
+\fi
+\\[2pt]
+\color{accent}\rule{0.4\linewidth}{0.8pt}\color{black}
+\end{center}
+\vspace{4pt}
+
+% ── BODY ──────────────────────────────────────────────────────
+
+\section{Übungsblatt 1 — Digitale Betriebswirtschaftslehre — Gesamtzettel}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 1 — Produktionsfaktoren und Daten \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Die fiktive Firma \textit{SchraubFix GmbH} fertigt Spezialschrauben. Sie überlegt, ihre klassische Produktion durch eine datengetriebene Steuerung (Sensoren an Maschinen, Predictive Maintenance, Bedarfsprognose aus Verkaufsdaten) zu ergänzen.
+
+
+a) Nennen Sie die drei klassischen Produktionsfaktoren nach Gutenberg und ordnen Sie folgende Ressourcen der SchraubFix GmbH zu: \textit{Drahtrollen aus Stahl, CNC-Drehmaschine, Lohnarbeiter, ERP-Software-Lizenz, Werkstattmeister}. \textit{(4 Punkte)}
+
+
+b) Erklären Sie, warum \textbf{Daten} als moderner Produktionsfaktor gelten. Skizzieren Sie dazu den Wandel des klassischen Wertschöpfungsmodells (Input → Produktion → Output) hin zum datengetriebenen Modell. \textit{(5 Punkte)}
+
+
+c) Begründen Sie, warum eine reine Klassifikation der Sensor-Daten als „Betriebsmittel" zu kurz greift. Welche Konsequenz hat die Anerkennung von Daten als eigener Produktionsfaktor für die Investitionsplanung der SchraubFix GmbH? \textit{(6 Punkte)}
+
+
+\textbf{Lösung:}
+
+
+a)
+
+\begin{itemize}
+  \item \textbf{Arbeit}: Lohnarbeiter, Werkstattmeister
+  \item \textbf{Betriebsmittel (Kapital)}: CNC-Drehmaschine, ERP-Software-Lizenz
+  \item \textbf{Werkstoffe}: Drahtrollen aus Stahl
+\end{itemize}
+
+b) Daten tragen über die Kette \textbf{Sammlung → Verarbeitung → Entscheidung} zur Wertschöpfung bei. Sie ermöglichen bessere Prognosen, effizientere Prozesse und neue Geschäftsmodelle. Wandel: das klassische Modell \textbf{Input → Produktion → Output} wird ergänzt/abgelöst durch \textbf{Daten → Analyse → Entscheidung → Wertschöpfung}. Daten sind nicht mehr nur Begleiterscheinung der Produktion, sondern eigenständige Quelle des Outputs.
+
+
+c) Daten sind kein Betriebsmittel im klassischen Sinn, weil sie:
+
+\begin{itemize}
+  \item nicht durch Nutzung verbraucht werden (im Gegensatz zur Maschine, die abnutzt),
+  \item beliebig duplizierbar sind,
+  \item ihren Wert erst durch Verarbeitung und Entscheidung entfalten — nicht durch physische Transformation.
+\end{itemize}
+
+\textbf{Konsequenz für die Investitionsplanung}: Investitionen müssen nicht nur in Maschinen (Betriebsmittel) und Material (Werkstoffe), sondern eigenständig in Datenerfassung (Sensorik), Datenverarbeitung (Analytics, ML-Infrastruktur) und Daten-Kompetenz (Personal) fließen. Diese Investitionen werden direkt erfolgswirksam, weil sie Prognose- und Entscheidungsqualität verbessern — also unmittelbar die Wertschöpfung erhöhen.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 — Marktgleichgewicht und Nachfrageschock \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+Auf einem Studi-Markt für gebrauchte Tablets gelten:
+
+
+\begin{itemize}
+  \item Nachfrage: $Q_D = 240 - 4P$
+  \item Angebot: $Q_S = 40 + 6P$
+\end{itemize}
+
+a) Berechnen Sie Gleichgewichtspreis $P^*$ und -menge $Q^*$. \textit{(5 Punkte)}
+
+
+b) Die Hochschule diktiert einen Maximalpreis von $P = 15$ €. Bestimmen Sie $Q_D$, $Q_S$ und Art/Höhe des Marktungleichgewichts. Welche Marktreaktion wäre ohne Preisregulierung zu erwarten? \textit{(6 Punkte)}
+
+
+c) Eine TikTok-Welle treibt die Nachfrage auf $Q_D' = 320 - 4P$. Berechnen Sie das neue Gleichgewicht. Was empfehlen Sie einem Anbieter aus Managementsicht? \textit{(5 Punkte)}
+
+
+d) Erläutern Sie kurz, wie ein Plattformanbieter (z. B. Refurbished-Marktplatz) eine solche Nachfrageverschiebung \textbf{früher} erkennen könnte als ein klassischer Händler. Welcher Wettbewerbsvorteil entsteht? \textit{(4 Punkte)}
+
+
+\textbf{Lösung:}
+
+
+a) Gleichsetzen:
+
+\[
+240 - 4P = 40 + 6P \Rightarrow 200 = 10P \Rightarrow P^* = 20\,€
+\]
+
+\[
+Q^* = 240 - 4 \cdot 20 = 160
+\]
+
+
+b) Bei $P = 15$ €:
+
+\begin{itemize}
+  \item $Q_D = 240 - 4 \cdot 15 = 180$
+  \item $Q_S = 40 + 6 \cdot 15 = 130$
+  \item $Q_D > Q_S$ → \textbf{Nachfrageüberschuss = 50 Tablets} (Preis zu niedrig).
+\end{itemize}
+
+Ohne Preisregulierung würde der Preis steigen, bis $P^* = 20$ € erreicht ist und der Markt geräumt wird.
+
+
+c) Neues Gleichgewicht:
+
+\[
+320 - 4P = 40 + 6P \Rightarrow 280 = 10P \Rightarrow P^{*\prime} = 28\,€
+\]
+
+\[
+Q^{*\prime} = 320 - 4 \cdot 28 = 208
+\]
+
+
+Die Nachfragekurve verschiebt sich nach rechts → \textbf{höherer Preis, höhere Menge}. Managementempfehlung: Kapazitäten/Beschaffung ausbauen und Verkaufspreis anheben (Richtung 28 €), um die zusätzliche Zahlungsbereitschaft abzuschöpfen.
+
+
+d) Eine Plattform sieht Verkaufszahlen, Suchanfragen, Klickraten und Watchlists nahezu in Echtzeit über alle Anbieter und Käufer hinweg. Sie erkennt einen Anstieg der Nachfrage \textbf{bevor} Lagerbestände bei einzelnen Händlern leerlaufen. \textbf{Wettbewerbsvorteil}: schnellere Preis- und Mengenanpassung (Dynamic Pricing, gezielte Beschaffung) → höhere Marge und vermiedene Out-of-Stock-Situationen.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 — Anbieterwahl unter Sicherheit (Transfer) \textit{(18 Punkte)}}\mbox{}\\[2pt]
+
+Ein Online-Shop erwartet pro Jahr Transaktionen $x$ und wählt zwischen drei Payment-Anbietern:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Anbieter}} & {\color{white}\textbf{Gebühr pro Transaktion}} & {\color{white}\textbf{Fixkosten/Jahr}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+A (Basic) & 0,50 € & 5.000 € \\
+B (Pro) & 0,35 € & 20.000 € \\
+C (Enterprise) & 0,25 € & 50.000 € \\
+\end{tabularx}
+}
+
+
+a) Stellen Sie für jeden Anbieter die Gesamtkostenfunktion $K(x)$ auf. \textit{(3 Punkte)}
+
+
+b) Bestimmen Sie die kritischen Transaktionsmengen, ab denen B günstiger als A bzw. C günstiger als B wird. \textit{(6 Punkte)}
+
+
+c) Empfehlen Sie für die Transaktionsvolumina $x_1 = 80\,000$, $x_2 = 200\,000$, $x_3 = 350\,000$ jeweils den optimalen Anbieter mit Begründung. \textit{(6 Punkte)}
+
+
+d) Ordnen Sie diese Entscheidung in der Entscheidungstheorie ein: Sicherheit, Risiko oder Unsicherheit? Konstitutiv oder laufend? \textit{(3 Punkte)}
+
+
+\textbf{Lösung:}
+
+
+a)
+
+\begin{itemize}
+  \item $K_A(x) = 5.000 + 0{,}50\,x$
+  \item $K_B(x) = 20.000 + 0{,}35\,x$
+  \item $K_C(x) = 50.000 + 0{,}25\,x$
+\end{itemize}
+
+b) \textbf{A vs. B}: $5.000 + 0{,}50\,x = 20.000 + 0{,}35\,x \Rightarrow 0{,}15\,x = 15.000 \Rightarrow x = 100.000$.
+
+\textbf{B vs. C}: $20.000 + 0{,}35\,x = 50.000 + 0{,}25\,x \Rightarrow 0{,}10\,x = 30.000 \Rightarrow x = 300.000$.
+
+
+Also: bis 100.000 Transaktionen ist A günstig, zwischen 100.000 und 300.000 B, ab 300.000 C.
+
+
+c)
+
+\begin{itemize}
+  \item $x_1 = 80.000$: $K_A = 45.000$, $K_B = 48.000$, $K_C = 70.000$ → \textbf{Anbieter A} (unter 100.000-Schwelle).
+  \item $x_2 = 200.000$: $K_A = 105.000$, $K_B = 90.000$, $K_C = 100.000$ → \textbf{Anbieter B} (zwischen den Schwellen).
+  \item $x_3 = 350.000$: $K_A = 180.000$, $K_B = 142.500$, $K_C = 137.500$ → \textbf{Anbieter C} (über 300.000-Schwelle).
+\end{itemize}
+
+d) Alle Kostenparameter sind vertraglich fixiert und das Volumen ist (annahmegemäß) bekannt → \textbf{Entscheidung unter Sicherheit}. Da der Anbieter nicht täglich gewechselt wird und die Wahl Geschäftsmodell und IT-Architektur prägt, handelt es sich um eine \textbf{konstitutive (oder zumindest mittelfristige strukturelle) Entscheidung}, nicht um eine laufende.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 — Risiko, Unsicherheit und Hurwicz \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+Ein Start-up plant den Markteintritt mit drei Alternativen. Das Ergebnis (Gewinn in T€) hängt vom Marktumfeld ab:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Alternative}} & {\color{white}\textbf{Boom}} & {\color{white}\textbf{Stabil}} & {\color{white}\textbf{Rezession}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+A — Aggressiv & 300 & 100 & −200 \\
+B — Moderat & 180 & 120 & −20 \\
+C — Defensiv & 80 & 70 & 40 \\
+\end{tabularx}
+}
+
+
+a) Die Geschäftsführung schätzt die Wahrscheinlichkeiten auf $p_{\text{Boom}}=0{,}3$, $p_{\text{Stabil}}=0{,}5$, $p_{\text{Rez}}=0{,}2$. Wählen Sie die optimale Alternative nach dem \textbf{Erwartungswert-Kriterium}. \textit{(5 Punkte)}
+
+
+b) Ein neues Vorstandsmitglied bezweifelt diese Wahrscheinlichkeiten. Welche Alternative wäre nach \textbf{Maximin (Wald)}, \textbf{Maximax} und \textbf{Laplace} zu wählen? \textit{(6 Punkte)}
+
+
+c) Wenden Sie das \textbf{Hurwicz-Kriterium} mit Optimismusparameter $\lambda = 0{,}4$ an und bestimmen Sie die optimale Alternative. \textit{(5 Punkte)}
+
+
+d) Ordnen Sie die Vorgehensweisen aus a) und b) den Informationsständen \textit{Sicherheit / Risiko / Unsicherheit} zu und begründen Sie kurz, warum für ein junges Start-up das \textbf{Maximin-Kriterium} problematisch sein kann. \textit{(4 Punkte)}
+
+
+\textbf{Lösung:}
+
+
+a) Erwartungswert $E = \sum p_i \cdot x_i$:
+
+\begin{itemize}
+  \item $E(A) = 0{,}3 \cdot 300 + 0{,}5 \cdot 100 + 0{,}2 \cdot (-200) = 90 + 50 - 40 = 100$
+  \item $E(B) = 0{,}3 \cdot 180 + 0{,}5 \cdot 120 + 0{,}2 \cdot (-20) = 54 + 60 - 4 = 110$
+  \item $E(C) = 0{,}3 \cdot 80 + 0{,}5 \cdot 70 + 0{,}2 \cdot 40 = 24 + 35 + 8 = 67$
+\end{itemize}
+
+→ \textbf{Alternative B} (höchster Erwartungswert 110 T€).
+
+
+b)
+
+\begin{itemize}
+  \item \textbf{Maximin}: jeweils Minimum → A: −200, B: −20, C: 40. Maximum davon → \textbf{C}.
+  \item \textbf{Maximax}: jeweils Maximum → A: 300, B: 180, C: 80. Maximum davon → \textbf{A}.
+  \item \textbf{Laplace} (Mittelwert je Zeile): A: $(300+100-200)/3 = 66{,}67$; B: $(180+120-20)/3 = 93{,}33$; C: $(80+70+40)/3 = 63{,}33$. Höchster Wert → \textbf{B}.
+\end{itemize}
+
+c) Hurwicz: $H = \lambda \cdot \max + (1-\lambda) \cdot \min$ mit $\lambda = 0{,}4$:
+
+\begin{itemize}
+  \item $H(A) = 0{,}4 \cdot 300 + 0{,}6 \cdot (-200) = 120 - 120 = 0$
+  \item $H(B) = 0{,}4 \cdot 180 + 0{,}6 \cdot (-20) = 72 - 12 = 60$
+  \item $H(C) = 0{,}4 \cdot 80 + 0{,}6 \cdot 40 = 32 + 24 = 56$
+\end{itemize}
+
+→ \textbf{Alternative B} (Hurwicz-Wert 60).
+
+
+d) \textbf{Zuordnung}: a) Erwartungswert nutzt bekannte Wahrscheinlichkeiten → \textbf{Risiko}. b) Maximin/Maximax/Laplace verzichten auf Wahrscheinlichkeiten → \textbf{Unsicherheit}.
+
+
+\textbf{Problem von Maximin für Start-ups}: Maximin ist extrem risikoavers — es maximiert nur das schlechteste Ergebnis und führt hier zur defensiven Alternative C mit nur 40–80 T€ Gewinn. Ein Start-up muss aber typischerweise wachsen, um Investoren zu überzeugen und Skaleneffekte zu erschließen. Maximin würde Chancen systematisch ausschlagen und wäre mit der Wachstumsanforderung (Shareholder-Erwartung) inkompatibel.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 — Zielbeziehungen, SMART und Principal-Agent \textit{(17 Punkte)}}\mbox{}\\[2pt]
+
+Die \textit{MeinBike AG} (Online-Händler für E-Bikes) verfolgt unter anderem folgende Ziele:
+
+
+\begin{itemize}
+  \item (Z1) „Kundenservice verbessern" durch Aufbau einer 24/7-Hotline
+  \item (Z2) Reduktion der stationären Filialen um 50 \% bis Ende 2027
+  \item (Z3) Erhöhung der Lagerumschlagshäufigkeit (Just-in-Time-Beschaffung)
+  \item (Z4) Reduktion der Lagerkosten um 20 \%
+  \item (Z5) Steigerung des EBIT auf mindestens 12 Mio. €
+\end{itemize}
+
+a) Klassifizieren Sie Z1–Z5 nach \textbf{Sach- vs. Formalzielen}. \textit{(4 Punkte)}
+
+
+b) Bestimmen Sie die Zielbeziehung (komplementär / konkurrierend / indifferent) für die Paare \textbf{(Z1, Z2)} und \textbf{(Z3, Z4)}. Begründen Sie. \textit{(4 Punkte)}
+
+
+c) Formulieren Sie Z1 nach \textbf{SMART} um. Geben Sie für jeden Buchstaben einen konkreten Aspekt an. \textit{(5 Punkte)}
+
+
+d) Der Bereichsleiter Logistik wird mit einem Bonus von 20 \% seines Gehalts belohnt, wenn Z4 (−20 \% Lagerkosten) erreicht wird — unabhängig von anderen Zielen. Identifizieren Sie das \textbf{Principal-Agent-Problem} und schlagen Sie eine \textbf{bessere Anreizgestaltung} vor. \textit{(4 Punkte)}
+
+
+\textbf{Lösung:}
+
+
+a)
+
+\begin{itemize}
+  \item \textbf{Sachziele} (konkretes Handeln in betrieblichen Funktionen): \textbf{Z1, Z2, Z3} (Leistungs-/Organisationsebene).
+  \item \textbf{Formalziele} (übergeordnete Erfolgsziele): \textbf{Z4} (Kostenziel/Wirtschaftlichkeit) und \textbf{Z5} (Gewinn/EBIT).
+\end{itemize}
+\textit{Hinweis}: Z4 ist ein wertmäßiges Erfolgsziel (Aufwandsseite) und damit Formalziel; Z3 ist Sachziel im Logistik-Prozess.
+
+
+b)
+
+\begin{itemize}
+  \item \textbf{(Z1, Z2)}: \textbf{konkurrierend}. Eine 24/7-Hotline soll Servicequalität erhöhen, der Abbau stationärer Filialen reduziert aber Service-Touchpoints — analog zum Kapitelbeispiel „Personalisierter Service ↔ Reduktion stationäres Service-Netz".
+  \item \textbf{(Z3, Z4)}: \textbf{komplementär}. Höhere Lagerumschlagshäufigkeit (Just-in-Time) reduziert Lagerbestände und damit Lagerkosten — analog zum Kapitelbeispiel „Just-in-Time ↔ Reduktion Lagerkosten".
+\end{itemize}
+
+c) \textbf{SMART-Formulierung von Z1}:
+
+\begin{itemize}
+  \item \textbf{S} (spezifisch): Aufbau einer 24/7-Telefon- und Chat-Hotline für E-Bike-Kund:innen.
+  \item \textbf{M} (messbar): Antwortzeit ≤ 60 Sekunden, Lösungsquote im Erstkontakt ≥ 80 \%, NPS ≥ 50.
+  \item \textbf{A} (attraktiv): stärkt Kundenbindung und differenziert von preisaggressiven Wettbewerbern.
+  \item \textbf{R} (realistisch): mit dem geplanten Service-Budget (z. B. 1,5 Mio. € p. a.) und 25 zusätzlichen Mitarbeitenden machbar.
+  \item \textbf{T} (terminiert): vollständig live bis 31.12.2026.
+\end{itemize}
+
+d) \textbf{Principal-Agent-Problem}: Der Vorstand (Principal) kann nicht im Detail beobachten, \textit{wie} der Bereichsleiter (Agent) die Lagerkosten senkt. Da der Bonus nur an Z4 gekoppelt ist, hat der Agent einen Anreiz, Lagerbestände unter ein vernünftiges Sicherheitsniveau zu drücken — was Lieferfähigkeit und Umsatz (Z5!) gefährdet. Klassische \textbf{Informationsasymmetrie + einseitige Anreize} führen zu einer Suboptimierung auf Kosten des Gesamtunternehmens.
+
+
+\textbf{Bessere Anreizgestaltung}: Mehrdimensionale KPIs in der Bonusformel — z. B. 50 \% Lagerkostensenkung, 30 \% Service-Level (Lieferquote ≥ 98 \%), 20 \% EBIT-Beitrag des Bereichs. Ergänzend: Monitoring der Lieferfähigkeit, Cap auf Bonusauszahlung bei Verfehlen einer Mindest-Servicegrenze. So wird das Eigeninteresse des Agenten an die Gesamtziele (Stakeholder + Shareholder) gekoppelt.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 6 — Effizienz, Effektivität und Kennzahlen (Code-Analyse) \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Ein Studi-Team schreibt ein Pseudocode-Skript, um die Wirtschaftlichkeit eines Produktionslaufs auszuwerten:
+
+
+\begin{lstlisting}
+input_menge       = 50           # kg Draht
+output_menge      = 4000         # Schrauben
+draht_preis_pro_kg = 2.0         # €
+verkaufspreis     = 0.02         # €/Schraube
+
+produktivitaet  = input_menge / output_menge
+aufwand         = input_menge * draht_preis_pro_kg
+ertrag          = output_menge * verkaufspreis
+wirtschaftlich  = aufwand / ertrag
+gewinn          = aufwand - ertrag
+
+print("Produktivitaet:", produktivitaet)
+print("Wirtschaftlichkeit:", wirtschaftlich)
+print("Gewinn:", gewinn)
+\end{lstlisting}
+
+
+a) Finden Sie \textbf{drei inhaltliche Fehler} in den Berechnungen und korrigieren Sie diese. \textit{(6 Punkte)}
+
+
+b) Berechnen Sie mit korrigierten Formeln Produktivität, Wirtschaftlichkeit und Gewinn für die gegebenen Werte. \textit{(4 Punkte)}
+
+
+c) Ein Konkurrent erreicht mit denselben 50 kg Draht 5.000 Schrauben (gleicher Verkaufs-/Einkaufspreis). Vergleichen Sie beide Betriebe nach \textbf{Effizienz} und \textbf{Effektivität}, wenn das Unternehmensziel „Verkauf von genau 4.000 Schrauben pro Lauf" lautet. Wer ist effizienter, wer effektiver? \textit{(5 Punkte)}
+
+
+\textbf{Lösung:}
+
+
+a) \textbf{Fehler 1}: \texttt{produktivitaet = input\_menge / output\_menge} ist invertiert. Korrekt: \texttt{Output / Input} → \texttt{output\_menge / input\_menge}.
+
+\textbf{Fehler 2}: \texttt{wirtschaftlich = aufwand / ertrag} ist invertiert. Korrekt: \texttt{Ertrag / Aufwand}.
+
+\textbf{Fehler 3}: \texttt{gewinn = aufwand - ertrag} hat falsches Vorzeichen. Korrekt: \texttt{gewinn = ertrag - aufwand}.
+
+
+b) Mit korrigierten Formeln:
+
+\begin{itemize}
+  \item \textbf{Produktivität} = 4.000 / 50 = \textbf{80 Schrauben/kg}
+  \item \textbf{Aufwand} = 50 · 2,00 = 100 €
+  \item \textbf{Ertrag} = 4.000 · 0,02 = 80 €
+  \item \textbf{Wirtschaftlichkeit} = 80 / 100 = \textbf{0,8} (< 1 → unwirtschaftlich)
+  \item \textbf{Gewinn} = 80 − 100 = \textbf{−20 €} (Verlust)
+\end{itemize}
+
+c) \textbf{Konkurrent}: Produktivität = 5.000 / 50 = 100 Schrauben/kg; Ertrag = 5.000 · 0,02 = 100 €; Aufwand = 100 €; Wirtschaftlichkeit = 1,0.
+
+
+\begin{itemize}
+  \item \textbf{Effizienz} (Werden die Dinge richtig gemacht? — Verhältnis Leistung/Ressourceneinsatz): Der Konkurrent ist mit 100 Schrauben/kg vs. 80 Schrauben/kg \textbf{effizienter} — er nutzt denselben Input besser.
+  \item \textbf{Effektivität} (Werden die richtigen Dinge gemacht? — Grad der Zielerreichung): Ziel sind genau 4.000 Schrauben. Das eigene Unternehmen produziert exakt 4.000 → \textbf{100 \% Zielerreichung, also effektiv}. Der Konkurrent produziert 5.000 → 25 \% Übererfüllung; gemessen am Sollziel ist er weniger effektiv (Überproduktion = falsches Ziel getroffen).
+\end{itemize}
+
+\textbf{Fazit}: Der Konkurrent arbeitet effizienter, das eigene Unternehmen effektiver. Dass Effizienz und Effektivität auseinanderfallen können, ist genau der Grund, warum beide Größen getrennt geführt werden müssen.
+
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{document}

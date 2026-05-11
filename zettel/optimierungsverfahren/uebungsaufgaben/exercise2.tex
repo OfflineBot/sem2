@@ -1,0 +1,517 @@
+% ============================================================
+%  Übungsaufgaben Template (my_dhbw Stil, uebung_*.tex)
+%  Header "Übungsblatt", grün eingefärbte <details>-Lösungen.
+%  Renderer: pdflatex (zweimal)
+% ============================================================
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+\usepackage[top=2cm, bottom=2cm, left=2.4cm, right=2.4cm, footskip=1cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{ltablex}
+\keepXColumns
+\usepackage{colortbl}
+\usepackage[most,breakable]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{pdflscape}
+\usepackage{titlesec}
+\usepackage[colorlinks=true, linkcolor=accent, urlcolor=accent]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme ─────────────────────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{loesung}{RGB}{0, 100, 0}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{240, 252, 240}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer ─────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\footnotesize\color{accent}\nichttitle}
+\fancyhead[R]{\footnotesize\color{accent}\nichtsubtitle}
+\fancyfoot[R]{\footnotesize\color{accent}Blatt \thepage\,/\,\pageref{LastPage}}
+
+% ── Typografie ────────────────────────────────────────────────
+\titleformat{\section}
+    {\color{accent}\large\bfseries}{}{0pt}{}
+    [\vspace{-4pt}\color{accent}\rule{\linewidth}{1.5pt}]
+\titleformat{\subsection}
+    {\normalsize\bfseries\color{accent!85!black}}{}{0pt}{}{}
+\titleformat{\subsubsection}
+    {\small\bfseries\color{accent!70!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{10pt}{3pt}
+\titlespacing*{\subsection}{0pt}{6pt}{2pt}
+\titlespacing*{\subsubsection}{0pt}{4pt}{1pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\renewcommand{\arraystretch}{1.2}
+\setlist[itemize]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.4em}
+\setlist[enumerate]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.6em}
+
+% ── Boxen: solutionbox = Lösungsbox in grün ──────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={Abbildung: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={Tabelle: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{solutionbox}[1]{
+  enhanced,
+  colback=solutionbg, colframe=loesung,
+  title={#1}, fonttitle=\small\bfseries,
+  coltitle=white, colbacktitle=loesung,
+  breakable, before skip=8pt, after skip=8pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=single, framerule=0pt,
+  xleftmargin=4pt, xrightmargin=4pt,
+  aboveskip=6pt, belowskip=6pt,
+  keepspaces=true
+}
+
+\providecommand{\nichttitle}{Übungsblatt}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Optimierungsverfahren}
+\renewcommand{\nichtsubtitle}{Übungsblatt 2}
+
+
+\begin{document}
+
+\begin{center}
+{\Large\bfseries\color{accent}\nichttitle}
+\ifx\nichtsubtitle\empty\else
+  \\[2pt]{\normalsize\color{accent!80!black}\nichtsubtitle}
+\fi
+\\[2pt]
+\color{accent}\rule{0.4\linewidth}{0.8pt}\color{black}
+\end{center}
+\vspace{4pt}
+
+% ── BODY ──────────────────────────────────────────────────────
+
+\section{Übungsblatt 2 — 1. Grundlagen}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 1 — Problemmodellierung Lieferdrohne \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Ein Logistik-Startup will eine Lieferdrohne so konfigurieren, dass die \textbf{Energie pro Lieferung} minimiert wird. Die Drohne hat eine einstellbare \textbf{Flughöhe} $x_1 \in [50, 200]$ m und eine \textbf{Reisegeschwindigkeit} $x_2 \in [5, 20]$ m/s. Die Außentemperatur $T$ und die Windgeschwindigkeit $w$ sind nicht steuerbar. Aus Sicherheitsgründen muss $x_1 \geq 3 \cdot x_2$ gelten, und der Energieverbrauch $E(x_1,x_2)$ soll exakt $E_{\max} = 480$ Wh nicht überschreiten.
+
+
+a) Klassifiziere für dieses Problem jede der folgenden Größen als \textbf{Variable}, \textbf{Parameter}, \textbf{Zielfunktion}, \textbf{Gleichungs- oder Ungleichungs-Nebenbedingung}: $x_1$, $x_2$, $T$, $w$, $E(x_1,x_2)$, „$x_1 \geq 3x_2$", „$E(x_1,x_2) \leq 480$", „$50 \leq x_1 \leq 200$".
+
+
+b) Schreibe das vollständige Optimierungsproblem in der Standardform aus dem Kapitel auf (mit $\min f(\vec x)$, $g_j(\vec x) \leq 0$, Boxbedingungen).
+
+
+c) Begründe, warum „$x_1 \geq 3x_2$" \textbf{keine} Gleichungs-Nebenbedingung sein darf, obwohl man sie auch als „$x_1 - 3x_2 = z$" mit Slack $z \geq 0$ schreiben könnte. Welche Folge hätte die strikte Gleichheit für den zulässigen Bereich $X_z$?
+
+
+\textbf{Lösung:}
+
+
+a)
+
+\begin{itemize}
+  \item $x_1, x_2$ → \textbf{Variablen} (gezielt variiert)
+  \item $T, w$ → \textbf{Parameter} (Umgebung, nicht steuerbar)
+  \item $E(x_1,x_2)$ → \textbf{Zielfunktion} $f(\vec x)$
+  \item „$x_1 \geq 3x_2$" → \textbf{Ungleichungs-NB}
+  \item „$E(x_1,x_2) \leq 480$" → \textbf{Ungleichungs-NB}
+  \item „$50 \leq x_1 \leq 200$" → \textbf{Boxbedingungen} ($x_i^l \leq x_i \leq x_i^u$), formal eine spezielle Ungleichungs-NB
+\end{itemize}
+
+b) Mit $\vec x = (x_1, x_2)$:
+
+\$\$
+
+\textbackslash{}min\textbackslash{} f(\textbackslash{}vec x) = E(x\_1, x\_2)
+
+\$\$
+
+unter
+
+\$\$
+
+g\_1(\textbackslash{}vec x) = 3x\_2 - x\_1 \textbackslash{}leq 0,\textbackslash{}qquad g\_2(\textbackslash{}vec x) = E(x\_1,x\_2) - 480 \textbackslash{}leq 0,
+
+\$\$
+
+\$\$
+
+50 \textbackslash{}leq x\_1 \textbackslash{}leq 200,\textbackslash{}quad 5 \textbackslash{}leq x\_2 \textbackslash{}leq 20.
+
+\$\$
+
+Es gibt keine Gleichungs-NB ($l=0$), $m=2$ Ungleichungs-NBn (zzgl. Boxen).
+
+
+c) Die Sicherheitsregel verlangt nur \textbf{„mindestens"} das Dreifache der Geschwindigkeit als Höhe. Eine Gleichheit $x_1 = 3x_2$ würde den Suchraum auf eine Linie kollabieren — alle Punkte mit $x_1 > 3x_2$ wären unzulässig, obwohl sie real sicher sind. $X_z$ wäre dann \textbf{eindimensional} statt zweidimensional, und das Optimum, das im Inneren liegen könnte, würde künstlich ausgeschlossen.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 — Stationäre Punkte und Hesse \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben sei
+
+\[
+f(x_1, x_2) = x_1^3 - 3x_1 + x_2^2 - 4x_2 + 7.
+\]
+
+
+a) Bestimme alle stationären Punkte über die notwendige Bedingung.
+
+
+b) Klassifiziere jeden stationären Punkt anhand der Hessematrix (Min, Max, Sattel).
+
+
+c) Erkläre kurz, warum die Bedingung $\nabla f = \vec 0$ allein \textbf{nicht ausreicht}, um ein lokales Minimum zu identifizieren — illustriere mit einem Punkt aus (b).
+
+
+\textbf{Lösung:}
+
+
+a) Gradient:
+
+\$\$
+
+\textbackslash{}nabla f(\textbackslash{}vec x) = \textbackslash{}begin\{pmatrix\} 3x\_1\textasciicircum{}2 - 3 \textbackslash{}\textbackslash{} 2x\_2 - 4 \textbackslash{}end\{pmatrix\} \textbackslash{}stackrel\{!\}\{=\} \textbackslash{}vec 0.
+
+\$\$
+
+Aus Komponente 1: $x_1^2 = 1 \Rightarrow x_1 \in \{-1, +1\}$.
+
+Aus Komponente 2: $x_2 = 2$.
+
+Stationäre Punkte: $\vec x_A = (1, 2)$ und $\vec x_B = (-1, 2)$.
+
+
+b) Hessematrix:
+
+\$\$
+
+H(\textbackslash{}vec x) = \textbackslash{}begin\{pmatrix\} 6x\_1 \& 0 \textbackslash{}\textbackslash{} 0 \& 2 \textbackslash{}end\{pmatrix\}.
+
+\$\$
+
+Da $H$ diagonal ist, sind die Eigenwerte direkt $\lambda_1 = 6x_1,\ \lambda_2 = 2$.
+
+
+\begin{itemize}
+  \item $\vec x_A = (1,2)$: EW $= 6, 2$ → beide $> 0$ → \textbf{positiv definit} → \textbf{lokales Minimum}.
+  \item $\vec x_B = (-1,2)$: EW $= -6, 2$ → gemischte Vorzeichen → \textbf{indefinit} → \textbf{Sattelpunkt}.
+\end{itemize}
+
+c) $\nabla f = \vec 0$ ist \textbf{notwendig}, aber nicht \textbf{ausreichend}: am Sattelpunkt $\vec x_B$ verschwindet der Gradient ebenfalls, obwohl in $x_1$-Richtung $f$ abfällt und in $x_2$-Richtung steigt. Erst die Hesseanalyse trennt Minima, Maxima und Sattelpunkte voneinander.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 — Gradient Descent durchrechnen \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben:
+
+\[
+f(x_1,x_2) = (x_1 - 3)^2 + 4(x_2 + 1)^2,
+\]
+
+Startpunkt $\vec x_0 = (0, 0)$, Abbruchschwelle $\|\nabla f\| < 0{,}5$.
+
+
+a) Berechne $\nabla f$ symbolisch und bestimme den globalen Minimierer analytisch (welcher Algorithmen-Typ ist das laut Kapitel?).
+
+
+b) Führe \textbf{drei Iterationen} Gradient Descent mit Schrittweite $c = 0{,}1$ aus. Notiere für $i=0,1,2$: $\vec x_i$, $\nabla f(\vec x_i)$, $\|\nabla f(\vec x_i)\|$. Ist nach drei Schritten abgebrochen?
+
+
+c) Wiederhole Schritt $i=0 \to i=1$ mit $c = 0{,}5$. Was beobachtest du im Vergleich zu (b), und welcher der im Kapitel genannten \textbf{Probleme von Gradient Descent} liegt vor?
+
+
+\textbf{Lösung:}
+
+
+a) $\nabla f = \begin{pmatrix} 2(x_1-3) \\ 8(x_2+1) \end{pmatrix}$. Setze $=\vec 0$: $x_1 = 3,\ x_2 = -1$. Globaler Minimierer $\vec x^* = (3,-1)$, $f(\vec x^*) = 0$.
+
+Da rein per Symbolrechnen ohne Iteration gelöst → \textbf{analytisch} und \textbf{exakt} (Klassifikation aus dem Kapitel).
+
+
+b) Update-Regel: $\vec x_{i+1} = \vec x_i - 0{,}1 \cdot \nabla f(\vec x_i)$.
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{$i$}} & {\color{white}\textbf{$\vec x_i$}} & {\color{white}\textbf{$\nabla f(\vec x_i)$}} & {\color{white}\textbf{\$\textbackslash{}}} & {\color{white}\textbf{\textbackslash{}nabla f\textbackslash{}}} & {\color{white}\textbf{\$}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+0 & $(0,\ 0)$ & $(-6,\ 8)$ & $10{,}00$ &  &  \\
+1 & $(0{,}6,\ -0{,}8)$ & $(-4{,}8,\ 1{,}6)$ & $5{,}06$ &  &  \\
+2 & $(1{,}08,\ -0{,}96)$ & $(-3{,}84,\ 0{,}32)$ & $3{,}85$ &  &  \\
+3 & $(1{,}464,\ -0{,}992)$ & — & — &  &  \\
+\end{tabularx}
+}
+
+
+Rechnung Schritt 1: $\vec x_1 = (0,0) - 0{,}1 \cdot (-6, 8) = (0{,}6, -0{,}8)$.
+
+Schritt 2: $\nabla f(0{,}6,-0{,}8) = (2(0{,}6-3),\ 8(-0{,}8+1)) = (-4{,}8,\ 1{,}6)$; $\vec x_2 = (0{,}6,-0{,}8) - 0{,}1(-4{,}8,\ 1{,}6) = (1{,}08,\ -0{,}96)$.
+
+Schritt 3: $\nabla f(1{,}08,-0{,}96) = (-3{,}84,\ 0{,}32)$; $\vec x_3 = (1{,}08,-0{,}96) - 0{,}1(-3{,}84,\ 0{,}32) = (1{,}464,\ -0{,}992)$.
+
+
+Da $\|\nabla f(\vec x_2)\| = 3{,}85 \not< 0{,}5$, wird \textbf{nicht abgebrochen}.
+
+
+c) Mit $c = 0{,}5$: $\vec x_1 = (0,0) - 0{,}5\cdot(-6,8) = (3, -4)$.
+
+$\nabla f(3,-4) = (0,\ -24)$, $\|\nabla f\| = 24$.
+
+In $x_1$ wurde das Optimum perfekt getroffen, in $x_2$ aber \textbf{weit überschossen} (von 0 auf -4, Optimum bei -1). Im nächsten Schritt würde $x_2$ wieder zurückspringen → \textbf{Oszillation} wegen zu großem $c$ in der $x_2$-Richtung (dort ist die Krümmung 4× so hoch wie in $x_1$). Genau das im Kapitel genannte Problem „falsches $c$ → Oszillation".
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 — Eigenschaften zweier Verfahren vergleichen \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Du sollst eine Bauteil-Anordnung optimieren. Variante A: alle Designparameter sind \textbf{kontinuierlich}, $f$ ist glatt und differenzierbar, vermutlich \textbf{unimodal}. Variante B: die Parameter sind \textbf{diskret/kombinatorisch} (Reihenfolge auf einer Platine, Permutation), $f$ ist \textbf{multimodal} und nicht ableitbar; jede Auswertung ist zudem leicht \textbf{verrauscht} (Messrauschen am Prüfstand).
+
+
+a) Ordne \textbf{Gradient Descent} und einen \textbf{Evolutionären Algorithmus (EA)} anhand der Tabelle „Eigenschaften (Algorithmen vs. Probleme)" aus dem Kapitel jeweils in mindestens fünf Kategorien ein (lokal/global, Differenzierbarkeit, Linearität, Genauigkeit, Zufallseinfluss, Variablenart).
+
+
+b) Welcher Algorithmus passt zu Variante A, welcher zu B? Begründe \textbf{pro Kategorie} mit der Tabelle.
+
+
+c) Was passiert, wenn man Gradient Descent trotzdem auf Variante B loslässt? Gib mindestens zwei konkrete Mismatches an.
+
+
+\textbf{Lösung:}
+
+
+a)
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Eigenschaft}} & {\color{white}\textbf{Gradient Descent}} & {\color{white}\textbf{EA}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+lokal/global & lokal & global \\
+Differenzierbarkeit & gradientenbasiert & gradientenfrei \\
+Linearität & für nicht-lineare $f$ einsetzbar (NB: linear-frei) & nicht-linear \\
+Lösungsansatz & numerisch & numerisch \\
+Genauigkeit & approximativ & approximativ \\
+Zufallseinfluss & deterministisch & stochastisch \\
+Variablen & kontinuierlich & dis./kom./kon./gem. \\
+\end{tabularx}
+}
+
+
+b)
+
+\begin{itemize}
+  \item \textbf{Variante A → Gradient Descent}:
+\begin{itemize}
+  \item unimodal ↔ lokal reicht aus,
+  \item differenzierbar ↔ Gradient verfügbar,
+  \item kontinuierlich ↔ passt zur Variablenart,
+  \item kein Rauschen vorausgesetzt ↔ deterministisch ok.
+\end{itemize}
+  \item \textbf{Variante B → EA}:
+\begin{itemize}
+  \item multimodal ↔ globaler Algorithmus nötig,
+  \item nicht differenzierbar ↔ gradientenfrei,
+  \item kombinatorisch ↔ EA kann Permutationen/Strings,
+  \item stochastisches Problem ↔ stochastischer Algorithmus robuster (z. B. durch Populationsmittel).
+\end{itemize}
+\end{itemize}
+
+c) Mismatches GD ↔ Variante B:
+
+\begin{enumerate}
+  \item \textbf{Kein Gradient definiert} auf Permutationen → Update-Regel $\vec x_{i+1} = \vec x_i - c\nabla f$ nicht anwendbar.
+  \item \textbf{Nur lokal} → bei Multimodalität bleibt GD im erstbesten lokalen Min hängen.
+  \item \textbf{Deterministisch + Rauschen}: GD reagiert direkt auf jede verrauschte Gradientenschätzung → Konvergenzprobleme.
+\end{enumerate}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 — Hesse-Klassifikation am 3-Hump-Beispiel \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben ist die im Kapitel verwendete 3-Hump-Funktion
+
+\[
+f(x_1,x_2) = 2x_1^2 - 1{,}05\, x_1^4 + \tfrac{1}{6}x_1^6 + x_1 x_2 + x_2^2.
+\]
+
+Der Gradient steht im Kapitel:
+
+$\nabla f = \big(4x_1 - 4{,}2\, x_1^3 + x_1^5 + x_2,\ \ x_1 + 2x_2\big)^\top.$
+
+
+a) Verifiziere, dass $\vec x^* = (0,0)$ ein stationärer Punkt ist.
+
+
+b) Berechne die Hessematrix $H(\vec x)$ allgemein und werte sie an $\vec x^*$ aus.
+
+
+c) Bestimme die Eigenwerte von $H(0,0)$ und klassifiziere $\vec x^*$. Welche der vier Hesse-Fälle aus der Tabelle des Kapitels liegt vor?
+
+
+\textbf{Lösung:}
+
+
+a) $\nabla f(0,0) = (4\cdot 0 - 0 + 0 + 0,\ 0 + 0) = (0,0)$ ✓ → SP.
+
+
+b) Zweite Ableitungen:
+
+\begin{itemize}
+  \item $\partial^2 f/\partial x_1^2 = 4 - 12{,}6\, x_1^2 + 5x_1^4$
+  \item $\partial^2 f/\partial x_2^2 = 2$
+  \item $\partial^2 f/\partial x_1 \partial x_2 = 1$
+\end{itemize}
+
+\$\$
+
+H(\textbackslash{}vec x) = \textbackslash{}begin\{pmatrix\} 4 - 12\{,\}6 x\_1\textasciicircum{}2 + 5 x\_1\textasciicircum{}4 \& 1 \textbackslash{}\textbackslash{} 1 \& 2 \textbackslash{}end\{pmatrix\},\textbackslash{}qquad
+
+H(0,0) = \textbackslash{}begin\{pmatrix\} 4 \& 1 \textbackslash{}\textbackslash{} 1 \& 2 \textbackslash{}end\{pmatrix\}.
+
+\$\$
+
+
+c) Charakteristisches Polynom:
+
+$\det(H - \lambda I) = (4-\lambda)(2-\lambda) - 1 = \lambda^2 - 6\lambda + 7 = 0.$
+
+$\lambda_{1,2} = 3 \pm \sqrt{9-7} = 3 \pm \sqrt{2} \approx 4{,}414;\ 1{,}586.$
+
+
+Beide Eigenwerte $> 0$ → \textbf{positiv definit} → laut Tabelle des Kapitels: \textbf{lokales Minimum} an $(0,0)$.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 6 — Pseudocode-Fehler im Gradient Descent \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Ein Kommilitone hat folgenden Pseudocode für Gradient Descent abgegeben:
+
+
+\begin{lstlisting}
+x = x0
+c = 0.1
+for i = 1 .. 1000:
+    g = gradient(f, x)
+    x = x + c * g                # (1)
+    if norm(g) > 1e-3:           # (2)
+        break
+return x
+\end{lstlisting}
+
+
+a) Identifiziere \textbf{mindestens zwei} inhaltliche Fehler bzgl. des im Kapitel beschriebenen Algorithmus. Gib jeweils die Zeile und die Korrektur an.
+
+
+b) Erkläre an Zeile (1), warum der falsche Operator in der Praxis nicht „nur langsam", sondern \textbf{systematisch falsch} konvergiert (was tut der Algorithmus damit eigentlich?).
+
+
+c) Skizziere kurz, wie du den korrigierten Algorithmus auf die Funktion $f(x) = (x-2)^2$ mit Startpunkt $x_0 = 5$, $c = 0{,}25$ anwenden würdest — gib die ersten zwei Iterationen an.
+
+
+\textbf{Lösung:}
+
+
+a)
+
+\begin{itemize}
+  \item \textbf{Zeile (1)} \texttt{x = x + c*g} ist falsch. Im Kapitel: $\vec x_{i+1} = \vec x_i - c\cdot\nabla f(\vec x_i)$. Korrektur: \texttt{x = x - c * g}.
+  \item \textbf{Zeile (2)} Bedingung ist invertiert: Bei Gradient Descent soll abgebrochen werden, wenn $\|\nabla f\| \approx 0$, also \textbf{klein}. Der Code bricht ab, sobald der Gradient \textbf{groß} ist. Korrektur: \texttt{if norm(g) < 1e-3: break}.
+  \item (Optional) Es fehlt eine Schleife/Rückgabe nach dem Break — okay, vorhanden, aber: der Test sollte \textbf{vor} dem Update stehen, sonst macht man immer einen Schritt zu viel (entspricht Schritt 3 im Kapitel-Pseudocode).
+\end{itemize}
+
+b) \texttt{x = x + c*g} bewegt sich in Richtung des \textbf{stärksten Anstiegs} (das ist genau die Definition von $\nabla f$). Damit führt der Algorithmus \textbf{Gradient Ascent} aus und maximiert $f$ statt zu minimieren. Bei einer konvexen Funktion läuft $\vec x$ also \textbf{systematisch ins Unendliche} weg vom Minimum, nicht nur langsam.
+
+
+c) $f(x) = (x-2)^2$, $f'(x) = 2(x-2)$.
+
+\begin{itemize}
+  \item $i=0$: $x_0 = 5$, $g_0 = 2(5-2) = 6$, $x_1 = 5 - 0{,}25 \cdot 6 = 3{,}5$.
+  \item $i=1$: $g_1 = 2(3{,}5-2) = 3$, $x_2 = 3{,}5 - 0{,}25\cdot 3 = 2{,}75$.
+\end{itemize}
+
+Konvergiert monoton gegen $x^* = 2$.
+
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{document}

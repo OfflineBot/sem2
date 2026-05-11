@@ -1,0 +1,463 @@
+% ============================================================
+%  Übungsaufgaben Template (my_dhbw Stil, uebung_*.tex)
+%  Header "Übungsblatt", grün eingefärbte <details>-Lösungen.
+%  Renderer: pdflatex (zweimal)
+% ============================================================
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+\usepackage[top=2cm, bottom=2cm, left=2.4cm, right=2.4cm, footskip=1cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{ltablex}
+\keepXColumns
+\usepackage{colortbl}
+\usepackage[most,breakable]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{pdflscape}
+\usepackage{titlesec}
+\usepackage[colorlinks=true, linkcolor=accent, urlcolor=accent]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme ─────────────────────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{loesung}{RGB}{0, 100, 0}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{240, 252, 240}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer ─────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\footnotesize\color{accent}\nichttitle}
+\fancyhead[R]{\footnotesize\color{accent}\nichtsubtitle}
+\fancyfoot[R]{\footnotesize\color{accent}Blatt \thepage\,/\,\pageref{LastPage}}
+
+% ── Typografie ────────────────────────────────────────────────
+\titleformat{\section}
+    {\color{accent}\large\bfseries}{}{0pt}{}
+    [\vspace{-4pt}\color{accent}\rule{\linewidth}{1.5pt}]
+\titleformat{\subsection}
+    {\normalsize\bfseries\color{accent!85!black}}{}{0pt}{}{}
+\titleformat{\subsubsection}
+    {\small\bfseries\color{accent!70!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{10pt}{3pt}
+\titlespacing*{\subsection}{0pt}{6pt}{2pt}
+\titlespacing*{\subsubsection}{0pt}{4pt}{1pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\renewcommand{\arraystretch}{1.2}
+\setlist[itemize]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.4em}
+\setlist[enumerate]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.6em}
+
+% ── Boxen: solutionbox = Lösungsbox in grün ──────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={Abbildung: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={Tabelle: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{solutionbox}[1]{
+  enhanced,
+  colback=solutionbg, colframe=loesung,
+  title={#1}, fonttitle=\small\bfseries,
+  coltitle=white, colbacktitle=loesung,
+  breakable, before skip=8pt, after skip=8pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=single, framerule=0pt,
+  xleftmargin=4pt, xrightmargin=4pt,
+  aboveskip=6pt, belowskip=6pt,
+  keepspaces=true
+}
+
+\providecommand{\nichttitle}{Übungsblatt}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Relationen, Algebra, Diskrete Mathematik}
+\renewcommand{\nichtsubtitle}{Übungsblatt 2}
+
+
+\begin{document}
+
+\begin{center}
+{\Large\bfseries\color{accent}\nichttitle}
+\ifx\nichtsubtitle\empty\else
+  \\[2pt]{\normalsize\color{accent!80!black}\nichtsubtitle}
+\fi
+\\[2pt]
+\color{accent}\rule{0.4\linewidth}{0.8pt}\color{black}
+\end{center}
+\vspace{4pt}
+
+% ── BODY ──────────────────────────────────────────────────────
+
+\section{Übungsblatt 2 — Mengen}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 1 — Schreibweisen, Mächtigkeit und Sonderfälle \textit{(12 Punkte)}}\mbox{}\\[2pt]
+
+a) Erläutere den Unterschied zwischen aufzählender und beschreibender Schreibweise einer Menge. Gib für die Menge aller geraden natürlichen Zahlen zwischen 3 und 15 beide Schreibweisen an. \textit{(3 P)}
+
+
+b) Bestimme die Mächtigkeiten folgender Mengen und begründe jeweils kurz:
+
+\texttt{A = ∅}, \texttt{B = \{∅\}}, \texttt{C = \{∅, \{∅\}\}}, \texttt{D = P(\{∅\})}, \texttt{E = P(P(∅))}. \textit{(5 P)}
+
+
+c) Sei \texttt{M = \{1, 2, 3, 3, 2\}}. Ein Kommilitone behauptet \texttt{|M| = 5}. Erkläre den Fehler unter Verweis auf die Cantor'sche Definition und gib das korrekte Ergebnis an. \textit{(4 P)}
+
+
+\textbf{Lösung:}
+
+
+a) \textbf{Aufzählend} listet alle Elemente explizit auf, \textbf{beschreibend} charakterisiert sie über eine Aussageform \texttt{A(x)}.
+
+\begin{itemize}
+  \item Aufzählend: \texttt{M = \{4, 6, 8, 10, 12, 14\}}
+  \item Beschreibend: \texttt{M = \{x | x ∈ ℕ ∧ 3 < x < 15 ∧ x gerade\}} (oder äquivalent \texttt{x = 2k mit k ∈ ℕ, 2 ≤ k ≤ 7})
+\end{itemize}
+
+b)
+
+\begin{itemize}
+  \item \texttt{|A| = |∅| = 0} — die leere Menge enthält kein Element.
+  \item \texttt{|B| = |\{∅\}| = 1} — \texttt{B} enthält genau ein Element, nämlich \texttt{∅}.
+  \item \texttt{|C| = |\{∅, \{∅\}\}| = 2} — zwei unterscheidbare Elemente: \texttt{∅} und \texttt{\{∅\}}.
+  \item \texttt{|D| = |P(\{∅\})| = 2\textasciicircum{}1 = 2}. Konkret: \texttt{P(\{∅\}) = \{∅, \{∅\}\}}.
+  \item \texttt{|E| = |P(P(∅))| = |P(\{∅\})| = 2\textasciicircum{}1 = 2}, da \texttt{P(∅) = \{∅\}}.
+\end{itemize}
+
+c) Cantor verlangt \textbf{unterscheidbare} Objekte. Die mehrfache Nennung von \texttt{2} bzw. \texttt{3} erzeugt keine zusätzlichen Elemente, da sie sich nicht unterscheiden lassen. Korrekt: \texttt{M = \{1, 2, 3\}} und somit \texttt{|M| = 3}. Schreibweisen wie \texttt{\{1,2,3,3\}} sind formal nicht zulässig.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 — Mengenalgebra mit konkreter Grundmenge \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben sei die Grundmenge \texttt{E = \{1, 2, 3, 4, 5, 6, 7, 8, 9, 10\}} sowie
+
+
+\texttt{A = \{2, 3, 5, 7\}},  \texttt{B = \{1, 2, 3, 4, 5\}},  \texttt{C = \{4, 5, 6, 7, 8\}}.
+
+
+a) Berechne: \texttt{A ∩ B}, \texttt{A ∪ C}, \texttt{B ∖ C}, \texttt{C ∖ B}, \texttt{C\_E(A)}. \textit{(5 P)}
+
+
+b) Berechne \texttt{C\_E(B ∩ C)} direkt sowie über das Gesetz von DeMorgan und vergleiche die Ergebnisse. \textit{(4 P)}
+
+
+c) Bestimme \texttt{(A ∩ B) ∪ (A ∩ C)} und \texttt{A ∩ (B ∪ C)}. Welches Gesetz wird hier illustriert? \textit{(3 P)}
+
+
+d) Sind \texttt{B ∖ C} und \texttt{C ∖ B} disjunkt? Begründe formal. \textit{(3 P)}
+
+
+\textbf{Lösung:}
+
+
+a)
+
+\begin{itemize}
+  \item \texttt{A ∩ B = \{2, 3, 5\}}
+  \item \texttt{A ∪ C = \{2, 3, 4, 5, 6, 7, 8\}}
+  \item \texttt{B ∖ C = \{1, 2, 3\}} (alle Elemente in \texttt{B}, die nicht in \texttt{C} sind)
+  \item \texttt{C ∖ B = \{6, 7, 8\}} — zeigt, dass \texttt{∖} nicht kommutativ ist.
+  \item \texttt{C\_E(A) = E ∖ A = \{1, 4, 6, 8, 9, 10\}}
+\end{itemize}
+
+b)
+
+\begin{itemize}
+  \item Direkt: \texttt{B ∩ C = \{4, 5\}} ⇒ \texttt{C\_E(B ∩ C) = \{1, 2, 3, 6, 7, 8, 9, 10\}}.
+  \item DeMorgan: \texttt{C\_E(B ∩ C) = C\_E(B) ∪ C\_E(C)} mit \texttt{C\_E(B) = \{6,7,8,9,10\}} und \texttt{C\_E(C) = \{1,2,3,9,10\}}.
+\end{itemize}
+⇒ Vereinigung = \texttt{\{1,2,3,6,7,8,9,10\}}. Identisch — DeMorgan bestätigt.
+
+
+c)
+
+\begin{itemize}
+  \item \texttt{A ∩ B = \{2,3,5\}}, \texttt{A ∩ C = \{5,7\}} ⇒ \texttt{(A∩B) ∪ (A∩C) = \{2,3,5,7\}}.
+  \item \texttt{B ∪ C = \{1,2,3,4,5,6,7,8\}} ⇒ \texttt{A ∩ (B∪C) = \{2,3,5,7\}}.
+\end{itemize}
+
+Beide Ergebnisse stimmen überein — illustriertes \textbf{Distributivgesetz} \texttt{M ∩ (N∪W) = (M∩N) ∪ (M∩W)}.
+
+
+d) \texttt{B ∖ C = \{1,2,3\}}, \texttt{C ∖ B = \{6,7,8\}}. Schnitt: \texttt{(B∖C) ∩ (C∖B) = ∅}, also disjunkt. Allgemein: ein \texttt{x ∈ B∖C} erfüllt \texttt{x ∉ C}, ein \texttt{x ∈ C∖B} erfüllt \texttt{x ∈ C} — kein \texttt{x} kann beide Bedingungen gleichzeitig erfüllen.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 — Potenzmenge und kartesisches Produkt \textit{(14 Punkte)}}\mbox{}\\[2pt]
+
+Sei \texttt{M = \{a, b, c\}} und \texttt{N = \{0, 1\}}.
+
+
+a) Schreibe \texttt{P(M)} vollständig auf und überprüfe \texttt{|P(M)| = 2\textasciicircum{}|M|}. \textit{(4 P)}
+
+
+b) Berechne \texttt{M × N} und \texttt{N × M}. Erkläre, warum diese beiden Mengen i. A. nicht gleich sind, obwohl ihre Mächtigkeit übereinstimmt. \textit{(4 P)}
+
+
+c) Eine Menge \texttt{K} erfüllt \texttt{|P(K)| = 64}. Bestimme \texttt{|K|} sowie \texttt{|K × K|} und \texttt{|P(K × K)|}. \textit{(3 P)}
+
+
+d) Begründe, warum \texttt{∅ ∈ P(M)} für \textbf{jede} Menge \texttt{M} gilt, \texttt{∅ ∈ M} aber im Allgemeinen nicht. \textit{(3 P)}
+
+
+\textbf{Lösung:}
+
+
+a) \texttt{P(M) = \{ ∅, \{a\}, \{b\}, \{c\}, \{a,b\}, \{a,c\}, \{b,c\}, \{a,b,c\} \}}. Anzahl = 8 = \texttt{2\textasciicircum{}3} ✓.
+
+
+b)
+
+\begin{itemize}
+  \item \texttt{M × N = \{(a,0),(a,1),(b,0),(b,1),(c,0),(c,1)\}}
+  \item \texttt{N × M = \{(0,a),(0,b),(0,c),(1,a),(1,b),(1,c)\}}
+\end{itemize}
+
+Beide haben Mächtigkeit \texttt{|M|·|N| = 6}. Die Elemente sind \textbf{geordnete Paare}: \texttt{(a,0) ≠ (0,a)}. Daher gilt nur \texttt{M × N = N × M}, wenn \texttt{M = N} oder eine der beiden Mengen leer ist.
+
+
+c) Aus \texttt{2\textasciicircum{}|K| = 64 = 2\textasciicircum{}6} folgt \texttt{|K| = 6}. Daher \texttt{|K × K| = 6² = 36} und \texttt{|P(K × K)| = 2\textasciicircum{}36 = 68 719 476 736}.
+
+
+d) \texttt{∅ ⊆ M} gilt stets (Vakuumargument: kein Element von \texttt{∅} verletzt die Inklusion). Da \texttt{P(M)} per Definition alle Teilmengen von \texttt{M} enthält, ist \texttt{∅ ∈ P(M)}. Dagegen ist \texttt{∅ ∈ M} nur dann wahr, wenn \texttt{M} die leere Menge \textbf{als Element} enthält, z. B. \texttt{M = \{∅, 1\}} — was eine inhaltlich andere Aussage ist (Element- vs. Teilmengenrelation).
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 — Intervalle und Zahlenmengen \textit{(10 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben: \texttt{I₁ = [−2, 5)}, \texttt{I₂ = (1, 7]}, \texttt{I₃ = [3, 10]}, alles als Teilmengen von ℝ.
+
+
+a) Bestimme \texttt{I₁ ∩ I₂}, \texttt{I₁ ∪ I₂} und \texttt{I₂ ∖ I₃} jeweils als Intervall (oder Vereinigung von Intervallen) und gib für jeden Randpunkt an, ob er enthalten ist. \textit{(4 P)}
+
+
+b) Sei \texttt{A = I₁ ∩ ℤ}. Schreibe \texttt{A} aufzählend und gib \texttt{|A|} an. \textit{(3 P)}
+
+
+c) Begründe, warum die Menge \texttt{Q = I₁ ∩ ℚ} zwar unendlich viele Elemente enthält, aber niemals als Intervall in ℝ geschrieben werden kann. \textit{(3 P)}
+
+
+\textbf{Lösung:}
+
+
+a)
+
+\begin{itemize}
+  \item \texttt{I₁ ∩ I₂}: gemeinsame Punkte sind \texttt{x > 1} und \texttt{x < 5}, also \texttt{(1, 5)}. Beide Ränder offen, da \texttt{1 ∉ I₁} (kein Treffer in linker Bedingung von \texttt{I₂}) und \texttt{5 ∉ I₁}.
+  \item \texttt{I₁ ∪ I₂}: \texttt{[−2, 7]}. Linker Rand \texttt{−2} enthalten (aus \texttt{I₁}), rechter Rand \texttt{7} enthalten (aus \texttt{I₂}).
+  \item \texttt{I₂ ∖ I₃}: aus \texttt{(1,7]} entfernen wir \texttt{[3,10]}, übrig bleibt \texttt{(1, 3)}. \texttt{1} offen (war schon offen), \texttt{3} offen (gehört zu \texttt{I₃}, also entfernt).
+\end{itemize}
+
+b) \texttt{I₁ = [−2, 5)}, also \texttt{−2 ≤ x < 5}. Ganzzahlig: \texttt{A = \{−2, −1, 0, 1, 2, 3, 4\}}, \texttt{|A| = 7}.
+
+
+c) ℚ liegt \textbf{dicht} in ℝ: zwischen je zwei reellen Zahlen liegt eine rationale, also enthält \texttt{[−2, 5) ∩ ℚ} unendlich viele Elemente. Ein Intervall in ℝ enthält jedoch per Definition \textbf{alle} reellen Zahlen zwischen seinen Grenzen. Da z. B. \texttt{√2 ∈ I₁} aber \texttt{√2 ∉ ℚ}, fehlt in \texttt{Q} mindestens ein Punkt aus jedem nichttrivialen Teilintervall — \texttt{Q} ist also kein Intervall.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 — Fehler in einer Vereinfachung \textit{(12 Punkte)}}\mbox{}\\[2pt]
+
+Eine Studierende möchte den folgenden Ausdruck mithilfe der Mengengesetze vereinfachen:
+
+
+\begin{lstlisting}
+T = ((A ∪ B) ∩ A) ∪ (A ∩ (A ∪ C))
+\end{lstlisting}
+
+
+Sie schreibt:
+
+
+\begin{lstlisting}
+Schritt 1:  (A ∪ B) ∩ A  =  A ∪ (B ∩ A)        [Distributivgesetz]
+Schritt 2:  A ∩ (A ∪ C)  =  A
+Schritt 3:  T  =  (A ∪ (B ∩ A)) ∪ A  =  A ∪ (B ∩ A)
+Schritt 4:  =  B ∩ A                            [Absorption]
+\end{lstlisting}
+
+
+a) Identifiziere alle fehlerhaften Schritte und benenne jeweils das tatsächlich anwendbare Gesetz. \textit{(6 P)}
+
+
+b) Vereinfache \texttt{T} korrekt und nenne bei jedem Schritt das verwendete Gesetz. \textit{(4 P)}
+
+
+c) Überprüfe dein Ergebnis exemplarisch mit \texttt{A = \{1,2\}}, \texttt{B = \{2,3\}}, \texttt{C = \{3,4\}}. \textit{(2 P)}
+
+
+\textbf{Lösung:}
+
+
+a)
+
+\begin{itemize}
+  \item \textbf{Schritt 1 falsch.} Hier wurde nicht das Distributivgesetz, sondern fälschlich eine Form benutzt, die \texttt{A} „ausklammert". Korrekt liefert das \textbf{Absorptionsgesetz} direkt \texttt{(A ∪ B) ∩ A = A}.
+  \item \textbf{Schritt 2 korrekt} — Absorption: \texttt{A ∩ (A ∪ C) = A}.
+  \item \textbf{Schritt 4 falsch.} \texttt{A ∪ (B ∩ A) = A} (Absorption, da \texttt{B ∩ A ⊆ A}), nicht \texttt{B ∩ A}. Die Studentin hat Absorption "in falscher Richtung" angewendet.
+\end{itemize}
+
+b) Korrekte Vereinfachung:
+
+\begin{enumerate}
+  \item \texttt{(A ∪ B) ∩ A = A} (Absorption)
+  \item \texttt{A ∩ (A ∪ C) = A} (Absorption)
+  \item \texttt{T = A ∪ A = A} (Idempotenz)
+\end{enumerate}
+
+Endergebnis: \texttt{T = A}.
+
+
+c) Mit \texttt{A = \{1,2\}}, \texttt{B = \{2,3\}}, \texttt{C = \{3,4\}}:
+
+\begin{itemize}
+  \item \texttt{A ∪ B = \{1,2,3\}}, \texttt{(A∪B) ∩ A = \{1,2\}}.
+  \item \texttt{A ∪ C = \{1,2,3,4\}}, \texttt{A ∩ (A∪C) = \{1,2\}}.
+  \item \texttt{T = \{1,2\} ∪ \{1,2\} = \{1,2\} = A} ✓.
+\end{itemize}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 6 — Transfer: Berechtigungssysteme als Mengen \textit{(17 Punkte)}}\mbox{}\\[2pt]
+
+Ein Studierendenportal verwaltet Berechtigungen über Mengen. Die Grundmenge aller möglichen Berechtigungen ist
+
+
+\texttt{E = \{read, write, delete, admin, grade, export, upload, comment\}}.
+
+
+Drei Rollen sind definiert:
+
+
+\begin{itemize}
+  \item \texttt{S = \{read, comment, upload\}}            (Studierende)
+  \item \texttt{T = \{read, write, comment, grade, export\}} (Tutoren)
+  \item \texttt{P = \{read, write, delete, grade, export, upload, comment\}} (Professoren)
+\end{itemize}
+
+a) Bestimme die Menge der Berechtigungen, die \textbf{alle drei} Rollen gemeinsam haben, sowie die Menge der Berechtigungen, die \textbf{mindestens einer} Rolle zustehen. \textit{(3 P)}
+
+
+b) Ein Auditor möchte wissen, welche Berechtigungen Tutoren haben, die Studierenden \textbf{nicht} haben. Drücke das als Mengenoperation aus und berechne das Ergebnis. \textit{(3 P)}
+
+
+c) Modelliere die Aussage „Berechtigungen, die niemand besitzt" als Mengenausdruck über \texttt{E}, \texttt{S}, \texttt{T}, \texttt{P} und berechne diese Menge. \textit{(3 P)}
+
+
+d) Eine neue Rolle \texttt{H = (P ∖ T) ∪ (S ∩ T)} (Hilfskraft) wird eingeführt. Berechne \texttt{H} und beschreibe in einem Satz, welche Idee dahintersteckt. \textit{(4 P)}
+
+
+e) Begründe mithilfe von DeMorgan, warum die folgenden zwei Bedingungen für einen Nutzer äquivalent sind:
+
+\begin{itemize}
+  \item „Der Nutzer hat \textbf{weder} \texttt{delete} \textbf{noch} \texttt{admin}."
+\begin{itemize}
+  \item „Der Nutzer liegt im Komplement von \texttt{\{delete, admin\}} bezüglich \texttt{E}." \textit{(4 P)}
+\end{itemize}
+\end{itemize}
+
+\textbf{Lösung:}
+
+
+a)
+
+\begin{itemize}
+  \item \texttt{S ∩ T ∩ P}: read und comment liegen in allen drei. write fehlt in \texttt{S}, grade fehlt in \texttt{S}, upload fehlt in \texttt{T}. Ergebnis: \texttt{\{read, comment\}}.
+  \item \texttt{S ∪ T ∪ P = \{read, write, delete, grade, export, upload, comment\}}. (Es fehlt nur \texttt{admin}.)
+\end{itemize}
+
+b) Gefragt: \texttt{T ∖ S = \{write, grade, export\}}. (read und comment liegen auch in \texttt{S}, fallen also raus.)
+
+
+c) „Niemand besitzt"  =  \texttt{C\_E(S ∪ T ∪ P) = E ∖ (S ∪ T ∪ P)}.
+
+Aus (a): \texttt{S ∪ T ∪ P = E ∖ \{admin\}}, also \texttt{C\_E(S ∪ T ∪ P) = \{admin\}}.
+
+
+d)
+
+\begin{itemize}
+  \item \texttt{P ∖ T}: Berechtigungen, die Profs haben, Tutoren aber nicht: \texttt{\{delete, upload\}}.
+  \item \texttt{S ∩ T}: gemeinsame Berechtigungen von Studi und Tutor: \texttt{\{read, comment\}}.
+  \item \texttt{H = \{delete, upload\} ∪ \{read, comment\} = \{read, comment, delete, upload\}}.
+\end{itemize}
+
+Die Hilfskraft erhält das, was Profs gegenüber Tutoren exklusiv dürfen, plus die Schnittmenge der Studi-/Tutor-Basisrechte — also exklusive Profrechte gepaart mit dem kleinsten gemeinsamen Nenner aus \texttt{S} und \texttt{T}.
+
+
+e) Sei \texttt{D = \{delete, admin\}}. „Weder \texttt{delete} noch \texttt{admin}" bedeutet \texttt{x ∉ \{delete\}  ∧  x ∉ \{admin\}}, also \texttt{x ∈ C\_E(\{delete\}) ∩ C\_E(\{admin\})}. Nach \textbf{DeMorgan} gilt
+
+\texttt{C\_E(\{delete\}) ∩ C\_E(\{admin\}) = C\_E(\{delete\} ∪ \{admin\}) = C\_E(D)}.
+
+Damit ist „weder–noch" exakt die Aussage \texttt{x ∈ C\_E(D)}, was zu zeigen war.
+
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{document}

@@ -1,0 +1,458 @@
+% ============================================================
+%  Übungsaufgaben Template (my_dhbw Stil, uebung_*.tex)
+%  Header "Übungsblatt", grün eingefärbte <details>-Lösungen.
+%  Renderer: pdflatex (zweimal)
+% ============================================================
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+\usepackage[top=2cm, bottom=2cm, left=2.4cm, right=2.4cm, footskip=1cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{ltablex}
+\keepXColumns
+\usepackage{colortbl}
+\usepackage[most,breakable]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{pdflscape}
+\usepackage{titlesec}
+\usepackage[colorlinks=true, linkcolor=accent, urlcolor=accent]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme ─────────────────────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{loesung}{RGB}{0, 100, 0}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{240, 252, 240}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer ─────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\footnotesize\color{accent}\nichttitle}
+\fancyhead[R]{\footnotesize\color{accent}\nichtsubtitle}
+\fancyfoot[R]{\footnotesize\color{accent}Blatt \thepage\,/\,\pageref{LastPage}}
+
+% ── Typografie ────────────────────────────────────────────────
+\titleformat{\section}
+    {\color{accent}\large\bfseries}{}{0pt}{}
+    [\vspace{-4pt}\color{accent}\rule{\linewidth}{1.5pt}]
+\titleformat{\subsection}
+    {\normalsize\bfseries\color{accent!85!black}}{}{0pt}{}{}
+\titleformat{\subsubsection}
+    {\small\bfseries\color{accent!70!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{10pt}{3pt}
+\titlespacing*{\subsection}{0pt}{6pt}{2pt}
+\titlespacing*{\subsubsection}{0pt}{4pt}{1pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\renewcommand{\arraystretch}{1.2}
+\setlist[itemize]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.4em}
+\setlist[enumerate]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.6em}
+
+% ── Boxen: solutionbox = Lösungsbox in grün ──────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={Abbildung: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={Tabelle: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{solutionbox}[1]{
+  enhanced,
+  colback=solutionbg, colframe=loesung,
+  title={#1}, fonttitle=\small\bfseries,
+  coltitle=white, colbacktitle=loesung,
+  breakable, before skip=8pt, after skip=8pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=single, framerule=0pt,
+  xleftmargin=4pt, xrightmargin=4pt,
+  aboveskip=6pt, belowskip=6pt,
+  keepspaces=true
+}
+
+\providecommand{\nichttitle}{Übungsblatt}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Analysis 2}
+\renewcommand{\nichtsubtitle}{Übungsblatt 9}
+
+
+\begin{document}
+
+\begin{center}
+{\Large\bfseries\color{accent}\nichttitle}
+\ifx\nichtsubtitle\empty\else
+  \\[2pt]{\normalsize\color{accent!80!black}\nichtsubtitle}
+\fi
+\\[2pt]
+\color{accent}\rule{0.4\linewidth}{0.8pt}\color{black}
+\end{center}
+\vspace{4pt}
+
+% ── BODY ──────────────────────────────────────────────────────
+
+\section{Übungsblatt 9 — Klausurrahmen}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 1 — Hilfsmittel-Check vor der Klausur \textit{(8 Punkte)}}\mbox{}\\[2pt]
+
+Eine Studentin packt am Vorabend ihre Klausurtasche für die Analysis 2-Klausur. Sie legt folgende Gegenstände bereit:
+
+
+\begin{enumerate}
+  \item Druckbleistift + Radiergummi
+  \item Geodreieck
+  \item Eine handschriftliche Formelsammlung (DIN A4, beidseitig beschrieben)
+  \item Den gedruckten Vorlesungsmitschrieb in einem Ordner
+  \item Ihren wissenschaftlichen Taschenrechner (Casio fx-991)
+  \item Smartwatch (zum Zeit-Check)
+  \item Tablet mit der digitalen Skript-PDF
+\end{enumerate}
+
+a) Stelle in einer Tabelle dar, welche der sieben Gegenstände gemäß Klausurrahmen zugelassen sind und welche nicht. \textit{(4 P)}
+
+
+b) Die Studentin argumentiert: „Die Smartwatch trage ich nur zum Zeitablesen, das Tablet brauche ich, weil mein Skript zu groß für den Drucker war." Erkläre anhand der Klausurordnung, warum beide Argumente die Zulassung \textbf{nicht} ändern, und leite die übergeordnete Regel ab, nach der die Hilfsmittelliste gegliedert ist. \textit{(4 P)}
+
+
+\textbf{Lösung:}
+
+
+a)
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Nr.}} & {\color{white}\textbf{Gegenstand}} & {\color{white}\textbf{Zugelassen}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+1 & Druckbleistift + Radiergummi & ✓ (Stifte) \\
+2 & Geodreieck & ✓ \\
+3 & Handschriftliche Formelsammlung & ✓ \\
+4 & Gedruckter Vorlesungsmitschrieb & ✓ (Skripte gedruckt) \\
+5 & Wissenschaftlicher Taschenrechner & ✗ \\
+6 & Smartwatch & ✗ \\
+7 & Tablet mit Skript-PDF & ✗ \\
+\end{tabularx}
+}
+
+
+b) Die Klausurordnung listet Smartwatches und Tablets explizit als nicht zugelassen — der Verwendungszweck (Zeit ablesen, Skript anzeigen) ist irrelevant, da das Verbot am Gerät und nicht an der konkreten Nutzung festgemacht ist. Eine Smartwatch könnte trotz „nur Uhr"-Behauptung Notizen/Nachrichten anzeigen, ein Tablet könnte beliebige Inhalte anzeigen — beides ist nicht überprüfbar.
+
+
+Übergeordnete Regel: Zugelassen sind \textbf{passive, nicht-elektronische Hilfsmittel} (Schreibgeräte, Zeicheninstrumente, Papierdokumente — gedruckt oder handschriftlich). Verboten ist alles \textbf{Elektronische} — auch wenn es nur rechnen (Taschenrechner) oder nur Zeit anzeigen soll (Smartwatch). Konsequenz: Da kein Taschenrechner erlaubt ist, müssen alle Aufgaben so gestellt sein, dass sie ohne numerische Hilfsmittel lösbar sind (glatte Werte, symbolische Ergebnisse).
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 — Punktebudget und Lernplanung \textit{(10 Punkte)}}\mbox{}\\[2pt]
+
+Ein Student hat noch genau \textbf{15 Stunden} effektive Lernzeit vor der Klausur und will sein Lernen an der Punkteverteilung des Klausurrahmens ausrichten.
+
+
+a) Gib die prozentuale Gewichtung jedes der drei Themen am Gesamtpunktekonto an (auf Bruchform — Taschenrechner ist verboten). \textit{(3 P)}
+
+
+b) Verteile die 15 Stunden \textbf{proportional zur Punktegewichtung} auf die drei Themen. Gib die Stundenzahl je Thema als Bruch und in Stunden:Minuten an. \textit{(4 P)}
+
+
+c) Der Student bemerkt: „Wenn ich Vektoranalysis vollständig leer lasse, kann ich trotzdem noch eine 4,0 (= 50 \% der Punkte) erreichen, sofern die anderen beiden Aufgaben perfekt gelöst werden." Prüfe diese Aussage rechnerisch und gib das exakte Ergebnis als Bruch sowie als Prozentwert an. Folgerung? \textit{(3 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Gesamtpunktzahl = 25.
+
+\begin{itemize}
+  \item Vektoranalysis: $\frac{9}{25} = 36\,\%$
+  \item Gewöhnliche DGL: $\frac{8}{25} = 32\,\%$
+  \item Integralrechnung: $\frac{8}{25} = 32\,\%$
+\end{itemize}
+
+Summe: $36 + 32 + 32 = 100\,\%$ ✓
+
+
+b) Proportional: $t_i = 15\,\text{h} \cdot \frac{p_i}{25}$.
+
+
+\begin{itemize}
+  \item Vektoranalysis: $15 \cdot \frac{9}{25} = \frac{135}{25} = \frac{27}{5} = 5{,}4\,\text{h} = 5\,\text{h}\,24\,\text{min}$
+  \item DGL: $15 \cdot \frac{8}{25} = \frac{120}{25} = \frac{24}{5} = 4{,}8\,\text{h} = 4\,\text{h}\,48\,\text{min}$
+  \item Integral: ebenso $4\,\text{h}\,48\,\text{min}$
+\end{itemize}
+
+Summe: $5{,}4 + 4{,}8 + 4{,}8 = 15{,}0\,\text{h}$ ✓
+
+
+c) Maximal erreichbare Punkte ohne Vektoranalysis: $0 + 8 + 8 = 16$ von 25.
+
+
+\[
+\frac{16}{25} = \frac{64}{100} = 64\,\%
+\]
+
+
+$64\,\% \geq 50\,\%$, also ist die Aussage \textbf{wahr} — eine 4,0-Schwelle (50 \%) wird sogar deutlich übertroffen.
+
+
+Folgerung: Selbst bei vollständigem Verzicht auf das größte Einzelthema bleibt die Klausur formal bestehbar. Strategisch ist es dennoch riskant, da Teilfehler in DGL/Integral diese Reserve schnell aufzehren — das Punktebudget zeigt, dass kein Thema „opferbar" ohne Polster ist.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 — Punkteverteilung als Bewertungsschema \textit{(7 Punkte)}}\mbox{}\\[2pt]
+
+In der Klausur sind drei Aufgaben gestellt mit den im Klausurrahmen festgelegten Punkten (9 / 8 / 8). Drei Studierende erzielen folgende Rohpunkte:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Studi}} & {\color{white}\textbf{Vektoranalysis (max 9)}} & {\color{white}\textbf{DGL (max 8)}} & {\color{white}\textbf{Integral (max 8)}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+A & 9 & 4 & 5 \\
+B & 6 & 7 & 6 \\
+C & 3 & 8 & 8 \\
+\end{tabularx}
+}
+
+
+a) Berechne für jede Studierende die Gesamtpunktzahl und den prozentualen Anteil am Maximum. Gib Brüche, keine Dezimalzahlen mit Taschenrechner. \textit{(3 P)}
+
+
+b) Sortiere A, B, C nach erreichter Gesamtpunktzahl (absteigend). Welche Studi hat in \textbf{prozentual} je Aufgabe das beste Profil (höchste Quote in einer einzelnen Aufgabe)? \textit{(2 P)}
+
+
+c) Studi C hat in zwei Aufgaben volle Punktzahl, landet aber \textbf{nicht} auf Platz 1. Erkläre anhand der Punkteverteilung des Klausurrahmens, warum die Schwerpunktsetzung im Lernen das Ergebnis stärker beeinflusst als bloße „2-von-3-Aufgaben-perfekt"-Strategien. \textit{(2 P)}
+
+
+\textbf{Lösung:}
+
+
+a)
+
+\begin{itemize}
+  \item A: $9+4+5 = 18$, $\frac{18}{25} = 72\,\%$
+  \item B: $6+7+6 = 19$, $\frac{19}{25} = 76\,\%$
+  \item C: $3+8+8 = 19$, $\frac{19}{25} = 76\,\%$
+\end{itemize}
+
+b) Reihenfolge: B = C (je 19 Punkte) > A (18 Punkte). B und C teilen sich Platz 1.
+
+
+Beste Einzelquoten:
+
+\begin{itemize}
+  \item Vektoranalysis: A mit $\frac{9}{9} = 100\,\%$
+  \item DGL: C mit $\frac{8}{8} = 100\,\%$
+  \item Integral: C mit $\frac{8}{8} = 100\,\%$
+\end{itemize}
+
+C hat in zwei Aufgaben das beste Profil.
+
+
+c) Vektoranalysis ist mit \textbf{9 Punkten die größte Einzelaufgabe} (36 \% des Gesamtpunkteumfangs). Wer dort schwach ist (C: nur 3/9), verliert 6 Punkte — fast so viel wie eine ganze andere Aufgabe wert ist. Trotz zweier perfekter Aufgaben holt C den Rückstand nicht auf. Konsequenz für die Klausurvorbereitung: Eine \textbf{gleichmäßige Beherrschung aller drei Themen} ist effektiver als die Spezialisierung auf zwei, weil die größte Aufgabe (Vektoranalysis) 1 Punkt mehr zählt und damit überproportional ins Gewicht fällt.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 — Klausurstrategie ohne Taschenrechner \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Ein Studierender plant seine 90-minütige Klausurzeit (= 90 Minuten für 25 Punkte). Er beschließt, die Bearbeitungsdauer \textbf{proportional zu den Punkten} zu verteilen.
+
+
+a) Berechne, wie viele Minuten pro Punkt zur Verfügung stehen, und daraus die Soll-Bearbeitungszeit jeder der drei Aufgaben (Vektoranalysis 9 P, DGL 8 P, Integral 8 P). \textit{(3 P)}
+
+
+b) Die Klausur ist \textbf{ohne Taschenrechner} zu schreiben. Liste vier konkrete Konsequenzen, die sich daraus für die Aufgabenstellungen ergeben (welche Werte/Operationen sind realistisch?), und begründe jede. \textit{(6 P)}
+
+
+c) Eine Kommilitonin schlägt vor: „Lass uns jeweils bei einem Punkt pro Minute eine Pufferreserve von 10 Minuten am Ende einplanen — also nur 80 Minuten aktiv rechnen." Berechne die neue Soll-Bearbeitungszeit pro Aufgabe und diskutiere, ob diese Strategie sinnvoll ist (mindestens zwei Argumente pro/contra). \textit{(6 P)}
+
+
+\textbf{Lösung:}
+
+
+a) $\frac{90\,\text{min}}{25\,\text{P}} = \frac{18}{5}\,\text{min/P} = 3{,}6\,\text{min/P}$
+
+
+\begin{itemize}
+  \item Vektoranalysis: $9 \cdot \frac{18}{5} = \frac{162}{5} = 32{,}4\,\text{min}$
+  \item DGL: $8 \cdot \frac{18}{5} = \frac{144}{5} = 28{,}8\,\text{min}$
+  \item Integral: ebenso $28{,}8\,\text{min}$
+\end{itemize}
+
+Summe: $32{,}4 + 28{,}8 + 28{,}8 = 90{,}0\,\text{min}$ ✓
+
+
+b) Konsequenzen ohne Taschenrechner:
+
+
+\begin{enumerate}
+  \item \textbf{Glatte Zahlenwerte}: Aufgabenwerte sind so gewählt, dass Wurzeln, Logarithmen, trigonometrische Funktionen exakte Werte ergeben (z. B. $\sin\frac{\pi}{2}$, $\sqrt{4}$). Gründe: Numerische Näherungen wie $\sin(1{,}3)$ wären ohne Taschenrechner nicht prüfbar.
+\end{enumerate}
+
+\begin{enumerate}
+  \item \textbf{Symbolische Endergebnisse erlaubt}: Antworten dürfen als Bruch, Wurzel oder Vielfaches von $\pi$/$e$ stehen bleiben (z. B. $\frac{e^2 - 1}{2}$ statt $3{,}19...$). Gründe: Dezimalapproximation ist Aufgabe des Rechners.
+\end{enumerate}
+
+\begin{enumerate}
+  \item \textbf{Kleine ganzzahlige Koeffizienten}: Matrizen, DGL-Koeffizienten, Integrationsgrenzen sind klein und ganzzahlig (häufig $\in \{-3,...,3\}$). Gründe: Determinanten/Eigenwertgleichungen müssen handrechenbar bleiben.
+\end{enumerate}
+
+\begin{enumerate}
+  \item \textbf{Verzicht auf Iterationsverfahren}: Numerisches Newton-Verfahren, Runge-Kutta o. ä. mit konkreten Iterationsschritten kommen nicht vor. Gründe: Wiederholte Multiplikationen sind ohne Rechner zeitlich nicht machbar; geprüft wird das \textbf{Verfahren}, nicht die Rechenausdauer.
+\end{enumerate}
+
+c) Neue Rate: $\frac{80}{25} = \frac{16}{5} = 3{,}2\,\text{min/P}$.
+
+
+\begin{itemize}
+  \item Vektoranalysis: $9 \cdot \frac{16}{5} = \frac{144}{5} = 28{,}8\,\text{min}$
+  \item DGL: $8 \cdot \frac{16}{5} = \frac{128}{5} = 25{,}6\,\text{min}$
+  \item Integral: ebenso $25{,}6\,\text{min}$
+\end{itemize}
+
+Summe: $28{,}8 + 25{,}6 + 25{,}6 = 80{,}0\,\text{min}$, plus 10 min Puffer = 90 min ✓.
+
+
+\textbf{Pro:}
+
+\begin{itemize}
+  \item Pufferzeit ermöglicht Kontrolle der Lösungen — gerade ohne Taschenrechner sind Rechenfehler die Hauptverlustquelle.
+  \item Schreibreserven für Übertragung in Reinschrift / Skizzen vergrößert.
+\end{itemize}
+
+\textbf{Contra:}
+
+\begin{itemize}
+  \item Die DGL- und Integralaufgaben verlieren je rund 3 Minuten — das kann bei mehrschrittigen Aufgaben (Variation der Konstanten, partielle Integration) knapp werden.
+  \item Wer eine Aufgabe nicht löst, hat keinen Nutzen vom Endpuffer — besser wäre ein dynamischer Puffer, in dem schwierige Stellen frühzeitig markiert und übersprungen werden.
+\end{itemize}
+
+Bewertung: Die Strategie ist sinnvoll, \textbf{wenn} der Studierende erfahrungsgemäß überzieht oder Flüchtigkeitsfehler macht; sie ist riskant, \textbf{wenn} der Stoff knapp sitzt und jede Minute aktiv gebraucht wird.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 — Fehleranalyse einer Klausurplanung \textit{(10 Punkte)}}\mbox{}\\[2pt]
+
+Ein Studi reicht folgenden Lernplan ein:
+
+
+\begin{lstlisting}
+Vektoranalysis:  40 % Lernzeit  (weil größte Einzelaufgabe)
+DGL:             40 % Lernzeit  (weil schwierigster Stoff)
+Integral:        20 % Lernzeit  (Wiederholung aus Analysis 1)
+Gesamt:         100 %
+\end{lstlisting}
+
+Klausurtag-Notfallplan: „Falls die Zeit knapp wird, lasse ich die Integralaufgabe ganz weg — die zählt am wenigsten."
+
+
+a) Prüfe die behauptete Aussage „Vektoranalysis ist die größte Einzelaufgabe" anhand des Klausurrahmens. \textit{(2 P)}
+
+
+b) Finde den \textbf{Fehler im Notfallplan}: Berechne die maximal erreichbare Note (in Prozent), wenn die Integralaufgabe komplett wegfällt, und vergleiche sie mit dem Weglassen der DGL-Aufgabe. Welcher Verzicht ist „günstiger"? \textit{(4 P)}
+
+
+c) Formuliere einen verbesserten Notfallplan in 2–3 Sätzen, der den Klausurrahmen (Punkteverteilung 9/8/8, kein Taschenrechner, Hilfsmittel-Restriktion) berücksichtigt. \textit{(4 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Punkte: Vektoranalysis 9, DGL 8, Integral 8. Da $9 > 8$, ist Vektoranalysis tatsächlich die größte Einzelaufgabe — die Aussage stimmt.
+
+
+b)
+
+\begin{itemize}
+  \item \textbf{Integral weglassen}: erreichbar maximal $9 + 8 = 17$ Punkte → $\frac{17}{25} = 68\,\%$.
+  \item \textbf{DGL weglassen}: erreichbar maximal $9 + 8 = 17$ Punkte → $\frac{17}{25} = 68\,\%$.
+\end{itemize}
+
+Beide Verzichte sind \textbf{gleich teuer}, da DGL und Integral mit je 8 Punkten gleich gewichtet sind. Der Notfallplan unterstellt fälschlich, dass das Integral „am wenigsten zählt" — tatsächlich zählen DGL und Integral exakt gleich viel.
+
+
+(Würde stattdessen Vektoranalysis weggelassen: $0 + 8 + 8 = 16$ Punkte → $\frac{16}{25} = 64\,\%$ — tatsächlich der teuerste Verzicht.)
+
+
+c) Verbesserter Notfallplan:
+
+
+\begin{quote}
+Bei Zeitnot bearbeite ich zuerst die Aufgabe mit dem höchsten Punktewert (Vektoranalysis, 9 P), da hier am meisten zu holen ist. Bei DGL und Integral (je 8 P) wähle ich diejenige zuerst, in der ich nach kurzer Sichtprüfung den Lösungsweg klar erkenne — nicht die, „die ich theoretisch am liebsten mag". Da kein Taschenrechner zugelassen ist, identifiziere ich vor dem Rechnen, welche Werte glatt aufgehen, und investiere keine Zeit in numerische Approximationen. Skripte und Formelsammlung lege ich vorher griffbereit nach Themen sortiert hin, damit das Nachschlagen die knappe Zeit nicht zusätzlich frisst.
+\end{quote}
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{document}

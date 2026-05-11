@@ -1,0 +1,591 @@
+% ============================================================
+%  Probeklausur Template (my_dhbw Stil, klausur_*.tex)
+%  Formell mit Deckblatt-Header; Lösungen als grüne tcolorbox.
+%  Renderer: pdflatex (zweimal)
+% ============================================================
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+\usepackage[top=2cm, bottom=2cm, left=2.4cm, right=2.4cm, footskip=1cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{ltablex}
+\keepXColumns
+\usepackage{colortbl}
+\usepackage[most,breakable]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{pdflscape}
+\usepackage{titlesec}
+\usepackage[colorlinks=true, linkcolor=accent, urlcolor=accent]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme ─────────────────────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{loesung}{RGB}{0, 100, 0}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{240, 252, 240}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer ─────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\footnotesize\color{accent}Modulprüfung -- \nichttitle}
+\fancyhead[R]{\footnotesize\color{accent}\nichtsubtitle}
+\fancyfoot[L]{\footnotesize\color{accent}Matrikelnr.: \rule{3cm}{0.4pt}}
+\fancyfoot[R]{\footnotesize\color{accent}Blatt \thepage\,/\,\pageref{LastPage}}
+
+% ── Typografie ────────────────────────────────────────────────
+\titleformat{\section}
+    {\color{accent}\large\bfseries}{}{0pt}{}
+    [\vspace{-4pt}\color{accent}\rule{\linewidth}{1.5pt}]
+\titleformat{\subsection}
+    {\normalsize\bfseries\color{accent!85!black}}{}{0pt}{}{}
+\titleformat{\subsubsection}
+    {\small\bfseries\color{accent!70!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{12pt}{4pt}
+\titlespacing*{\subsection}{0pt}{8pt}{2pt}
+\titlespacing*{\subsubsection}{0pt}{6pt}{1pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\renewcommand{\arraystretch}{1.25}
+\setlist[itemize]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.4em}
+\setlist[enumerate]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.6em}
+
+% ── Boxen ─────────────────────────────────────────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={Abbildung: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={Tabelle: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{solutionbox}[1]{
+  enhanced,
+  colback=solutionbg, colframe=loesung,
+  title={#1}, fonttitle=\small\bfseries,
+  coltitle=white, colbacktitle=loesung,
+  breakable, before skip=8pt, after skip=8pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=single, framerule=0pt,
+  xleftmargin=4pt, xrightmargin=4pt,
+  aboveskip=6pt, belowskip=6pt,
+  keepspaces=true
+}
+
+\providecommand{\nichttitle}{Probeklausur}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Relationen, Algebra, Diskrete Mathematik}
+\renewcommand{\nichtsubtitle}{Probeklausur 2}
+
+
+\begin{document}
+
+% Deckblatt
+\thispagestyle{empty}
+\begin{center}
+\vspace*{1cm}
+{\Huge\bfseries\color{accent}Probeklausur}\\[8pt]
+{\Large\color{accent}\nichttitle}\\[4pt]
+\ifx\nichtsubtitle\empty\else
+  {\large\color{accent!80!black}\nichtsubtitle}\\[6pt]
+\fi
+\color{accent}\rule{0.5\linewidth}{1pt}\color{black}
+\end{center}
+
+\vspace{1cm}
+\begin{tabularx}{\textwidth}{@{}l X@{}}
+\textbf{Studiengang:}      & \rule{6cm}{0.4pt} \\[6pt]
+\textbf{Matrikelnummer:}    & \rule{6cm}{0.4pt} \\[6pt]
+\textbf{Name, Vorname:}    & \rule{6cm}{0.4pt} \\[6pt]
+\textbf{Datum:}             & \rule{6cm}{0.4pt} \\[6pt]
+\textbf{Bearbeitungszeit:}  & 60 Minuten \\[6pt]
+\textbf{Hilfsmittel:}       & Taschenrechner (nicht programmierbar) \\
+\end{tabularx}
+
+\vspace{2cm}
+\begin{center}
+{\large\itshape Viel Erfolg!}
+\end{center}
+
+\newpage
+
+% ── BODY ──────────────────────────────────────────────────────
+
+\section{Probeklausur 2 — Relationen, Algebra, Diskrete Mathematik}
+
+\textbf{Bearbeitungszeit}: 60 Minuten | \textbf{Hilfsmittel}: keine | \textbf{Punkte}: 100
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 1 — Eigenschaften von Relationen \textit{(18 Punkte)}}\mbox{}\\[2pt]
+
+Auf der Menge M = \{1, 2, 3, 4\} sei die Relation
+
+R = \{(1,1), (2,2), (3,3), (4,4), (1,2), (2,1), (3,4), (4,3), (1,3), (3,1)\}
+
+gegeben.
+
+
+a) Nennen Sie die formale Bedingung für Transitivität einer Relation R ⊆ M². \textit{(3 P)}
+
+
+b) Untersuchen Sie R systematisch auf die Eigenschaften reflexiv, symmetrisch, antisymmetrisch und transitiv. Begründen Sie jede Aussage durch Verweis auf die Definition oder ein konkretes Gegenbeispiel-Tupel. \textit{(10 P)}
+
+
+c) Ergänzen Sie R um die minimal nötigen Tupel, sodass R zu einer Äquivalenzrelation auf M wird. Geben Sie anschließend die entstehenden Äquivalenzklassen an. \textit{(5 P)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 — Ordnungsrelationen analysieren \textit{(14 Punkte)}}\mbox{}\\[2pt]
+
+Auf der Menge S aller nichtleeren Teilmengen von \{a, b, c\} sei die Relation
+
+A ⊑ B :⇔ A ⊆ B
+
+definiert.
+
+
+a) Begründen Sie kurz, warum ⊑ reflexiv und antisymmetrisch ist. \textit{(4 P)}
+
+
+b) Klassifizieren Sie ⊑ gemäß der Tabelle Quasi-/Halb-/Vollordnung (reflexive Variante). Begründen Sie insbesondere, ob ⊑ linear ist; geben Sie ggf. zwei unvergleichbare Elemente an. \textit{(6 P)}
+
+
+c) Auf der Menge ℕ sei R durch xRy :⇔ x ≥ y definiert. Ein Mitstudent behauptet, R sei eine reflexive Halbordnung. Widerlegen Sie diese Behauptung mit der passenden Eigenschaft und einem Gegenbeispiel. \textit{(4 P)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 — Abbildungen und ihre Eigenschaften \textit{(16 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben seien die folgenden vier Abbildungen:
+
+
+\begin{itemize}
+  \item f₁: ℝ → ℝ, f₁(x) = 2x − 5
+  \item f₂: ℝ → ℝ⁺₀, f₂(x) = x²
+  \item f₃: ℤ → ℤ, f₃(x) = ⌊x/2⌋
+  \item f₄: ℝ⁺ → ℝ⁺, f₄(x) = x²
+\end{itemize}
+
+a) Erstellen Sie eine Tabelle und tragen Sie für jede Abbildung ein, ob sie linksvollständig, rechtseindeutig, injektiv, surjektiv und bijektiv ist (✓/✗). \textit{(10 P)}
+
+
+b) Begründen Sie ausführlich für f₂, warum sie nicht injektiv, aber surjektiv ist. \textit{(3 P)}
+
+
+c) Eine Mitstudentin sagt: „f(x) = x² ist nie bijektiv." Widerlegen Sie diese Aussage mit Bezug auf f₄ und erklären Sie, wovon die Bewertung „bijektiv" inhaltlich abhängt. \textit{(3 P)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 — Datenbankentwurf bewerten und korrigieren \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+Ein Sportverein speichert seine Mitglieder in folgender Tabelle \texttt{MITGLIEDER}:
+
+
+
+\begin{landscape}
+
+{\footnotesize
+\begin{tabularx}{\linewidth}{XXXXXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{MNr}} & {\color{white}\textbf{Name}} & {\color{white}\textbf{Geburtsjahr}} & {\color{white}\textbf{Fußball}} & {\color{white}\textbf{Tennis}} & {\color{white}\textbf{Schwimmen}} & {\color{white}\textbf{TrainerName}} & {\color{white}\textbf{TrainerTel}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+1 & Anna & 2003 & 1 & 0 & 1 & Müller & 0151-… \\
+2 & Ben & 2002 & 1 & 0 & 0 & Müller & 0151-… \\
+3 & Clara & 2004 & 0 & 1 & 1 & Schmidt & 0162-… \\
+\end{tabularx}
+}
+\end{landscape}
+
+
+a) Identifizieren Sie zwei verschiedene Probleme dieses Entwurfs (eines bezogen auf die Sportart-Spalten, eines bezogen auf die Trainer-Daten) und benennen Sie jeweils die Anomalie-Art. \textit{(6 P)}
+
+
+b) Entwerfen Sie ein normalisiertes Schema mit drei Tabellen. Geben Sie für jede Tabelle den Tabellennamen, die Attribute, den Primärschlüssel (unterstrichen oder mit „PK") und alle Fremdschlüssel an. \textit{(10 P)}
+
+
+c) Begründen Sie, warum (Name, Geburtsjahr) trotz scheinbarer Eindeutigkeit ein schlechter Primärschlüsselkandidat in \texttt{MITGLIEDER} ist. Beziehen Sie sich auf die Definition „eindeutig + minimal". \textit{(4 P)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 — Relationenalgebra anwenden \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben seien die Relationen:
+
+
+\texttt{STUDENT(MatrNr, Name, KursID)}
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{MatrNr}} & {\color{white}\textbf{Name}} & {\color{white}\textbf{KursID}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+101 & Alex & TINF24 \\
+102 & Bea & WINF24 \\
+103 & Cem & TINF24 \\
+104 & Dana & WINF23 \\
+\end{tabularx}
+}
+
+
+\texttt{KURS(KursID, Standort)}
+
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{KursID}} & {\color{white}\textbf{Standort}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+TINF24 & Stuttgart \\
+WINF24 & Mannheim \\
+WINF23 & Mannheim \\
+\end{tabularx}
+}
+
+
+a) Berechnen Sie das Ergebnis von σ\_\{Standort='Mannheim'\}(KURS) und geben Sie das Ergebnis als Tabelle an. \textit{(3 P)}
+
+
+b) Berechnen Sie das Ergebnis von Π\_\{Name\}(σ\_\{KursID='TINF24'\}(STUDENT)). \textit{(4 P)}
+
+
+c) Berechnen Sie STUDENT ⋈ KURS (Natural Join) und geben Sie das Ergebnis als Tabelle an. \textit{(6 P)}
+
+
+d) Formulieren Sie die folgende Anfrage in Relationenalgebra: „Namen aller Studierenden, deren Kurs in Mannheim stattfindet." Geben Sie zusätzlich das äquivalente SQL-Statement mit \texttt{inner join} an. \textit{(7 P)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 6 — Mengenoperationen und Schema-Kompatibilität \textit{(12 Punkte)}}\mbox{}\\[2pt]
+
+Zwei Tabellen sollen vereinigt werden:
+
+
+\texttt{A(Nr, Bezeichnung)} mit Tupeln \{(1, 'rot'), (2, 'blau')\}
+
+\texttt{B(ID, Farbe)} mit Tupeln \{(2, 'blau'), (3, 'grün')\}
+
+
+a) Ein Studierender berechnet einfach A ∪ B = \{(1,'rot'), (2,'blau'), (3,'grün')\}. Erklären Sie, warum diese Operation in der Relationenalgebra so nicht zulässig ist. \textit{(4 P)}
+
+
+b) Geben Sie zwei mögliche Vorgehensweisen an, mit denen die Vereinigung dennoch korrekt durchgeführt werden kann. \textit{(4 P)}
+
+
+c) Berechnen Sie das Kreuzprodukt A × B und geben Sie an, wie viele Tupel das Ergebnis enthält. Begründen Sie, warum hier — anders als bei ∪ — keine Schema-Kompatibilität nötig ist. \textit{(4 P)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+
+\section{Musterlösung Klausur 2}
+
+\paragraph{Aufgabe 1 \textit{(18 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a)} \textit{(3 P)} Transitivität: ∀x,y,z ∈ M: (xRy ∧ yRz) → xRz.
+
+\textit{Bewertung:} 3 P bei korrekter Formel mit Quantor und Implikation; 1 P Abzug bei fehlendem Quantor.
+
+
+\textbf{b)} \textit{(10 P)}
+
+\begin{itemize}
+  \item \textbf{Reflexiv ✓}: (1,1), (2,2), (3,3), (4,4) ∈ R, also xRx für alle x ∈ M. \textit{(2 P)}
+  \item \textbf{Symmetrisch ✓}: Zu prüfen sind alle nicht-diagonalen Paare: (1,2)↔(2,1) ✓, (3,4)↔(4,3) ✓, (1,3)↔(3,1) ✓. \textit{(2 P)}
+  \item \textbf{Antisymmetrisch ✗}: Gegenbeispiel (1,2) ∈ R und (2,1) ∈ R, aber 1 ≠ 2. \textit{(2 P)}
+  \item \textbf{Transitiv ✗}: (2,1) ∈ R und (1,3) ∈ R, aber (2,3) ∉ R. (Alternativ: (4,3) und (3,1), aber (4,1) ∉ R.) \textit{(4 P)}
+\end{itemize}
+
+\textit{Bewertung:} je 2 P pro Eigenschaft inkl. Begründung; bei „transitiv ✗" 4 P, weil Gegenbeispiel anspruchsvoller.
+
+
+\textbf{c)} \textit{(5 P)} Für Äquivalenz fehlt Transitivität. Aus den Symmetrie-/Verbindungspaaren folgt: 1 ist mit 2 und 3 verbunden, 3 mit 4. Damit müssen 1, 2, 3, 4 alle in einer Klasse liegen. Zu ergänzen: (2,3), (3,2), (1,4), (4,1), (2,4), (4,2). Äquivalenzklassen: nur \{1, 2, 3, 4\}. \textit{(3 P Tupel + 2 P Klasse)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 \textit{(14 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a)} \textit{(4 P)}
+
+\begin{itemize}
+  \item Reflexiv: A ⊆ A gilt für jede Menge A. \textit{(2 P)}
+  \item Antisymmetrisch: A ⊆ B ∧ B ⊆ A → A = B (Mengengleichheit per Definition). \textit{(2 P)}
+\end{itemize}
+
+\textbf{b)} \textit{(6 P)} ⊑ ist reflexiv, antisymmetrisch und transitiv (A ⊆ B ⊆ C → A ⊆ C). Damit ist ⊑ eine \textbf{reflexive Halbordnung}. ⊑ ist \textbf{nicht linear}: \{a\} und \{b\} sind unvergleichbar, da weder \{a\} ⊆ \{b\} noch \{b\} ⊆ \{a\}. Daher \textbf{keine Vollordnung}. \textit{(3 P Klassifikation + 3 P Begründung Linearität mit Beispiel)}
+
+
+\textbf{c)} \textit{(4 P)} R = ≥ ist reflexiv (x ≥ x ✓) und transitiv ✓, aber \textbf{nicht antisymmetrisch}, sondern wäre es erst mit Antisymmetrie. Doch x ≥ y ∧ y ≥ x → x = y gilt sogar — d. h. ≥ IST antisymmetrisch. Korrekte Widerlegung: ≥ ist sogar \textbf{linear} (Vollordnung), nicht nur Halbordnung — die Aussage „nur Halbordnung" ist also zu schwach. Alternativ-akzeptiert: Hinweis aus Zettel: „größer oder gleich groß" auf Mengen-Niveau ist keine reflex. Halbordnung, weil dort Antisymmetrie fehlt; auf ℕ mit ≥ liegt jedoch sogar Vollordnung vor. \textit{(2 P Eigenschaft + 2 P Beispiel/Begründung)}
+
+
+\textit{Bewertungshinweis:} Volle Punktzahl auch, wenn Studi argumentiert „R ist sogar Vollordnung, weil zusätzlich linear: ∀x,y ∈ ℕ: x ≥ y ∨ y ≥ x".
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 \textit{(16 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a)} \textit{(10 P, je 0,5 P pro Zelle)}
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{f}} & {\color{white}\textbf{linksvollst.}} & {\color{white}\textbf{rechtseind.}} & {\color{white}\textbf{injektiv}} & {\color{white}\textbf{surjektiv}} & {\color{white}\textbf{bijektiv}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+f₁ & ✓ & ✓ & ✓ & ✓ & ✓ \\
+f₂ & ✓ & ✓ & ✗ & ✓ & ✗ \\
+f₃ & ✓ & ✓ & ✗ & ✓ & ✗ \\
+f₄ & ✓ & ✓ & ✓ & ✓ & ✓ \\
+\end{tabularx}
+}
+
+
+\textit{Begründungs-Hinweise (intern):} f₁ linear mit Steigung ≠ 0 → bijektiv. f₂ nicht injektiv: f₂(2)=f₂(−2)=4; surjektiv auf ℝ⁺₀, da ∀y≥0 ∃x=√y. f₃: f₃(2)=f₃(3)=1, nicht injektiv; surjektiv, da ∀y∈ℤ: f₃(2y)=y. f₄ auf ℝ⁺: streng monoton wachsend → injektiv; ∀y>0: x=√y > 0, also surjektiv.
+
+
+\textbf{b)} \textit{(3 P)} Nicht injektiv: f₂(−1)=f₂(1)=1, aber −1 ≠ 1, verletzt also Definition (f(x₁)=f(x₂) → x₁=x₂). Surjektiv auf ℝ⁺₀: zu jedem y ≥ 0 ist x = √y ∈ ℝ Urbild mit f₂(x) = y. \textit{(je 1,5 P)}
+
+
+\textbf{c)} \textit{(3 P)} Widerlegung: f₄ ist bijektiv (s. Tabelle), also gibt es eine bijektive x²-Abbildung. \textbf{Bewertung hängt von D und W ab} (siehe Zettel: „Bewertung hängt von gewählten D, W ab"); durch Einschränkung von ℝ auf ℝ⁺ wird Injektivität erreicht, durch passende Wertemenge die Surjektivität. \textit{(2 P Widerlegung + 1 P Bezug auf D/W)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a)} \textit{(6 P)}
+
+\begin{itemize}
+  \item \textbf{Sportart-Spalten} (Fußball, Tennis, Schwimmen): Pro Sportart eine eigene Spalte → viele 0-Einträge (Speicherverschwendung); neue Sportart erfordert Schema-Änderung (Spalte hinzufügen). Klassische \textbf{Insert-Anomalie / mangelnde Erweiterbarkeit}. \textit{(3 P)}
+  \item \textbf{Trainer-Daten} (TrainerName, TrainerTel): Mehrfach abgespeichert (Müller bei mehreren Mitgliedern). Bei Telefonnummern-Änderung müssen alle Zeilen geändert werden → \textbf{Update-Anomalie / Redundanz}. \textit{(3 P)}
+\end{itemize}
+
+\textbf{b)} \textit{(10 P)} Normalisiertes Schema:
+
+
+\begin{lstlisting}
+MITGLIED(MNr [PK], Name, Geburtsjahr, TrainerID [FK → TRAINER.TrainerID])
+SPORTART(SportID [PK], Sportname)
+MITGLIED_SPORT(MNr [PK,FK → MITGLIED], SportID [PK,FK → SPORTART])
+TRAINER(TrainerID [PK], Name, Tel)
+\end{lstlisting}
+
+
+\textit{Anmerkung:} 4 Tabellen sind besser als 3 — volle Punktzahl auch bei 3-Tabellen-Lösung, falls Trainer in MITGLIED-Tabelle integriert (dann 1 P Abzug wegen verbleibender Redundanz). Mindestanforderung für volle Punktzahl: separate \texttt{MITGLIED\_SPORT}-Verknüpfungstabelle (n:m), korrekte PKs/FKs. \textit{(4 P Strukturzerlegung, 3 P PKs, 3 P FKs)}
+
+
+\textbf{c)} \textit{(4 P)} Eindeutigkeit: Es kann zwei Personen mit gleichem Namen und Geburtsjahr geben (Namensvettern), → Eindeutigkeit nicht garantiert. Selbst wenn zufällig eindeutig: minimal wäre nicht erfüllt, falls bereits MNr eindeutig ist (dann ist Name+Geburtsjahr nicht-minimale Erweiterung). Außerdem semantisch instabil (Name kann sich ändern, z. B. Heirat). \textit{(2 P Eindeutigkeit + 2 P Minimalität/Stabilität)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a)} \textit{(3 P)}
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{KursID}} & {\color{white}\textbf{Standort}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+WINF24 & Mannheim \\
+WINF23 & Mannheim \\
+\end{tabularx}
+}
+
+
+\textbf{b)} \textit{(4 P)} σ\_\{KursID='TINF24'\}(STUDENT) liefert Tupel (101, Alex, TINF24) und (103, Cem, TINF24). Π\_\{Name\} darauf: \textbf{\{Alex, Cem\}}. \textit{(2 P Selektion + 2 P Projektion; Duplikat-Eliminierung erwähnen)}
+
+
+\textbf{c)} \textit{(6 P)} Natural Join über KursID:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{MatrNr}} & {\color{white}\textbf{Name}} & {\color{white}\textbf{KursID}} & {\color{white}\textbf{Standort}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+101 & Alex & TINF24 & Stuttgart \\
+102 & Bea & WINF24 & Mannheim \\
+103 & Cem & TINF24 & Stuttgart \\
+104 & Dana & WINF23 & Mannheim \\
+\end{tabularx}
+}
+
+
+\textit{(je 1 P pro korrektes Tupel + 2 P richtiges Schema ohne KursID-Duplikat)}
+
+
+\textbf{d)} \textit{(7 P)}
+
+\begin{itemize}
+  \item Relationenalgebra: Π\_\{Name\}(σ\_\{Standort='Mannheim'\}(STUDENT ⋈ KURS))
+\end{itemize}
+Alternativ: Π\_\{Name\}(STUDENT ⋈ σ\_\{Standort='Mannheim'\}(KURS)) — semantisch äquivalent, oft effizienter (Selektion vor Join). \textit{(4 P)}
+
+\begin{itemize}
+  \item SQL:
+\end{itemize}
+\begin{lstlisting}[language=sql]
+  select distinct s.Name
+  from STUDENT s inner join KURS k on s.KursID = k.KursID
+  where k.Standort = 'Mannheim';
+\end{lstlisting}
+
+\textit{(3 P; je 1 P für distinct/select, join-Bedingung, where-Klausel)}
+
+
+Ergebnis: \{Bea, Dana\}.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 6 \textit{(12 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a)} \textit{(4 P)} ∪ verlangt \textbf{Schema-Kompatibilität}: gleiche Stelligkeit UND gleiche (typgleiche) Attribute. Hier sind die Spaltennamen unterschiedlich (\texttt{Nr} vs. \texttt{ID}, \texttt{Bezeichnung} vs. \texttt{Farbe}), formal also unterschiedliche Schemata. Die Mengenoperation ist daher in der reinen Relationenalgebra nicht definiert. \textit{(2 P Begriff Schema-Kompatibilität + 2 P konkrete Begründung)}
+
+
+\textbf{b)} \textit{(4 P)} Zwei mögliche Vorgehen:
+
+\begin{enumerate}
+  \item Spalten zuvor per \textbf{Umbenennung} (ρ) angleichen, z. B. ρ\_\{ID→Nr, Farbe→Bezeichnung\}(B), dann A ∪ B'.
+  \item Per \textbf{Projektion} beide auf ein gemeinsames Schema bringen (sofern Typen passen) und anschließend vereinigen.
+\end{enumerate}
+
+Außerdem zu beachten: ∪ liefert Ergebnis ohne Duplikate; (2,'blau') erscheint nur einmal. \textit{(je 2 P pro Variante; 1 Bonuspunkt für Duplikat-Hinweis möglich, max. 4 P)}
+
+
+\textbf{c)} \textit{(4 P)} A × B = jedes Tupel aus A mit jedem Tupel aus B kombiniert. |A| = 2, |B| = 2 → \textbf{4 Tupel}. Schema des Ergebnisses: (Nr, Bezeichnung, ID, Farbe).
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Nr}} & {\color{white}\textbf{Bezeichnung}} & {\color{white}\textbf{ID}} & {\color{white}\textbf{Farbe}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+1 & rot & 2 & blau \\
+1 & rot & 3 & grün \\
+2 & blau & 2 & blau \\
+2 & blau & 3 & grün \\
+\end{tabularx}
+}
+
+
+Begründung Schema-Kompatibilität: Beim Kreuzprodukt werden die Schemata \textbf{nebeneinandergesetzt}, nicht identifiziert; Spalten existieren parallel. Daher ist keine Übereinstimmung der Attribute nötig — anders als bei ∪/∩/∖, die elementweise auf identischen Schemata operieren. \textit{(2 P Tupelzahl + Tabelle, 2 P Begründung)}
+
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{document}

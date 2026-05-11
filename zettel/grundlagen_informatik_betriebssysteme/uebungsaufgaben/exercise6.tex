@@ -1,0 +1,532 @@
+% ============================================================
+%  Übungsaufgaben Template (my_dhbw Stil, uebung_*.tex)
+%  Header "Übungsblatt", grün eingefärbte <details>-Lösungen.
+%  Renderer: pdflatex (zweimal)
+% ============================================================
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+\usepackage[top=2cm, bottom=2cm, left=2.4cm, right=2.4cm, footskip=1cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{ltablex}
+\keepXColumns
+\usepackage{colortbl}
+\usepackage[most,breakable]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{pdflscape}
+\usepackage{titlesec}
+\usepackage[colorlinks=true, linkcolor=accent, urlcolor=accent]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme ─────────────────────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{loesung}{RGB}{0, 100, 0}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{240, 252, 240}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer ─────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\footnotesize\color{accent}\nichttitle}
+\fancyhead[R]{\footnotesize\color{accent}\nichtsubtitle}
+\fancyfoot[R]{\footnotesize\color{accent}Blatt \thepage\,/\,\pageref{LastPage}}
+
+% ── Typografie ────────────────────────────────────────────────
+\titleformat{\section}
+    {\color{accent}\large\bfseries}{}{0pt}{}
+    [\vspace{-4pt}\color{accent}\rule{\linewidth}{1.5pt}]
+\titleformat{\subsection}
+    {\normalsize\bfseries\color{accent!85!black}}{}{0pt}{}{}
+\titleformat{\subsubsection}
+    {\small\bfseries\color{accent!70!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{10pt}{3pt}
+\titlespacing*{\subsection}{0pt}{6pt}{2pt}
+\titlespacing*{\subsubsection}{0pt}{4pt}{1pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\renewcommand{\arraystretch}{1.2}
+\setlist[itemize]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.4em}
+\setlist[enumerate]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.6em}
+
+% ── Boxen: solutionbox = Lösungsbox in grün ──────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={Abbildung: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={Tabelle: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{solutionbox}[1]{
+  enhanced,
+  colback=solutionbg, colframe=loesung,
+  title={#1}, fonttitle=\small\bfseries,
+  coltitle=white, colbacktitle=loesung,
+  breakable, before skip=8pt, after skip=8pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=single, framerule=0pt,
+  xleftmargin=4pt, xrightmargin=4pt,
+  aboveskip=6pt, belowskip=6pt,
+  keepspaces=true
+}
+
+\providecommand{\nichttitle}{Übungsblatt}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Betriebssysteme}
+\renewcommand{\nichtsubtitle}{Übungsblatt 6}
+
+
+\begin{document}
+
+\begin{center}
+{\Large\bfseries\color{accent}\nichttitle}
+\ifx\nichtsubtitle\empty\else
+  \\[2pt]{\normalsize\color{accent!80!black}\nichtsubtitle}
+\fi
+\\[2pt]
+\color{accent}\rule{0.4\linewidth}{0.8pt}\color{black}
+\end{center}
+\vspace{4pt}
+
+% ── BODY ──────────────────────────────────────────────────────
+
+\section{Übungsblatt 6 — Prozessverwaltung}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 1 — Vom Programm zum Prozess \textit{(10 Punkte)}}\mbox{}\\[2pt]
+
+a) Erklären Sie den Unterschied zwischen einem \textbf{Programm} und einem \textbf{Prozess}. Gehen Sie dabei auf die Begriffe „statisch" und „dynamisch" ein. \textit{(3 P)}
+
+
+b) Beschreiben Sie die drei Schritte der Prozesserzeugung in der korrekten Reihenfolge. Begründen Sie, warum die Reihenfolge nicht beliebig vertauscht werden darf — geben Sie zu zwei der drei Schritte ein konkretes Argument. \textit{(4 P)}
+
+
+c) Auf einem Unix-System mit PID 0 = Idle und PID 1 = Init erzeugt ein Benutzer mit \texttt{fork()} einen Kindprozess. Welche Werte haben PID und PPID des Kindes plausiblerweise, wenn das Kind aus einer Shell mit PID = 1842 gestartet wurde? Was geschähe, wenn die Shell terminiert, bevor das Kind beendet ist? \textit{(3 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Ein \textbf{Programm} ist eine \textbf{statische Verfahrensvorschrift} — eine auf Datenträger gespeicherte Folge von Anweisungen, die selbst nicht abläuft. Ein \textbf{Prozess} ist ein \textbf{Programm zur Laufzeit}, also eine \textbf{dynamische Folge von Aktionen} mit Zustandsänderungen. Der Prozess besitzt einen Adressraum (Userspace + Kernelspace), einen aktuellen Programmzähler und veränderlichen Zustand; das Programm selbst hat nichts davon.
+
+
+b) Reihenfolge:
+
+\begin{enumerate}
+  \item \textbf{Code/Daten in den Speicher laden} — physischer Adressraum muss existieren, bevor er beschrieben werden kann.
+  \item \textbf{Eindeutige PID zuordnen} — die PID identifiziert den Prozess; ohne sie kann er nicht referenziert werden.
+  \item \textbf{PCB in der Prozesstabelle anlegen} — der PCB verweist auf Speicherbereiche und enthält die PID, also müssen beide Werte vorher feststehen.
+\end{enumerate}
+
+Begründung der Reihenfolge: Schritt 3 setzt sowohl Schritt 1 (Speicheradressen für Code/Daten/Stack) als auch Schritt 2 (PID als Schlüssel in der Tabelle) voraus. Ohne geladenen Code wäre der Programmzähler im PCB ungültig; ohne PID gäbe es keinen Tabellenschlüssel.
+
+
+c) Das Kind erhält eine \textbf{neue, eindeutige PID} (z. B. 1843 oder eine beliebige freie Zahl ≥ 2), und seine \textbf{PPID = 1842} (die der Shell). Terminiert die Shell vor dem Kind, wird das Kind in Unix typischerweise von \textbf{Init (PID 1) adoptiert}, d. h. PPID wechselt auf 1. Damit ist sichergestellt, dass beim Beenden des Kindes ein Elternprozess existiert, der den Zombie-Eintrag aus der Prozesstabelle austragen kann.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 — Kontextwechsel zwischen zwei Prozessen \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben sei ein Einkern-System mit zwei Prozessen A und B. Zum Zeitpunkt $t_0$ läuft A. Eine Zeitscheibenunterbrechung löst einen Kontextwechsel zu B aus. Im PCB werden u. a. PC, IR, Stackpointer, Flags und MMU-Register geführt.
+
+
+Aktueller Zustand kurz vor der Unterbrechung:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Register}} & {\color{white}\textbf{Prozess A (live)}} & {\color{white}\textbf{PCB\_A (gespeichert)}} & {\color{white}\textbf{PCB\_B (gespeichert)}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+PC & 0x4012 & 0x3F88 & 0x7104 \\
+SP & 0xBFE0 & 0xBFD4 & 0xCF40 \\
+Flags & ZF=1, CF=0 & ZF=0, CF=1 & ZF=0, CF=0 \\
+MMU-Base & 0x10000 & 0x10000 & 0x80000 \\
+\end{tabularx}
+}
+
+
+a) Tragen Sie in eine Tabelle die Werte ein, die nach Schritt 1 des Kontextwechsels (Sicherung von A) in \textbf{PCB\_A} stehen, und die Werte, die nach Schritt 2 in den \textbf{CPU-Registern} stehen. \textit{(6 P)}
+
+
+b) Begründen Sie, warum ein Kontextwechsel zwischen Prozessen typischerweise als „aufwendig" eingestuft wird, ein Kontextwechsel zwischen Threads desselben Prozesses dagegen als „schnell". Nennen Sie konkret zwei Felder aus dem PCB, die beim Thread-Wechsel \textbf{nicht} umgeladen werden müssen. \textit{(5 P)}
+
+
+c) Beim Rückwechsel von B nach A (z. B. weil B blockiert) — welche Werte müssen wiederhergestellt werden, damit A „nahtlos" weiterläuft? Was wäre die Folge, wenn der Stackpointer nicht restauriert würde? \textit{(4 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Schritt 1: Sichern des Hardwarekontexts von A → die \textbf{Live-Werte} werden in PCB\_A geschrieben:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Feld in PCB\_A nach Schritt 1}} & {\color{white}\textbf{Wert}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+PC & 0x4012 \\
+SP & 0xBFE0 \\
+Flags & ZF=1, CF=0 \\
+MMU-Base & 0x10000 \\
+\end{tabularx}
+}
+
+
+Schritt 2: Laden des Hardwarekontexts von B → die in \textbf{PCB\_B} gespeicherten Werte werden in die CPU-Register geschrieben:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{CPU-Register nach Schritt 2}} & {\color{white}\textbf{Wert}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+PC & 0x7104 \\
+SP & 0xCF40 \\
+Flags & ZF=0, CF=0 \\
+MMU-Base & 0x80000 \\
+\end{tabularx}
+}
+
+
+b) Prozesse haben \textbf{eigene Adressräume} und eigene Ressourcenzuordnungen; beim Wechsel müssen die \textbf{MMU-Register} umgeschrieben werden, damit der neue Prozess seinen Adressraum sieht. Dies invalidiert in der Praxis Caches/TLBs, was teuer ist. Threads desselben Prozesses \textbf{teilen Code, Daten, Heap und MMU-Konfiguration}. Beim Thread-Wechsel müssen daher \textbf{nicht} umgeladen werden:
+
+\begin{itemize}
+  \item \textbf{MMU-Register / Adressraum-Zuordnung} (Code/Heap bleiben sichtbar)
+  \item \textbf{Zugeordnete Betriebsmittel} (Dateideskriptoren, Speicherbereiche etc., da sie zum gemeinsamen Prozess gehören)
+\end{itemize}
+
+Umgeladen werden müssen lediglich PC, Register, eigener Stack und Flags — also der „leichte" Teil.
+
+
+c) Wiederhergestellt werden müssen \textbf{PC} (damit A an Stelle 0x4012 weiterläuft), \textbf{SP} (damit Funktionsrückkehrer und lokale Variablen korrekt adressiert werden), \textbf{Flags} (damit bedingte Sprünge korrekte Bedingungen sehen) und die \textbf{MMU-Base} (damit A wieder seinen eigenen Adressraum sieht).
+
+
+Würde der \textbf{SP nicht restauriert}, behielte A den SP von B (0xCF40). Funktionsrückkehrer (\texttt{ret}/\texttt{pop}) würden vom Stack des falschen Prozesses lesen — d. h. A springt an eine völlig falsche Adresse oder liest ungültige lokale Variablen. Das Resultat ist mit hoher Wahrscheinlichkeit ein Absturz oder undefiniertes Verhalten.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 — Zustandsübergänge im Prozesszyklus \textit{(12 Punkte)}}\mbox{}\\[2pt]
+
+Verfolgen Sie folgende Ereignisfolge auf einem Einkern-System (Scheduler arbeitet kooperativ-präemptiv mit Zeitscheibe):
+
+
+\begin{lstlisting}
+t=0  : P1 wird erzeugt
+t=1  : P2 wird erzeugt
+t=2  : Scheduler wählt P1
+t=5  : P1 ruft read() auf (I/O-Wartepunkt)
+t=6  : Scheduler wählt P2
+t=9  : I/O für P1 fertig, Interrupt
+t=10 : Zeitscheibe von P2 abgelaufen
+t=12 : Scheduler wählt P1
+t=15 : P1 terminiert; sein Elternprozess hat noch nicht gewartet
+t=20 : Elternprozess ruft wait() auf
+\end{lstlisting}
+
+
+a) Geben Sie für jeden Zeitpunkt $t \in \{0,1,2,5,6,9,10,12,15,20\}$ den Zustand von \textbf{P1} und \textbf{P2} an. Verwenden Sie: Bereit, Aktiv, Blockiert, Beendet, Zombie, „—" (existiert noch nicht). \textit{(7 P)}
+
+
+b) Benennen Sie für die Übergänge bei $t=5$, $t=9$ und $t=10$ jeweils den \textbf{Namen des Übergangs} aus dem Prozesszyklus. \textit{(3 P)}
+
+
+c) In welchem Zeitintervall ist P1 ein \textbf{Zombie}? Was wäre passiert, wenn der Elternprozess den \texttt{wait()}-Aufruf nie tätigt? \textit{(2 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Tabelle:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{t}} & {\color{white}\textbf{P1}} & {\color{white}\textbf{P2}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+0 & Bereit & — \\
+1 & Bereit & Bereit \\
+2 & Aktiv & Bereit \\
+5 & Blockiert & Bereit \\
+6 & Blockiert & Aktiv \\
+9 & Bereit & Aktiv \\
+10 & Bereit & Bereit \\
+12 & Aktiv & Bereit \\
+15 & Zombie & Bereit \\
+20 & Beendet & Bereit \\
+\end{tabularx}
+}
+
+
+b) Übergänge:
+
+\begin{itemize}
+  \item $t=5$: \textbf{Blockieren} (Aktiv → Blockiert), ausgelöst durch I/O-Wartepunkt.
+  \item $t=9$: \textbf{Deblockieren} (Blockiert → Bereit), I/O-Ressource verfügbar.
+  \item $t=10$: \textbf{Deaktivieren / Vorrangunterbrechung} (Aktiv → Bereit), Zeitscheibe abgelaufen.
+\end{itemize}
+
+c) P1 ist im Intervall $[15, 20)$ ein \textbf{Zombie} — er ist beendet, aber sein PCB-Eintrag in der Prozesstabelle existiert noch, weil der Elternprozess ihn noch nicht ausgetragen hat. Würde der Elternprozess \texttt{wait()} nie aufrufen, bliebe der Zombie-Eintrag bis zum Ende des Elternprozesses bestehen; danach würde Init (PID 1) den Zombie adoptieren und austragen. Der Zombie verbraucht keine CPU- oder Speicherzeit außer dem Tabelleneintrag selbst, blockiert aber eine PID.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 — Thread oder Prozess? Architekturentscheidung \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+Sie entwerfen einen \textbf{Webbrowser}. Der Browser muss
+
+\begin{itemize}
+  \item mehrere Tabs gleichzeitig anzeigen können,
+  \item pro Tab JavaScript ausführen (potenziell bösartig),
+  \item einen Hintergrund-Worker für Downloads betreiben,
+  \item eine UI-Hauptschleife mit hoher Priorität betreiben.
+\end{itemize}
+
+a) Schlagen Sie eine Aufteilung in Prozesse und Threads vor. Begründen Sie für \textbf{jede} der vier Komponenten Ihre Wahl mit konkretem Bezug auf eine Eigenschaft aus der Prozess/Thread-Vergleichstabelle. \textit{(8 P)}
+
+
+b) Ein Tab stürzt durch einen Speicherzugriffsfehler ab. Erklären Sie, warum bei Ihrer Wahl der Browser \textbf{nicht} komplett mit abstürzt. Wäre es bei der jeweils anderen Wahl (alles Threads / alles Prozesse) anders? \textit{(6 P)}
+
+
+c) Auf einem Linux-System soll der UI-Hauptthread reaktionsschnell bleiben. Welcher Prioritätsbereich ist passend, welcher wäre fahrlässig? Begründen Sie mit den Bereichsangaben aus dem Kapitel. Wo siedeln Sie den Garbage Collector der JS-Engines an? \textit{(6 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Vorgeschlagene Aufteilung:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Komponente}} & {\color{white}\textbf{Wahl}} & {\color{white}\textbf{Begründung}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Pro-Tab-Sandbox + JS & \textbf{eigener Prozess} je Tab & \textbf{Speicherschutz = ja} bei Prozessen: ein bösartiges/fehlerhaftes Skript darf nicht in den Adressraum anderer Tabs greifen. Der „eigene Adressraum" isoliert die Tabs. \\
+UI-Hauptschleife & \textbf{Hauptthread} im Browser-Hauptprozess & Muss schnell auf Eingaben reagieren; \textbf{schneller Kontextwechsel} unter Threads. UI greift häufig auf gemeinsame Ressourcen zu (Layout-Daten). \\
+Renderer pro Tab & \textbf{mehrere Threads} im Tab-Prozess & Innerhalb des Tabs ist Parallelismus erwünscht, gemeinsamer Heap (DOM-Baum) \textbf{erspart aufwendiges IPC}, \textbf{leichtgewichtige} Erzeugung. \\
+Hintergrund-Download-Worker & \textbf{eigener Thread} im Hauptprozess (oder eigener Prozess, wenn Untrusted-Daten nötig) & Greift auf gemeinsame Konfiguration / History zu → \textbf{gemeinsamer Adressraum}; Ausfall eines Downloads soll andere Downloads nicht töten, aber Daten kommen aus dem Netz und werden vom Browser selbst verarbeitet, daher kann ein Thread genügen. \\
+\end{tabularx}
+}
+
+
+b) Stürzt ein Tab ab, betrifft das nur seinen \textbf{eigenen Adressraum}: der Kernel beendet den Tab-Prozess, andere Prozesse (UI, andere Tabs) bleiben unverändert. Bei \textbf{„alles Threads"} würde der Absturz fatal sein — Threads haben \textbf{keinen Speicherschutz} untereinander, „Absturz reißt alle mit", d. h. der ganze Browser wäre weg. Bei \textbf{„alles Prozesse"} wäre die Isolation noch stärker, aber jede Aktion (z. B. ein Mausklick weiterleiten) erforderte teures IPC und einen vollen Kontextwechsel mit Adressraumumschaltung — die UI würde merklich träger.
+
+
+c) Auf Linux sind die Bereiche \textbf{0–99 Realtime} und \textbf{100–139 Timesharing} definiert.
+
+\begin{itemize}
+  \item \textbf{UI-Hauptthread}: hoher Timesharing-Wert (Bereich 100–139), z. B. nahe dem oberen Ende des Timesharing-Bereichs. \textbf{Realtime (0–99)} wäre \textbf{fahrlässig}: ein Realtime-Thread, der nicht sauber blockiert, kann andere Threads bis hin zu Systemdiensten verhungern lassen — der Browser würde das Gesamtsystem destabilisieren.
+  \item \textbf{Garbage Collector}: \textbf{niedrige Priorität}, läuft laut Kapitel bei „Leerlauf/Ressourcenknappheit". Also weit unten im Timesharing-Bereich, damit er die UI nicht stört, aber bei Speicherdruck dennoch Rechenzeit bekommt.
+\end{itemize}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 — Pseudocode-Analyse: Wo geht's schief? \textit{(13 Punkte)}}\mbox{}\\[2pt]
+
+Folgender Pseudocode soll einen Daemon starten, der periodisch eine Datei schreibt, und parallel zwei Threads, die einen gemeinsamen Zähler hochzählen:
+
+
+\begin{lstlisting}
+01  function main():
+02      pid = fork()
+03      if pid == 0:                # Kindprozess
+04          while true:
+05              write_logfile()
+06              sleep(60)
+07      # Elternprozess macht weiter
+08      counter = 0
+09      t1 = create_thread(increment, &counter)
+10      t2 = create_thread(increment, &counter)
+11      print(counter)
+12      exit(0)
+13
+14  function increment(c):
+15      for i in 1..1_000_000:
+16          *c = *c + 1
+\end{lstlisting}
+
+
+a) Nennen Sie \textbf{drei} unterschiedliche Probleme in diesem Code, die sich direkt aus den Konzepten Prozess/Thread/Daemon/Zombie ergeben. Beschreiben Sie pro Problem die konkrete Folge. \textit{(9 P)}
+
+
+b) Skizzieren Sie für jedes Problem in einem Satz, wie es behoben würde — ohne ausformulierten Code. \textit{(4 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Drei Probleme:
+
+
+\begin{enumerate}
+  \item \textbf{Daemon nicht korrekt vom Terminal entkoppelt (Zeile 03–06)}: Ein Daemon ist laut Kapitel ein „Hintergrundprozess \textbf{unabhängig vom Terminal}". Hier wird zwar ein Kindprozess geforkt, aber er löst sich nicht vom kontrollierenden Terminal/von der Session. Folge: Schließt der Benutzer das Terminal, erhält der Kindprozess ein SIGHUP und stirbt — er ist also kein echter Daemon, sondern nur ein Hintergrundjob.
+\end{enumerate}
+
+\begin{enumerate}
+  \item \textbf{Zombie-Risiko beim Eltern-Exit (Zeile 12)}: Der Elternprozess macht \textbf{kein \texttt{wait()}} auf das Kind, bevor er mit \texttt{exit(0)} terminiert. Solange der Elternprozess lebt und das Kind irgendwann beendet würde, entstünde ein Zombie. Hier läuft das Kind zwar in \texttt{while true}, aber: wenn der Elternprozess vor dem Kind endet, wird das Kind von Init adoptiert — der Elternprozess hat seine Verantwortung nie wahrgenommen, was zumindest ein Designfehler ist und in komplexeren Programmen zu Zombies führt.
+\end{enumerate}
+
+\begin{enumerate}
+  \item \textbf{Race Condition auf gemeinsamem Zähler (Zeile 09–10, 16)}: Beide Threads teilen sich den \textbf{Heap/Adressraum} des Prozesses. \texttt{*c = *c + 1} ist nicht atomar (Lesen → Inkrement → Schreiben). Folge: Die finale Ausgabe in Zeile 11 ist nahezu sicher kleiner als 2 000 000, weil sich die beiden Threads gegenseitig Updates überschreiben. Zusätzlich: \texttt{print(counter)} wird ausgeführt, bevor die Threads fertig sind — es fehlt ein \texttt{join}.
+\end{enumerate}
+
+b) Behebung in je einem Satz:
+
+\begin{enumerate}
+  \item Im Kindprozess \texttt{setsid()} aufrufen, sich vom Terminal lösen und ggf. ein zweites Mal forken („double fork"-Idiom).
+  \item Vor \texttt{exit(0)} ein \texttt{wait()} (oder \texttt{waitpid()}) auf die PID des Kindes ausführen, bzw. einen SIGCHLD-Handler installieren.
+  \item Zugriff auf \texttt{*c} durch einen \textbf{Mutex/atomaren Inkrement} schützen und vor \texttt{print(counter)} \texttt{t1.join()} und \texttt{t2.join()} aufrufen.
+\end{enumerate}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 6 — PCB-Design für ein eingebettetes System \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Sie entwerfen ein minimales Betriebssystem für einen Mikrocontroller mit nur \textbf{8 KB RAM}. Es soll bis zu \textbf{16 Prozesse} verwalten. Für jeden Prozess muss ein PCB existieren.
+
+
+a) Welche der folgenden Felder sind aus dem Kapitel als PCB-Inhalt benannt? Sortieren Sie sie in „\textbf{unverzichtbar für Kontextwechsel}", „\textbf{unverzichtbar für Scheduling}", „\textbf{für Buchführung}". Begründen Sie für jede Kategorie kurz die Funktion. \textit{(6 P)}
+
+
+\texttt{Programmzähler}, \texttt{verbrauchte CPU-Zeit}, \texttt{Prozesszustand}, \texttt{aktuelle Registerinhalte}, \texttt{dynamische Priorität}, \texttt{PID}, \texttt{MMU-Register}
+
+
+b) Sie entscheiden sich, dass jeder PCB maximal \textbf{256 Byte} belegen darf. Wie viele Bytes hat die Prozesstabelle insgesamt im schlimmsten Fall, und wie groß ist ihr Anteil am verfügbaren RAM? Halten Sie diesen Anteil für vertretbar — begründen Sie mit einem Konflikt, der entstehen kann. \textit{(4 P)}
+
+
+c) Argumentieren Sie, warum es auf diesem System sinnvoll sein könnte, \textbf{keine MMU-Register} im PCB zu führen. Welche Eigenschaft aus der Prozess/Thread-Tabelle wird damit faktisch geopfert, und welche Konsequenz hat das für die Robustheit? \textit{(5 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Kategorisierung:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Kategorie}} & {\color{white}\textbf{Felder}} & {\color{white}\textbf{Funktion}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Unverzichtbar für \textbf{Kontextwechsel} & Programmzähler, aktuelle Registerinhalte, MMU-Register & Bilden den \textbf{Hardwarekontext}: ohne sie kann ein Prozess nicht an exakt der Stelle weiterlaufen, an der er unterbrochen wurde, und sieht seinen eigenen Adressraum nicht. \\
+Unverzichtbar für \textbf{Scheduling} & Prozesszustand, dynamische Priorität & Der Scheduler wählt unter den \textbf{Bereit}-Prozessen; ohne Zustand wüsste er nicht, wer wählbar ist; ohne Priorität nicht, wen er bevorzugen soll. \\
+Für \textbf{Buchführung} & PID, verbrauchte CPU-Zeit & PID identifiziert den Prozess (Tabellenschlüssel, \texttt{kill}-Ziel); CPU-Zeit dient Abrechnung/Analyse, nicht der unmittelbaren Ausführung. \\
+\end{tabularx}
+}
+
+
+b) Worst Case: $16 \cdot 256 \text{ B} = 4096 \text{ B} = 4 \text{ KB}$.
+
+Anteil: $4 \text{ KB} / 8 \text{ KB} = 50\,\%$ des gesamten RAM.
+
+
+Das ist \textbf{nicht vertretbar}: das Betriebssystem hat dann zusammen mit Code, Stack/Heap der Prozesse und Kerneldaten nur noch 4 KB übrig, was bei 16 Prozessen rechnerisch 256 Byte pro Prozess für \textbf{alle} seine Daten, Stack und Code lässt. Konkreter Konflikt: \textbf{Stack-Überlauf} ist nahezu unausweichlich — sobald ein Prozess mehr als wenige Funktionsaufrufe schachtelt, wächst sein Stack über seinen zugewiesenen Bereich hinaus und überschreibt fremde Daten oder den eigenen PCB.
+
+
+c) Auf einem Mikrocontroller fehlt häufig ohnehin eine \textbf{MMU}; alle Prozesse laufen im selben physischen Adressraum. Damit sind MMU-Register im PCB sinnlos — der Kontextwechsel wird kürzer, der PCB kleiner.
+
+
+Geopferte Eigenschaft: \textbf{Speicherschutz}. Laut Tabelle ist Speicherschutz bei Prozessen normalerweise „ja" — auf diesem System wäre er „nein", die Prozesse verhalten sich diesbezüglich wie Threads.
+
+
+Konsequenz für die Robustheit: Ein einziger fehlerhafter Prozess kann durch einen wilden Pointer \textbf{fremde Prozesse, deren PCBs oder den Kernel selbst überschreiben}. Wie bei Threads gilt: „Absturz reißt alle mit" — ein Bug in einem Prozess kann das ganze System lahmlegen. Auf einem eingebetteten System mit kontrolliertem, geprüftem Code ist das vertretbar; bei Ausführung untrusted Codes wäre es inakzeptabel.
+
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{document}

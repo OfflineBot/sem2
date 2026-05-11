@@ -1,0 +1,988 @@
+% ============================================================
+%  Lernzettel Template (my_dhbw Stil, analysis.tex)
+%  Eine Spalte, mit TOC, accent-Theme.
+%  Renderer: pdflatex (zweimal)
+% ============================================================
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+\usepackage[top=2cm, bottom=2cm, left=2cm, right=2cm, footskip=1cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{titletoc}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{tabularx}
+\usepackage{ltablex}
+\keepXColumns
+\usepackage{colortbl}
+\usepackage[most,breakable]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{pdflscape}
+\usepackage[colorlinks=true, linkcolor=accent, urlcolor=accent]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme (my_dhbw accent) ────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{242, 255, 242}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer ─────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0.4pt}
+\renewcommand{\sectionmark}[1]{\markboth{#1}{}}
+\fancyfoot[L]{\footnotesize\color{accent}\nouppercase{\leftmark}}
+\fancyfoot[R]{\footnotesize\color{accent}\thepage\,/\,\pageref{LastPage}}
+\fancypagestyle{plain}{%
+  \fancyhf{}%
+  \renewcommand{\headrulewidth}{0pt}%
+  \renewcommand{\footrulewidth}{0.4pt}%
+  \fancyfoot[L]{\footnotesize\color{accent}\nouppercase{\leftmark}}%
+  \fancyfoot[R]{\footnotesize\color{accent}\thepage\,/\,\pageref{LastPage}}%
+}
+
+% ── Typografie ────────────────────────────────────────────────
+\titleformat{\section}
+    {\color{accent}\large\bfseries}{}{0pt}{}
+    [\vspace{-4pt}\color{accent}\rule{\linewidth}{2pt}]
+\titleformat{\subsection}
+    {\normalsize\bfseries\color{accent!85!black}}{}{0pt}{}
+    [\vspace{-3pt}\color{accent!40}\rule{\linewidth}{0.4pt}]
+\titleformat{\subsubsection}
+    {\small\bfseries\color{accent!70!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{12pt}{4pt}
+\titlespacing*{\subsection}{0pt}{8pt}{2pt}
+\titlespacing*{\subsubsection}{0pt}{6pt}{1pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\renewcommand{\arraystretch}{1.25}
+\setlist[itemize]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.4em}
+\setlist[enumerate]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.6em}
+\setlist[itemize,2]{label=\textendash, leftmargin=1.4em}
+
+% ── Boxen ──────────────────────────────────────────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={Abbildung: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={Tabelle: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{solutionbox}[1]{
+  colback=solutionbg, colframe=green!60!black!60,
+  title={#1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=single, framerule=0pt,
+  xleftmargin=4pt, xrightmargin=4pt,
+  aboveskip=6pt, belowskip=6pt,
+  keepspaces=true
+}
+
+% ── TOC-Look ──────────────────────────────────────────────────
+\renewcommand{\contentsname}{\color{accent}Inhalt}
+
+\providecommand{\nichttitle}{Lernzettel}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Optimierungsverfahren}
+\renewcommand{\nichtsubtitle}{Lernzettel}
+
+
+\begin{document}
+
+\begin{center}
+{\bfseries\Large\color{accent}\nichttitle}\\[2pt]
+\color{accent}\rule{0.35\linewidth}{1pt}\color{black}
+\end{center}
+\vspace{2pt}
+
+{\small\tableofcontents}
+\newpage
+
+% ── BODY ──────────────────────────────────────────────────────
+Du hast nur die Überschrift \texttt{\# Optimierungsverfahren – Gesamtzettel} mitgeschickt — der eigentliche Inhalt des Lernzettels fehlt. Bitte füge den Text ein (oder nenne mir den Pfad zur Datei), dann bereinige ich ihn nach deinen Vorgaben.
+
+
+
+\section{1. Grundlagen}
+
+
+\subsection{Problemdefinition}
+
+\begin{itemize}
+  \item \textbf{Variablen} x⃗ = (x₁,…,xₙ): gezielt variiert (Entscheidung)
+  \item \textbf{Parameter} p⃗ = (p₁,…,p\_q): nicht gezielt variiert (Umgebung)
+  \item \textbf{Zielfunktion} y = f(x⃗) bzw. y⃗ = f(x⃗): Qualitätsmaß
+  \item \textbf{Nebenbedingungen}:
+\begin{itemize}
+  \item Gleichung h\_k(x⃗) = 0, k = 1,…,l
+  \item Ungleichung g\_j(x⃗) ≤ 0, j = 1,…,m
+\end{itemize}
+\end{itemize}
+
+\begin{lstlisting}
+minimiere f(x⃗)
+mit  h_k(x⃗) = 0, g_j(x⃗) ≤ 0, x_i^l ≤ x_i ≤ x_i^u
+\end{lstlisting}
+
+
+\begin{itemize}
+  \item \textbf{x⃗}: Lösungskandidat / Punkt
+  \item \textbf{X}: Suchraum (z.B. ℝⁿ)
+  \item \textbf{X\_z}: zulässiger Bereich (Untermenge von X)
+  \item \textbf{Y}: Zielraum (z.B. ℝᵐ)
+\end{itemize}
+
+
+\subsection{Extrema}
+
+\begin{itemize}
+  \item \textbf{Globales Min/Max} bei x⃗\textit{: f(x⃗}) ≤/≥ f(x⃗) ∀ x⃗ ∈ X\_z
+  \item \textbf{Nachbarschaft N(x⃗)}: zulässige Lösungen "nahe" x⃗ (abh. von Variablenart)
+  \item \textbf{Lokales Min/Max} bei x⃗\textit{: f(x⃗}) ≤/≥ f(x⃗) ∀ x⃗ ∈ N(x⃗*)
+  \item \textbf{Unimodal}: nur ein Optimum; \textbf{Multimodal}: mehrere
+\end{itemize}
+
+
+\subsection{Eigenschaften (Algorithmen vs. Probleme)}
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Eigenschaft}} & {\color{white}\textbf{Algorithmen}} & {\color{white}\textbf{Probleme}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+lokal/global & lokal/global & unimodal/multimodal \\
+Differenzierbarkeit & gradientenbasiert/-frei & diff./nicht diff. \\
+Nebenbedingungen & ohne/gleich/ungleich & ohne/gleich/ungleich \\
+Ziele & eines/mehrere & eines/mehrere \\
+Linearität & linear/nicht-linear & linear/nicht-linear \\
+Lösungsansatz & analytisch/numerisch & – \\
+Genauigkeit & exakt/approximativ & – \\
+Zufallseinfluss & det./stochastisch & det./stochastisch \\
+Variablen & dis./kom./kon./gem. & dis./kom./kon./gem. \\
+\end{tabularx}
+}
+
+
+\begin{itemize}
+  \item \textbf{Lokal}: löst nur unimodal; \textbf{Global}: auch multimodal
+  \item \textbf{Analytisch}: Symbolrechnen, ohne Annäherung; \textbf{Numerisch}: schrittweise/approximativ
+  \item \textbf{Exakt}: Lösung exakt; \textbf{Approximativ}: ungefähr (brute force = exakt+numerisch möglich)
+  \item \textbf{Det. Algorithmus}: Gradient Descent, DIRECT; \textbf{Stoch. Algorithmus}: EAs
+  \item \textbf{Det. Problem}: kein Rauschen; \textbf{Stoch. Problem}: Rauschen in Variablen/Funktionen
+  \item \textbf{Diskret/kombinatorisch}: Integer, Permutationen, Graphen, Strings, Binär
+\end{itemize}
+
+
+\subsection{Stationäre Punkte (SP) \& Hesse}
+
+\begin{itemize}
+  \item \textbf{SP}: f hat SP bei x⃗ wenn ∇f(x⃗) = 0⃗ (lokale Min/Max + Sattelpunkte)
+  \item \textbf{Gradient}: ∇f(x⃗) = [∂f/∂x₁,…,∂f/∂xₙ]ᵀ — Richtung stärksten Anstiegs
+  \item \textbf{Notwendige Bedingung}: ∇f(x⃗) = 0⃗ — notwendig, nicht ausreichend
+  \item \textbf{Ausreichende Bedingung}: Hessematrix H(x⃗\_SP) = ∇²f(x⃗\_SP)
+\end{itemize}
+
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{H}} & {\color{white}\textbf{Bedeutung}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Positiv definit (alle EW > 0) & lokales Minimum \\
+Negativ definit (alle EW < 0) & lokales Maximum \\
+Indefinit (gemischte Vorzeichen) & Sattelpunkt \\
+Semi-definit (mit Null) & nicht ausreichend \\
+\end{tabularx}
+}
+
+
+\textbf{Beispiele}:
+
+\begin{itemize}
+  \item f = x₁² + x₂² → H=[[2,0],[0,2]], EW 2,2 → pos. def. (Min)
+  \item f = x₁² + x₂² − 5x₁x₂ → H=[[2,−5],[−5,2]], EW 7,−3 → indef. (Sattel)
+  \item f = x₁² + x₂² − 2x₁x₂ → H=[[2,−2],[−2,2]], EW 4,0 → pos. semi-def.
+\end{itemize}
+
+
+\subsection{Gradient Descent}
+
+\begin{enumerate}
+  \item Setze Startlösung x⃗₀
+  \item Berechne ∇f(x⃗ᵢ)
+  \item Wenn ∇f(x⃗ᵢ) ≈ 0⃗ → Ende
+  \item Sonst x⃗ᵢ₊₁ = x⃗ᵢ − c·∇f(x⃗ᵢ), c = Schrittweite
+  \item Gehe zu 2
+\end{enumerate}
+
+\begin{itemize}
+  \item \textbf{Probleme}: falsches c → Oszillation/langsame Konvergenz
+  \item \textbf{Alternativen}: Quasi Newton, BFGS, Truncated Newton, CG, Momentum
+  \item \textbf{ML-Bezug}: Basis für NN-Training; SGD, Momentum/Nesterov, ADAM
+  \item \textbf{Beispiel 3-Hump}: f = 2x₁² − 1.05x₁⁴ + x₁⁶/6 + x₁x₂ + x₂²; ∇f = [4x₁ − 4.2x₁³ + x₁⁵ + x₂, x₁ + 2x₂]ᵀ
+\end{itemize}
+
+
+\section{2. Lineare Optimierung (LP)}
+
+\textbf{LP}: lineare Zielfunktion + lineare Nebenbedingungen.
+
+
+
+\subsection{Standardformat}
+\begin{itemize}
+  \item Nur Minimierung
+  \item Nur Gleichheits-NB
+  \item xᵢ ≥ 0; bⱼ ≥ 0
+  \item Skalar: min ∑cᵢxᵢ; ∑aⱼᵢxᵢ = bⱼ
+  \item Matrix: min cᵀx; Ax = b; x ≥ 0; b ≥ 0
+\end{itemize}
+
+\begin{quote}
+Begriffe (kanonische/Standard-/Normalform) in Literatur uneinheitlich.
+\end{quote}
+
+
+\subsection{Umwandlung in Standardformat}
+\begin{itemize}
+  \item \textbf{Slack-Variable}: nicht-neg. Variable für Differenz LHS/RHS einer Ungleichung. Bsp: 0.4x₁+0.6x₂ ≤ 8.5 → 0.4x₁+0.6x₂+x₃ = 8.5. Slack > 0 → NB nicht aktiv/bindend.
+  \item \textbf{Variable [a,b], a<0}: xⱼ = x'ⱼ − a (Verschiebung)
+  \item \textbf{Unbeschränktes xⱼ ∈ ℝ}: xⱼ = xⱼₐ − xⱼᵦ, xⱼₐ,xⱼᵦ ≥ 0
+  \item \textbf{Maximierung}: max f(x) ↔ min −f(x)
+\end{itemize}
+
+
+\subsection{Beispiel Investment}
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Typ}} & {\color{white}\textbf{Obj/h}} & {\color{white}\textbf{Bediener}} & {\color{white}\textbf{h/Tag}} & {\color{white}\textbf{Kosten}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+A & 55 & 1 & 18 & 400.000 \\
+B & 50 & 2 & 18 & 600.000 \\
+\end{tabularx}
+}
+
+
+Budget 12 Mio (− 3.5 Mio Gebäude), 70 Bediener, Fläche für 25× Typ B (A=3·B).
+
+
+\begin{lstlisting}
+min f(x) = −990x₁ − 900x₂
+g₁: 0.4x₁ + 0.6x₂ ≤ 8.5  (Budget)
+g₂: 3x₁ + x₂ ≤ 25         (Fläche)
+g₃: 3x₁ + 6x₂ ≤ 70        (Bediener)
+\end{lstlisting}
+
+Optimum: x* = [5.33, 9, 0.96, 0, 0]ᵀ; f = −13380. x₃=0.96 → g₁ nicht bindend. Praxis: Maschinen ganzzahlig.
+
+
+
+\subsection{Grafische Lösung (2 Variablen)}
+\begin{enumerate}
+  \item Isolinien der Zielfunktion zeichnen
+  \item NB einzeichnen
+  \item zulässigen Bereich kennzeichnen
+  \item Parallele zur Isolinie verschieben bis nur eine Ecke/Kante berührt
+  \item Ecke/Kante = Optimum
+\end{enumerate}
+
+
+\subsection{Simplex-Algorithmus}
+\begin{itemize}
+  \item \textbf{Eckpunkt (Vertex)}: Schnittpunkt von NB; LP-Optimum liegt an Eckpunkt.
+  \item Start an Eckpunkt
+  \item Beste anliegende Kante wählen
+  \item Schritt zum nächsten Eckpunkt
+  \item Stopp wenn keine Verbesserung
+\end{itemize}
+
+\begin{quote}
+Entspricht Gauss-LGS-Lösung, wiederholt.
+\end{quote}
+
+
+\subsection{Integer LP}
+\begin{itemize}
+  \item \textbf{Naiv}: kontinuierlich lösen + runden (kann NB verletzen)
+  \item \textbf{Etwas besser}: nächstgelegene Integer-Lösung, die NB erfüllt
+  \item \textbf{Cutting Plane}:
+\begin{enumerate}
+  \item Kontinuierliches Problem lösen
+  \item Ganzzahlig? → Stopp
+  \item Sonst: Cut definieren (verletzt aktuelle Lösung, erfüllt alle Integer-Lösungen)
+  \item Gehe zu 1
+\end{enumerate}
+\end{itemize}
+
+
+\section{3. Transportproblem}
+
+\textbf{Transportproblem}: Warentransport mit min. Kosten von m Anbietern (Angebot aᵢ) zu n Nachfragern (Bedarf bⱼ); Voraussetzung ∑aᵢ = ∑bⱼ.
+
+
+\begin{lstlisting}
+min f(X) = ∑ᵢ ∑ⱼ cᵢⱼ xᵢⱼ
+∑ⱼ xᵢⱼ = aᵢ ∀i;  ∑ᵢ xᵢⱼ = bⱼ ∀j;  xᵢⱼ ≥ 0
+\end{lstlisting}
+
+
+→ LP. Lösung in 2 Phasen: (1) Startlösung, (2) Optimum (Stepping-Stone, MODI ≈ Simplex).
+
+
+
+\subsection{Startlösungen}
+
+\textbf{Nord-West-Ecken-Regel (NWER)}: Startlösung ohne Kostenbeachtung.
+
+\begin{itemize}
+  \item Nordwestlichste leere Zelle mit min(aᵢ, bⱼ) füllen, aᵢ/bⱼ verringern
+  \item Bei Erschöpfung Zeile/Spalte mit Nullen auffüllen
+  \item Wiederholen
+\end{itemize}
+
+\textbf{Matrixminimum-Methode (MMM)}: Startlösung über günstigste Zellen.
+
+\begin{itemize}
+  \item Leere Zelle mit min. cᵢⱼ wählen, max. Menge transportieren
+  \item Erschöpfte Zeile/Spalte mit Nullen
+  \item Wiederholen
+\end{itemize}
+
+\textbf{Vogel-Methode (VM)}: Startlösung über Opportunitätskosten.
+
+\begin{itemize}
+  \item \textbf{Opportunitätskosten (OK)}: zeilen-/spaltenweise (zweitniedrigste − niedrigste Kosten), nur ungefüllte Zeilen/Spalten
+  \item Zeile/Spalte mit höchster OK; darin günstigste Zelle; max. Menge
+  \item Wiederholen
+\end{itemize}
+
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Methode}} & {\color{white}\textbf{f(X) Beispiel}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+NWER & 9650 \\
+MMM & 7000 \\
+VM & 7000 \\
+\end{tabularx}
+}
+
+
+
+\section{4. Nicht-Lineare Optimierung}
+
+
+\subsection{Quadratische Optimierung (QO)}
+
+\textbf{QO}: Optimierung mit quadratischer Zielfunktion und linearen Nebenbedingungen.
+
+\begin{lstlisting}
+min ½ x⃗ᵀ Q x⃗ + c⃗ᵀ x⃗
+A x⃗ ≤ b⃗;  A_eq x⃗ = b⃗_eq;  b_l ≤ xᵢ ≤ b_u
+\end{lstlisting}
+
+
+\begin{itemize}
+  \item \textbf{Q-Eigenschaften}: symmetrisch (Q=Qᵀ); pos. semi-def (keine neg. EW); pos. def → konvex, eindeutige Lösung
+  \item \textbf{Algorithmen}: Interior-Point, Conjugate Gradient, Simplex-Varianten, Augmented Lagrangian
+  \item \textbf{Solver}: IBM CPLEX, GUROBI; Hyper-heuristics für Solverwahl
+  \item \textbf{Anwendungen}: Curve Fitting/Least Squares, MPC, Portfolio, Clustering, Feature Selection, SVM
+\end{itemize}
+
+
+\subsection{Constrained Least Squares (CLS)}
+
+\textbf{CLS}: Lineare Regression mit Nebenbedingungen; analytische Lösung c⃗ = (XᵀX)⁻¹Xᵀy⃗ ungültig.
+
+
+\begin{itemize}
+  \item \textbf{Beispiel-NB}: bᵢ ≥ 0; ∑bᵢ = 1; 0 ≤ Ausgabe ≤ 1
+  \item \textbf{Herleitung}: ‖y⃗ − Xb⃗‖² = y⃗ᵀy⃗ − 2y⃗ᵀXb⃗ + b⃗ᵀXᵀXb⃗ → ½b⃗ᵀXᵀXb⃗ − y⃗ᵀXb⃗
+  \item \textbf{Form als QO}: Q = XᵀX, c⃗ = Xᵀy⃗, NB 0 ≤ bᵢ
+\end{itemize}
+
+
+\subsection{KKT-Bedingungen (NLO mit NB)}
+
+\textbf{Lagrange-Funktion}: L(x⃗, a, b) = f(x⃗) + ∑ₖ aₖ hₖ(x⃗) + ∑ⱼ bⱼ gⱼ(x⃗)
+
+\begin{itemize}
+  \item aₖ: Multiplikatoren zu Gleichungen; bⱼ: zu Ungleichungen (alle als gⱼ ≤ 0)
+\end{itemize}
+
+\textbf{KKT (4 Blöcke)}:
+
+\begin{enumerate}
+  \item \textbf{Stationarität}: ∇ₓL = ∇ₓf + ∑aₖ∇hₖ + ∑bⱼ∇gⱼ = 0⃗
+  \item \textbf{Primal Feasibility}: hₖ(x⃗) = 0; gⱼ(x⃗) ≤ 0
+  \item \textbf{Dual Feasibility}: bⱼ ≥ 0
+  \item \textbf{Komplementarität}: bⱼ·gⱼ(x⃗) = 0
+\end{enumerate}
+
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Fall}} & {\color{white}\textbf{Bedeutung}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+gⱼ = 0 & aktiv → bⱼ > 0 möglich \\
+gⱼ < 0 & inaktiv → bⱼ = 0 erforderlich \\
+\end{tabularx}
+}
+
+
+\begin{quote}
+Ohne Ungleichungen reduziert sich auf klassische Lagrange-Methode. Maximierung: KKT umformulieren oder −f minimieren.
+\end{quote}
+
+\textbf{Bedingung 2. Ordnung}: KKT notwendig, nicht immer hinreichend. Hesse von L bzgl. x⃗ pos. def. am KKT-Punkt → lok. Min.
+
+
+
+\subsubsection{Beispiel Dose}
+\begin{lstlisting}
+min Cπdh; h₁: πd²h/4 − 500 = 0; g₁: 2d − h ≤ 0
+\end{lstlisting}
+
+L = Cπdh + a₁(πd²h/4 − 500) + b₁(2d − h)
+
+
+\begin{itemize}
+  \item ∂L/∂d = Cπh + a₁πdh/2 + 2b₁ = 0
+  \item ∂L/∂h = Cπd + a₁πd²/4 − b₁ = 0
+  \item \textbf{Fall b₁=0} → C=0 (Widerspruch)
+  \item \textbf{Fall b₁>0}: 2d=h → πd³/2=500 → d³=1000/π → d ≈ 6.828, h ≈ 13.656; a₁ ≈ −0.0039, b₁ ≈ 0.0715; f ≈ 2.93 €
+\end{itemize}
+
+
+\subsection{Sequentielle Quadratische Optimierung (SQO)}
+
+\textbf{SQO}: Iterative QO-Approximation eines NLO.
+
+
+\textbf{Sub-Problem}:
+
+\begin{itemize}
+  \item f̃ᵢ(d⃗) = f(x⃗ᵢ) + ∇f(x⃗ᵢ)ᵀd⃗ + ½d⃗ᵀHd⃗
+  \item h̃ₖᵢ(d⃗) = hₖ(x⃗ᵢ) + ∇hₖ(x⃗ᵢ)ᵀd⃗
+  \item g̃ⱼᵢ(d⃗) = gⱼ(x⃗ᵢ) + ∇gⱼ(x⃗ᵢ)ᵀd⃗
+  \item d⃗ = x⃗* − x⃗ᵢ; H ≈ Hesse von L (BFGS)
+\end{itemize}
+
+\textbf{Algorithmus}:
+
+\begin{enumerate}
+  \item Startlösung x⃗₀
+  \item Sub-Problem lösen → Suchrichtung d⃗
+  \item Schrittgröße c > 0 via Liniensuche
+  \item x⃗ᵢ₊₁ = x⃗ᵢ + c·d⃗
+  \item Konvergenz? Sonst zu 2
+\end{enumerate}
+
+
+\section{5. Gradientenfreie Optimierung}
+
+Ohne Gradient/Hesse — für nicht differenzierbare, Black-Box-, diskontinuierliche Probleme. Wissensgewinn nur über Auswertung von f(x⃗).
+
+
+
+\subsection{Nelder-Mead Simplex}
+
+\textbf{Simplex}: Polytop mit n+1 Ecken (1D Linie, 2D Dreieck, 3D Tetraeder).
+
+
+\begin{enumerate}
+  \item Initialer Simplex: x⃗ⱼ = x⃗₀ + hⱼ·e⃗ⱼ
+  \item Sortieren: f(x⃗₀) ≤ … ≤ f(x⃗ₙ)
+  \item Abbruch: ∑‖x⃗ⱼ−x⃗ᵢ‖ < ε; oder f(x⃗ₙ)−f(x⃗₀) < ε; oder max. Iterationen
+  \item Centerpoint c⃗ = (1/n)∑ⱼ₌₀ⁿ⁻¹ x⃗ⱼ
+  \item Transformiere:
+\end{enumerate}
+
+\textbf{5a) Reflect}: x⃗ᵣ = c⃗ + α(c⃗ − x⃗ₙ)
+
+\begin{itemize}
+  \item f(x⃗₀) ≤ f(x⃗ᵣ) ≤ f(x⃗ₙ₋₁) → x⃗ₙ = x⃗ᵣ, zu 2
+  \item f(x⃗ᵣ) < f(x⃗₀) → 5b
+  \item f(x⃗ᵣ) ≥ f(x⃗ₙ₋₁) → 5c
+\end{itemize}
+
+\textbf{5b) Expand}: x⃗ₑ = c⃗ + γ(x⃗ᵣ − c⃗); besseres von x⃗ₑ/x⃗ᵣ ersetzt x⃗ₙ
+
+
+\textbf{5c) Contract}: x⃗\_c = c⃗ + β(x\_? − c⃗) (mit x⃗ᵣ wenn besser als x⃗ₙ, sonst x⃗ₙ); besser als x⃗ₙ → ersetzen, sonst 5d
+
+
+\textbf{5d) Shrink}: x⃗ⱼ = x⃗₀ + δ(x⃗ⱼ − x⃗₀) für j > 0
+
+
+\begin{quote}
+Lokal; global durch Restarts.
+\end{quote}
+
+
+\subsection{DIRECT (DIviding RECTangles)}
+
+Global, gradientenfrei, Lipschitzian opt. ohne Lipschitzkonstante (Jones et al., 1993). Eigenschaften: global, nichtlinear, Grenz-NB, det., gradientenfrei, kontinuierlich, einziel.
+
+
+\begin{enumerate}
+  \item \textbf{Init}: Suchraum auf Einheits-Hyperwürfel normalisieren; Centerpoint c⃗₀; f\_min = f(c⃗₀); m=1, t=0
+  \item \textbf{Pot. opt. Rechtecke}: dᵢ Größe, f(c⃗ᵢ) Güte; Punkte auf konvexer Hülle. c⃗ⱼ pot. opt. wenn ∃k̃>0:
+\begin{itemize}
+  \item f(c⃗ⱼ) − k̃dⱼ ≤ f(c⃗ᵢ) − k̃dᵢ ∀i
+  \item f(c⃗ⱼ) − k̃dⱼ ≤ f\_min − ε|f\_min|
+\end{itemize}
+  \item \textbf{Sample \& Divide}: I = Dimensionen mit max. Seitenlänge 3δ; sample bei c⃗ ± δ·e⃗ᵢ; Drittel entlang I beginnend mit bester Dimension
+  \item t++; bei T Stopp, sonst zu 2
+\end{enumerate}
+
+
+\section{6. Metaheuristiken}
+
+Problemabhängige, approximative Solver — viele naturinspiriert.
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Metaheuristik}} & {\color{white}\textbf{Inspiration}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Simulated Annealing & Metallabkühlung; T hoch → viele Änderungen, langsame Abkühlung \\
+Particle Swarm Opt. (PSO) & Schwarm; gute Lösungen beeinflussen schlechte \\
+Ant Colony Opt. (ACO) & Pheromonpfade; kurze Wege bekommen mehr Pheromon — Routing \\
+Evolutionäre Algorithmen & Evolution \\
+\end{tabularx}
+}
+
+
+\begin{quote}
+Analogie als Inspiration ok; als Selbstzweck schlecht (verdeckte Wiedererfindung).
+\end{quote}
+
+
+\subsection{Evolutionäre Algorithmen (EA)}
+
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Natur}} & {\color{white}\textbf{Algorithmus}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Individuum & Lösungskandidat \\
+Population & Menge von Lösungskandidaten \\
+DNA & Codierung (z.B. ℝⁿ) \\
+Mutation & x⃗ + ϵ, ϵ ∼ N(0, σ) \\
+Rekombination & (x⃗₁ + x⃗₂)/2 \\
+Fitness & Zielfunktion f(x⃗) \\
+\end{tabularx}
+}
+
+
+\textbf{Eigenschaften}: lokal+global, nichtlinear, mit/ohne NB, stochastisch, gradientenfrei, kontinuierlich+diskret, ein-/mehrziel.
+
+
+\textbf{Kodierungen}:
+
+\begin{itemize}
+  \item \textbf{Binär}: Bitstrings; Mutation = single bit flip; Rekombination = single point crossover
+  \item \textbf{DNA}: C/G/A/T; analog
+  \item \textbf{Kontinuierlich}: ℝⁿ; Mutation x⃗+ϵ; Rekombination (x⃗₁+x⃗₂)/2
+\end{itemize}
+
+\textbf{Hyperparameter}: Populationsgröße, Mutationsschrittweite/-Wkt., Anzahl Nachkommen.
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Tuning-Ansatz}} & {\color{white}\textbf{Beschreibung}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Tuning & generell, auch andere Algorithmen \\
+Self-adaptation & EA-spezifisch; HP Teil des Lösungsvektors \\
+Parameter Control & heuristische Regeln (1+1-ES, 1/5-Rule) \\
+\end{tabularx}
+}
+
+
+\textbf{Anwendungen}: Routing, Termin-/Maschinenplanung, Chem./Mech. Design, Robotik, Spiele. Frühe Anwendung Schwefel 1960s (Zweiphasendüse).
+
+
+
+\subsection{1+1-ES}
+
+Einfachste ES: 1 Elter, 1 Nachkomme.
+
+
+Parameter: Speicherlänge g, Multiplikator a > 1, σ⃗₀ = 1⃗.
+
+\begin{enumerate}
+  \item Startlösung x⃗, y = f(x⃗)
+  \item Clone x⃗\_next = x⃗
+  \item Mutiere xᵢ\_next += ϵᵢ, ϵᵢ ∼ N(0, σᵢ)
+  \item y\_next = f(x⃗\_next)
+  \item Wenn y\_next < y: Erfolg (1) in G, x⃗ = x⃗\_next, y = y\_next; sonst Fehler (0). Älteste Eintragung verwerfen
+  \item \textbf{1/5-Rule}: s = ∑G/g; s > 1/5 → σ⃗ ·= a; s < 1/5 → σ⃗ ·= 1/a
+  \item Stopp? Sonst zu 2
+\end{enumerate}
+
+\begin{quote}
+1/5-Rule: theoretisch optimal für Kugelfunktion ∑xᵢ², n→∞; nicht für multimodale Probleme.
+\end{quote}
+
+
+\subsection{CMA-ES}
+
+State-of-the-art kontinuierliche EA — adaptiert Kovarianzmatrix der Verteilung.
+
+
+\textbf{Rastrigin} (Test, multi-modal): f(x⃗) = 10n + ∑(xᵢ² − 10cos(2π·xᵢ))
+
+
+\begin{quote}
+Gut bei nutzbarer globaler Struktur; sonst Restarts/große Population.
+\end{quote}
+
+
+\subsection{SMBO (Surrogate Model-Based Optimization)}
+
+Für teure Zielfunktionen — Surrogate-Modell (ML) ersetzt teure Auswertung.
+
+\begin{itemize}
+  \item \textbf{Anwendung}: ML-Tuning, Engineering Design (Auto, Aerospace)
+  \item \textbf{Kombiniert}: Versuchsplanung + Statistik/ML + Optimierung
+\end{itemize}
+
+
+\section{7. Mehrzieloptimierung (MO)}
+
+
+\subsection{Problemdefinition}
+
+\begin{lstlisting}
+min y⃗ = f(x⃗), y⃗ = (f₁(x⃗),…,fₘ(x⃗)) ∈ ℝᵐ
+\end{lstlisting}
+
+
+\begin{itemize}
+  \item \textbf{Decision Space}: Raum der Variablen
+  \item \textbf{Objective Space}: Raum der Zielwerte
+\end{itemize}
+
+
+\subsection{Beispiele}
+\begin{itemize}
+  \item 2 Ziele 1 Var.: f₁=(x−1)², f₂=(x+1)² → Pareto-Menge [−1,1]
+  \item 2 Ziele 2 Var.: f\_k = (x₁∓1)² + (x₂∓1)² → x\textit{₁=x}₂ ∈ [−1,1]
+  \item Andere Formen: |·|, |·|\textasciicircum{}(1/2)
+\end{itemize}
+
+
+\subsection{Definitionen}
+
+\textbf{Pareto-Dominanz} (Min): x⃗′ dominiert x⃗″ wenn:
+
+\begin{itemize}
+  \item fᵢ(x⃗′) ≤ fᵢ(x⃗″) ∀i (noWorse) \textbf{und}
+  \item fᵢ(x⃗′) < fᵢ(x⃗″) für mind. ein i (strictlyBetter)
+\end{itemize}
+
+\textbf{Pareto-optimal (non-dominated)}: nicht dominiert.
+
+\textbf{Pareto-Menge}: alle Pareto-optimalen Lösungen (Decision Space).
+
+\textbf{Pareto-Front}: Pareto-Menge im Objective Space; bei Min monoton fallend ("unten links").
+
+
+
+\subsection{Sampled Pareto Front}
+
+Approximation durch endliche Stichprobe; sortiert nach f₁↑, Treppenfunktion.
+
+
+\textbf{Pareto-Filter (O(n²))}:
+
+\begin{enumerate}
+  \item Für jedes i: isPareto[i] = true
+  \item Für jedes Paar (i,j), i≠j: prüfe ob j i dominiert
+  \item Falls ja: isPareto[i] = false; break
+  \item Ergebnis: alle isPareto = true
+\end{enumerate}
+
+
+\subsection{Dominated Region}
+
+Bereich rechts/oberhalb der Pareto-Front (von mind. einem Pareto-Sample dominiert). Treppenform.
+
+
+
+\subsection{Numerische Suche}
+
+\textbf{Gewichtete Summe}:
+
+\begin{enumerate}
+  \item Verschiedene Gewichtskombinationen
+  \item Pro Kombination: Einzelziel-Optimierung
+  \item Vereinigung der Optima ≈ Pareto-Front
+\end{enumerate}
+
+
+\subsection{NSGA-II}
+
+EA für MO (Mengen → Populationen passen).
+
+
+\textbf{Non-dominated Sorting Rank (NDSR)}: iterative Rangzuweisung im Zielraum.
+
+\begin{enumerate}
+  \item Alle non-dominated Punkte → Rang i (Start i=1)
+  \item Diese Punkte entfernen
+  \item i++
+  \item Wiederholen bis alle Rang haben
+\end{enumerate}
+
+\textbf{Crowding Distance (CD)}: nur innerhalb einer Front.
+
+\begin{itemize}
+  \item Summe der Abstände zwischen umschließenden Nachbarn pro Ziel
+  \item Skalierung durch größten beobachteten Abstand
+  \item Extrempunkte: CD = ∞ (immer gewählt)
+\end{itemize}
+
+\begin{quote}
+Extrempunkt: in mind. einem Ziel kein anderer Punkt mit größerem ODER kleinerem Wert.
+\end{quote}
+
+\textbf{Algorithmus}:
+
+\begin{enumerate}
+  \item Initiale Population
+  \item Eltern wählen (NDSR \& CD)
+  \item Rekombinieren → Nachkommen
+  \item Mutieren
+  \item Überlebende wählen (NDSR \& CD)
+  \item Stopp? Sonst zu 2
+\end{enumerate}
+
+
+\subsection{Hypervolumen}
+
+\textbf{Hypervolumen}: Volumen aller von Pareto-Front dominierten Punkte bis zu Referenzpunkt.
+
+\textbf{Hypervolumenbeitrag (HVB / S-Metric)}: exklusiver Beitrag eines Pareto-Punkts; Randpunkte oft ∞.
+
+
+Pro Pareto-Sample i: Rechteck (f₁ᵢ, prev\_f₂) bis (next\_f₁, f₂ᵢ).
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Vorteile}} & {\color{white}\textbf{Nachteile}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Pareto-Compliance & Referenzpunkt nötig \\
+vergleicht Mengen & Rechenzeit hoch bei vielen Zielen \\
+skalenunabhängig &  \\
+\end{tabularx}
+}
+
+
+\textbf{Alternative Tie-Breaks}: R1/R2/R3-Indikator, ϵ-Indikator, HV/HVB.
+
+
+
+\subsection{SMS-EMOA}
+
+Wie NSGA-II, ersetzt CD durch HVB:
+
+\begin{enumerate}
+  \item Init Population
+  \item Eltern wählen (NDSR \& HVB)
+  \item Rekombinieren
+  \item Mutieren
+  \item Überlebende wählen (NDSR \& HVB)
+  \item Stopp? Sonst zu 2
+\end{enumerate}
+
+
+\subsection{Visualisierung}
+
+\textbf{Marching Squares}: Iso-Linien auf Gitter; pro Zelle 16 Fälle (Index 0–15); 0/15 keine Linie; mehrdeutig (5,10) → Mittelwert; lin. Interpolation t = (thr − vA)/(vB − vA).
+
+\begin{itemize}
+  \item Grid 88×88, 7 Levels, thr\_k = min + k/(L+1)·(max − min)
+\end{itemize}
+
+\textbf{Heatmap}: Palette [18,136,184] → [255,247,214] → [180,35,24]; Norm (v−min)/(max−min); lin. Interpolation in zwei Hälften.
+
+
+\textbf{Treppenpfad Pareto-Front}:
+
+\begin{enumerate}
+  \item Sortiere nach f₁↑
+  \item moveTo(x₀,y₀)
+  \item ∀i>0: lineTo(xᵢ, yᵢ₋₁) → lineTo(xᵢ, yᵢ)
+\end{enumerate}
+
+\textbf{Objective-Familien}:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Familie}} & {\color{white}\textbf{Charakter}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Wavy bowls & quadratisch + sin/cos \\
+Pure quadratic bowls & rein quadratisch \\
+Multimodal & quadratisch + (1−cos) \\
+\end{tabularx}
+}
+
+
+Decision Bounds x₁,x₂ ∈ [−2.5, 2.5]; Samples 10–120 (Std 40).
+
+
+
+\section{8. Methoden-Gesamtübersicht}
+
+
+\begin{landscape}
+
+{\scriptsize
+\begin{tabularx}{\linewidth}{XXXXXXXXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{\#}} & {\color{white}\textbf{Methode}} & {\color{white}\textbf{Global}} & {\color{white}\textbf{Grad.basiert}} & {\color{white}\textbf{NB}} & {\color{white}\textbf{Ziele}} & {\color{white}\textbf{Linear}} & {\color{white}\textbf{Ansatz}} & {\color{white}\textbf{Genauigkeit}} & {\color{white}\textbf{Det.}} & {\color{white}\textbf{Variablen}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+1 & Stat. Punkte / Hesse & ✅ & ✅ & ohne & 1 & ❌ & analytisch & exakt & ✅ & ℝⁿ \\
+2 & Gradient Descent & ❌ & ✅ & ohne & 1 & ❌ & numerisch & ? & ✅ & ℝⁿ \\
+3 & Simplex & ✅ & ❌ & alle & 1 & ✅ & numerisch & exakt & ✅ & ℝⁿ \& ℤⁿ \\
+4 & QO & ❌ & ✅ & alle & 1 & ❌ & numerisch & ? & ✅ & ℝⁿ \\
+5 & KKT & ✅ & ✅ & alle & 1 & ❌ & analytisch & exakt & ✅ & ℝⁿ \\
+6 & SQO & ❌ & ✅ & alle & 1 & ❌ & numerisch & ? & ✅ & ℝⁿ \\
+7 & Nelder-Mead & ❌ & ❌ & ohne & 1 & ❌ & numerisch & approx. & ✅ & ℝⁿ \\
+8 & DIRECT & ✅ & ❌ & Grenzen & 1 & ❌ & numerisch & approx. & ✅ & ℝⁿ \\
+9 & EA & ✅(?) & ❌ & / & / & / & numerisch & approx. & ❌ & / \\
+10 & (1+1)-ES & ❌ & ❌ & ohne & 1 & / & numerisch & approx. & ❌ & ℝⁿ \\
+11 & CMA-ES & ✅(?) & ❌ & ohne & 1 & / & numerisch & approx. & ❌ & ℝⁿ \\
+12 & SMBO & ✅(?) & ❌ & / & / & / & numerisch & approx. & ❌ & / \\
+13 & NSGA-II & ✅(?) & ❌ & ohne & >1 & ❌ & numerisch & approx. & ❌ & / \\
+14 & SMS-EMOA & ✅(?) & ❌ & ohne & >1 & ❌ & numerisch & approx. & ❌ & / \\
+\end{tabularx}
+}
+\end{landscape}
+
+
+
+\section{9. Beispielfragen}
+
+\begin{itemize}
+  \item Ungleichung ↔ Gleichung umwandeln (Slack)
+  \item Maximierung → Minimierung (−f)
+  \item Variable [a,b], a<0 → x' = x − a
+  \item Standardformat-Anforderungen (min, =, xᵢ≥0, bⱼ≥0)
+  \item Zweck Slack: Differenz LHS/RHS, Ungleichung→Gleichung
+\end{itemize}
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{document}

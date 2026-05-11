@@ -1,0 +1,1887 @@
+% ============================================================
+%  Lernzettel Template (my_dhbw Stil, analysis.tex)
+%  Eine Spalte, mit TOC, accent-Theme.
+%  Renderer: pdflatex (zweimal)
+% ============================================================
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+\usepackage[top=2cm, bottom=2cm, left=2cm, right=2cm, footskip=1cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{titletoc}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{tabularx}
+\usepackage{ltablex}
+\keepXColumns
+\usepackage{colortbl}
+\usepackage[most,breakable]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{pdflscape}
+\usepackage[colorlinks=true, linkcolor=accent, urlcolor=accent]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme (my_dhbw accent) ────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{242, 255, 242}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer ─────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0.4pt}
+\renewcommand{\sectionmark}[1]{\markboth{#1}{}}
+\fancyfoot[L]{\footnotesize\color{accent}\nouppercase{\leftmark}}
+\fancyfoot[R]{\footnotesize\color{accent}\thepage\,/\,\pageref{LastPage}}
+\fancypagestyle{plain}{%
+  \fancyhf{}%
+  \renewcommand{\headrulewidth}{0pt}%
+  \renewcommand{\footrulewidth}{0.4pt}%
+  \fancyfoot[L]{\footnotesize\color{accent}\nouppercase{\leftmark}}%
+  \fancyfoot[R]{\footnotesize\color{accent}\thepage\,/\,\pageref{LastPage}}%
+}
+
+% ── Typografie ────────────────────────────────────────────────
+\titleformat{\section}
+    {\color{accent}\large\bfseries}{}{0pt}{}
+    [\vspace{-4pt}\color{accent}\rule{\linewidth}{2pt}]
+\titleformat{\subsection}
+    {\normalsize\bfseries\color{accent!85!black}}{}{0pt}{}
+    [\vspace{-3pt}\color{accent!40}\rule{\linewidth}{0.4pt}]
+\titleformat{\subsubsection}
+    {\small\bfseries\color{accent!70!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{12pt}{4pt}
+\titlespacing*{\subsection}{0pt}{8pt}{2pt}
+\titlespacing*{\subsubsection}{0pt}{6pt}{1pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\renewcommand{\arraystretch}{1.25}
+\setlist[itemize]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.4em}
+\setlist[enumerate]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.6em}
+\setlist[itemize,2]{label=\textendash, leftmargin=1.4em}
+
+% ── Boxen ──────────────────────────────────────────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={Abbildung: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={Tabelle: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{solutionbox}[1]{
+  colback=solutionbg, colframe=green!60!black!60,
+  title={#1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=single, framerule=0pt,
+  xleftmargin=4pt, xrightmargin=4pt,
+  aboveskip=6pt, belowskip=6pt,
+  keepspaces=true
+}
+
+% ── TOC-Look ──────────────────────────────────────────────────
+\renewcommand{\contentsname}{\color{accent}Inhalt}
+
+\providecommand{\nichttitle}{Lernzettel}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Betriebssysteme}
+\renewcommand{\nichtsubtitle}{Lernzettel}
+
+
+\begin{document}
+
+\begin{center}
+{\bfseries\Large\color{accent}\nichttitle}\\[2pt]
+\color{accent}\rule{0.35\linewidth}{1pt}\color{black}
+\end{center}
+\vspace{2pt}
+
+{\small\tableofcontents}
+\newpage
+
+% ── BODY ──────────────────────────────────────────────────────
+
+\section{Grundlagen}
+
+\textbf{Betriebssystem (BS)}: Systemsoftware als Schnittstelle zwischen Hardware und Software; steuert/überwacht Programmabwicklung, regelt Rechnerbetrieb und stellt Benutzern/Anwendungen elementare Dienste bereit.
+
+\begin{itemize}
+  \item Kern = \textbf{Kernel}; darüber Benutzer- und Systemprozesse
+\end{itemize}
+
+\textbf{Aufgaben}: Prozess-, Speicher-, Geräte-, Datei-, Energieverwaltung.
+
+
+\textbf{Programmarten}:
+
+\begin{itemize}
+  \item \textbf{Anwendungsprogramm}: löst Probleme der Benutzer
+  \item \textbf{Systemprogramm}: verwaltet den Rechnerbetrieb
+  \item \textbf{Betriebssystem}: stellt Benutzern/Anwendungen elementare Dienste bereit
+\end{itemize}
+
+\textbf{Benutzerschnittstellen}:
+
+\begin{itemize}
+  \item \textbf{GUI}: grafisch
+  \item \textbf{CLI}: Kommandozeile
+  \item \textbf{TUI}: zeichenorientiert
+  \item \textbf{VUI}: Sprache
+  \item \textbf{NUI}: natürlich
+\end{itemize}
+
+
+\section{Geschichte (Meilensteine)}
+
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Jahr}} & {\color{white}\textbf{Ereignis}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+70 v.Chr. & Mechanismus von Antikythera \\
+1623 & Schickard: erste mechan. Rechenmaschine \\
+1642 & Pascal: „Pascaline" (Addition 6-stellig) \\
+1801 & Jacquard: lochkartengesteuerter Webstuhl \\
+1832 & Babbage: Difference/Analytical Engine; Lovelace: erstes Programm (Bernoulli) \\
+1887 & Hollerith: Lochkarten-Tabulator → IBM \\
+1905 & Fleming: Vakuumdiode \\
+1938/41 & Zuse Z1/Z3: erster binär programmgesteuerter Rechner \\
+1944 & Harvard Mark I (Aiken) \\
+1946 & ENIAC: erster Röhrenrechner \\
+1947 & Williams-Kilburn-Röhre; erster Transistor \\
+1958/59 & Kilby/Noyce: integrierter Schaltkreis \\
+1964 & IBM OS/360 \\
+1968 & Unix (Ritchie/Thompson); Engelbart: Maus \\
+1969 & ARPANET; Apollo 11 (Hamilton) \\
+1971 & Intel 4004 (erster Mikroprozessor) \\
+1976 & Apple I; IP \\
+1981 & IBM 5150 PC \\
+1985 & Windows 1.0 \\
+1987/90 & Minix (Tanenbaum) → Linux (Torvalds) \\
+1995 & Windows 95 (eigenständig, 32-Bit) \\
+2007 & iPhone \\
+2023 & Frontier-Supercomputer: 1,194 EFLOPS \\
+\end{tabularx}
+}
+
+
+\textbf{BS-Fehler-Fallbeispiele}:
+
+\begin{itemize}
+  \item \textbf{Ariane 5}: 64-Bit Float → 16-Bit Int Overflow
+  \item \textbf{Mars Climate Orbiter}: SI vs. imperial (Faktor 4,45)
+  \item \textbf{F-16}: negative Breitengrade nicht behandelt
+  \item \textbf{Spectre/Meltdown}: CPU-Designfehler
+\end{itemize}
+
+
+\section{Rechnerarchitektur}
+
+\textbf{Hauptkomponenten}: CPU, Speicher (Haupt + Sekundär), E/A-Geräte, Busse.
+
+
+\textbf{Speicherhierarchie} (Geschwindigkeit ↓, Größe ↑): Register → Cache → Hauptspeicher (RAM/ROM) → Sekundärspeicher.
+
+
+\textbf{CPU}: Central Processing Unit — führt Befehle aus, steuert Abläufe.
+
+\begin{itemize}
+  \item \textbf{Steuerwerk} = Befehlsprozessor
+  \item \textbf{ALU/Rechenwerk} = Datenprozessor (mit Status/Flags, Akkumulator)
+  \item Register: IR, MBR, PC, MAR
+  \item \textbf{Systembus}: Adress-, Daten-, Steuerbus
+\end{itemize}
+
+\textbf{Registerbreite}: Anzahl gleichzeitig speicherbarer Bits (4/8/16/32/64). 64-Bit-OS adressiert 2⁶⁴ Speichereinheiten.
+
+
+
+\section{Modi und Systemaufruf}
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Eigenschaft}} & {\color{white}\textbf{User-Mode}} & {\color{white}\textbf{Kernel-Mode}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Privileg & nicht-privilegiert & privilegiert \\
+Nutzer & Anwendungen & BS-Code \\
+Befehlssatz & eingeschränkt & beliebig \\
+Speicher & kein Kernel-Zugriff & gesamter Speicher + alle Betriebsmittel \\
+\end{tabularx}
+}
+
+
+\textbf{Modusübergänge}:
+
+\begin{itemize}
+  \item Kernel→User: unproblematisch, durch BS bei CPU-Zuteilung
+  \item User→Kernel: nur indirekt über Systemaufruf
+\end{itemize}
+
+\textbf{Systemaufruf (Syscall)}: Aufruf einer BS-Funktion durch User-Mode-Prozess; nur im Kernel-Mode ausführbar.
+
+
+Ablauf:
+
+\begin{enumerate}
+  \item User-Prozess tätigt Syscall
+  \item Umschalten in Kernel-Mode
+  \item Sicherheitsprüfung (Berechtigung)
+  \item Funktion ausführen oder ablehnen
+  \item Rückkehr in User-Mode mit Rückgabewert
+\end{enumerate}
+
+Bsp. Dateizugriff: \texttt{open}, \texttt{read}, \texttt{write}, \texttt{close}.
+
+
+
+\section{Betriebsmittel}
+
+\textbf{Betriebsmittel (Ressource)}: Hard- oder Software-Ressource des Rechners.
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Art}} & {\color{white}\textbf{Definition}} & {\color{white}\textbf{Beispiel}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Entziehbar & jederzeit ohne Schaden entziehbar & CPU \\
+Nicht entziehbar & muss bis Beendigung bleiben & Drucker \\
+Exklusiv & max. 1 Prozess gleichzeitig & — \\
+Gemeinsam & quasi-gleichzeitig nutzbar & Festplatte \\
+\end{tabularx}
+}
+
+
+\textbf{BS-Kategorien}: Mainframes (z/OS), Server, PC/Laptop, Echtzeit, Embedded, Tablets, Handhelds, Smartcards.
+
+
+
+\section{Prozessverwaltung}
+
+\textbf{Prozess}: Programm zur Laufzeit / Ablaufumgebung; dynamische Folge von Aktionen mit Zustandsänderungen. Adressraum: Userspace + Kernelspace.
+
+
+\textbf{Programm}: statische Verfahrensvorschrift.
+
+
+\textbf{Programm → Prozess}: Compiler übersetzt → BS lädt in Adressraum.
+
+
+
+\subsection{Prozesserzeugung}
+\begin{enumerate}
+  \item Code/Daten in Speicher laden
+  \item Eindeutige PID zuordnen
+  \item PCB in Prozesstabelle anlegen
+  \item Syscalls: Unix \texttt{fork}, Windows \texttt{CreateProcess}
+\end{enumerate}
+
+
+\subsection{Prozesskenndaten}
+\begin{itemize}
+  \item \textbf{PID}: ganze Zahl ≥ 0, eindeutig
+  \item \textbf{PPID}: Elternprozess
+  \item UID/GID, EUID/EGID; PRI; Zustand; verbrauchte Rechenzeit
+\end{itemize}
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{BS}} & {\color{white}\textbf{PID 0}} & {\color{white}\textbf{PID 1}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Unix & Idle & Init \\
+Windows & nicht vergeben & nicht vergeben \\
+\end{tabularx}
+}
+
+
+
+\subsection{Prozesskontext \& PCB}
+
+\textbf{Prozesskontext}: alle Infos, die ein Prozess während Ausführung braucht.
+
+
+\textbf{Prozesstabelle}: enthält PCBs aller Prozesse.
+
+
+\textbf{PCB-Inhalt}:
+
+\begin{itemize}
+  \item Prozesszustand, Programmzähler, PID
+  \item Initiale + dynamische Priorität
+  \item Verbrauchte CPU-Zeit
+  \item Zugeordnete Betriebsmittel
+  \item Aktuelle Registerinhalte
+  \item Hardwarekontext: CPU-Register (PC, IR, Stack, Flags), MMU-Register, Stack/Heap/Code, Zugriffsinfos
+\end{itemize}
+
+
+\subsection{Kontextwechsel}
+\begin{enumerate}
+  \item Hardwarekontext laufender Prozess sichern (PCB\_A)
+  \item Hardwarekontext neuer Prozess laden (PCB\_B)
+  \item Bei Rückwechsel: umgekehrt
+\end{enumerate}
+
+
+\subsection{Prozesszyklus}
+
+Zustände: \textbf{Bereit (ready)}, \textbf{Aktiv (running)}, \textbf{Blockiert (waiting)}, \textbf{Beendet}.
+
+
+Übergänge:
+
+\begin{enumerate}
+  \item Aktivieren: BS wählt Prozess (Bereit→Aktiv)
+  \item Deaktivieren/Vorrangunterbrechung (Aktiv→Bereit)
+  \item Blockieren: wartet auf I/O/Ressource (Aktiv→Blockiert)
+  \item Deblockieren: Ressource verfügbar (Blockiert→Bereit)
+  \item Terminieren
+\end{enumerate}
+
+\textbf{Sonderzustände}:
+
+\begin{itemize}
+  \item \textbf{Zombie}: beendeter Prozess, noch in Tabelle; kein CPU-/Speicherverbrauch außer Eintrag; Eltern muss austragen
+  \item \textbf{Dämon (Daemon)}: Hintergrundprozess unabhängig vom Terminal
+\end{itemize}
+
+
+\subsection{Thread}
+
+\textbf{Thread}: kleinste Ausführungseinheit, „Prozess im Prozess", kontinuierliche Anweisungsfolge.
+
+\begin{itemize}
+  \item Prozess = mind. 1 Thread (Main Thread); endet, wenn alle Threads beendet
+  \item Threads teilen Code/Daten/Heap/Ressourcen des Prozesses
+\end{itemize}
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Aspekt}} & {\color{white}\textbf{Prozess}} & {\color{white}\textbf{Thread}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Gewicht & schwer & leicht \\
+Adressraum & eigener & gemeinsam \\
+Speicherschutz & ja & nein \\
+Erzeugung & Namensraum dupliziert & minimaler Aufwand \\
+Kontextwechsel & aufwendig & schnell \\
+\end{tabularx}
+}
+
+
+\textbf{Vorteile Thread}: schnellerer Kontextwechsel, Zugriff auf alle Prozess-Ressourcen, Modularisierung.
+
+\textbf{Nachteile}: Synchronisation nötig, kein Speicherschutz (Absturz reißt alle mit), spezielle Programmierkenntnisse.
+
+
+\textbf{Threadzustände}: Laufend, Bereit, Wartend.
+
+
+\textbf{Wechsel-Auslöser}: Zeitscheibe abgelaufen, warten auf Objekt, höher priorisierter Thread bereit.
+
+
+\textbf{Threadprioritäten}:
+
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{System}} & {\color{white}\textbf{Bereich}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Windows & 0: System; 1–15: Timesharing; 16–31: Realtime \\
+Linux & 0–99: Realtime; 100–139: Timesharing \\
+\end{tabularx}
+}
+
+
+\textbf{Garbage Collector}: niedrige Priorität, läuft bei Leerlauf/Ressourcenknappheit.
+
+
+
+\section{Scheduling}
+
+\textbf{Scheduling}: Aufteilung der CPU-Zeit auf Prozesse.
+
+
+\textbf{Komponenten}:
+
+\begin{itemize}
+  \item \textbf{Prozessmanager} = Scheduler + Dispatcher
+  \item \textbf{Scheduler}: entscheidet, welcher Prozess die CPU bekommt
+  \item \textbf{Dispatcher}: führt Kontextwechsel aus
+\end{itemize}
+
+\textbf{Job}: parallel/nebenläufig auszuführender Auftrag.
+
+
+
+\subsection{Scheduling-Arten (Horizont)}
+\begin{enumerate}
+  \item Kurzfristig (CPU-Vergabe)
+  \item Mittelfristig (Speicher)
+  \item Langfristig (eingehende Aufgaben)
+\end{enumerate}
+
+
+\subsection{Verfahrensklassen}
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Variante}} & {\color{white}\textbf{Bedeutung}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+\textbf{Non-preemptive} & nicht-verdrängend; CPU nur bei Block/Freigabe/Ende \\
+\textbf{Preemptive} & verdrängend; CPU jederzeit entziehbar \\
+\end{tabularx}
+}
+
+
+
+\subsection{Scheduling-Ziele}
+\begin{enumerate}
+  \item Fairness — Mindestzuteilung
+  \item Effizienz — volle CPU-Auslastung
+  \item Min. Antwortzeit
+  \item Min. Wartezeit
+  \item Max. Durchsatz
+  \item Min. Durchlaufzeit (Verweilzeit)
+  \item Vorhersehbarkeit
+\end{enumerate}
+
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Begriff}} & {\color{white}\textbf{Definition}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Antwortzeit & Wartezeit Anwender auf Bearbeitung \\
+Wartezeit & Summe aller Wartezeiträume \\
+Durchsatz & Prozesse/Zeiteinheit \\
+CPU-Auslastung & \% der Gesamtkapazität \\
+Durchlaufzeit & Bedienzeit + Wartezeiten \\
+Bedienzeit & Zeit, in der Prozess CPU hält \\
+\end{tabularx}
+}
+
+
+
+\subsection{Batch-Scheduling}
+\begin{itemize}
+  \item \textbf{FCFS} (First Come First Serve): Reihenfolge des Eintreffens
+  \item \textbf{SJF/SPF/SPN} (Shortest Job First): kürzester Job zuerst
+  \item \textbf{SRTN} (Shortest Remaining Time Next): preemptive SJF; bevorzugt neue kurze Jobs
+\end{itemize}
+
+\begin{quote}
+SJF/SRTN: Bedienzeit praktisch unbekannt; \textbf{Verhungern (Starvation)} möglich.
+\end{quote}
+
+
+\subsection{Dialog-Scheduling}
+\begin{itemize}
+  \item \textbf{Round Robin (RR)}: FCFS + Zeitscheibe (Quantum); alle gleich; abgelaufen → an Warteschlangen-Ende
+  \item \textbf{Priority Scheduling (PS)}: höchste Priorität zuerst; gleiche Prio → eine Klasse (Multilevel)
+  \item \textbf{Fair-Share-Scheduling (FSS)}: jeder von n Prozessen → 1/n CPU-Zeit; schlechtestes Verhältnis verbraucht/zustehend zuerst
+  \item \textbf{Lottery Scheduling}: zufällig; n Verlosungen/s, Gewinner erhält CPU für m ms
+\end{itemize}
+
+\textbf{Quantum-Wahl}:
+
+\begin{itemize}
+  \item zu kurz → Overhead
+  \item zu lang → Verzögerungen
+  \item typisch \textbf{10–200 ms}; höhere Taktrate → kürzeres Quantum
+  \item statisch oder dynamisch (E/A-intensiv: höher; rechenintensiv: kürzer)
+\end{itemize}
+
+\textbf{Priorität}: statisch (Voreinstellung) + dynamisch (Anpassung) — meist kombiniert.
+
+
+
+\subsection{Realtime-Scheduling}
+\begin{itemize}
+  \item \textbf{EDF/MDF}: Earliest/Minimal Deadline First — kleinste nächste Deadline
+  \item \textbf{Polled Loop}: zyklische Abfrage
+  \item \textbf{Interrupt-gesteuert}: ISR auf Ereignis
+\end{itemize}
+
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Typ}} & {\color{white}\textbf{Bedeutung}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Hard Real Time & feste Zeitschranke; Verspätung = schwerer Fehler \\
+Soft Real Time & weiche Schranke; Verspätung = lästig \\
+\end{tabularx}
+}
+
+
+
+\subsection{Multi-Level-Scheduling}
+
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Prio}} & {\color{white}\textbf{Klasse}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+0 & Systemprozesse \\
+1 & Interaktive Prozesse \\
+2 & Allgemeine Prozesse \\
+4 & Batch \\
+\end{tabularx}
+}
+
+
+\begin{itemize}
+  \item Pro Stufe eigene Warteschlange; Wiedereingliederung möglich
+  \item Innerhalb Klasse: RR
+  \item \textbf{Multi-Level-Feedback-Scheduling}: Prozess kann Klasse wechseln (häufigste Praxis-Lösung)
+\end{itemize}
+
+
+\section{Interrupts}
+
+\textbf{Interrupt}: Unterbrechung der sequentiellen Programmausführung; Kontrolle an \textbf{ISR}. Synchron/asynchron.
+
+
+\textbf{Befehlszyklus}: Fetch → Execute → Prüfung IRQ? → ggf. PC auf ISR-Adresse.
+
+
+\textbf{Auslöser}: Speicherschutzverletzung, Hardware-Taktgeber, E/A-Gerät, Systemcalls etc.
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Verfahren}} & {\color{white}\textbf{Vorteil}} & {\color{white}\textbf{Nachteil}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Polling & leicht & CPU-Verschwendung \\
+Interrupt & effizient & komplexer \\
+\end{tabularx}
+}
+
+
+
+\subsection{Interruptklassen}
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Klasse}} & {\color{white}\textbf{Eigenschaft}} & {\color{white}\textbf{Beispiele}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Asynchron & nicht vorhersehbar/reproduzierbar & Hardware-Interrupts (Plattenblock, Netzwerk) \\
+Synchron (Exception) & vorhersehbar/reproduzierbar & Systemcalls, Traps, Faults \\
+\end{tabularx}
+}
+
+
+Synchron-Unterklassen:
+
+\begin{itemize}
+  \item \textbf{Fault}: Unterbrechung \textbf{vor} Ausführung (z.B. Page Fault)
+  \item \textbf{Trap}: Unterbrechung \textbf{nach} Ausführung (z.B. Division durch 0)
+\end{itemize}
+
+
+\subsection{Bearbeitung}
+
+Komponenten: Interrupt-Controller (IC), ISR, IRQ-Bearbeitung.
+
+
+\textbf{Interrupt Controller}: nimmt Signale entgegen, informiert CPU.
+
+
+\textbf{ISR (Interrupt Service Routine)}: einem Interrupt zugeordnete Anweisungsfolge; pro Interrupt-Typ eine ISR; BS stellt ISR für alle bereit; bei externen Geräten im Treiber.
+
+
+\textbf{Benötigt}:
+
+\begin{enumerate}
+  \item \textbf{Interrupt-Vektor-Tabelle (IVT)}: an vordefinierter Stelle im Kernelspeicher; Eintrag = ISR-Adresse; Index = Interrupt-Nummer; IC bildet IRQ → Interrupt-Nummer ab
+  \item \textbf{Interrupt-Level (IL)}: Priorität pro Interrupt
+\end{enumerate}
+
+\textbf{Ablauf}:
+
+\begin{enumerate}
+  \item Interrupt unterbricht Programm (wenn IL erlaubt)
+  \item Prozessorstatus sichern (Stack)
+  \item ISR via IVT suchen + ausführen (Kernelmodus)
+  \item Bestätigung an IC
+  \item Status wiederherstellen, Programm fortsetzen
+\end{enumerate}
+
+\begin{quote}
+\textbf{Merke}: Ergebnis darf nicht von Interrupt-Auftreten abhängen. Bei gleichzeitigen IRQs entscheidet Priorität; gleich-/niedriger-priorisierte werden während Bearbeitung nicht angenommen.
+\end{quote}
+
+
+\subsection{Maskierung}
+\begin{itemize}
+  \item \textbf{IMR (Interrupt Mask Register)}: Bit = 1 → Interrupt aus
+  \item IC wiederholt Anfrage bis angenommen
+\end{itemize}
+
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Typ}} & {\color{white}\textbf{Bedeutung}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+MI & Maskable Interrupts \\
+NMI & Non-Maskable Interrupts \\
+Präzise & Befehle vollständig oder gar nicht ausgeführt \\
+Unpräzise & teilweise Ausführung möglich \\
+\end{tabularx}
+}
+
+
+
+\section{Synchronisation}
+
+\textbf{Nebenläufigkeit}: quasi-parallele Ausführung von Prozessen/Threads.
+
+\begin{itemize}
+  \item 1 CPU/Kern → quasi-parallel
+  \item mehrere → echt-parallel
+\end{itemize}
+
+\textbf{Synchronisation}: Mechanismen gegen Probleme bei nebenläufigem Zugriff auf gemeinsame Betriebsmittel.
+
+
+\textbf{Probleme}: Blockieren, Verhungern, Verklemmung.
+
+
+
+\subsection{Race Condition}
+
+\textbf{Race Condition}: Ergebnis hängt von zeitlicher Reihenfolge konkurrierender Zugriffe ab. Entsteht durch Nebenläufigkeit \textbf{+} gemeinsame Betriebsmittel.
+
+
+\textbf{Lost Update}: A liest 0, B liest 0, A schreibt, B schreibt → A's Update verloren.
+
+
+
+\subsection{Kritischer Abschnitt}
+
+\textbf{Kritischer Abschnitt}: Programmteil, der nur von einem Prozess gleichzeitig durchlaufen werden darf.
+
+
+\textbf{Atomare Aktion}: logisch nicht unterbrechbarer Codebereich.
+
+
+\textbf{Bedingungen (Mutex)}:
+
+\begin{enumerate}
+  \item \textbf{Mutual Exclusion}: nie zwei gleichzeitig drin
+  \item Keine Annahmen über Geschwindigkeit/Anzahl Prozessoren
+  \item Außerhalb darf kein Prozess andere blockieren
+  \item \textbf{Fairness}: jeder Wartende muss irgendwann eintreten
+\end{enumerate}
+
+\textbf{Implementierung}:
+
+\begin{enumerate}
+  \item Busy Waiting — ständige Sperrabfrage; CPU-Verschwendung
+  \item Schlafen + Aufwecken
+\end{enumerate}
+
+
+\subsection{Synchronisationskonzepte}
+
+\begin{enumerate}
+  \item Software (selten in BS)
+  \item Interrupts sperren — alle Interrupts maskieren; Multiprozessor unpraktisch
+  \item Hardware-Befehle (TSL/TAS)
+\end{enumerate}
+
+
+\subsubsection{Sperren (Lock)}
+\begin{itemize}
+  \item Sperrvariable: 0 = frei, 1 = belegt
+  \item Operationen: Testen + Setzen
+  \item \textbf{Spinlock}: Warteschleife (kurze Wartezeiten)
+\end{itemize}
+
+\textbf{TSL/TAS (Test and Set Lock)}: Test+Set ununterbrechbar in einem Maschinenbefehl; ein Speicherzugriffszyklus; CPU blockiert Bus; Multiprocessing-tauglich.
+
+
+
+\subsubsection{Semaphor}
+
+\textbf{Semaphor}: Sperrmechanismus mit Zähler + Warteschlange.
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Op}} & {\color{white}\textbf{Wirkung}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+\textbf{P()} / Down (anfordern) & Zähler > 0: Zähler−−; sonst: in Warteschlange + suspendiert \\
+\textbf{V()} / Up (freigeben) & Zähler++; ggf. Wartenden aufwecken \\
+\end{tabularx}
+}
+
+
+\begin{itemize}
+  \item \textbf{Mutex / binäres Semaphor}: Zähler nur 0/1
+  \item \textbf{Zählsemaphor}: beliebiger Initialwert → max. n gleichzeitig im KA
+\end{itemize}
+
+Nutzung: \texttt{P(); KA; V();}
+
+\begin{itemize}
+  \item \texttt{V();...P();} → alle drin
+  \item \texttt{P();...P();} → niemand mehr drin
+\end{itemize}
+
+\begin{quote}
+Semaphore sind fehleranfällig.
+\end{quote}
+
+
+\subsubsection{Monitor}
+
+\textbf{Monitor}: Objekt mit gemeinsamen Daten, Zugriffsmethoden + „Türsteher" — nur 1 Prozess gleichzeitig aktiv. Compiler erzeugt Synchronisation.
+
+
+\begin{itemize}
+  \item \textbf{Bedingungsvariablen} (Conditions)
+  \item Operationen: \textbf{Wait} (in Wartezustand), \textbf{Signal} (Wartenden aufwecken)
+\end{itemize}
+
+Ablauf:
+
+\begin{enumerate}
+  \item Bedingung nicht erfüllt → \texttt{wait(cond)} → Monitor temporär verlassen → anderer kann eintreten
+  \item Anderer Prozess ändert Bedingung → \texttt{signal(cond)} → Wartender setzt fort
+\end{enumerate}
+
+Bsp. (Puffer): voll → \texttt{wait(full)}; entnommen → \texttt{signal(full)}.
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Konzept}} & {\color{white}\textbf{Typ}} & {\color{white}\textbf{Verhalten}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Signal-and-Continue & Mesa & Signalisierender arbeitet weiter \\
+Signal-and-Wait & Hoare & Signalisierender verlässt Monitor sofort \\
+\end{tabularx}
+}
+
+
+
+\section{Deadlock}
+
+\textbf{Deadlock (Verklemmung)}: Mehrere Prozesse halten Betriebsmittel und warten auf weitere, die andere halten → Zyklus.
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Begriff}} & {\color{white}\textbf{Definition}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Blockieren & P2 wartet auf von P1 gehaltene Ressource \\
+Verhungern (Starvation) & Prozess erhält trotz Bereitschaft keine CPU-Zeit \\
+\end{tabularx}
+}
+
+
+
+\subsection{Vier Bedingungen (alle gleichzeitig)}
+\begin{enumerate}
+  \item \textbf{Mutual Exclusion}: Ressource exklusiv
+  \item \textbf{Hold and Wait}: hält und fordert weitere an
+  \item \textbf{No Preemption}: kein Entzug
+  \item \textbf{Circular Wait}: zyklische Warteabhängigkeit
+\end{enumerate}
+
+
+\subsection{Strategien}
+\begin{enumerate}
+  \item \textbf{Erkennen}: Betriebsmittelgraph (Knoten P/R, Kanten = Belegung/Anforderung), Zyklussuche
+  \item \textbf{Ignorieren} (Vogel-Strauß): wartet unendlich; extern abbrechen
+  \item \textbf{Vermeiden}: BS so bauen, dass Deadlocks unmöglich
+  \item \textbf{Verhindern}: Anforderung nur, wenn kein zukünftiger Deadlock; nach und nach anfordern
+\end{enumerate}
+
+\begin{quote}
+Erkennung/Vermeidung/Verhinderung sehr aufwendig — vollständige Abdeckung kaum möglich.
+\end{quote}
+
+
+\subsection{Klassische Probleme}
+\begin{itemize}
+  \item \textbf{Producer-Consumer (Bounded Buffer)}: synchronisierter Zugriff auf begrenzten Puffer
+  \item \textbf{Reader-Writer}: Schreiber + Leser auf Datenstruktur
+  \item \textbf{Dining Philosophers}: 5 Philosophen, 5 Gabeln; je 2 Gabeln nötig; max 2 essen gleichzeitig; niemand verhungert
+\end{itemize}
+
+
+\section{Speicherverwaltung — Grundlagen}
+
+\textbf{Realer Adressraum}: physisch verbauter Speicher.
+
+
+\textbf{Physikalische Speicheradresse}: Adresse im physischen Speicher.
+
+
+\textbf{Adressraum}: Menge möglicher Adressen (z. B. 4 GB → \{0…2³²−1\}).
+
+
+\textbf{Speicherinhalte}:
+
+\begin{itemize}
+  \item Statisch: Code, Konstanten, (un)initialisierte Daten — direkt aus exe geladen
+  \item Dynamisch: Heap, Stack — zur Laufzeit
+\end{itemize}
+
+\textbf{Layout}: Code/Konstanten unten, Heap wächst nach oben, Stack wächst von oben nach unten.
+
+
+\textbf{Techniken}:
+
+\begin{enumerate}
+  \item Monoprogramming
+  \item Multiprogramming mit festen Partitionen
+  \item Multiprogramming mit variablen Partitionen + Swapping
+  \item Multiprogramming + virtueller Speicher + Paging
+\end{enumerate}
+
+
+\section{Virtueller Speicher}
+
+\textbf{Virtueller Adressraum}: Speicher, den ein Prozess vom BS bekommt — nur virtuell.
+
+\begin{itemize}
+  \item Jeder Prozess sieht eigenen Adressraum
+  \item Aktuell benötigte Teile im RAM, Rest auf Sekundärspeicher
+  \item Speicherbedarf darf > RAM sein
+\end{itemize}
+
+\textbf{Vorteile}:
+
+\begin{enumerate}
+  \item Programme > RAM möglich
+  \item Mehr Programme im RAM → CPU-Auslastung ↑
+  \item Ansprechbarer Speicher > physisch
+  \item Externe Fragmentierung untergeordnet
+\end{enumerate}
+
+\textbf{Seite (Page)}: Block des virtuellen Speichers.
+
+
+\textbf{Seitenrahmen (Page Frame)}: Block des RAM. Alle gleich groß (typisch 1, 4, 8, 16, 64 KiB).
+
+
+\textbf{Paging Area (Schattenspeicher)}: Festplattenbereich für ausgelagerte Seiten.
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{}} & {\color{white}\textbf{Swapping}} & {\color{white}\textbf{Paging}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Granularität & ganzer Prozess & Teile \\
+Einsatz & ohne MMU & mit MMU \\
+\end{tabularx}
+}
+
+
+
+\section{MMU (Memory Management Unit)}
+
+\textbf{MMU}: Funktionseinheit der CPU zur Adressübersetzung; ersetzt Basis-/Limitregister.
+
+\begin{itemize}
+  \item Bildet virtuelle → reale Adressen ab
+  \item Pfad: \texttt{CPU → (virt.) → MMU → (real) → Hauptspeicher}
+  \item Greift auf Seitentabellen zu
+\end{itemize}
+
+
+\section{Seitentabellen}
+
+\textbf{Zweck}: Umrechnung virtuell → physisch. Pro virtuellem Adressraum eine Tabelle. Enthält Verweise auf Frames, \textbf{nicht} Daten.
+
+
+\textbf{Adressaufbau}: virt. Adresse = Index \texttt{i} | Offset \texttt{d} → real. Adresse = Frame \texttt{f} | \texttt{d}.
+
+
+\textbf{Seitentabelleneintrag}:
+
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Feld}} & {\color{white}\textbf{Bedeutung}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+P/A & Present/Absent (im Frame?) \\
+Protection (C/R/M) & r/w/x \\
+Frame-Number f & Verweis \\
+M (Modified/Dirty) & verändert? \\
+R (Reference) & Zugriff erfolgt? \\
+C & Caching-Bit \\
+\end{tabularx}
+}
+
+
+
+\subsection{Arten}
+
+
+\subsubsection{Einstufig}
+\begin{itemize}
+  \item Direkter Index → Frame
+  \item Bsp. 16-Bit virt. → 15-Bit real (16 Einträge bei 4 KiB Pages)
+  \item 32-Bit / 4 KiB → >1.000.000 Einträge
+  \item \textbf{Nachteil}: enormer Speicherbedarf
+\end{itemize}
+
+
+\subsubsection{Mehrstufig}
+\begin{itemize}
+  \item Adresse: \texttt{i1 | i2 | d}
+  \item 32-Bit: 10+10+12 → 1024 × 1024 Pages à 4 KiB
+  \item Top-Level + Second-Level
+  \item \textbf{Vorteil}: Subtabellen müssen nicht alle im Speicher
+  \item \textbf{Nachteil}: häufige, aufwändige Berechnungen
+\end{itemize}
+
+
+\subsubsection{Invertiert}
+\begin{itemize}
+  \item Eintrag pro physischem Frame (nicht pro virtueller Seite)
+  \item Eintrag: \texttt{pid | i | f} + Kollisionsliste
+  \item Zugriff via 12-Bit Hash auf \texttt{(pid, i)}
+  \item \textbf{Vorteil}: viel weniger Einträge; komplett im RAM
+  \item \textbf{Nachteil}: keine Ordnung nach virtuellen Adressen, Suche aufwändig
+\end{itemize}
+
+
+\subsubsection{TLB (Translation Lookaside Buffer)}
+\begin{itemize}
+  \item Schneller Cache in CPU für aktive (virt → frame) Mappings
+  \item \textbf{TLB hit}: direkt
+  \item \textbf{TLB miss}: Tabellenlookup
+\end{itemize}
+
+
+\section{Page Fault \& Seitenersetzung}
+
+\textbf{Page Fault}: Trap, wenn benötigte virtuelle Seite nicht im Frame eingelagert ist. Bearbeitung im Kernelmodus.
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Begriff}} & {\color{white}\textbf{Definition}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Eingelagerte Seite & Inhalt liegt in Frame \\
+Ausgelagerte Seite & nicht in Frame \\
+Modifizierte Seite & seit Einlagerung verändert (M-Bit=1) \\
+\end{tabularx}
+}
+
+
+\begin{quote}
+Modifizierte Seiten dürfen nicht ohne Sicherung ersetzt werden.
+\end{quote}
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{}} & {\color{white}\textbf{Demand Paging}} & {\color{white}\textbf{Prepaging}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Politik & nur auf Anforderung & spekulativ vor Zugriff \\
+Vorteil & nur Benötigtes geladen & nutzt Lokalität \\
+\end{tabularx}
+}
+
+
+
+\subsection{Ablauf Seitenersetzung}
+\begin{enumerate}
+  \item MMU: Seite B nicht eingelagert → Page Fault
+  \item Kein freier Frame → SEA (Seitenersetzungsalgorithmus) startet
+  \item Opfer-Seite A in Frame X bestimmen
+  \item Wenn A modifiziert: nach Paging Area schreiben
+  \item Seite B in Frame X einlagern
+\end{enumerate}
+
+
+\section{Seitenersetzungsalgorithmen (SEA)}
+
+
+\subsection{Optimal (Belady)}
+\textbf{Optimal}: Verdrängt Seite, die am längsten in Zukunft nicht gebraucht wird.
+
+\begin{itemize}
+  \item Praktisch unmöglich (Zukunft unbekannt) → nur Referenz
+\end{itemize}
+
+
+\subsection{FIFO}
+\textbf{FIFO}: Verdrängt älteste eingelagerte Seite.
+
+\begin{enumerate}
+  \item Liste der Frames absteigend nach Einlagerungszeit
+  \item Page Fault: ältester (vorne) verdrängt; neue Seite ans Ende
+  \item R-Bit nicht benötigt
+  \item Nimmt keine Rücksicht auf Nutzung
+\end{enumerate}
+
+
+\subsection{NRU (Not Recently Used)}
+\textbf{NRU}: 4 Klassen aus (R, M); R-Bits periodisch zurücksetzen (Tanenbaum: \textasciitilde{}20 ms). Klasse 1 zuerst auslagern.
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Klasse}} & {\color{white}\textbf{R}} & {\color{white}\textbf{M}} & {\color{white}\textbf{Verhalten}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+1 & 0 & 0 & nicht ref., nicht mod. — keine Sicherung nötig \\
+2 & 0 & 1 & nicht ref., mod. — schreiben \\
+3 & 1 & 0 & ref., nicht mod. — wahrscheinl. wieder gebraucht \\
+4 & 1 & 1 & ref., mod. — schreiben + wieder nötig \\
+\end{tabularx}
+}
+
+
+
+\subsection{Second Chance}
+\textbf{Second Chance}: Verbessert FIFO durch R-Bit-Prüfung der ältesten Seite.
+
+\begin{itemize}
+  \item R=1 → R:=0, ans Ende; R=0 → auslagern
+  \item Degeneriert zu FIFO, wenn alle R=1
+\end{itemize}
+
+
+\subsection{Clock Page}
+\textbf{Clock Page}: Second Chance als zirkuläre Liste mit Zeiger.
+
+\begin{itemize}
+  \item R=0 → auslagern; R=1 → R:=0, Zeiger++
+  \item Max. 1 Runde
+\end{itemize}
+
+
+\subsection{LRU (Least Recently Used)}
+\textbf{LRU}: Verdrängt am längsten ungenutzte Seite (Annahme: kürzlich genutzt → bald wieder).
+
+\begin{itemize}
+  \item \textbf{Matrix-Verfahren} (n×n): Zugriff auf k → Zeile k=1, Spalte k=0; Max=zuletzt; Min=Opfer
+  \item Alternative: Zeitstempel pro Eintrag
+  \item Nachteil: hoher Aufwand pro Zugriff
+  \item Praxis: Pseudo-LRU (Clock, Second Chance) mit R/M
+\end{itemize}
+
+
+\subsection{NFU (Not Frequently Used)}
+\textbf{NFU}: Zähler pro Seite, Auslagerung des kleinsten Zählers.
+
+\begin{itemize}
+  \item Bei Zugriff: R-Bit setzen
+  \item Timer: Zähler += R; R := 0
+  \item Problem: alte hohe Zähler werden nie verdrängt
+\end{itemize}
+
+
+\subsection{Aging}
+\textbf{Aging}: Verbessert NFU gegen Aufholproblem durch Bit-Shift statt Addition.
+
+\begin{itemize}
+  \item Vor Addition: Zähler 1 Bit nach rechts schieben
+  \item R-Bit wird höchstwertiges Bit
+  \item ≈ klassisches LRU
+\end{itemize}
+
+
+\subsection{Working Set}
+\textbf{Working Set}: Aktuell benötigte Seitenmenge; ständig im RAM → wenige Page Faults.
+
+\begin{itemize}
+  \item Verdrängt: Seiten außerhalb WS
+  \item \textbf{Lokalitätseffekt} (80/20): nur kleiner Code-Teil aktiv
+  \item Distanz Δ = wichtiger Parameter
+\end{itemize}
+
+
+\section{Lokalität}
+
+\textbf{Lokalität}: Prinzip, dass Speicherzugriffe nicht zufällig verteilt sind, sondern Muster aufweisen — genutzt zur Cache-Optimierung.
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{}} & {\color{white}\textbf{Zeitlich}} & {\color{white}\textbf{Räumlich}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Bezug & zeitlicher Ablauf & räumlicher Abstand \\
+Aussage & Adresse bald wieder zugegriffen & Nachbaradresse bald genutzt \\
+Optimierung & im Cache halten & Nachbarn mitladen \\
+\end{tabularx}
+}
+
+
+
+\section{Fragmentierung}
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Art}} & {\color{white}\textbf{Wo}} & {\color{white}\textbf{Bedeutung}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Intern & innerhalb belegter Blöcke & Block > Bedarf, Rest verschwendet (Ø 50\% letzte Seite) \\
+Extern & zwischen belegten Blöcken & Lücken einzeln zu klein, summiert ausreichend \\
+\end{tabularx}
+}
+
+
+\textbf{Speicherarten}:
+
+\begin{itemize}
+  \item RAM: beide Arten
+  \item HDDs: beide Arten
+  \item SSDs: vor allem intern; extern weniger problematisch
+\end{itemize}
+
+\textbf{Defragmentierung}: Reorganisation belegter Blöcke zu zusammenhängenden Bereichen → bessere Performance (v.a. HDDs).
+
+
+
+\section{Placement (Speicherbelegung)}
+
+\textbf{Ziele}: Fragmentierung minimieren, wenig Speicher, schnell Frame finden.
+
+
+\textbf{Verwaltung freier Bereiche}:
+
+\begin{enumerate}
+  \item \textbf{Bitmap}: 1 Bit/Frame (1=belegt, 0=frei); freie Bereiche = Folge von 0; weniger Speicher als Liste
+  \item \textbf{Verkettete Liste}: freie Bereiche
+\end{enumerate}
+
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Strategie}} & {\color{white}\textbf{Vorgehen}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+First-Fit & erster ausreichend großer Bereich \\
+Next-Fit & wie First, ab letzter Position \\
+Best-Fit & kleinste passende Lücke \\
+Worst-Fit & größte Lücke \\
+Buddy-Technik & 2ᵏ-Halbierung \\
+Quick-Fit & wie Buddy, aber nicht doppelte Größe \\
+\end{tabularx}
+}
+
+
+
+\subsection{Buddy-Technik}
+\begin{itemize}
+  \item Blockgrößen = 2ᵏ; Anforderung auf nächste 2ᵏ aufgerundet
+  \item Halbierung bei Anforderung; benachbarte gleichgroße freie = Buddies
+  \item Bei Freigabe: Buddies verschmolzen
+  \item \textbf{Vorteil}: passende Größe oft verfügbar; gegen externe Fragmentierung
+  \item \textbf{Nachteil}: zunehmende interne Fragmentierung durch Aufrundung
+\end{itemize}
+
+
+\subsection{Quick-Fit}
+\begin{itemize}
+  \item Ähnlich Buddy, aber nächstes Level ≠ doppelte Größe
+  \item Verschmelzen aufwändiger
+\end{itemize}
+
+
+\section{Festplatten und Cluster}
+
+\textbf{Cluster}: Zusammenschluss benachbarter Sektoren, kleinste Adressierungseinheit; jede Datei belegt mind. 1 Cluster.
+
+\begin{itemize}
+  \item Reduziert Adressierungslast
+  \item \textbf{Nachteil}: Fragmentierung möglich
+\end{itemize}
+
+\textbf{Slack-Arten}:
+
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Art}} & {\color{white}\textbf{Bedeutung}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+File Slack & ungenutzter Platz im letzten Cluster \\
+RAM Slack & Bereich von EOF bis Sektorende, mit RAM-Inhalten gefüllt \\
+Drive Slack & restliche Sektoren bis Clustergrenze, mit HDD-Daten gefüllt \\
+\end{tabularx}
+}
+
+
+\begin{itemize}
+  \item Linux: Zufallszahlen statt RAM/Drive-Inhalte
+  \item Forensik: Slack-Inhalte wertvoll
+\end{itemize}
+
+\textbf{Cluster-Größe}:
+
+\begin{itemize}
+  \item Große Partition → große Cluster → Slack ↑ → ineffizient
+  \item Kleine Partition → kleine Cluster → bessere Anpassung
+\end{itemize}
+
+
+\section{Geräteverwaltung}
+
+\textbf{Geräteverwaltung}: Software für optimierte Zusammenarbeit BS↔Peripherie; Schnittstelle physische Geräte ↔ BS.
+
+\begin{itemize}
+  \item Prozesse kommunizieren \textbf{nicht direkt} mit Geräten → nur via Syscalls
+  \item \textbf{Aufgaben}: Kommandos an Geräte, Interrupt-Bearbeitung, Fehlerbehandlung
+\end{itemize}
+
+
+\subsection{Schichtenarchitektur}
+\begin{itemize}
+  \item E/A-Geräte über Bussysteme an CPU
+  \item \textbf{Northbridge}: interne Geräte (RAM, AGP)
+  \item \textbf{Southbridge}: externe (PCI, S-ATA, SCSI, USB)
+\end{itemize}
+
+\textbf{Transferraten} (Auswahl):
+
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Gerät}} & {\color{white}\textbf{Rate}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Keyboard & \textasciitilde{}10 B/s \\
+Maus & \textasciitilde{}100 B/s \\
+Laserdrucker & \textasciitilde{}100 KB/s \\
+ISA-Bus & 16 MB/s \\
+USB1/2/3 & 12 Mbit/s / 480 Mbit/s / 5 Gbit/s \\
+Fast/Gigabit Ethernet & 100 Mbit/s / bis 10 Gbit/s \\
+PCIe & 32 Gbit/s \\
+ATA / SATA & 130 MB/s / \textasciitilde{}2 GB/s \\
+\end{tabularx}
+}
+
+
+
+\subsection{Gerätetreiber}
+
+\textbf{Gerätetreiber}: Softwaremodul, das Interaktionen zwischen BS und Controller eines Geräts steuert.
+
+
+\textbf{Aufgaben}:
+
+\begin{itemize}
+  \item Gerät dem BS bekannt machen
+  \item Controller initialisieren
+  \item Befehle gerätespezifisch übersetzen
+  \item Datenpufferung Gerät ↔ Hauptspeicher
+  \item ISR (Unterbrechungsbearbeitung) enthalten
+  \item Koordination nebenläufiger Zugriffe
+\end{itemize}
+
+
+\subsection{Geräteklassen}
+
+
+\subsubsection{Blockorientiert}
+\begin{itemize}
+  \item Übertragung in \textbf{kompletten Blöcken}, direkt adressierbar
+  \item Blockgrößen 512–32.768 Byte
+  \item Bsp.: Festplatte, Bandlaufwerk, CD/DVD
+  \item Funktionen: \texttt{initDevice}, \texttt{readBlock}, \texttt{writeBlock}, \texttt{handleInterrupt}
+\end{itemize}
+
+
+\subsubsection{Zeichenorientiert}
+\begin{itemize}
+  \item \textbf{Datenstrom (stream)} aus Zeichen
+  \item Bsp.: Maus, Tastatur, Netzwerkkarte, serielle/parallele/USB
+  \item Funktionen: \texttt{initDevice}, \texttt{readChar}, \texttt{writeChar}, \texttt{handleInterrupt}
+\end{itemize}
+
+
+\subsection{Controller (Gerätesteuereinheit)}
+\begin{itemize}
+  \item Kommunikation Hardware ↔ BS
+  \item \textbf{Register} zur CPU-Kommunikation: Schreiben → Befehle ans Gerät; Lesen → Status
+  \item Anwendungen via Syscalls: \texttt{open}, \texttt{close}, \texttt{read}, \texttt{write}
+\end{itemize}
+
+
+\subsection{Adressierung Controller-Register}
+
+
+\subsubsection{I/O-Port}
+\begin{itemize}
+  \item \textbf{Zwei Adressräume}: Speicher und I/O getrennt
+  \item Portnummer (8/16-Bit) pro Register, geschützter Bereich
+\end{itemize}
+
+
+\subsubsection{Memory-Mapped I/O}
+\begin{itemize}
+  \item \textbf{Ein Adressraum}: I/O + Speicher gemeinsam
+  \item E/A-Adresse pro Gerät, meist im oberen Adressraum
+  \item Adressen dürfen nicht kollidieren → automatische Vergabe
+\end{itemize}
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Methode}} & {\color{white}\textbf{Vorteil}} & {\color{white}\textbf{Nachteil}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+I/O-Port & einfach & spezielle Port-Befehle nötig \\
+MMIO & Zugriff wie RAM, leichter Schutz & Unterscheidung echt/gemappt aufwändig \\
+\end{tabularx}
+}
+
+
+\begin{quote}
+CPU-Adressierung der Register kostet bei beiden Methoden sehr viel Rechenzeit.
+\end{quote}
+
+
+\subsection{DMA (Direct Memory Access)}
+
+\textbf{DMA}: Transport ganzer Datenblöcke direkt Geräte-Controller ↔ Hauptspeicher via DMA-Controller; CPU nur Anfang/Ende beteiligt.
+
+
+\textbf{Vorteile}:
+
+\begin{itemize}
+  \item CPU-Entlastung
+  \item Höhere Gesamtgeschwindigkeit
+  \item Weniger Interrupts (1 statt 1 pro Wort)
+  \item DMA-Controller spezialisiert
+\end{itemize}
+
+\textbf{Ablauf (Lesen von Platte)}:
+
+\begin{enumerate}
+  \item CPU programmiert DMA-Controller (Quelle, Ziel, Anzahl Wörter)
+  \item CPU sendet Lese-Kommando an Platten-Controller
+  \item DMA fordert Platten-Controller zur Übertragung an
+  \item Platte → DMA → RAM (über Bus)
+  \item Platten-Controller meldet DMA Abschluss
+  \item DMA erzeugt \textbf{einen} Interrupt → CPU
+  \item ISR ausgeführt
+\end{enumerate}
+
+\begin{itemize}
+  \item DMA-Zugriffe laufen parallel zur CPU-Bearbeitung
+\end{itemize}
+
+
+\section{Dateiverwaltung}
+
+\textbf{Dateiverwaltung}: organisiert dauerhafte Daten (HDD/SSD); nutzt Geräteverwaltung; stellt Dateidienste bereit.
+
+
+\textbf{Operationen (CRUD)}: Create, Read, Update, Delete.
+
+
+\textbf{Systemdienste}: Erzeugen / Löschen / Kopieren von Dateien und Katalogeinträgen, Verknüpfungen, Umbenennen.
+
+
+
+\section{Dateisystem}
+
+\textbf{Dateisystem}: ermöglicht geordnete Ablage + Wiederfinden auf Speichermedium; stellt Zugriff bereit.
+
+
+\textbf{Aufgaben}: CRUD, Verwaltung freier/belegter Speicher, Strukturierung, Verzeichnisse, Attribute, Zugriffsrechte.
+
+
+\textbf{Speicherung}:
+
+\begin{itemize}
+  \item Variante 1: n aufeinanderfolgende Bytes (Größenänderung → Verschiebung)
+  \item Variante 2: Aufteilung in Blöcke (Standard, flexibel)
+\end{itemize}
+
+\textbf{Beispiele}:
+
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{BS}} & {\color{white}\textbf{Dateisysteme}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Apple & Apple DOS, ProDOS, MFS, HFS/HFSX/HFS+, APFS \\
+Linux & ext, ext2, ext3, ext4, ReiserFS \\
+Windows & FAT12/16/32, exFAT, VFAT, NTFS, ReFS \\
+\end{tabularx}
+}
+
+
+
+\section{Dateisystemcheck}
+
+\textbf{Grundproblem}: nach Absturz Konsistenz herstellen. Optionen:
+
+\begin{enumerate}
+  \item Strukturen immer konsistent halten
+  \item Veränderungen sequenziell ins Journal/Log
+\end{enumerate}
+
+
+\subsection{Journaling-Dateisystem}
+
+\textbf{Prinzip}: Jeder Vorgang einer Transaktion: erst Log-Eintrag, \textbf{dann} Änderung. Log temporär, Daten später ans Ziel zurückgeschrieben.
+
+
+\begin{quote}
+Log-Eintrag steht \textbf{immer vor} der Änderung auf Platte.
+\end{quote}
+
+\textbf{Transaktion}: atomar; nur 2 Zustände — komplett oder nicht.
+
+\begin{itemize}
+  \item Nicht beendete: rückgängig
+  \item Beispiele: Erzeugen/Löschen/Erweitern/Verkürzen/Umbenennen, Attribute ändern
+\end{itemize}
+
+\textbf{Inkonsistenzen} entstehen bei Stromausfall, HW-Ausfall, Absturz.
+
+\begin{itemize}
+  \item Bsp.: Verzeichniseintrag fehlt, Block belegt aber nicht markiert
+\end{itemize}
+
+\textbf{Wiederherstellung}: beim Boot Protokoll abgleichen.
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Art}} & {\color{white}\textbf{Inhalt}} & {\color{white}\textbf{Eigenschaft}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Meta-Daten-Journaling & nur Operationen, kein Inhalt & Daten beim Absturz können verloren gehen \\
+Vollständiges/Data-Journaling & gesamter Vorgang inkl. Daten & Original beim Überschreiben gesichert; doppeltes Schreiben \\
+\end{tabularx}
+}
+
+
+Meta-Daten-Journaling protokolliert: Verzeichnisreferenz, Rechte, Eigentümer, Blöcke.
+
+
+
+\subsection{Log-structured-Dateisystem}
+
+\textbf{Prinzip}: Ganze Platte als Log; kein Zurückschreiben — Log \textbf{ist} die Organisation.
+
+\begin{itemize}
+  \item Alte Daten nicht überschreiben, sondern anhängen (\textbf{Copy-on-Write})
+  \item Verweise auf modifizierte Kopien umgebogen
+\end{itemize}
+
+\textbf{Aufbau}: Log Head → Daten → Empty Space → Daten → Log Tail.
+
+
+\textbf{Schreiben}:
+
+\begin{enumerate}
+  \item Nicht bei jeder Änderung
+  \item Schreibaufträge im RAM gepuffert
+  \item Periodisch als Segment ans Ende des Logs
+\end{enumerate}
+
+\textbf{Cleaner}:
+
+\begin{enumerate}
+  \item Lesen Zusammenfassung erstes Segment (welche I-Nodes/Dateien)
+  \item Prüfung I-Node-Map: noch aktuell?
+\begin{itemize}
+  \item JA: in Speicher laden, mit nächstem Segment neu schreiben
+  \item NEIN: Info löschen, Segment freigeben
+\end{itemize}
+\end{enumerate}
+
+\textbf{Nachteile}:
+
+\begin{itemize}
+  \item Protokollierungsaufwand (Platte springt zw. Log und Daten)
+  \item Doppeltes Schreiben (Data-Journaling)
+  \item Starke Fragmentierung (Log-structured)
+\end{itemize}
+
+
+\section{Datensicherung / Backup}
+
+\textbf{Adressierte Probleme}: Katastrophe, Unachtsamkeit.
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Art}} & {\color{white}\textbf{Basis}} & {\color{white}\textbf{Speicher}} & {\color{white}\textbf{Wiederherstellung}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+\textbf{Vollbackup} & — & sehr hoch & nur Vollbackup \\
+\textbf{Inkrementell} & letztes Backup & niedrig & Voll + alle Inkremente \\
+\textbf{Differentiell} & letztes Vollbackup & mittel & Voll + gewünschtes Diff \\
+\end{tabularx}
+}
+
+
+\begin{itemize}
+  \item \textbf{Voll}: 1 Band, Wiederherstellung zu jedem Zeitpunkt
+  \item \textbf{Inkrementell}: kleine Inkremente; fehlt eines, fehlen Dateien
+  \item \textbf{Differentiell}: einmal veränderte Dateien werden bei jedem Diff erneut gesichert
+\end{itemize}
+
+
+\section{Meltdown \& Spectre}
+
+\textbf{Meltdown}: Sicherheitslücke (3.1.2018), die geschützten RAM (Passwörter etc.) via CPU-Designfehler ausliest.
+
+\begin{itemize}
+  \item Entdeckt: Google Project Zero (28.7.2017)
+  \item Betroffen: alle Intel-Chips ab 1995
+  \item Hebelt RAM-Trennung aus via \textbf{Seitenkanalangriff} (Cache)
+\end{itemize}
+
+
+\subsection{Grundlagen}
+
+\textbf{Kernel}: Herzstück des BS mit voller Kontrolle, vom Boot bis Speicherübergabe.
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Modus}} & {\color{white}\textbf{Rechte}} & {\color{white}\textbf{Zugriff}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Kernel & uneingeschränkt & gesamte HW + Speicher \\
+User & eingeschränkt & nur via System-API \\
+\end{tabularx}
+}
+
+
+\textbf{Speicherisolation}: pro Prozess eigener virtueller Adressraum + Page-Table; Kontextwechsel = Flush + Laden (teuer).
+
+
+\textbf{Kernel-Einbettung}: Aus Performancegründen ist Kernel-Adressraum + gesamter physischer Speicher in \textbf{jeder} User-Page-Table eingebettet, geschützt durch \textbf{Supervisor-Bit}.
+
+\begin{itemize}
+  \item User-Zugriff auf Kernel-Adresse → \textbf{Seg-Fault}
+\end{itemize}
+
+
+\subsection{CPU-Optimierungen}
+
+
+\subsubsection{Pipelining (5 Stages)}
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Stage}} & {\color{white}\textbf{Aufgabe}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+FETCH & Instruktion holen \\
+DECODE & dekodieren \\
+LOAD & laden \\
+EXECUTE & ausführen \\
+WRITE & Ergebnis schreiben \\
+\end{tabularx}
+}
+
+
+Mehrere Instruktionen überlappen.
+
+
+
+\subsubsection{Out-of-Order Execution}
+\begin{itemize}
+  \item Befehle nicht in Programmreihenfolge, sondern optimiert ausgeführt
+  \item Wartet auf Daten → späteren Befehl vorziehen
+\end{itemize}
+
+
+\subsubsection{Speculative Execution}
+\begin{itemize}
+  \item CPU rät, welcher Code als nächstes kommt; führt vorab aus
+  \item Fehlrate → Ergebnis verworfen
+  \item \textbf{Aber}: Cache und TLB-Updates \textbf{nicht zurückgesetzt}
+  \item Bei Spekulation gilt Schutzregel \textbf{nicht} → Exploit-Tür
+\end{itemize}
+
+
+\subsection{Meltdown-Angriff}
+
+\textbf{Prinzip}: Kombination aus Speculative Execution + nicht-zurückgesetztem Cache + Cache-Timing.
+
+
+\textbf{Ablauf} (alles im User-Mode):
+
+\begin{enumerate}
+  \item Speculative Execution greift unauthorisiert auf Kernel-Adresse zu
+  \item Daten landen im Cache
+  \item Exception (Seg-Fault) — Cache bleibt befüllt
+  \item Cache-Timing-Attack (Flush \& Reload) durch zweiten Thread liest Geheimnis aus Latenzen
+\end{enumerate}
+
+\textbf{Probe-Array-Trick}:
+
+\begin{lstlisting}
+ProbeArray = [ASCII];
+secret = readCharacter[5000];   // z.B. 80
+character = ProbeArray[secret]; // ProbeArray[80] in Cache
+\end{lstlisting}
+
+Process 2 misst Zeiten — schnellster Index = Geheimnis. Iteration → Passwort rekonstruieren.
+
+
+
+\subsection{Reparatur}
+
+\textbf{Hardware-Abschaltung}: Out-of-Order/Branch Prediction/Speculative Execution abschalten = drastischer Performance-Verlust.
+
+
+\textbf{OS-Patch}: \textasciitilde{}5–30\% Performance-Einbuße.
+
+
+\textbf{KASLR (Kernel Address Space Layout Randomization)}: zufällige Kernel-Adressen zur Laufzeit.
+
+\begin{itemize}
+  \item Schwäche: Spraying und Side-Channels umgehen ASLR
+\end{itemize}
+
+\textbf{KAISER / KPTI (Kernel Page Table Isolation)}: zwei separate Adressräume (User vs. Kernel); Kernel nicht mehr in User-Page-Table eingebettet.
+
+\begin{itemize}
+  \item Verlangsamt Syscalls + Interrupts
+\end{itemize}
+
+\textbf{Zukunft}:
+
+\begin{itemize}
+  \item \textbf{Hardsplit}: Hardware-Aufteilung in feste Hälften
+  \item Spekulatives Laden einschränken
+  \item AMD: keine Spekulation auf geschützten Bereich
+\end{itemize}
+
+\begin{quote}
+Spectre ist deutlich schwerer zu patchen.
+\end{quote}
+
+
+\subsection{Recap}
+\begin{itemize}
+  \item Designfehler in CPUs, kein SW-Bug
+  \item Löschen/verschlüsseln keine Daten
+  \item Nicht remote nutzbar — Code muss lokal laufen
+  \item Hebeln Isolation Prozess↔Prozess + Prozess↔Kernel auf
+  \item Meltdown: leichter auszunutzen + leichter zu beheben als Spectre
+\end{itemize}
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{document}

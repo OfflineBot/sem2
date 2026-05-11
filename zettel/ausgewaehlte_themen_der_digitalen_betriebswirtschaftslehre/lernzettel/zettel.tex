@@ -1,0 +1,767 @@
+% ============================================================
+%  Lernzettel Template (my_dhbw Stil, analysis.tex)
+%  Eine Spalte, mit TOC, accent-Theme.
+%  Renderer: pdflatex (zweimal)
+% ============================================================
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+\usepackage[top=2cm, bottom=2cm, left=2cm, right=2cm, footskip=1cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{titletoc}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{tabularx}
+\usepackage{ltablex}
+\keepXColumns
+\usepackage{colortbl}
+\usepackage[most,breakable]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{pdflscape}
+\usepackage[colorlinks=true, linkcolor=accent, urlcolor=accent]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme (my_dhbw accent) ────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{242, 255, 242}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer ─────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0.4pt}
+\renewcommand{\sectionmark}[1]{\markboth{#1}{}}
+\fancyfoot[L]{\footnotesize\color{accent}\nouppercase{\leftmark}}
+\fancyfoot[R]{\footnotesize\color{accent}\thepage\,/\,\pageref{LastPage}}
+\fancypagestyle{plain}{%
+  \fancyhf{}%
+  \renewcommand{\headrulewidth}{0pt}%
+  \renewcommand{\footrulewidth}{0.4pt}%
+  \fancyfoot[L]{\footnotesize\color{accent}\nouppercase{\leftmark}}%
+  \fancyfoot[R]{\footnotesize\color{accent}\thepage\,/\,\pageref{LastPage}}%
+}
+
+% ── Typografie ────────────────────────────────────────────────
+\titleformat{\section}
+    {\color{accent}\large\bfseries}{}{0pt}{}
+    [\vspace{-4pt}\color{accent}\rule{\linewidth}{2pt}]
+\titleformat{\subsection}
+    {\normalsize\bfseries\color{accent!85!black}}{}{0pt}{}
+    [\vspace{-3pt}\color{accent!40}\rule{\linewidth}{0.4pt}]
+\titleformat{\subsubsection}
+    {\small\bfseries\color{accent!70!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{12pt}{4pt}
+\titlespacing*{\subsection}{0pt}{8pt}{2pt}
+\titlespacing*{\subsubsection}{0pt}{6pt}{1pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\renewcommand{\arraystretch}{1.25}
+\setlist[itemize]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.4em}
+\setlist[enumerate]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.6em}
+\setlist[itemize,2]{label=\textendash, leftmargin=1.4em}
+
+% ── Boxen ──────────────────────────────────────────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={Abbildung: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={Tabelle: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{solutionbox}[1]{
+  colback=solutionbg, colframe=green!60!black!60,
+  title={#1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=single, framerule=0pt,
+  xleftmargin=4pt, xrightmargin=4pt,
+  aboveskip=6pt, belowskip=6pt,
+  keepspaces=true
+}
+
+% ── TOC-Look ──────────────────────────────────────────────────
+\renewcommand{\contentsname}{\color{accent}Inhalt}
+
+\providecommand{\nichttitle}{Lernzettel}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Digitale Betriebswirtschaftslehre}
+\renewcommand{\nichtsubtitle}{Lernzettel}
+
+
+\begin{document}
+
+\begin{center}
+{\bfseries\Large\color{accent}\nichttitle}\\[2pt]
+\color{accent}\rule{0.35\linewidth}{1pt}\color{black}
+\end{center}
+\vspace{2pt}
+
+{\small\tableofcontents}
+\newpage
+
+% ── BODY ──────────────────────────────────────────────────────
+
+\section{Digitale Betriebswirtschaftslehre — Gesamtzettel}
+
+
+\subsection{1. Grundlagen der BWL}
+
+\textbf{Wirtschaften}: Knappe Güter geplant einsetzen, sodass Bedürfnisbefriedigung möglichst vorteilhaft erfolgt.
+
+\begin{itemize}
+  \item Bedürfnisse + begrenzte Ressourcen → Knappheit → wirtschaftliches Handeln
+\end{itemize}
+
+\textbf{Wertschöpfungssystem}: Input (Produktionsfaktoren) → Transformation → Output (Produkte, Dienstleistungen, Wert).
+
+\begin{itemize}
+  \item Wertschöpfung = Output − Input
+  \item Modell: Porters Wertschöpfungskette
+\end{itemize}
+
+
+\subsection{2. Ansätze der BWL}
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Ansatz}} & {\color{white}\textbf{Vertreter}} & {\color{white}\textbf{Blick auf Unternehmen}} & {\color{white}\textbf{Zentrale Elemente}} & {\color{white}\textbf{Kernfrage}} & {\color{white}\textbf{Zielgröße}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Produktionsorientiert & Erich Gutenberg & Produktion & Arbeit, Kapital, Material & Wie effizient produzieren? & Produktivität (Output/Input) \\
+Entscheidungsorientiert & Edmund Heinen & Entscheidungen & Daten, Alternativen, Modelle & Wie gute Entscheidungen treffen? & Qualität von Entscheidungen \\
+Systemorientiert & Hans Ulrich & Gesamtsystem & Elemente, Umwelt, Rückkopplungen & Wie hängt alles zusammen? & Stabilität, Überlebensfähigkeit \\
+Institutionenökonomisch & Ronald Coase & Regeln \& Verträge & Akteure, Verträge, Anreize & Wie effizient koordinieren? & Minimierung Transaktionskosten \\
+\end{tabularx}
+}
+
+
+\textbf{Systemorientierter Ansatz}: Unternehmen = komplexe, offene Systeme.
+
+\begin{itemize}
+  \item Vernetzte Elemente (Abteilungen, Prozesse, Menschen), Interaktion mit Umwelt (Markt, Technologie, Gesellschaft), Rückkopplungen/Regelkreise
+\end{itemize}
+
+\textbf{Institutionenökonomischer Ansatz}: Analyse Transaktionskosten, Informationsasymmetrien, Principal-Agent-Probleme.
+
+\begin{itemize}
+  \item Idee: Unternehmen organisieren Transaktionen effizienter als der Markt
+\end{itemize}
+
+
+\subsection{3. Produktionsfaktoren}
+
+\textbf{Klassisch (Gutenberg)}:
+
+\begin{itemize}
+  \item \textbf{Arbeit}: menschliche Arbeitsleistung
+  \item \textbf{Betriebsmittel (Kapital)}: Maschinen, Anlagen, IT-Systeme
+  \item \textbf{Werkstoffe}: Rohstoffe, Materialien
+\end{itemize}
+
+\textbf{Daten als moderner Produktionsfaktor}: tragen zur Wertschöpfung bei via Sammlung → Verarbeitung → Entscheidung.
+
+\begin{itemize}
+  \item Ermöglichen bessere Prognosen, effizientere Prozesse, neue Geschäftsmodelle
+  \item Wandel: Input → Produktion → Output  ⇒  Daten → Analyse → Entscheidung → Wertschöpfung
+\end{itemize}
+
+
+\subsection{4. Principal-Agent-Theorie}
+
+\textbf{Principal-Agent-Theorie}: Trennung von Eigentum und Kontrolle führt zu Interessenkonflikten.
+
+\begin{itemize}
+  \item \textbf{Principal}: Eigentümer (delegiert)
+  \item \textbf{Agent}: Manager (entscheidet)
+  \item \textbf{Informationsasymmetrie}: Principal hat weniger Infos über Handeln des Agents
+  \item Risiko: Agent verfolgt eigene Interessen (Macht, kurzfristige Boni)
+  \item Lösung: Anreiz-/Kontrollsysteme — leistungsabhängige Vergütung, KPIs, Monitoring
+\end{itemize}
+
+
+\subsection{5. Shareholder vs. Stakeholder}
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Merkmal}} & {\color{white}\textbf{Stakeholder-Ansatz}} & {\color{white}\textbf{Shareholder-Ansatz}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Fokus & alle Anspruchsgruppen & Eigentümer (Aktionäre) \\
+Oberstes Ziel & Interessen aller Gruppen & Maximierung Unternehmenswert \\
+Erfolgsmaßstab & Maximierung Differenz Nutzen − Kosten aller & Maximierung zukünftiger Zahlungen an Eigentümer \\
+Beurteilung & nicht operational, pluralistisch & operational, monistisch \\
+\end{tabularx}
+}
+
+
+
+\subsubsection{Stakeholder-Übersicht}
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Stakeholder}} & {\color{white}\textbf{Typ}} & {\color{white}\textbf{Anspruch}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Eigenkapitalgeber & intern & Kapitalmehrung (Ausschüttung, Kapitalzuwachs) \\
+Arbeitnehmer & intern & Entlohnung, Arbeitsbedingungen, Sicherheit \\
+Management & intern & Gehalt, Einfluss, Status \\
+Fremdkapitalgeber & extern & Tilgung und Verzinsung \\
+Kunden & extern & Wettbewerbsfähige Güter, Qualität \\
+Lieferanten & extern & Zuverlässige Zahlungen, Langfristigkeit \\
+Staat/Gesellschaft & extern & Steuern, Recht, Umweltschutz \\
+\end{tabularx}
+}
+
+
+
+\subsection{6. Unternehmensziele}
+
+\textbf{Unternehmensziele}: Maßstäbe, an denen zukünftiges Handeln ausgerichtet und bewertet wird.
+
+\begin{itemize}
+  \item Funktionen: Orientierung, Entscheidungskriterium, Handlungssteuerung, Koordination, Legitimation/Konfliktlösung, Bewertung/Kontrolle
+\end{itemize}
+
+
+\subsubsection{Zielinhalt}
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{}} & {\color{white}\textbf{Sachziele}} & {\color{white}\textbf{Formalziele (Erfolgsziele)}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Bezug & Konkretes Handeln in betrieblichen Funktionen & Übergeordnete Ziele, an denen Sachziele auszurichten sind \\
+Beispiele & Produkte, Qualität, Marktposition & Gewinn, Rentabilität, Liquidität \\
+\end{tabularx}
+}
+
+
+\textbf{Sachziel-Kategorien}: Leistungsziele, Finanzziele, Führungs-/Organisationsziele, soziale/ökologische Ziele.
+
+
+
+\subsubsection{Zielausmaß}
+\begin{itemize}
+  \item Wie stark soll Ziel erreicht werden, wie messen? (z. B. Gewinn ≥ 10 \% vs. Gewinn maximieren)
+  \item Messbarkeit: kardinal (€), ordinal (gut/schlecht), nominal (erreicht/nicht)
+\end{itemize}
+
+
+\subsubsection{Zeitbezug}
+\begin{itemize}
+  \item kurzfristig ≤ 1 Jahr | mittelfristig 1–5 Jahre | langfristig > 5 Jahre
+\end{itemize}
+
+
+\subsubsection{Rangordnung}
+\begin{itemize}
+  \item Hauptziele vs. Nebenziele; Ober-, Zwischen-, Unterziele → Zielhierarchie
+\end{itemize}
+
+
+\subsubsection{Zielbeziehungen}
+
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Typ}} & {\color{white}\textbf{Bedeutung}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Komplementär & Erreichen von Ziel A fördert Ziel B \\
+Konkurrierend (konfliktär) & Erreichen von Ziel A behindert Ziel B \\
+Indifferent (neutral) & Ziele beeinflussen sich nicht \\
+\end{tabularx}
+}
+
+
+\textbf{Beispielpaare}:
+
+\begin{itemize}
+  \item Personalisierter Service ↔ Reduktion stationäres Service-Netz → konkurrierend
+  \item KI-Automatisierung Fertigung ↔ Reduktion Ausschuss → komplementär
+  \item Flexibilisierung Arbeitszeiten ↔ Steigerung Vertrieb → indifferent
+  \item Just-in-Time ↔ Reduktion Lagerkosten → komplementär
+  \item Produktivität (digitale Tools) ↔ Verschiebung Investitionen → konkurrierend
+  \item Stilllegung Produktionskapazitäten ↔ Absatzsteigerung bei konstantem Preis → konkurrierend
+\end{itemize}
+
+
+\subsubsection{SMART}
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Buchstabe}} & {\color{white}\textbf{Bedeutung}} & {\color{white}\textbf{Erklärung}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+S & Spezifisch & konkret, unmissverständlich \\
+M & Messbar & quantitativ/qualitativ beurteilbar \\
+A & Attraktiv & angemessen, motivierend \\
+R & Realistisch & mit Ressourcen erreichbar \\
+T & Terminiert & bis zu bestimmtem Zeitpunkt \\
+\end{tabularx}
+}
+
+
+
+\subsection{7. Formalziele — Kennzahlen}
+
+\textbf{Produktivität}: mengenmäßiges Verhältnis Output/Input — misst Ergiebigkeit.
+
+\begin{itemize}
+  \item Produktivität = Output-Menge / Input-Menge
+\end{itemize}
+
+\textbf{Wirtschaftlichkeit}: wertmäßiges Verhältnis — misst Effizienz in Geldeinheiten.
+
+\begin{itemize}
+  \item Wirtschaftlichkeit = Ertrag (€) / Aufwand (€)
+\end{itemize}
+
+\textbf{Gewinn} = Ertrag − Aufwand
+
+
+\textbf{Rentabilität} = (Gewinn / durchschnittlich eingesetztes Kapital) × 100 — relativer Erfolg zum Kapital
+
+
+
+\subsubsection{Beispiel: Schraubenproduktion}
+\begin{itemize}
+  \item Output: 1.000 Schrauben | Input: 10 kg Draht | Drahtpreis: 2 €/kg | Verkaufspreis: 0,02 €/Schraube
+  \item Produktivität = 1.000 / 10 = 100 Schrauben/kg
+  \item Aufwand = 10 · 2 = 20 € | Ertrag = 1.000 · 0,02 = 20 €
+  \item Wirtschaftlichkeit = 20 / 20 = 1,0
+  \item Bei +10 \%: Produktivität = 110 Schrauben/kg; Wirtschaftlichkeit = 1,1
+\end{itemize}
+
+
+\subsubsection{Hebel zur Verbesserung}
+\begin{itemize}
+  \item Mengen: Output erhöhen oder Input senken
+  \item Preise: Verkaufspreis erhöhen oder Einkaufspreis senken
+\end{itemize}
+
+
+\subsection{8. Ökonomisches Prinzip}
+
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Prinzip}} & {\color{white}\textbf{Logik}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Maximum-Prinzip & Gegebener Input → maximaler Output \\
+Minimum-Prinzip & Gegebener Output → minimaler Input \\
+Optimum-Prinzip & möglichst günstiges Verhältnis Output/Input \\
+\end{tabularx}
+}
+
+
+
+\subsection{9. Effizienz vs. Effektivität}
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{}} & {\color{white}\textbf{Effizienz}} & {\color{white}\textbf{Effektivität}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Bedeutung & Verhältnis Leistung/Ressourceneinsatz & Grad der Zielerreichung \\
+Frage & „Werden die Dinge richtig gemacht?" & „Werden die richtigen Dinge gemacht?" \\
+Begriff & Leistungsfähigkeit & Leistungswirksamkeit \\
+\end{tabularx}
+}
+
+
+
+\subsection{10. Mindestbedingungen wirtschaftlichen Handelns}
+
+\begin{itemize}
+  \item \textbf{Langfristig (Erfolg)}: Erträge ≥ Aufwendungen → keine Dauerverluste
+  \item \textbf{Kurzfristig (Liquidität)}: Einzahlungen ≥ Auszahlungen → Zahlungsfähigkeit
+\end{itemize}
+
+
+\subsection{11. Markt — Grundlagen}
+
+\textbf{Markt}: Ort, an dem Angebot und Nachfrage aufeinandertreffen — koordiniert wirtschaftliche Aktivitäten durch Austausch Güter/Dienstleistungen ↔ Geld.
+
+\begin{itemize}
+  \item Marktteilnehmer: Anbieter (Unternehmen), Nachfrager (Kunden)
+\end{itemize}
+
+
+\subsubsection{Grundmodell}
+\begin{itemize}
+  \item \textbf{Nachfrage}: Zahlungsbereitschaft der Kunden; Preis ↑ → Nachfrage ↓
+  \item \textbf{Angebot}: Verkaufsbereitschaft der Unternehmen; Preis ↑ → Angebot ↑
+\end{itemize}
+
+
+\subsubsection{Grenzen des Modells}
+\begin{itemize}
+  \item Informationsasymmetrien, Markteintrittsbarrieren, Marktmacht einzelner Anbieter
+\end{itemize}
+
+
+\subsection{12. Marktgleichgewicht}
+
+\textbf{Gleichgewicht}: Preis bei dem QD = QS — markträumend, ohne Über-/Unterversorgung.
+
+\begin{itemize}
+  \item \textbf{Gleichgewichtspreis}: Preis ohne Über-/Unterversorgung
+  \item \textbf{Gleichgewichtsmenge}: gehandelte Menge im Markt
+  \item QD > QS → Nachfrageüberschuss (Preis zu niedrig) → Preis steigt
+  \item QS > QD → Angebotsüberschuss (Preis zu hoch) → Preis sinkt
+\end{itemize}
+
+
+\subsubsection{Berechnung — Beispiel Ladekabel}
+\begin{itemize}
+  \item Nachfrage: QD = 100 − 2P | Angebot: QS = 20 + 2P
+  \item Gleichsetzen: 100 − 2P = 20 + 2P
+  \item 80 = 4P → P* = 20 €
+  \item Q* = 100 − 2·20 = 60
+\end{itemize}
+
+
+\subsubsection{Disequilibrium bei P = 10 €}
+\begin{itemize}
+  \item QD = 80 | QS = 40 | Nachfrageüberschuss = 40 → Preis steigt bis P* = 20
+\end{itemize}
+
+
+\subsubsection{Nachfrageverschiebung: QD = 120 − 2P}
+\begin{enumerate}
+  \item 120 − 2P = 20 + 2P
+  \item 100 = 4P → P* = 25 €
+  \item Q* = 70
+  \item Rechtsverschiebung Nachfragekurve → höherer Preis, höhere Menge
+  \item Managementableitung: Kapazitäten ausbauen, Preis anheben
+\end{enumerate}
+
+
+\subsubsection{Datenbasierte Nachfrageschätzung}
+\begin{itemize}
+  \item Wettbewerbsvorteil: frühe Erkennung von Nachfrageveränderungen via Verkaufszahlen, Suchanfragen → schnellere Preis-/Mengenanpassung
+\end{itemize}
+
+
+\subsection{13. Marktformen}
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{}} & {\color{white}\textbf{viele Anbieter}} & {\color{white}\textbf{wenige Anbieter}} & {\color{white}\textbf{ein Anbieter}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+\textbf{viele Nachfrager} & Polypol & Oligopol & Monopol \\
+\textbf{wenige Nachfrager} & Nachfrageoligopol & zweiseitiges Oligopol & beschränktes Monopol \\
+\textbf{ein Nachfrager} & Nachfragemonopol & beschränktes Monopol & zweiseitiges Monopol \\
+\end{tabularx}
+}
+
+
+
+\subsubsection{Vergleich}
+
+{\small
+\begin{tabularx}{\linewidth}{XXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Merkmal}} & {\color{white}\textbf{Polypol}} & {\color{white}\textbf{Oligopol}} & {\color{white}\textbf{Monopol}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Anbieter & viele & wenige & einer \\
+Marktmacht & keine & mittel & hoch \\
+Wettbewerb & sehr hoch & begrenzt & gering \\
+\end{tabularx}
+}
+
+
+
+\subsection{14. Wettbewerb}
+
+\begin{itemize}
+  \item Unternehmen konkurrieren um Kunden → Ziel: nachhaltiger Wettbewerbsvorteil
+  \item Formen: \textbf{Kostenführerschaft}, \textbf{Differenzierung}, \textbf{Fokussierung}
+\end{itemize}
+
+\textbf{Markteintrittsbarrieren}: erschweren/verhindern Eintritt neuer Anbieter.
+
+\begin{itemize}
+  \item Typische: hohe Investitionskosten, Skaleneffekte, Vertriebskanäle, Regulierung
+  \item Folgen: weniger Wettbewerb, stärkere Marktmacht Bestehender
+\end{itemize}
+
+
+\subsection{15. Digitale Märkte \& Plattformen}
+
+\begin{itemize}
+  \item \textbf{Plattformmärkte}: vermitteln zwischen ≥ 2 Nutzergruppen (Amazon: Händler–Kunden; Uber: Fahrer–Fahrgäste; Airbnb: Vermieter–Gäste)
+\end{itemize}
+
+\textbf{Netzwerkeffekte}: mehr Nutzer → höherer Nutzen für alle → schnelles Wachstum, Marktkonzentration.
+
+
+\textbf{Lock-in-Effekte}: hohe Wechselkosten/Gewohnheit binden Kunden, erschweren Anbieterwechsel.
+
+
+
+\subsection{16. Entscheidung — Grundlagen}
+
+\textbf{Entscheidung}: Auswahl einer Alternative aus mehreren Handlungsmöglichkeiten.
+
+
+
+\subsubsection{Arten}
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Art}} & {\color{white}\textbf{Merkmale}} & {\color{white}\textbf{Beispiele}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Konstitutiv & langfristig, grundlegend & Standortwahl, Rechtsform, Geschäftsmodell \\
+Laufend & operativ, wiederkehrend, kurzfristig & Preis, Marketingkampagne, Lagerbestand \\
+\end{tabularx}
+}
+
+
+
+\subsubsection{Entscheidungstheorie}
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Theorie}} & {\color{white}\textbf{Frage}} & {\color{white}\textbf{Merkmale}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Normativ & „Wie SOLLTE entschieden werden?" & rational, modellbasiert (z. B. Erwartungswert) \\
+Deskriptiv & „Wie wird TATSÄCHLICH entschieden?" & psychologisch, Biases, begrenzte Rationalität \\
+\end{tabularx}
+}
+
+
+
+\subsection{17. Entscheidungsproblem}
+
+\textbf{Entscheidungsproblem}: Strukturierung der Entscheidungssituation in vier Bestandteile.
+
+\begin{itemize}
+  \item Alternativen, Umweltzustände, Ergebnisse, Zielgröße (Nutzen, Gewinn)
+  \item Matrixstruktur: Alternative × Umweltzustand → Ergebnis
+\end{itemize}
+
+
+\subsubsection{Informationsstand}
+
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Typ}} & {\color{white}\textbf{Bekannt}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Sicherheit & Konsequenzen vollständig bekannt \\
+Risiko & Wahrscheinlichkeiten bekannt \\
+Unsicherheit & weder Wahrscheinlichkeiten noch Konsequenzen \\
+\end{tabularx}
+}
+
+
+
+\subsection{18. Entscheidung bei Sicherheit}
+
+\textbf{Beispiel Payment-System}: 200.000 Transaktionen/Jahr; Gesamtkosten = Fixkosten + Gebühr × Transaktionen.
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Anbieter}} & {\color{white}\textbf{Gebühr/Transaktion}} & {\color{white}\textbf{Fixkosten/Jahr}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+A (Basic) & 0,50 € & 5.000 € \\
+B (Pro) & 0,35 € & 20.000 € \\
+C (Enterprise) & 0,25 € & 50.000 € \\
+\end{tabularx}
+}
+
+
+
+\subsection{19. Entscheidung unter Risiko}
+
+\textbf{Erwartungswert} = Σ (Ergebnis × Wahrscheinlichkeit) — Entscheidungskriterium bei bekannten Wahrscheinlichkeiten.
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Alt.}} & {\color{white}\textbf{Erfolg (p=0,6)}} & {\color{white}\textbf{Misserfolg (p=0,4)}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+A & 100 & 0 \\
+B & 200 & −50 \\
+\end{tabularx}
+}
+
+
+
+\subsection{20. Entscheidung unter Unsicherheit}
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Regel}} & {\color{white}\textbf{Logik}} & {\color{white}\textbf{Risikohaltung}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Maximax (Optimismus) & bestes Ergebnis je Alternative → Maximum & risikofreudig \\
+Maximin / Wald (Pessimismus) & schlechtestes Ergebnis je Alternative → Maximum & risikoavers \\
+Minimum-Regret / Savage-Niehans & maximales Bedauern je Alternative → Minimum & Vermeidung Fehlentscheidung \\
+Laplace (Gleichverteilung) & alle Zustände gleich wahrscheinlich → Durchschnitt & neutral \\
+Hurwicz (Pessimismus-Optimismus) & Gewichtung Best-/Schlechtestfall (λ) & flexibel \\
+\end{tabularx}
+}
+
+
+
+\subsection{21. Entscheidungen in der digitalen Welt}
+
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Klassisch}} & {\color{white}\textbf{Digital}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+wenig Daten & große Datenmengen \\
+statische Modelle & kontinuierliche Optimierung \\
+\end{tabularx}
+}
+
+
+\textbf{Beispiele}: A/B-Testing, Recommendation Systems, Dynamic Pricing.
+
+
+\begin{quote}
+Normative Modelle + Daten = bessere Entscheidungen.
+\end{quote}
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{document}

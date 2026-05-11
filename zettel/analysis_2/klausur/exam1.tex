@@ -1,0 +1,538 @@
+% ============================================================
+%  Probeklausur Template (my_dhbw Stil, klausur_*.tex)
+%  Formell mit Deckblatt-Header; Lösungen als grüne tcolorbox.
+%  Renderer: pdflatex (zweimal)
+% ============================================================
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+\usepackage[top=2cm, bottom=2cm, left=2.4cm, right=2.4cm, footskip=1cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{ltablex}
+\keepXColumns
+\usepackage{colortbl}
+\usepackage[most,breakable]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{pdflscape}
+\usepackage{titlesec}
+\usepackage[colorlinks=true, linkcolor=accent, urlcolor=accent]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme ─────────────────────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{loesung}{RGB}{0, 100, 0}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{240, 252, 240}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer ─────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\footnotesize\color{accent}Modulprüfung -- \nichttitle}
+\fancyhead[R]{\footnotesize\color{accent}\nichtsubtitle}
+\fancyfoot[L]{\footnotesize\color{accent}Matrikelnr.: \rule{3cm}{0.4pt}}
+\fancyfoot[R]{\footnotesize\color{accent}Blatt \thepage\,/\,\pageref{LastPage}}
+
+% ── Typografie ────────────────────────────────────────────────
+\titleformat{\section}
+    {\color{accent}\large\bfseries}{}{0pt}{}
+    [\vspace{-4pt}\color{accent}\rule{\linewidth}{1.5pt}]
+\titleformat{\subsection}
+    {\normalsize\bfseries\color{accent!85!black}}{}{0pt}{}{}
+\titleformat{\subsubsection}
+    {\small\bfseries\color{accent!70!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{12pt}{4pt}
+\titlespacing*{\subsection}{0pt}{8pt}{2pt}
+\titlespacing*{\subsubsection}{0pt}{6pt}{1pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\renewcommand{\arraystretch}{1.25}
+\setlist[itemize]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.4em}
+\setlist[enumerate]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.6em}
+
+% ── Boxen ─────────────────────────────────────────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={Abbildung: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={Tabelle: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{solutionbox}[1]{
+  enhanced,
+  colback=solutionbg, colframe=loesung,
+  title={#1}, fonttitle=\small\bfseries,
+  coltitle=white, colbacktitle=loesung,
+  breakable, before skip=8pt, after skip=8pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=single, framerule=0pt,
+  xleftmargin=4pt, xrightmargin=4pt,
+  aboveskip=6pt, belowskip=6pt,
+  keepspaces=true
+}
+
+\providecommand{\nichttitle}{Probeklausur}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Analysis 2}
+\renewcommand{\nichtsubtitle}{Probeklausur 1}
+
+
+\begin{document}
+
+% Deckblatt
+\thispagestyle{empty}
+\begin{center}
+\vspace*{1cm}
+{\Huge\bfseries\color{accent}Probeklausur}\\[8pt]
+{\Large\color{accent}\nichttitle}\\[4pt]
+\ifx\nichtsubtitle\empty\else
+  {\large\color{accent!80!black}\nichtsubtitle}\\[6pt]
+\fi
+\color{accent}\rule{0.5\linewidth}{1pt}\color{black}
+\end{center}
+
+\vspace{1cm}
+\begin{tabularx}{\textwidth}{@{}l X@{}}
+\textbf{Studiengang:}      & \rule{6cm}{0.4pt} \\[6pt]
+\textbf{Matrikelnummer:}    & \rule{6cm}{0.4pt} \\[6pt]
+\textbf{Name, Vorname:}    & \rule{6cm}{0.4pt} \\[6pt]
+\textbf{Datum:}             & \rule{6cm}{0.4pt} \\[6pt]
+\textbf{Bearbeitungszeit:}  & 60 Minuten \\[6pt]
+\textbf{Hilfsmittel:}       & Taschenrechner (nicht programmierbar) \\
+\end{tabularx}
+
+\vspace{2cm}
+\begin{center}
+{\large\itshape Viel Erfolg!}
+\end{center}
+
+\newpage
+
+% ── BODY ──────────────────────────────────────────────────────
+
+\section{Probeklausur 1 — Analysis 2}
+
+\textbf{Bearbeitungszeit}: 60 Minuten | \textbf{Hilfsmittel}: keine | \textbf{Punkte}: 100
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 1 — Stetigkeit, Differenzierbarkeit und Ableitungsregeln \textit{(16 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben sei die Funktion
+
+
+\[
+g(x) = \frac{\ln(x^2+1)}{e^{2x}} + 3x^4
+\]
+
+
+a) Definiere kurz, wann eine Funktion an einer Stelle $x_0$ \textbf{differenzierbar} ist, und erkläre, warum daraus Stetigkeit folgt, aber nicht umgekehrt. Gib ein konkretes Gegenbeispiel (Funktion + Stelle) an. \textit{(4 P)}
+
+
+b) Berechne $g'(x)$ vollständig. Nenne bei jedem Schritt explizit die verwendete Ableitungsregel. \textit{(8 P)}
+
+
+c) Ein Kommilitone behauptet, $h(x) = |x-2| + x^3$ sei bei $x_0 = 2$ stetig-differenzierbar, weil das Polynom $x^3$ überall glatt ist. Widerlege oder bestätige diese Aussage mit Begründung. \textit{(4 P)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 — Partielle Ableitungen \textit{(14 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben sei
+
+
+\[
+f(x,y,z) = 2x \cdot \ln(x \, y^2 \, z) + \frac{x+y^2}{z}
+\]
+
+
+a) Berechne $\partial f / \partial x$, $\partial f / \partial y$ und $\partial f / \partial z$. \textit{(9 P)}
+
+
+b) Werte alle drei partiellen Ableitungen an der Stelle $P = (1, 1, 1)$ aus. \textit{(3 P)}
+
+
+c) Welche der drei Variablen hat an $P$ den lokal \textbf{stärksten Einfluss} auf $f$ (im Sinne der partiellen Ableitung)? Begründe. \textit{(2 P)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 — Totales Differenzial und Richtungsableitung \textit{(18 Punkte)}}\mbox{}\\[2pt]
+
+Eine Sensor-Software liefert für jeden Punkt $(x,y)$ einer Materialprobe einen Wärmewert
+
+
+\[
+T(x,y) = \sqrt{x \, y}.
+\]
+
+
+a) Bestimme das totale Differenzial $dT$. \textit{(4 P)}
+
+
+b) Berechne die Richtungsableitung von $T$ am Punkt $(4, 4)$ in Richtung der Diagonalen ($dx = dy$). Gib zuerst den korrekt \textbf{normierten} Richtungsvektor an. \textit{(6 P)}
+
+
+c) Ein Messgerät tastet die Probe entlang einer Richtung mit Steigung $dy = \sqrt{3}\,dx$ ab. Bestimme den normierten Richtungsvektor $\vec{a}$ und werte $dT$ am Punkt $(4,4)$ in dieser Richtung aus. \textit{(5 P)}
+
+
+d) Begründe in einem Satz, warum die Wahl eines \textbf{nicht normierten} Richtungsvektors die Aussagekraft der Richtungsableitung als „Anstieg pro Längeneinheit" zerstört. \textit{(3 P)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 — Gradient und Extremstellen \textit{(16 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben sei das Skalarfeld
+
+
+\[
+f(x,y) = 2 - x - 2y + xy.
+\]
+
+
+a) Berechne $\operatorname{grad}(f)$. \textit{(3 P)}
+
+
+b) Bestimme alle Punkte, an denen die \textbf{notwendige Bedingung} für eine Extremstelle erfüllt ist. \textit{(4 P)}
+
+
+c) Berechne $|\operatorname{grad}(f)|$ an der Stelle $(3, 4)$ und interpretiere, was Richtung und Länge dieses Gradienten geometrisch über $f$ aussagen. \textit{(5 P)}
+
+
+d) Eine Lerngruppe behauptet: „Wenn $\operatorname{grad}(f) = 0$ an einer Stelle, dann liegt dort definitiv ein Maximum oder Minimum vor." Widerlege diese Aussage. \textit{(4 P)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 — Divergenz und Rotation: Vergleich und Bewertung \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben seien zwei zweidimensionale Vektorfelder
+
+
+\[
+\vec{F}_1(x,y) = \begin{pmatrix} x^2 y \\ x - y^2 \end{pmatrix}, \qquad \vec{F}_2(x,y) = \begin{pmatrix} y\,e^x \\ x\,e^y \end{pmatrix}.
+\]
+
+
+a) Berechne $\operatorname{div}(\vec{F}_1)$ und $\operatorname{rot}(\vec{F}_1)$ und bestimme jeweils die Punktmenge, auf der $\vec{F}_1$ quellenfrei bzw. wirbelfrei ist. \textit{(8 P)}
+
+
+b) Berechne $\operatorname{div}(\vec{F}_2)$ und $\operatorname{rot}(\vec{F}_2)$ und bestimme die Punktmenge, auf der $\vec{F}_2$ wirbelfrei ist. \textit{(6 P)}
+
+
+c) Ein Strömungsphysiker fragt: „Welches der beiden Felder beschreibt eher eine Strömung mit einem Wirbel, der überall im $\mathbb{R}^2$ rotiert?" Begründe deine Wahl mithilfe der Ergebnisse aus a) und b). \textit{(3 P)}
+
+
+d) Ein anderer Kollege behauptet: „Da $\vec{F}_2$ aus den glatten Funktionen $e^x, e^y$ aufgebaut ist, muss $\operatorname{rot}(\vec{F}_2) = 0$ überall gelten." Bewerte diese Aussage. \textit{(3 P)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 6 — Fehleranalyse: Gradientenabstieg in der Linearen Regression \textit{(16 Punkte)}}\mbox{}\\[2pt]
+
+Ein Studi schreibt folgenden Pseudocode, um den Gradienten der RMSE-Loss-Funktion $f(\beta) = \sqrt{(1/n)\cdot \sum (y_i - \hat{y}_i)^2}$ einer linearen Regression zu minimieren:
+
+
+\begin{lstlisting}
+1: beta = (0, 0)
+2: schritt = 0.1
+3: wiederhole 1000-mal:
+4:     g = grad(f)(beta)         // Gradient an aktueller Stelle
+5:     beta = beta + schritt * g  // Update-Schritt
+6: gib beta zurück
+\end{lstlisting}
+
+
+a) Erkläre kurz, was der Gradient $\operatorname{grad}(f)$ geometrisch bedeutet (Richtung \textbf{und} Länge). \textit{(3 P)}
+
+
+b) Im obigen Code steckt \textbf{ein gravierender Vorzeichenfehler}. Identifiziere die fehlerhafte Zeile, korrigiere sie und begründe inhaltlich, warum die ursprüngliche Variante das Loss eher vergrößert. \textit{(5 P)}
+
+
+c) Die Identität $\operatorname{rot}(\operatorname{grad}(f)) = 0$ wird in Vorlesungsfolien als „Garantie gegen Endlosschleifen beim Gradientenabstieg" angeführt. Erkläre, was damit gemeint ist und welche Eigenschaft des Gradientenfeldes hier ausgenutzt wird. \textit{(4 P)}
+
+
+d) Selbst nach Korrektur kann der Algorithmus in einem \textbf{lokalen} statt globalen Minimum hängenbleiben. Nenne zwei voneinander unabhängige Maßnahmen aus der Praxis, die dieses Risiko reduzieren, und ordne jede begründet einer der Schwächen „Diskretisierung der Schrittweite" oder „Startwert-Abhängigkeit" zu. \textit{(4 P)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+
+\section{Musterlösung Klausur 1}
+
+\paragraph{Aufgabe 1 \textit{(16 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a) (4 P)} $f$ ist differenzierbar bei $x_0$, wenn $f'(x_0) = \lim_{h\to 0} [f(x_0+h)-f(x_0)]/h$ existiert. Differenzierbarkeit setzt Stetigkeit voraus, weil der Grenzwert nur existieren kann, wenn $f(x_0+h) \to f(x_0)$ — sonst würde der Zähler nicht gegen 0 gehen, der Bruch divergierte. Umkehrung gilt nicht: $h(x) = |x|$ ist bei $x_0 = 0$ stetig, aber nicht differenzierbar (Knick: linksseitiger Limes -1, rechtsseitiger $+1$).
+
+\textit{Bewertung:} Definition 1 P, Implikation+Argument 2 P, Gegenbeispiel 1 P.
+
+
+\textbf{b) (8 P)} Mit $u(x) = \ln(x^2+1)$, $v(x) = e^{2x}$ und Quotientenregel:
+
+\[
+g'(x) = \frac{u'(x)\cdot v(x) - u(x)\cdot v'(x)}{v(x)^2} + 12x^3.
+\]
+
+\begin{itemize}
+  \item $u'(x) = \frac{2x}{x^2+1}$ (Kettenregel, $(\ln u)' = u'/u$)
+  \item $v'(x) = 2e^{2x}$ (Kettenregel)
+\end{itemize}
+
+\[
+g'(x) = \frac{\tfrac{2x}{x^2+1}\cdot e^{2x} - \ln(x^2+1)\cdot 2e^{2x}}{e^{4x}} + 12x^3 = \frac{\tfrac{2x}{x^2+1} - 2\ln(x^2+1)}{e^{2x}} + 12x^3.
+\]
+
+\textit{Bewertung:} $u'$ 2 P, $v'$ 1 P, Quotientenregel 3 P, Summand $12x^3$ (Potenzregel) 1 P, korrekte Endform 1 P.
+
+
+\textbf{c) (4 P)} Falsch. $|x-2|$ hat bei $x_0=2$ einen \textbf{Knick} (linksseitige Ableitung -1, rechtsseitige $+1$), $h$ ist dort nicht differenzierbar, also auch nicht stetig-differenzierbar. Dass $x^3$ glatt ist, ändert daran nichts, weil die Summe nur so glatt sein kann wie der „rauere" Summand.
+
+\textit{Bewertung:} Aussage falsch 1 P, Knick-Argument 2 P, Konsequenz 1 P.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 \textit{(14 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a) (9 P)} Mit $\ln(xy^2z) = \ln x + 2\ln y + \ln z$:
+
+\[
+f = 2x\ln(xy^2z) + \frac{x+y^2}{z}.
+\]
+
+\begin{itemize}
+  \item $\partial f/\partial x = 2\ln(xy^2z) + 2x\cdot \tfrac{1}{x} + \tfrac{1}{z} = 2\ln(xy^2z) + 2 + \tfrac{1}{z}$ (Produktregel + Kette)
+  \item $\partial f/\partial y = 2x\cdot \tfrac{2}{y} + \tfrac{2y}{z} = \tfrac{4x}{y} + \tfrac{2y}{z}$
+  \item $\partial f/\partial z = 2x\cdot \tfrac{1}{z} - \tfrac{x+y^2}{z^2} = \tfrac{2x}{z} - \tfrac{x+y^2}{z^2}$
+\end{itemize}
+
+\textit{Bewertung:} je 3 P (Verfahren 2 P, Endform 1 P).
+
+
+\textbf{b) (3 P)} Bei $P=(1,1,1)$: $\ln(1\cdot 1\cdot 1) = 0$, also
+
+\begin{itemize}
+  \item $\partial f/\partial x = 0 + 2 + 1 = 3$
+  \item $\partial f/\partial y = 4 + 2 = 6$
+  \item $\partial f/\partial z = 2 - 2 = 0$
+\end{itemize}
+
+\textit{Bewertung:} je 1 P.
+
+
+\textbf{c) (2 P)} $|\partial f/\partial y| = 6$ ist betragsmäßig am größten. Eine kleine Änderung in $y$ ändert $f$ lokal am stärksten.
+
+\textit{Bewertung:} Antwort 1 P, Begründung 1 P.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 \textit{(18 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a) (4 P)} $T = (xy)^{1/2}$, also
+
+\[
+dT = \frac{\sqrt{y}}{2\sqrt{x}}\,dx + \frac{\sqrt{x}}{2\sqrt{y}}\,dy.
+\]
+
+\textit{Bewertung:} je Term 2 P.
+
+
+\textbf{b) (6 P)} Bei $(4,4)$: $\partial T/\partial x = \tfrac{2}{2\cdot 2} = 0{,}5$, $\partial T/\partial y = 0{,}5$.
+
+Diagonale: $dx=dy$, $|\vec{a}|=1 \Rightarrow dx^2+dy^2 = 1 \Rightarrow dx=dy=\sqrt{0{,}5}$. Normierter Vektor: $\vec{a}=(\sqrt{0{,}5},\sqrt{0{,}5})^T$.
+
+\[
+dT = 0{,}5\cdot\sqrt{0{,}5} + 0{,}5\cdot\sqrt{0{,}5} = \sqrt{0{,}5} \approx 0{,}707.
+\]
+
+Mit $0{,}5(1+\sqrt{1}) = \sqrt{0{,}5}$ konsistent — alternative Schreibweise $0{,}25(1+\sqrt{3})$ aus dem Zettel gilt für eine \textbf{andere} Richtung; hier ist $\sqrt{0{,}5}$ korrekt.
+
+\textit{Bewertung:} Auswertung partieller Ableitungen 2 P, Normierung 2 P, Resultat 2 P.
+
+
+\textbf{c) (5 P)} $|\vec{a}|^2 = dx^2 + 3dx^2 = 4dx^2 = 1 \Rightarrow dx=0{,}5$, $dy=0{,}5\sqrt{3}$, $\vec{a}=(0{,}5;\,0{,}5\sqrt{3})^T$.
+
+\[
+dT(4,4) = 0{,}5\cdot 0{,}5 + 0{,}5\cdot 0{,}5\sqrt{3} = 0{,}25(1+\sqrt{3}) \approx 0{,}683.
+\]
+
+\textit{Bewertung:} Vektor 2 P, Auswertung 3 P.
+
+
+\textbf{d) (3 P)} Ohne Normierung skaliert $dT$ direkt mit der Vektorlänge — der Wert misst dann nicht „Änderung pro Schritt der Länge 1", sondern „Änderung pro Schritt der Länge $|\vec{a}|$". Vergleiche zwischen Richtungen werden bedeutungslos.
+
+\textit{Bewertung:} Skaleneffekt 2 P, Konsequenz 1 P.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 \textit{(16 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a) (3 P)} $\operatorname{grad}(f) = (-1+y,\; -2+x)^T$.
+
+
+\textbf{b) (4 P)} $\operatorname{grad}(f) = 0 \Leftrightarrow y=1 \wedge x=2$. Einziger Kandidat: $(2,1)$.
+
+\textit{Bewertung:} System 2 P, Lösung 2 P.
+
+
+\textbf{c) (5 P)} Bei $(3,4)$: $\operatorname{grad}(f) = (3, 1)^T$, $|\operatorname{grad}(f)| = \sqrt{9+1} = \sqrt{10} \approx 3{,}16$.
+
+\textbf{Richtung} $(3,1)^T$ zeigt in Richtung des steilsten Anstiegs von $f$ am Punkt $(3,4)$; \textbf{Länge} $\sqrt{10}$ ist der Anstieg pro Längeneinheit in dieser Richtung.
+
+\textit{Bewertung:} Vektor 2 P, Betrag 1 P, Interpretation Richtung 1 P, Länge 1 P.
+
+
+\textbf{d) (4 P)} $\operatorname{grad}(f) = 0$ ist nur \textbf{notwendig}, nicht hinreichend. Beispiel: $f(x,y) = x^2 - y^2$ hat $\operatorname{grad} = (2x, -2y) = 0$ bei $(0,0)$, aber dort liegt ein \textbf{Sattelpunkt} vor (in $x$-Richtung Minimum, in $y$-Richtung Maximum). Ohne Untersuchung der zweiten Ableitungen / Hesse-Matrix ist keine Klassifikation möglich.
+
+\textit{Bewertung:} Aussage widerlegt 1 P, Begriff Sattelpunkt 1 P, konkretes Beispiel 2 P.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a) (8 P)} $\vec{F}_1 = (x^2y,\; x-y^2)^T$.
+
+\begin{itemize}
+  \item $\operatorname{div}(\vec{F}_1) = \partial_x(x^2y) + \partial_y(x-y^2) = 2xy - 2y = 2y(x-1)$. Quellenfrei: $y=0$ oder $x=1$.
+  \item $\operatorname{rot}(\vec{F}_1) = \partial_x(x-y^2) - \partial_y(x^2y) = 1 - x^2$. Wirbelfrei: $x=\pm 1$.
+\end{itemize}
+
+\textit{Bewertung:} je Operator 3 P, je Punktmenge 1 P.
+
+
+\textbf{b) (6 P)} $\vec{F}_2 = (ye^x,\; xe^y)^T$.
+
+\begin{itemize}
+  \item $\operatorname{div}(\vec{F}_2) = ye^x + xe^y$.
+  \item $\operatorname{rot}(\vec{F}_2) = \partial_x(xe^y) - \partial_y(ye^x) = e^y - e^x$. Wirbelfrei: $e^y = e^x \Leftrightarrow x=y$.
+\end{itemize}
+
+\textit{Bewertung:} div 2 P, rot 3 P, Punktmenge 1 P.
+
+
+\textbf{c) (3 P)} $\vec{F}_1$: $\operatorname{rot} = 1-x^2$ wird auf $x=\pm 1$ Null. $\vec{F}_2$: $\operatorname{rot} = e^y - e^x$ wird auf der gesamten Geraden $x=y$ Null. \textbf{Keines} rotiert \textit{überall} nicht-Null. Im Vergleich: $\vec{F}_1$ rotiert auf einer großen offenen Menge mit $|\operatorname{rot}|$ wachsend in $|x|$, also dominanter als $\vec{F}_2$ in weiten Bereichen — wenn man eine Wirbel-dominierte Strömung sucht, ist $\vec{F}_1$ besser geeignet.
+
+\textit{Bewertung:} Vergleich 2 P, Entscheidung 1 P.
+
+
+\textbf{d) (3 P)} Falsch. Glattheit der Komponenten garantiert lediglich, dass die partiellen Ableitungen existieren — sie sagt nichts über deren Vorzeichen oder Differenz. Die Rechnung in b) zeigt $\operatorname{rot}(\vec{F}_2) = e^y - e^x \neq 0$ für $x\neq y$.
+
+\textit{Bewertung:} Widerlegung 1 P, Argument Glattheit ≠ Wirbelfreiheit 1 P, Verweis auf Rechnung 1 P.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 6 \textit{(16 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a) (3 P)} Der Gradient zeigt am Auswertungspunkt in Richtung des \textbf{steilsten Anstiegs} von $f$, und seine \textbf{Länge} ist der maximale Anstieg pro Längeneinheit.
+
+\textit{Bewertung:} Richtung 1\{,\}5 P, Länge 1\{,\}5 P.
+
+
+\textbf{b) (5 P)} Fehlerhaft ist Zeile 5: \texttt{beta = beta + schritt * g}. Korrekt:
+
+\begin{lstlisting}
+beta = beta - schritt * g
+\end{lstlisting}
+
+Beim \textbf{Minimieren} muss man entgegen des Gradienten gehen. Ein Plus-Zeichen läuft in Richtung des steilsten \textbf{Anstiegs} — das Loss wird größer, der Algorithmus divergiert oder klettert auf einen Berg statt in ein Tal.
+
+\textit{Bewertung:} Zeile 1 P, Korrektur 2 P, Begründung 2 P.
+
+
+\textbf{c) (4 P)} $\operatorname{rot}(\operatorname{grad}(f)) = 0$ (Satz von Schwarz). Damit ist das Gradientenfeld \textbf{wirbelfrei} und die negative Gradientenrichtung definiert ein konservatives Abstiegsfeld; bei kontinuierlichen Schritten kann der Pfad nicht in einem geschlossenen Kreis enden, ohne $f$ konstant zu halten — d.h. keine echten Endlosschleifen aus reiner Geometrie des Feldes. Endlosschleifen können nur durch Diskretisierung (Oszillation) entstehen, nicht durch Wirbel im Gradientenfeld.
+
+\textit{Bewertung:} Identität nennen 1 P, Wirbelfreiheit 1 P, „kein Kreislauf" Argument 2 P.
+
+
+\textbf{d) (4 P)} Akzeptierte Maßnahmen, je begründet 2 P:
+
+\begin{itemize}
+  \item \textbf{Lernrate adaptiv anpassen / decay schedule} → adressiert „Diskretisierung der Schrittweite", weil zu große $\eta$ über Minima hinweg springt und zu kleine $\eta$ in einem flachen lokalen Tal verharrt.
+  \item \textbf{Mehrere zufällige Startwerte (random restarts)} oder Startwert-Heuristiken → adressiert „Startwert-Abhängigkeit", weil verschiedene Initialisierungen unterschiedliche Talkessel finden und das beste Ergebnis gewählt werden kann.
+\end{itemize}
+Auch akzeptiert: Momentum/Adam (Diskretisierung), simuliertes Tempern bzw. SGD-Rauschen (Startwert).
+
+\textit{Bewertung:} je 2 P (Maßnahme 1 P, korrekte Zuordnung mit Begründung 1 P).
+
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{document}

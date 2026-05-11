@@ -1,0 +1,409 @@
+% ============================================================
+%  Übungsaufgaben Template (my_dhbw Stil, uebung_*.tex)
+%  Header "Übungsblatt", grün eingefärbte <details>-Lösungen.
+%  Renderer: pdflatex (zweimal)
+% ============================================================
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+\usepackage[top=2cm, bottom=2cm, left=2.4cm, right=2.4cm, footskip=1cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{ltablex}
+\keepXColumns
+\usepackage{colortbl}
+\usepackage[most,breakable]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{pdflscape}
+\usepackage{titlesec}
+\usepackage[colorlinks=true, linkcolor=accent, urlcolor=accent]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme ─────────────────────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{loesung}{RGB}{0, 100, 0}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{240, 252, 240}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer ─────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\footnotesize\color{accent}\nichttitle}
+\fancyhead[R]{\footnotesize\color{accent}\nichtsubtitle}
+\fancyfoot[R]{\footnotesize\color{accent}Blatt \thepage\,/\,\pageref{LastPage}}
+
+% ── Typografie ────────────────────────────────────────────────
+\titleformat{\section}
+    {\color{accent}\large\bfseries}{}{0pt}{}
+    [\vspace{-4pt}\color{accent}\rule{\linewidth}{1.5pt}]
+\titleformat{\subsection}
+    {\normalsize\bfseries\color{accent!85!black}}{}{0pt}{}{}
+\titleformat{\subsubsection}
+    {\small\bfseries\color{accent!70!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{10pt}{3pt}
+\titlespacing*{\subsection}{0pt}{6pt}{2pt}
+\titlespacing*{\subsubsection}{0pt}{4pt}{1pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\renewcommand{\arraystretch}{1.2}
+\setlist[itemize]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.4em}
+\setlist[enumerate]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.6em}
+
+% ── Boxen: solutionbox = Lösungsbox in grün ──────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={Abbildung: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={Tabelle: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{solutionbox}[1]{
+  enhanced,
+  colback=solutionbg, colframe=loesung,
+  title={#1}, fonttitle=\small\bfseries,
+  coltitle=white, colbacktitle=loesung,
+  breakable, before skip=8pt, after skip=8pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=single, framerule=0pt,
+  xleftmargin=4pt, xrightmargin=4pt,
+  aboveskip=6pt, belowskip=6pt,
+  keepspaces=true
+}
+
+\providecommand{\nichttitle}{Übungsblatt}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Analysis 2}
+\renewcommand{\nichtsubtitle}{Übungsblatt 7}
+
+
+\begin{document}
+
+\begin{center}
+{\Large\bfseries\color{accent}\nichttitle}
+\ifx\nichtsubtitle\empty\else
+  \\[2pt]{\normalsize\color{accent!80!black}\nichtsubtitle}
+\fi
+\\[2pt]
+\color{accent}\rule{0.4\linewidth}{0.8pt}\color{black}
+\end{center}
+\vspace{4pt}
+
+% ── BODY ──────────────────────────────────────────────────────
+
+\section{Übungsblatt 7 — Gewöhnliche Differenzialgleichungen}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 1 — Klassifikation und Konsequenz \textit{(10 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben sind folgende Differenzialgleichungen:
+
+
+(I) $y'(x) = x^3 \cdot y(x) + \cos(x)$
+
+(II) $y'(x) = \sin(y^2) + x$
+
+(III) $\dfrac{\partial u}{\partial t} = 4 \cdot \dfrac{\partial^2 u}{\partial x^2}$
+
+(IV) $y'(x) = \dfrac{y(x)}{x}$
+
+
+a) Klassifiziere jede DGL nach den Kriterien: gewöhnlich/partiell, Ordnung, linear/nichtlinear, homogen/inhomogen. \textit{(4 P)}
+
+b) Begründe, warum bei (II) die im Kapitel vorgestellten Lösungsformeln für lineare DGL \textbf{nicht} anwendbar sind, und nenne, welches Verfahren stattdessen in Frage käme — falls überhaupt eines aus dem Kapitel passt. \textit{(3 P)}
+
+c) Welche der DGL (I), (III), (IV) lassen sich mit der Lösungsformel für „linear inhomogen, 1. Ordnung" behandeln? Begründe. \textit{(3 P)}
+
+
+\textbf{Lösung:}
+
+
+a)
+
+\begin{itemize}
+  \item (I) gewöhnlich, 1. Ordnung, linear (y und y' nur linear), inhomogen (Zusatzterm $\cos(x)$ ohne y).
+  \item (II) gewöhnlich, 1. Ordnung, nichtlinear (y verschachtelt in $\sin(y^2)$), inhomogen (zusätzlicher Term $+x$).
+  \item (III) partiell (zwei Variablen $t,x$, partielle Ableitungen), 2. Ordnung, linear, homogen.
+  \item (IV) gewöhnlich, 1. Ordnung, linear, homogen (nur $y$ und $y'$, kein $x$-Zusatzterm).
+\end{itemize}
+
+b) Bei (II) tritt $y$ in nichtlinearer Form ($\sin(y^2)$) auf. Die Lösungsformel $y(x)=e^{A(x)}(y_0+\int b(u)e^{-A(u)}du)$ setzt voraus, dass die DGL in der Form $y'=a(x)y+b(x)$ steht — $y$ darf also nur linear vorkommen. Die Methode der getrennten Veränderlichen scheitert ebenfalls, denn die rechte Seite $\sin(y^2)+x$ ist \textbf{nicht} als Produkt $f(x)\cdot g(y)$ darstellbar. Aus den Verfahren des Kapitels ist (II) somit nicht lösbar.
+
+
+c) (I) ist linear, 1. Ordnung, inhomogen → direkt mit $a(x)=x^3$, $b(x)=\cos(x)$ lösbar. (III) ist partiell und damit ausgeschlossen — die Formel gilt nur für gewöhnliche DGL. (IV) ist zwar linear inhomogen-fähig, aber wegen $b(x)=0$ als homogener Spezialfall einfacher mit $y=c_1\cdot e^{A(x)}$ zu lösen. Anwendbar: (I), (IV) (letzteres als Spezialfall mit $b\equiv 0$).
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 — Linear homogene DGL und Halbwertszeit \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Ein Pharmakon zerfällt im Körper gemäß dem Zerfallsgesetz $y'(t) = \alpha \cdot y(t)$, wobei $y(t)$ die Wirkstoffmenge in mg zur Zeit $t$ (in Stunden) angibt. Bei einem Patienten wird gemessen:
+
+$y(0) = 240\text{ mg}, \qquad y(3) = 60\text{ mg}.$
+
+
+a) Bestimme die Zerfallskonstante $\alpha$ und stelle die Lösungsfunktion $y(t)$ explizit auf. \textit{(5 P)}
+
+b) Berechne die Halbwertszeit $t_{1/2}$ in Minuten. \textit{(3 P)}
+
+c) Nach welcher Zeit (in Stunden) ist die Wirkstoffmenge auf 5 mg gefallen? \textit{(4 P)}
+
+d) Eine zweite Substanz erfüllt $y'(t) = \ln(0{,}5)\cdot y(t)$ mit $y(0)=1$. Begründe, dass dann $y(t)=0{,}5^{\,t}$ gilt, und gib die Halbwertszeit an. \textit{(3 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Aus dem Kapitel: AWP-Lösung $y(t)=y_0\cdot e^{\alpha(t-t_0)}$ mit $t_0=0$, $y_0=240$:
+
+$y(t)=240\cdot e^{\alpha t}.$
+
+Einsetzen von $t=3$: $60 = 240\cdot e^{3\alpha} \Rightarrow e^{3\alpha}= \tfrac{1}{4} \Rightarrow 3\alpha=\ln(0{,}25) \Rightarrow \alpha=\tfrac{\ln(0{,}25)}{3}=-\tfrac{2\ln 2}{3}\approx -0{,}4621\;\text{h}^{-1}.$
+
+Lösung: $y(t)=240\cdot e^{-0{,}4621\,t}.$
+
+
+b) $t_{1/2}=-\dfrac{\ln 2}{\alpha}= -\dfrac{\ln 2}{-0{,}4621}=\dfrac{\ln 2}{0{,}4621}\approx 1{,}5\;\text{h} = 90\;\text{min}.$
+
+(Plausibilität: $y(3)=240/4$ → 2 Halbwertszeiten in 3 h → $t_{1/2}=1{,}5$ h. ✓)
+
+
+c) Bedingung: $5=240\cdot e^{\alpha t} \Rightarrow e^{\alpha t}=\tfrac{5}{240}=\tfrac{1}{48}.$
+
+$\alpha t = \ln(1/48) = -\ln 48 \Rightarrow t = \dfrac{-\ln 48}{\alpha} = \dfrac{-\ln 48}{-0{,}4621} = \dfrac{\ln 48}{0{,}4621}\approx \dfrac{3{,}871}{0{,}4621}\approx 8{,}38\;\text{h}.$
+
+
+d) Mit $\alpha=\ln(0{,}5)$ und der Formel $y(t)=y_0\cdot e^{\alpha t}=1\cdot e^{\ln(0{,}5)\,t}=(e^{\ln 0{,}5})^t=0{,}5^{\,t}.$ Halbwertszeit: $0{,}5^{t_{1/2}}=0{,}5 \Rightarrow t_{1/2}=1$ (Zeiteinheit).
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 — Linear inhomogen: Tank-Modell \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+In einem Wassertank mit Volumen $V=500\,\text{L}$ befindet sich anfangs reines Wasser ($y(0)=0\,\text{g}$ Salz). Es fließt kontinuierlich Salzlösung mit $4\,\text{g/min}$ Salzfracht in den Tank und gleichzeitig wird gut durchmischtes Gemisch mit $5\,\text{L/min}$ abgepumpt. Das Volumen bleibt durch ständigen Frischwasserzulauf konstant.
+
+
+a) Begründe, dass die Salzmenge $y(x)$ in g zur Zeit $x$ (in min) der DGL
+
+$y'(x) = -0{,}01\cdot y(x) + 4, \qquad y(0)=0$
+
+genügt. Erkläre dabei den Faktor $0{,}01$. \textit{(4 P)}
+
+b) Löse das AWP mit der Lösungsformel für linear inhomogene DGL 1. Ordnung. \textit{(8 P)}
+
+c) Welche Salzmenge stellt sich für $x\to\infty$ ein? Interpretiere physikalisch. \textit{(3 P)}
+
+d) Nach welcher Zeit ist 90 \% dieses Grenzwerts erreicht? \textit{(5 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Aus dem Tank werden pro Minute $5\,\text{L}$ von $500\,\text{L}$ Inhalt abgezogen, also der Anteil $5/500 = 0{,}01$ des aktuellen Inhalts pro Minute. Somit ist die Abnahmerate $0{,}01\cdot y(x)$ g/min. Hinzu kommen $+4$ g/min durch den Zufluss. Bilanz: $y'(x)=-0{,}01\,y(x)+4$, $y(0)=0$. Form: linear inhomogen 1. Ordnung mit $a(x)=-0{,}01$ konstant, $b(x)=4$ konstant.
+
+
+b) $A(x)=\int a(x)dx=\int(-0{,}01)dx = -0{,}01x.$
+
+Lösungsformel:
+
+$y(x)=e^{A(x)}\Big(y_0+\int_0^x b(u)\,e^{-A(u)}du\Big)= e^{-0{,}01x}\Big(0+\int_0^x 4\cdot e^{0{,}01u}du\Big).$
+
+Innenintegral: $\int_0^x 4e^{0{,}01u}du = \tfrac{4}{0{,}01}\big[e^{0{,}01u}\big]_0^x = 400(e^{0{,}01x}-1).$
+
+Damit $y(x)=e^{-0{,}01x}\cdot 400(e^{0{,}01x}-1) = 400\big(1-e^{-0{,}01x}\big).$
+
+Probe: $y(0)=400(1-1)=0$ ✓. $y'(x)=400\cdot 0{,}01\cdot e^{-0{,}01x}=4e^{-0{,}01x}$. Einsetzen in DGL: $-0{,}01\cdot 400(1-e^{-0{,}01x})+4 = -4+4e^{-0{,}01x}+4 = 4e^{-0{,}01x}$ ✓.
+
+
+c) $\lim_{x\to\infty}y(x)=400\,\text{g}.$ Physikalisch: Im Gleichgewicht hebt der Zufluss von 4 g/min den Abfluss von $0{,}01\cdot 400 = 4$ g/min exakt auf — Sättigung.
+
+
+d) $0{,}9\cdot 400 = 360 = 400(1-e^{-0{,}01x}) \Rightarrow 1-e^{-0{,}01x}=0{,}9 \Rightarrow e^{-0{,}01x}=0{,}1.$
+
+$-0{,}01x=\ln(0{,}1) \Rightarrow x=-\dfrac{\ln(0{,}1)}{0{,}01}=\dfrac{\ln 10}{0{,}01}\approx \dfrac{2{,}3026}{0{,}01}\approx 230{,}3\,\text{min}\approx 3\,\text{h }50\,\text{min}.$
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 — Getrennte Veränderliche: Anwendung und Existenzbereich \textit{(18 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben sei das AWP $\;y'(x) = x\cdot y^2,\; y(0)=1.$
+
+
+a) Identifiziere $f(x)$ und $g(y)$ in der Form $y'=f(x)\cdot g(y)$ und löse das AWP per Trennung der Veränderlichen. \textit{(7 P)}
+
+b) Bestimme den maximalen Definitionsbereich der Lösung um $x_0=0$ (Pol-/Singularitätsstellen!) und begründe, warum die Lösung dort „explodiert". \textit{(5 P)}
+
+c) Untersuche, was geschieht, wenn der Anfangswert auf $y(0)=-1$ geändert wird. Gib die Lösung an und vergleiche das Verhalten. \textit{(6 P)}
+
+
+\textbf{Lösung:}
+
+
+a) $f(x)=x,\; g(y)=y^2$. Trennen:
+
+$\dfrac{dy}{y^2}=x\,dx \Rightarrow \int y^{-2}dy = \int x\,dx \Rightarrow -\dfrac{1}{y}=\dfrac{x^2}{2}+C.$
+
+AWP: $y(0)=1 \Rightarrow -1 = 0+C \Rightarrow C=-1.$
+
+$\Rightarrow -\dfrac{1}{y}=\dfrac{x^2}{2}-1 \Rightarrow \dfrac{1}{y}=1-\dfrac{x^2}{2} = \dfrac{2-x^2}{2} \Rightarrow y(x)=\dfrac{2}{2-x^2}=-\dfrac{2}{x^2-2}.$
+
+(Konsistent mit der Kapitel-Tabelle: $y=-2/(x^2-2)$.) Probe: $y(0)=2/2=1$ ✓.
+
+
+b) Nenner $2-x^2=0 \Rightarrow x=\pm\sqrt{2}$. Maximaler Definitionsbereich um $x_0=0$: $\;(-\sqrt 2,\sqrt 2)$. Für $x\to \pm\sqrt 2$ gilt $y(x)\to +\infty$ (Pol). Grund: Das Wachstumsgesetz $y'=xy^2$ ist superlinear — bei großem $y$ wächst $y'$ quadratisch in $y$, was zur Lösung in endlicher „Zeit" $x$ blow-up führt (typisch für nichtlineare DGL, im Gegensatz zu linearen, wo Lösungen auf ganz $\mathbb R$ existieren).
+
+
+c) Trennung wie in a) liefert wieder $-1/y = x^2/2 + C$. Mit $y(0)=-1$: $-(1/(-1))=1=0+C \Rightarrow C=1.$
+
+$-\dfrac{1}{y}=\dfrac{x^2}{2}+1 \Rightarrow \dfrac{1}{y}=-1-\dfrac{x^2}{2}=-\dfrac{2+x^2}{2} \Rightarrow y(x)=-\dfrac{2}{2+x^2}.$
+
+Vergleich: Der Nenner $2+x^2$ ist auf ganz $\mathbb R$ strikt positiv → die Lösung existiert auf \textbf{ganz} $\mathbb R$, kein Blow-up. Für $x\to\pm\infty$ gilt $y\to 0^-$. Ergebnis: Vorzeichen des Anfangswerts entscheidet hier über globale vs. nur lokale Existenz — eine Eigenheit nichtlinearer DGL.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 — Verfahrensvergleich und Fehleranalyse \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Eine Kommilitonin behauptet, sie habe das AWP $\;y'(x) = \dfrac{y}{x} + x,\; y(1)=0\;$ gelöst und legt folgende Rechnung vor:
+
+
+\begin{quote}
+\textit{„Das ist eine separierbare DGL: $\frac{dy}{y}=\big(\frac{1}{x}+\frac{x}{y}\big)dx$. Integrieren liefert $\ln|y|=\ln|x|+\frac{x^2}{2y}+C$. Mit $y(1)=0$ folgt $C$ … und ich erhalte $y(x)= x^2 - x.$"}
+\end{quote}
+
+a) Begründe \textbf{ohne} Nachrechnen, warum die Trennung der Veränderlichen hier strukturell nicht funktionieren kann. \textit{(3 P)}
+
+b) Identifiziere das richtige Verfahren und löse das AWP korrekt. \textit{(8 P)}
+
+c) Ist das Endergebnis $y(x)=x^2-x$ trotz falscher Rechnung zufällig korrekt? Verifiziere durch Einsetzen in DGL und Anfangsbedingung. \textit{(4 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Trennung der Veränderlichen verlangt $y'=f(x)\cdot g(y)$. Die rechte Seite $\frac{y}{x}+x$ ist eine \textbf{Summe}, kein Produkt aus reinem $x$- und reinem $y$-Term. Insbesondere lässt sich der Term $+x$ nicht als Funktion von $y$ schreiben. Folglich ist die DGL nicht separierbar — der Ansatz $\frac{dy}{g(y)}=f(x)dx$ ist von vornherein ungültig.
+
+
+b) Die DGL hat die Form $y'=a(x)y+b(x)$ mit $a(x)=1/x$, $b(x)=x$ → linear inhomogen, 1. Ordnung.
+
+$A(x)=\int \tfrac{1}{x}dx = \ln|x|.$
+
+$y(x)=e^{A(x)}\Big(y_0+\int_{x_0}^x b(u)e^{-A(u)}du\Big), \quad x_0=1, y_0=0.$
+
+$e^{A(x)}=x,\; e^{-A(u)}=1/u.$
+
+$y(x)=x\Big(0+\int_1^x u\cdot \tfrac{1}{u}\,du\Big)= x\int_1^x 1\,du = x\cdot(x-1)=x^2-x.$
+
+
+c) Probe: $y(x)=x^2-x \Rightarrow y'(x)=2x-1.$
+
+Rechte Seite: $\frac{y}{x}+x=\frac{x^2-x}{x}+x=(x-1)+x=2x-1.$ ✓
+
+Anfangswert: $y(1)=1-1=0$. ✓
+
+Ergebnis: Korrekt — aber \textbf{trotz}, nicht \textbf{wegen} der Rechnung. Die Kommilitonin hatte bei separierbaren Gleichungen ein falsches Schema im Kopf; das Ergebnis stimmt zufällig, weil die Antwort einfach genug ist, um geraten zu werden. Lehre: Verfahren immer am Typ der DGL ausrichten — sonst entstehen unzuverlässige „Zufallstreffer".
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 6 — Transfer: Newtonsches Abkühlungsgesetz \textit{(12 Punkte)}}\mbox{}\\[2pt]
+
+Eine Tasse Kaffee mit Anfangstemperatur $T(0)=85\,°\text{C}$ steht in einem Raum mit konstanter Umgebungstemperatur $T_U=20\,°\text{C}$. Newtons Abkühlungsgesetz besagt
+
+$T'(t) = -k\,\big(T(t)-T_U\big), \qquad k>0,\; t \text{ in min}.$
+
+Nach $t=10$ min ist $T(10)=60\,°\text{C}$.
+
+
+a) Zeige, dass mit der Substitution $u(t):=T(t)-T_U$ eine homogene lineare DGL 1. Ordnung in $u$ entsteht, und gib deren allgemeine Lösung an. \textit{(4 P)}
+
+b) Bestimme $k$ aus den Messdaten und gib $T(t)$ explizit an. \textit{(5 P)}
+
+c) Begründe, warum für \textbf{jeden} Anfangswert $T(0)>T_U$ asymptotisch $T(t)\to T_U$ gilt — formuliere das Argument mit dem Vorzeichen von $k$. \textit{(3 P)}
+
+
+\textbf{Lösung:}
+
+
+a) $u(t)=T(t)-T_U \Rightarrow u'(t)=T'(t)$ (da $T_U$ konstant). Einsetzen:
+
+$u'(t) = -k\cdot u(t).$
+
+Das ist linear homogen, 1. Ordnung mit konstantem Koeffizienten $\alpha=-k$. Allgemeine Lösung laut Kapitel: $u(t)=c_1\cdot e^{-kt}.$ Rücksubstitution: $T(t)=T_U + c_1\,e^{-kt}.$
+
+
+b) AWP $T(0)=85$: $85 = 20 + c_1 \Rightarrow c_1=65.$ Also $T(t)=20+65\,e^{-kt}.$
+
+Bedingung $T(10)=60$: $60=20+65\,e^{-10k} \Rightarrow e^{-10k}=\tfrac{40}{65}=\tfrac{8}{13}.$
+
+$-10k=\ln(8/13) \Rightarrow k=-\dfrac{\ln(8/13)}{10}=\dfrac{\ln(13/8)}{10} \approx \dfrac{0{,}4855}{10}\approx 0{,}04855\;\text{min}^{-1}.$
+
+Explizit: $T(t)=20+65\,e^{-0{,}04855\,t}.$
+
+
+c) Es ist $k>0$, also $-k<0$. Damit gilt $\lim_{t\to\infty}e^{-kt}=0$, somit $\lim_{t\to\infty}T(t)=T_U+c_1\cdot 0 = T_U.$ Das Vorzeichen von $c_1=T(0)-T_U$ legt nur fest, ob die Annäherung von oben (Abkühlung) oder unten (Erwärmung) erfolgt; die Konvergenz selbst ist allein durch $\alpha=-k<0$ erzwungen — exakt das Verhalten linear homogener DGL mit negativem Koeffizienten.
+
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{document}

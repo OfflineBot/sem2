@@ -1,0 +1,566 @@
+% ============================================================
+%  Probeklausur Template (my_dhbw Stil, klausur_*.tex)
+%  Formell mit Deckblatt-Header; Lösungen als grüne tcolorbox.
+%  Renderer: pdflatex (zweimal)
+% ============================================================
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+\usepackage[top=2cm, bottom=2cm, left=2.4cm, right=2.4cm, footskip=1cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{ltablex}
+\keepXColumns
+\usepackage{colortbl}
+\usepackage[most,breakable]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{pdflscape}
+\usepackage{titlesec}
+\usepackage[colorlinks=true, linkcolor=accent, urlcolor=accent]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme ─────────────────────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{loesung}{RGB}{0, 100, 0}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{240, 252, 240}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer ─────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\footnotesize\color{accent}Modulprüfung -- \nichttitle}
+\fancyhead[R]{\footnotesize\color{accent}\nichtsubtitle}
+\fancyfoot[L]{\footnotesize\color{accent}Matrikelnr.: \rule{3cm}{0.4pt}}
+\fancyfoot[R]{\footnotesize\color{accent}Blatt \thepage\,/\,\pageref{LastPage}}
+
+% ── Typografie ────────────────────────────────────────────────
+\titleformat{\section}
+    {\color{accent}\large\bfseries}{}{0pt}{}
+    [\vspace{-4pt}\color{accent}\rule{\linewidth}{1.5pt}]
+\titleformat{\subsection}
+    {\normalsize\bfseries\color{accent!85!black}}{}{0pt}{}{}
+\titleformat{\subsubsection}
+    {\small\bfseries\color{accent!70!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{12pt}{4pt}
+\titlespacing*{\subsection}{0pt}{8pt}{2pt}
+\titlespacing*{\subsubsection}{0pt}{6pt}{1pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\renewcommand{\arraystretch}{1.25}
+\setlist[itemize]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.4em}
+\setlist[enumerate]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.6em}
+
+% ── Boxen ─────────────────────────────────────────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={Abbildung: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={Tabelle: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{solutionbox}[1]{
+  enhanced,
+  colback=solutionbg, colframe=loesung,
+  title={#1}, fonttitle=\small\bfseries,
+  coltitle=white, colbacktitle=loesung,
+  breakable, before skip=8pt, after skip=8pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=single, framerule=0pt,
+  xleftmargin=4pt, xrightmargin=4pt,
+  aboveskip=6pt, belowskip=6pt,
+  keepspaces=true
+}
+
+\providecommand{\nichttitle}{Probeklausur}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Numerische Methoden}
+\renewcommand{\nichtsubtitle}{Probeklausur 1}
+
+
+\begin{document}
+
+% Deckblatt
+\thispagestyle{empty}
+\begin{center}
+\vspace*{1cm}
+{\Huge\bfseries\color{accent}Probeklausur}\\[8pt]
+{\Large\color{accent}\nichttitle}\\[4pt]
+\ifx\nichtsubtitle\empty\else
+  {\large\color{accent!80!black}\nichtsubtitle}\\[6pt]
+\fi
+\color{accent}\rule{0.5\linewidth}{1pt}\color{black}
+\end{center}
+
+\vspace{1cm}
+\begin{tabularx}{\textwidth}{@{}l X@{}}
+\textbf{Studiengang:}      & \rule{6cm}{0.4pt} \\[6pt]
+\textbf{Matrikelnummer:}    & \rule{6cm}{0.4pt} \\[6pt]
+\textbf{Name, Vorname:}    & \rule{6cm}{0.4pt} \\[6pt]
+\textbf{Datum:}             & \rule{6cm}{0.4pt} \\[6pt]
+\textbf{Bearbeitungszeit:}  & 60 Minuten \\[6pt]
+\textbf{Hilfsmittel:}       & Taschenrechner (nicht programmierbar) \\
+\end{tabularx}
+
+\vspace{2cm}
+\begin{center}
+{\large\itshape Viel Erfolg!}
+\end{center}
+
+\newpage
+
+% ── BODY ──────────────────────────────────────────────────────
+
+\section{Probeklausur 1 — Numerische Methoden}
+
+\textbf{Bearbeitungszeit}: 60 Minuten | \textbf{Hilfsmittel}: keine | \textbf{Punkte}: 100
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 1 — Floating-Point \& Catastrophic Cancellation \textit{(18 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben sei ein hypothetisches Floating-Point-System mit \textbf{8 signifikanten Dezimalstellen} (analog zu IEEE 754 Single).
+
+
+a) Erklären Sie kurz den Begriff \textit{Machine Epsilon} (ε\_mach) und geben Sie die Formel in Abhängigkeit der Mantissenbits t an. \textit{(3 Punkte)}
+
+
+b) Berechnen Sie die Funktion
+
+
+\[
+g(\varepsilon) = \frac{1}{(1+\varepsilon) - 1}
+\]
+
+
+für ε = 2 · 10⁻⁸ in dem System mit 8 signifikanten Stellen. Notieren Sie alle Zwischenschritte (gespeicherter Wert von 1+ε, Subtraktionsergebnis, Endwert) und vergleichen Sie mit dem mathematisch exakten Wert 1/ε = 5 · 10⁷. \textit{(8 Punkte)}
+
+
+c) Begründen Sie, warum der Fehler hier dramatisch ist. Schlagen Sie eine \textbf{algebraische Umformung} der Funktion h(ε) = (√(1+ε) − 1)/ε vor, mit der man Catastrophic Cancellation für kleine ε vermeiden kann, und begründen Sie die Verbesserung. \textit{(7 Punkte)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 — Diskretisierung \& Grid Search \textit{(16 Punkte)}}\mbox{}\\[2pt]
+
+Gesucht ist das Minimum der Funktion
+
+
+\[
+f(x) = \cos(x) + 0{,}1 \cdot x \quad \text{auf } [a,b] = [0,\, 4]
+\]
+
+
+a) Bestimmen Sie die Schrittweite h und die Gitterpunkte x₀, …, x\_N für N = 4. \textit{(3 Punkte)}
+
+
+b) Werten Sie f an allen Gitterpunkten aus (auf 4 Nachkommastellen genau, verwenden Sie cos(0)=1, cos(1)≈0,5403, cos(2)≈−0,4161, cos(3)≈−0,9900, cos(4)≈−0,6536) und geben Sie das numerische Minimum sowie die zugehörige Stelle an. \textit{(6 Punkte)}
+
+
+c) Das analytische Minimum liegt bei x\textit{ mit −sin(x}) + 0,1 = 0, also x\textit{ ≈ 3,0417, f(x}) ≈ −0,690. Berechnen Sie den Approximationsfehler |f̃(x\textit{) − f(x})| Ihres Grid-Ergebnisses und beurteilen Sie, ob eine Halbierung von h (also N=8) hier den Approximationsfehler systematisch reduziert oder ob Stabilitätsprobleme zu erwarten sind. Begründen Sie. \textit{(7 Punkte)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 — Newton-Raphson Anwendung \& Konvergenz \textit{(22 Punkte)}}\mbox{}\\[2pt]
+
+Gesucht sei eine Nullstelle der Funktion
+
+
+\[
+f(x) = x^3 - 2x - 5
+\]
+
+
+mit Startwert x₀ = 2. (Bekannt: f'(x) = 3x² − 2.)
+
+
+a) Schreiben Sie die Newton-Iterationsvorschrift x\_\{n+1\} = … explizit für dieses f auf. \textit{(3 Punkte)}
+
+
+b) Führen Sie \textbf{drei} Newton-Iterationen durch und füllen Sie die folgende Tabelle (auf 6 Nachkommastellen). \textit{(9 Punkte)}
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{n}} & {\color{white}\textbf{xₙ}} & {\color{white}\textbf{f(xₙ)}} & {\color{white}\textbf{f'(xₙ)}} & {\color{white}\textbf{xₙ₊₁}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+0 & 2,000000 &  &  &  \\
+1 &  &  &  &  \\
+2 &  &  &  &  \\
+\end{tabularx}
+}
+
+
+c) Die exakte Lösung liegt bei x\textit{ ≈ 2,094551. Berechnen Sie die Fehlerbeträge |e₀|, |e₁|, |e₂|, |e₃| und prüfen Sie anhand der Quotienten |eₙ₊₁|/|eₙ|², ob das beobachtete Verhalten zur Theorie der }\textit{quadratischen Konvergenz}\textit{ passt. }(6 Punkte)*
+
+
+d) Geben Sie zwei \textit{Failure Modes} von Newton-Raphson an und konstruieren Sie für \textbf{einen} davon ein konkretes Beispiel (Funktion + Startwert), bei dem das Verfahren versagt. \textit{(4 Punkte)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 — Pseudocode-Analyse \textit{(14 Punkte)}}\mbox{}\\[2pt]
+
+Eine Studentin hat folgenden Pseudocode für die Secant-Methode geschrieben:
+
+
+\begin{lstlisting}
+Require: x0, x1, f, ε
+1:  while |f(x1)| > ε do
+2:      s  ← (f(x1) - f(x0)) / (x1 - x0)
+3:      x1 ← x1 - f(x1) / s
+4:  end while
+5:  return x1
+\end{lstlisting}
+
+
+a) Der Code enthält einen \textbf{logischen Fehler}, der zu falscher (oft schlechterer als Newton) oder gar keiner Konvergenz führt. Identifizieren Sie ihn präzise und korrigieren Sie den Pseudocode. \textit{(6 Punkte)}
+
+
+b) Zusätzlich fehlt eine numerisch wichtige Sicherheitsabfrage, die Newton-Raphson typischerweise enthält. Welche? Ergänzen Sie die entsprechende Zeile im Pseudocode und begründen Sie kurz, welches Floating-Point-Problem damit abgefangen wird. \textit{(4 Punkte)}
+
+
+c) Nennen Sie den zentralen Vorteil der Secant- gegenüber der Newton-Raphson-Methode und einen konkreten Anwendungsfall (z. B. aus ML/Engineering), in dem dieser Vorteil entscheidend ist. \textit{(4 Punkte)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 — Taylor \& Methodenvergleich \textit{(18 Punkte)}}\mbox{}\\[2pt]
+
+Betrachten Sie f(x) = eˣ am Entwicklungspunkt x\_n = 0.
+
+
+a) Geben Sie das Taylor-Polynom \textbf{2. Ordnung} P₂(x) explizit an und werten Sie P₂(0,5) aus. Vergleichen Sie mit dem exakten Wert $e^{0,5}$ ≈ 1,6487. \textit{(5 Punkte)}
+
+
+b) Newton-Raphson nutzt nur die \textbf{lineare} (1. Ordnung) Approximation. Begründen Sie ausführlich, warum für die Nullstellensuche die lineare Approximation ausreicht und der quadratische Term nicht zwingend benötigt wird. \textit{(5 Punkte)}
+
+
+c) Sie sollen die Nullstelle einer Funktion f bestimmen, die nur als kompilierte Black-Box gegeben ist (kein analytischer Ausdruck, keine f'). Auswertungen sind teuer (1 s pro Aufruf). Vergleichen Sie \textbf{Grid Search}, \textbf{Newton-Raphson} und \textbf{Secant} für dieses Szenario in einer Tabelle (Spalten: Anwendbarkeit, Startwerte, Konvergenzordnung, geschätzte Auswertungen für Genauigkeit 10⁻⁶) und treffen Sie eine begründete Wahl. \textit{(8 Punkte)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 6 — Transfer: Newton in ML \textit{(12 Punkte)}}\mbox{}\\[2pt]
+
+In einem einfachen neuronalen Netz soll der Bias-Parameter b so gewählt werden, dass der Mittelwert der Sigmoid-Aktivierungen σ(zᵢ + b) für gegebene Logits z₁=−1, z₂=0, z₃=2 genau \textbf{0,5} beträgt. Definieren Sie
+
+
+\[
+F(b) = \frac{1}{3}\sum_{i=1}^{3} \sigma(z_i + b) - 0{,}5, \qquad \sigma(x) = \frac{1}{1+e^{-x}}
+\]
+
+
+und gesucht ist b\textit{ mit F(b}) = 0.
+
+
+a) Begründen Sie, warum dieses Problem \textbf{numerisch} gelöst werden muss und nicht analytisch geschlossen lösbar ist. Beziehen Sie sich auf den Begriff \textit{transzendente Funktion}. \textit{(3 Punkte)}
+
+
+b) Bekannt ist σ'(x) = σ(x)(1−σ(x)). Geben Sie F'(b) explizit an. \textit{(3 Punkte)}
+
+
+c) Führen Sie \textbf{eine} Newton-Iteration mit b₀ = 0 durch. Verwenden Sie σ(−1)≈0,2689, σ(0)=0,5, σ(2)≈0,8808, sowie σ'(−1)≈0,1966, σ'(0)=0,25, σ'(2)≈0,1050. Geben Sie b₁ auf 4 Nachkommastellen an. \textit{(6 Punkte)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+
+\section{Musterlösung Klausur 1}
+
+\paragraph{Aufgabe 1 \textit{(18 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a)} ε\_mach ist die kleinste positive Maschinenzahl, für die in der Floating-Point-Arithmetik 1 + ε\_mach ≠ 1 gilt. Mit t Mantissenbits (ohne implizites Bit gezählt): \textbf{ε\_mach = 2⁻ᵗ}. \textit{(Begriff 1,5 P + Formel 1,5 P)}
+
+
+\textbf{b)} Bei 8 signifikanten Stellen:
+
+\begin{itemize}
+  \item 1 + ε = 1 + 0,00000002 = 1,00000002 → gerundet auf 8 sig. Digits: \textbf{1,0000000} (die "2" fällt aus dem Rastergittert; ε\_mach für 8 Dezimalstellen ist ≈10⁻⁷ > ε).
+  \item (1+ε) − 1 = 1,0000000 − 1,0000000 = \textbf{0}.
+  \item g̃(ε) = 1/0 → \textbf{Overflow / undefiniert}.
+  \item Exakt: 1/ε = 5 · 10⁷.
+\end{itemize}
+
+Fehler: katastrophal — Ergebnis ist nicht einmal endlich. \textit{(Schritt 1+ε: 2 P; Subtraktion: 2 P; Endwert: 2 P; Vergleich exakt: 2 P)}
+
+
+\textbf{c)} Die Subtraktion fast gleicher Zahlen (1+ε und 1) löscht alle führenden Stellen, sodass nur ein durch Rundung bestimmter, unzuverlässiger Rest übrigbleibt — \textit{Catastrophic Cancellation}. Bei ε < ε\_mach ist das Ergebnis sogar exakt 0.
+
+
+Umformung für h(ε) = (√(1+ε) − 1)/ε:
+
+
+\[
+h(\varepsilon) = \frac{\sqrt{1+\varepsilon}-1}{\varepsilon} \cdot \frac{\sqrt{1+\varepsilon}+1}{\sqrt{1+\varepsilon}+1} = \frac{1}{\sqrt{1+\varepsilon}+1}
+\]
+
+
+Vorteil: Der Nenner ist nahe 2, keine Subtraktion fast gleicher Zahlen mehr — die Auswertung ist stabil und liefert für ε→0 den korrekten Grenzwert ½. \textit{(Erklärung Cancellation 2 P; Umformung 3 P; Begründung Stabilität 2 P)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 \textit{(16 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a)} h = (b−a)/N = (4−0)/4 = \textbf{1}; Gitterpunkte x\_i = 0, 1, 2, 3, 4. \textit{(h: 1,5 P; Punkte: 1,5 P)}
+
+
+\textbf{b)}
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{xᵢ}} & {\color{white}\textbf{cos(xᵢ)}} & {\color{white}\textbf{0,1·xᵢ}} & {\color{white}\textbf{f(xᵢ)}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+0 & 1,0000 & 0,0 & 1,0000 \\
+1 & 0,5403 & 0,1 & 0,6403 \\
+2 & −0,4161 & 0,2 & −0,2161 \\
+3 & −0,9900 & 0,3 & −0,6900 \\
+4 & −0,6536 & 0,4 & −0,2536 \\
+\end{tabularx}
+}
+
+
+Numerisches Minimum: \textbf{f̃ ≈ −0,6900 bei x = 3}. \textit{(Tabelle 4 P; Minimum 2 P)}
+
+
+\textbf{c)} Approximationsfehler: |f̃(x\textit{) − f(x})| = |−0,6900 − (−0,690)| ≈ \textbf{0,0000} — zufällig sehr klein, weil x = 3 nahe x\textit{ ≈ 3,0417 liegt und f um das Minimum sehr flach ist (f'(x}) = 0).
+
+
+Halbierung auf h = 0,5 (N = 8) liefert i. d. R. einen besseren Gitterpunkt nahe 3,0417 — der Approximationsfehler sinkt mit O(h²) (quadratische Glättung um das Minimum). Hier sind keine Stabilitätsprobleme zu erwarten, weil Grid Search nur Funktionsauswertungen erfordert (keine Subtraktion fast gleicher Werte, keine Verstärkung von Eingabestörungen). Anders als bei Newton-Raphson ist die Methode hier \textbf{stabil}, sodass kleinere h tatsächlich konsistenter approximieren. \textit{(Fehlerwert 2 P; Begründung Stabilität 3 P; Konsequenz 2 P)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 \textit{(22 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a)} $x_{n+1} = x_n - \frac{x_n^3 - 2x_n - 5}{3x_n^2 - 2}$ \textit{(3 P)}
+
+
+\textbf{b)}
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{n}} & {\color{white}\textbf{xₙ}} & {\color{white}\textbf{f(xₙ)}} & {\color{white}\textbf{f'(xₙ)}} & {\color{white}\textbf{xₙ₊₁}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+0 & 2,000000 & −1,000000 & 10,000000 & 2,100000 \\
+1 & 2,100000 & 0,061000 & 11,230000 & 2,094568 \\
+2 & 2,094568 & 0,000186 & 11,161528 & 2,094551 \\
+\end{tabularx}
+}
+
+
+Rechnung n=0: f(2)=8−4−5=−1; f'(2)=12−2=10; x₁=2 − (−1)/10 = 2,1.
+
+Rechnung n=1: f(2,1)=9,261−4,2−5=0,061; f'(2,1)=13,23−2=11,23; x₂=2,1 − 0,061/11,23 ≈ 2,094568.
+
+Rechnung n=2: f(2,094568) ≈ 9,189168 − 4,189136 − 5 ≈ 0,000186 (Toleranzbereich); x₃ ≈ 2,094551. \textit{(je Zeile 3 P)}
+
+
+\textbf{c)} Fehlerbeträge: |e₀| ≈ 0,094551; |e₁| ≈ 0,005449; |e₂| ≈ 0,000017; |e₃| < 10⁻⁶.
+
+Quotienten:
+
+\begin{itemize}
+  \item |e₁|/|e₀|² ≈ 0,005449/0,008940 ≈ \textbf{0,610}
+  \item |e₂|/|e₁|² ≈ 0,000017/0,0000297 ≈ \textbf{0,572}
+\end{itemize}
+
+Beide Quotienten liegen nahe einer Konstanten C ≈ 0,6 — passt zur Theorie |eₙ₊₁| ≤ C·|eₙ|² (quadratische Konvergenz). Der Fehler verzehnfacht sich pro Iteration grob um den Faktor 100 (0,09 → 0,005 → 10⁻⁵). \textit{(Fehler 2 P; Quotienten 2 P; Bewertung 2 P)}
+
+
+\textbf{d)} Beispiele (zwei aus folgenden, nur einer auszuführen):
+
+\begin{itemize}
+  \item \textit{Zero derivative}: f(x) = x³, x₀ = 0 → f'(0) = 0, Division durch Null.
+  \item \textit{Oszillation}: f(x) = x³ − 2x + 2, x₀ = 0 → x₁ = 1, x₂ = 0, x₃ = 1, … Zyklus.
+  \item \textit{Divergenz / falsche Wurzel}: f(x) = arctan(x), x₀ = 2 → divergiert. \textit{(Nennung 2 P; Beispiel 2 P)}
+\end{itemize}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 \textit{(14 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a)} Logischer Fehler: x₀ wird nie aktualisiert. In jeder Iteration wird die Sekantensteigung mit demselben festen x₀ und dem aktuellen x₁ berechnet — das ist die \textit{Regula-Falsi-/feste-Sekante}-Variante, \textbf{nicht} die echte Secant-Methode. Es fehlt die Verschiebung x₀ ← x₁\_alt. \textit{(Identifikation 3 P; Korrektur 3 P)}
+
+
+Korrektur:
+
+\begin{lstlisting}
+Require: x0, x1, f, ε
+1:  while |f(x1)| > ε do
+2:      s     ← (f(x1) - f(x0)) / (x1 - x0)
+3:      xneu  ← x1 - f(x1) / s
+4:      x0    ← x1
+5:      x1    ← xneu
+6:  end while
+7:  return x1
+\end{lstlisting}
+
+
+\textbf{b)} Es fehlt die Abfrage, ob die Sekantensteigung s zu klein ist (also |s| < ε\_machine). Sonst Division durch (nahezu) Null → \textbf{Overflow}. \textit{(Identifikation 2 P; Begründung 2 P)}
+
+
+\begin{lstlisting}
+2a: if |s| < ε_machine then error "Slope too small" end if
+\end{lstlisting}
+
+
+\textbf{c)} Vorteil: Secant \textbf{benötigt keine Ableitung f'}, nur f-Auswertungen. Anwendungsfall: Black-Box-Optimierung in ML (z. B. Hyperparameter-Loss als kompilierte Routine), wo f' nicht analytisch verfügbar oder Backprop nicht greifbar ist; oder kostenintensive Simulationen (CFD/FEM), bei denen finite Differenzen für f' eine zusätzliche teure Auswertung erfordern würden. \textit{(Vorteil 2 P; konkreter Fall 2 P)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 \textit{(18 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a)} P₂(x) = 1 + x + x²/2. P₂(0,5) = 1 + 0,5 + 0,125 = \textbf{1,625}. Exakt 1,6487 → Fehler ≈ 0,0237. \textit{(Polynom 2 P; Auswertung 2 P; Vergleich 1 P)}
+
+
+\textbf{b)} Newton-Raphson sucht x\textit{ mit f(x}) = 0, \textbf{nicht} eine globale Approximation von f. Die Taylor-Entwicklung 1. Ordnung um x\_n ist
+
+f(x) ≈ f(x\_n) + f'(x\_n)(x − x\_n).
+
+Der Term 0. Ordnung allein ist konstant und enthält keine Information über die Lage der Nullstelle. Der Term 1. Ordnung ist der \textbf{erste nicht-konstante Term mit Richtungsinformation} — er ist die einfachste Approximation, mit der man überhaupt eine Nullstelle x\_\{n+1\} bestimmen kann (als Schnitt der Tangente mit der x-Achse). Höhere Terme würden eine quadratische/kubische Gleichung erzeugen, die selbst wieder numerisch gelöst werden müsste — die lineare Variante ist somit die einfachste, die das Problem reduziert. Nahe der Wurzel ist sie zudem hinreichend genau und liefert quadratische Konvergenz. \textit{(Argument 5 P; Punkteabzug bei oberflächlicher Begründung)}
+
+
+\textbf{c)}
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Methode}} & {\color{white}\textbf{Anwendbarkeit (nur f, Black-Box)}} & {\color{white}\textbf{Startwerte}} & {\color{white}\textbf{Konvergenz}} & {\color{white}\textbf{Auswertungen für 10⁻⁶}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Grid Search & ja & Intervall [a,b] & linear/blind, \textasciitilde{}h & \textasciitilde{}10⁶ (h≈10⁻⁶) \\
+Newton-Raphson & \textbf{nein} (f' fehlt) & 1 & quadratisch & — \\
+Secant & ja & 2 & superlinear (≈1,618) & \textasciitilde{}15–20 \\
+\end{tabularx}
+}
+
+
+\textbf{Wahl}: Secant. Newton scheidet aus (kein f'); Grid Search ist bei Auswertungskosten 1 s und 10⁶ Aufrufen unbrauchbar (\textasciitilde{}12 Tage). Secant kommt mit zwei Startwerten und \textasciitilde{}20 Auswertungen aus (\textasciitilde{}20 s). \textit{(Tabelle 5 P; Wahl + Begründung 3 P)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 6 \textit{(12 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a)} Sigmoid σ(x) = 1/(1+e⁻ˣ) ist eine \textbf{transzendente Funktion} (enthält e⁻ˣ, keine endliche Kombination algebraischer Operationen). Eine Summe dreier verschobener Sigmoide gleich 0,5 zu setzen, lässt sich nicht in geschlossener Form nach b auflösen — daher numerisch (z. B. Newton). \textit{(Transzendenz 1,5 P; Folgerung 1,5 P)}
+
+
+\textbf{b)} $F'(b) = \frac{1}{3}\sum_{i=1}^{3}\sigma'(z_i + b) = \frac{1}{3}\sum_{i=1}^{3}\sigma(z_i+b)\bigl(1-\sigma(z_i+b)\bigr)$ \textit{(3 P)}
+
+
+\textbf{c)} Bei b₀ = 0:
+
+\begin{itemize}
+  \item Σσ(zᵢ) = 0,2689 + 0,5 + 0,8808 = 1,6497
+  \item F(0) = 1,6497/3 − 0,5 = 0,5499 − 0,5 = \textbf{0,0499}
+  \item Σσ' = 0,1966 + 0,25 + 0,1050 = 0,5516
+  \item F'(0) = 0,5516/3 ≈ \textbf{0,1839}
+  \item b₁ = 0 − 0,0499/0,1839 ≈ \textbf{−0,2714}
+\end{itemize}
+
+\textit{(F(0): 2 P; F'(0): 2 P; b₁: 2 P)}
+
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{document}

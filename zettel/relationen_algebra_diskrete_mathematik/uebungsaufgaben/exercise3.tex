@@ -1,0 +1,486 @@
+% ============================================================
+%  Übungsaufgaben Template (my_dhbw Stil, uebung_*.tex)
+%  Header "Übungsblatt", grün eingefärbte <details>-Lösungen.
+%  Renderer: pdflatex (zweimal)
+% ============================================================
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+\usepackage[top=2cm, bottom=2cm, left=2.4cm, right=2.4cm, footskip=1cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{ltablex}
+\keepXColumns
+\usepackage{colortbl}
+\usepackage[most,breakable]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{pdflscape}
+\usepackage{titlesec}
+\usepackage[colorlinks=true, linkcolor=accent, urlcolor=accent]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme ─────────────────────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{loesung}{RGB}{0, 100, 0}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{240, 252, 240}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer ─────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\footnotesize\color{accent}\nichttitle}
+\fancyhead[R]{\footnotesize\color{accent}\nichtsubtitle}
+\fancyfoot[R]{\footnotesize\color{accent}Blatt \thepage\,/\,\pageref{LastPage}}
+
+% ── Typografie ────────────────────────────────────────────────
+\titleformat{\section}
+    {\color{accent}\large\bfseries}{}{0pt}{}
+    [\vspace{-4pt}\color{accent}\rule{\linewidth}{1.5pt}]
+\titleformat{\subsection}
+    {\normalsize\bfseries\color{accent!85!black}}{}{0pt}{}{}
+\titleformat{\subsubsection}
+    {\small\bfseries\color{accent!70!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{10pt}{3pt}
+\titlespacing*{\subsection}{0pt}{6pt}{2pt}
+\titlespacing*{\subsubsection}{0pt}{4pt}{1pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\renewcommand{\arraystretch}{1.2}
+\setlist[itemize]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.4em}
+\setlist[enumerate]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.6em}
+
+% ── Boxen: solutionbox = Lösungsbox in grün ──────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={Abbildung: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={Tabelle: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{solutionbox}[1]{
+  enhanced,
+  colback=solutionbg, colframe=loesung,
+  title={#1}, fonttitle=\small\bfseries,
+  coltitle=white, colbacktitle=loesung,
+  breakable, before skip=8pt, after skip=8pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=single, framerule=0pt,
+  xleftmargin=4pt, xrightmargin=4pt,
+  aboveskip=6pt, belowskip=6pt,
+  keepspaces=true
+}
+
+\providecommand{\nichttitle}{Übungsblatt}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Relationen, Algebra, Diskrete Mathematik}
+\renewcommand{\nichtsubtitle}{Übungsblatt 3}
+
+
+\begin{document}
+
+\begin{center}
+{\Large\bfseries\color{accent}\nichttitle}
+\ifx\nichtsubtitle\empty\else
+  \\[2pt]{\normalsize\color{accent!80!black}\nichtsubtitle}
+\fi
+\\[2pt]
+\color{accent}\rule{0.4\linewidth}{0.8pt}\color{black}
+\end{center}
+\vspace{4pt}
+
+% ── BODY ──────────────────────────────────────────────────────
+
+\section{Übungsblatt 3 — Algebraische Strukturen}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 1 — Gruppenaxiome prüfen \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben sei die Menge $M = \{0, 1, 2, 3\}$ mit der Verknüpfung $a \oplus b := (a+b) \bmod 4$.
+
+
+a) Erkläre, was eine algebraische Struktur ist und nenne die vier Axiome einer Gruppe. \textit{(4 Punkte)}
+
+
+b) Stelle die vollständige Verknüpfungstafel für $(M, \oplus)$ auf. \textit{(4 Punkte)}
+
+
+c) Prüfe alle Gruppenaxiome systematisch nach. Bestimme das neutrale Element und gib für jedes Element das Inverse an. \textit{(5 Punkte)}
+
+
+d) Ist $(M, \oplus)$ eine kommutative Gruppe? Begründe. \textit{(2 Punkte)}
+
+
+\textbf{Lösung:}
+
+
+a) Eine algebraische Struktur besteht aus einer Menge $M$ zusammen mit einer oder mehreren Verknüpfungen $v: M \times M \to M$ und einer Menge an Axiomen, die diese Verknüpfungen erfüllen müssen. Die vier Gruppenaxiome sind: (1) Abgeschlossenheit ($a+b \in G$), (2) Assoziativität ($(a+b)+c = a+(b+c)$), (3) Existenz eines neutralen Elements $e$ mit $a+e = a$, (4) Existenz eines inversen Elements $a^*$ zu jedem $a$ mit $a+a^* = e$.
+
+
+b) Verknüpfungstafel:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{$\oplus$}} & {\color{white}\textbf{0}} & {\color{white}\textbf{1}} & {\color{white}\textbf{2}} & {\color{white}\textbf{3}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+\textbf{0} & 0 & 1 & 2 & 3 \\
+\textbf{1} & 1 & 2 & 3 & 0 \\
+\textbf{2} & 2 & 3 & 0 & 1 \\
+\textbf{3} & 3 & 0 & 1 & 2 \\
+\end{tabularx}
+}
+
+
+c)
+
+\begin{itemize}
+  \item \textbf{Abgeschlossenheit}: Alle Tafeleinträge liegen in $M$. ✓
+  \item \textbf{Assoziativität}: Folgt aus der Assoziativität der ganzzahligen Addition: $((a+b)+c) \bmod 4 = (a+(b+c)) \bmod 4$. ✓
+  \item \textbf{Neutrales Element}: $e = 0$, da $a \oplus 0 = (a+0) \bmod 4 = a$ für alle $a \in M$. ✓
+  \item \textbf{Inverse}: $0^* = 0$, $1^* = 3$, $2^* = 2$, $3^* = 1$ (jeweils $a + a^* \equiv 0 \pmod 4$). ✓
+\end{itemize}
+
+Alle vier Axiome sind erfüllt, also ist $(M, \oplus)$ eine Gruppe.
+
+
+d) Ja, kommutativ. Die Verknüpfungstafel ist symmetrisch zur Hauptdiagonalen, d.h. $a \oplus b = b \oplus a$ für alle $a, b \in M$. Dies folgt direkt aus der Kommutativität der Addition in $\mathbb{Z}$.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 — Gegenbeispiele konstruieren \textit{(12 Punkte)}}\mbox{}\\[2pt]
+
+Für jede der folgenden Strukturen: Zeige, dass es \textbf{keine} Gruppe ist, indem du genau angibst, welches Axiom verletzt ist, und dies mit einem konkreten Gegenbeispiel belegst.
+
+
+a) $(\mathbb{N}_0, +)$ — natürliche Zahlen mit Null und Addition. \textit{(3 Punkte)}
+
+
+b) $(\mathbb{R}, \ast)$ — reelle Zahlen mit Multiplikation. \textit{(3 Punkte)}
+
+
+c) $(\mathbb{Z}, -)$ — ganze Zahlen mit Subtraktion. \textit{(3 Punkte)}
+
+
+d) $(M, \circ)$ mit $M = \{1, 2, 3\}$ und $a \circ b := \max(a, b)$. \textit{(3 Punkte)}
+
+
+\textbf{Lösung:}
+
+
+a) \textbf{Inverses Element fehlt}. Das neutrale Element ist $e = 0$. Für $a = 3 \in \mathbb{N}_0$ existiert kein $a^* \in \mathbb{N}_0$ mit $3 + a^* = 0$, da $a^* = -3 \notin \mathbb{N}_0$.
+
+
+b) \textbf{Inverses Element fehlt}. Das neutrale Element bezüglich $\ast$ ist $e = 1$. Für $a = 0 \in \mathbb{R}$ gibt es kein $a^* \in \mathbb{R}$ mit $0 \ast a^* = 1$, da $0 \ast x = 0 \neq 1$ für alle $x$. (Deshalb betrachtet man bei der Multiplikation $\mathbb{R} \setminus \{0\}$.)
+
+
+c) \textbf{Assoziativität verletzt}. $(5 - 3) - 2 = 0$, aber $5 - (3 - 2) = 4$. Also $(a-b)-c \neq a-(b-c)$ im Allgemeinen.
+
+
+d) \textbf{Inverses Element fehlt}. Das neutrale Element wäre das kleinste Element, hier $e = 1$ (denn $\max(a, 1) = a$ für $a \in \{1,2,3\}$). Für $a = 3$ benötigt man ein $a^*$ mit $\max(3, a^*) = 1$ — unmöglich, da $\max(3, a^*) \geq 3$ für jedes $a^* \in M$.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 — Körper $\mathbb{F}_5$ \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+Sei $\mathbb{F}_5 = \{0, 1, 2, 3, 4\}$ mit den Verknüpfungen $a \oplus b := (a+b) \bmod 5$ und $a \odot b := (a \cdot b) \bmod 5$.
+
+
+a) Stelle die Verknüpfungstafel für $\odot$ auf $\mathbb{F}_5 \setminus \{0\}$ auf. \textit{(4 Punkte)}
+
+
+b) Bestimme zu jedem Element $a \in \mathbb{F}_5 \setminus \{0\}$ das multiplikativ inverse Element $a^{-1}$. \textit{(4 Punkte)}
+
+
+c) Prüfe, dass das Distributivgesetz $a \odot (b \oplus c) = (a \odot b) \oplus (a \odot c)$ am Beispiel $a=3, b=4, c=2$ gilt. \textit{(4 Punkte)}
+
+
+d) Erläutere, warum $(\mathbb{F}_5, \oplus, \odot)$ ein Körper ist, und begründe, weshalb diese Konstruktion für $\mathbb{F}_4 = \{0,1,2,3\}$ mit $\bmod\ 4$ \textbf{scheitern} würde. \textit{(8 Punkte)}
+
+
+\textbf{Lösung:}
+
+
+a) Verknüpfungstafel für $\odot$ auf $\{1,2,3,4\}$:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{$\odot$}} & {\color{white}\textbf{1}} & {\color{white}\textbf{2}} & {\color{white}\textbf{3}} & {\color{white}\textbf{4}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+\textbf{1} & 1 & 2 & 3 & 4 \\
+\textbf{2} & 2 & 4 & 1 & 3 \\
+\textbf{3} & 3 & 1 & 4 & 2 \\
+\textbf{4} & 4 & 3 & 2 & 1 \\
+\end{tabularx}
+}
+
+
+b) Aus der Tafel: $1^{-1}=1$, $2^{-1}=3$ (da $2\cdot 3 = 6 \equiv 1$), $3^{-1}=2$, $4^{-1}=4$ (da $4 \cdot 4 = 16 \equiv 1 \pmod 5$).
+
+
+c) Linke Seite: $b \oplus c = (4+2) \bmod 5 = 1$, also $3 \odot 1 = 3$.
+
+Rechte Seite: $3 \odot 4 = 12 \bmod 5 = 2$, $3 \odot 2 = 6 \bmod 5 = 1$, also $2 \oplus 1 = 3$.
+
+Beide Seiten ergeben 3. ✓
+
+
+d) \textbf{$\mathbb{F}_5$ ist Körper}:
+
+\begin{itemize}
+  \item $(\mathbb{F}_5, \oplus)$ ist kommutative Gruppe (analog zu Aufgabe 1, neutral 0, Inverse $a^* = 5-a$ bzw. $0^*=0$).
+  \item $(\mathbb{F}_5 \setminus \{0\}, \odot)$ ist kommutative Gruppe: Tafel zeigt Abgeschlossenheit (kein 0-Eintrag), Assoziativität und Kommutativität folgen aus $\mathbb{Z}$, neutrales Element 1, jedes Element hat ein Inverses (siehe b).
+  \item Distributivität gilt (folgt aus Distributivität in $\mathbb{Z}$ und Verträglichkeit mit $\bmod$).
+\end{itemize}
+
+\textbf{Scheitern bei $\bmod\ 4$}: Hier ist $2 \odot 2 = 4 \bmod 4 = 0$. Damit liegt 0 als Produkt zweier Nicht-Null-Elemente vor — die Menge $\{1,2,3\}$ ist also unter $\odot$ nicht abgeschlossen. Folglich kann $(\mathbb{F}_4 \setminus \{0\}, \odot)$ keine Gruppe sein, und es existiert kein multiplikatives Inverses zu 2 (Nullteiler-Problem). Allgemein funktioniert $(\mathbb{Z}/n\mathbb{Z}, +, \cdot)$ als Körper genau dann, wenn $n$ prim ist — 5 ist prim, 4 nicht.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 — Fehler finden in einem Beweisversuch \textit{(10 Punkte)}}\mbox{}\\[2pt]
+
+Ein Studi behauptet, $(\mathbb{Q}, +, \ast)$ sei kein Körper, und liefert folgende „Begründung":
+
+
+\begin{quote}
+Sei $K = \mathbb{Q}$. Damit $K$ ein Körper ist, muss $(K, \ast)$ eine kommutative Gruppe sein. Aber $0 \in \mathbb{Q}$ besitzt kein multiplikatives Inverses, denn es gibt kein $x \in \mathbb{Q}$ mit $0 \ast x = 1$. Also ist Axiom 4 der Gruppe verletzt, und $(\mathbb{Q}, +, \ast)$ ist kein Körper.
+\end{quote}
+
+a) Identifiziere den logischen Fehler in der Argumentation. \textit{(4 Punkte)}
+
+
+b) Formuliere die korrekte Anforderung an die Multiplikation in einem Körper und wende sie auf $\mathbb{Q}$ an. \textit{(4 Punkte)}
+
+
+c) Gib ein konkretes Beispiel für ein $a \in \mathbb{Q} \setminus \{0\}$ und sein multiplikatives Inverses $a^{-1}$ an. \textit{(2 Punkte)}
+
+
+\textbf{Lösung:}
+
+
+a) Der Fehler liegt in der Behauptung, dass $(K, \ast)$ als Ganzes eine kommutative Gruppe sein müsse. Das ist falsch. Laut Definition aus dem Kapitel muss $(K \setminus \{0\}, \ast)$ — also $K$ \textbf{ohne} das neutrale Element der Addition — eine kommutative Gruppe sein, nicht $(K, \ast)$. Dass 0 kein multiplikatives Inverses hat, ist genau der Grund, weshalb die 0 aus der multiplikativen Gruppe ausgeschlossen wird. Der Studi argumentiert also gegen ein Axiom, das so gar nicht gefordert ist.
+
+
+b) Korrekte Anforderung: $(K \setminus \{0\}, \ast)$ ist eine kommutative Gruppe. Für $\mathbb{Q}$: Die Menge $\mathbb{Q} \setminus \{0\}$ ist unter $\ast$ abgeschlossen (Produkt rationaler, von 0 verschiedener Zahlen ist rational und $\neq 0$), assoziativ und kommutativ, neutrales Element ist 1, und zu jedem $a = p/q \in \mathbb{Q} \setminus \{0\}$ existiert $a^{-1} = q/p \in \mathbb{Q} \setminus \{0\}$ mit $a \ast a^{-1} = 1$. Zusätzlich ist $(\mathbb{Q}, +)$ kommutative Gruppe und das Distributivgesetz gilt — also ist $(\mathbb{Q}, +, \ast)$ ein Körper.
+
+
+c) Beispiel: $a = \tfrac{3}{7} \in \mathbb{Q} \setminus \{0\}$, dann $a^{-1} = \tfrac{7}{3}$, und tatsächlich $\tfrac{3}{7} \ast \tfrac{7}{3} = 1$.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 — Transfer: Symmetrien des Dreiecks \textit{(18 Punkte)}}\mbox{}\\[2pt]
+
+Betrachte die Menge $D = \{r_0, r_{120}, r_{240}\}$ der Drehungen eines gleichseitigen Dreiecks um \$0°\$, \$120°$ und $240°$ (jeweils gegen den Uhrzeigersinn). Die Verknüpfung $\textbackslash{}circ$ sei „erst die rechte, dann die linke Drehung ausführen": $r\_\textbackslash{}alpha \textbackslash{}circ r\_\textbackslash{}beta = r\_\{(\textbackslash{}alpha+\textbackslash{}beta) \textbackslash{}bmod 360\}\$.
+
+
+a) Stelle die Verknüpfungstafel für $(D, \circ)$ auf. \textit{(4 Punkte)}
+
+
+b) Zeige, dass $(D, \circ)$ eine Gruppe bildet. Identifiziere neutrales Element und alle Inversen. \textit{(6 Punkte)}
+
+
+c) Ist die Gruppe kommutativ? Begründe anhand der Tafel. \textit{(2 Punkte)}
+
+
+d) Erweitere die Menge zu $D' = D \cup \{s_1, s_2, s_3\}$ mit drei Spiegelungen an den Achsen durch Eckpunkt $i$. Es gilt $s_i \circ s_i = r_0$ und $r_{120} \circ s_1 = s_3$, jedoch $s_1 \circ r_{120} = s_2$. Erkläre, warum $(D', \circ)$ zwar weiterhin eine Gruppe ist, aber \textbf{nicht mehr} kommutativ. Welches der Gruppenaxiome bleibt im Vergleich zu $(D, \circ)$ erhalten und welche Eigenschaft geht verloren? \textit{(6 Punkte)}
+
+
+\textbf{Lösung:}
+
+
+a) Verknüpfungstafel:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{$\circ$}} & {\color{white}\textbf{$r_0$}} & {\color{white}\textbf{$r_{120}$}} & {\color{white}\textbf{$r_{240}$}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+\textbf{$r_0$} & $r_0$ & $r_{120}$ & $r_{240}$ \\
+\textbf{$r_{120}$} & $r_{120}$ & $r_{240}$ & $r_0$ \\
+\textbf{$r_{240}$} & $r_{240}$ & $r_0$ & $r_{120}$ \\
+\end{tabularx}
+}
+
+
+(Berechnung z.B.: $r_{120} \circ r_{240} = r_{(120+240) \bmod 360} = r_0$.)
+
+
+b)
+
+\begin{itemize}
+  \item \textbf{Abgeschlossenheit}: Tafel enthält ausschließlich Elemente aus $D$. ✓
+  \item \textbf{Assoziativität}: Folgt aus der Assoziativität der Addition modulo 360. ✓
+  \item \textbf{Neutrales Element}: $e = r_0$, da $r_\alpha \circ r_0 = r_\alpha$. ✓
+  \item \textbf{Inverse}: $r_0^* = r_0$, $r_{120}^* = r_{240}$ (denn $120+240 \equiv 0$), $r_{240}^* = r_{120}$. ✓
+\end{itemize}
+
+Damit ist $(D, \circ)$ eine Gruppe.
+
+
+c) Ja, kommutativ. Die Tafel ist symmetrisch zur Hauptdiagonalen ($r_{120} \circ r_{240} = r_0 = r_{240} \circ r_{120}$ etc.). Dies folgt aus $\alpha+\beta = \beta+\alpha$ in $\mathbb{Z}$.
+
+
+d) $(D', \circ)$ ist weiterhin eine Gruppe: Abgeschlossenheit, Assoziativität (Hintereinanderausführung von Abbildungen ist stets assoziativ), neutrales Element $r_0$ und Inverse (jede Drehung hat eine Gegendrehung, jede Spiegelung ist selbstinvers wegen $s_i \circ s_i = r_0$) bleiben erhalten — also alle vier Gruppenaxiome.
+
+
+Verloren geht jedoch die \textbf{Kommutativität}: Die Angabe liefert direkt ein Gegenbeispiel — $r_{120} \circ s_1 = s_3$, aber $s_1 \circ r_{120} = s_2$, und $s_3 \neq s_2$. Anschaulich: Erst spiegeln und dann drehen ergibt eine andere Endlage als erst drehen und dann spiegeln. Damit ist $(D', \circ)$ eine \textbf{nicht-kommutative Gruppe} (im Gegensatz zur reinen Drehgruppe $(D, \circ)$, die kommutativ war). Die zusätzliche Eigenschaft „kommutativ" gehört nicht zu den vier Pflicht-Gruppenaxiomen — die Struktur erfüllt also weiterhin die Gruppendefinition, aber nicht die strengere Definition der kommutativen Gruppe.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 6 — Vergleich Gruppe vs. Körper \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Ein Kommilitone sagt: „Ein Körper ist im Grunde nur eine Gruppe mit einer zweiten Verknüpfung obendrauf — viel mehr Struktur ist da nicht."
+
+
+a) Stelle in einer Tabelle die Anforderungen an eine Gruppe $(G, +)$ und an einen Körper $(K, +, \ast)$ gegenüber. \textit{(5 Punkte)}
+
+
+b) Bewerte die Aussage des Kommilitonen kritisch: Welche zusätzlichen Anforderungen über „eine zweite Verknüpfung" hinaus stellt die Körperdefinition? \textit{(5 Punkte)}
+
+
+c) Klassifiziere die folgenden Strukturen begründet als „keine Gruppe / Gruppe / kommutative Gruppe / Körper": \textit{(5 Punkte)}
+
+\begin{itemize}
+  \item $(\mathbb{Z}, +)$
+\begin{itemize}
+  \item $(\mathbb{Z}, +, \ast)$
+  \item $(\mathbb{R} \setminus \{0\}, \ast)$
+  \item $(\mathbb{R}, +, \ast)$
+  \item $(\mathbb{N}_0, +)$
+\end{itemize}
+\end{itemize}
+
+\textbf{Lösung:}
+
+
+a) Gegenüberstellung:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Anforderung}} & {\color{white}\textbf{Gruppe $(G,+)$}} & {\color{white}\textbf{Körper $(K,+,\ast)$}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Abgeschlossenheit & $+$ & $+$ und $\ast$ \\
+Assoziativität & $+$ & $+$ und $\ast$ \\
+Neutrales Element & für $+$ & für $+$ (heißt 0) und $\ast$ (heißt 1) \\
+Inverses Element & für $+$ & für $+$ (alle Elemente) und $\ast$ (alle außer 0) \\
+Kommutativität & nicht zwingend & $+$ und $\ast$ beide kommutativ \\
+Distributivität & — & $a\ast(b+c) = (a\ast b)+(a\ast c)$ \\
+Zwei Verknüpfungen & nein & ja \\
+\end{tabularx}
+}
+
+
+b) Die Aussage ist zu lax. Ein Körper verlangt deutlich mehr als „eine zweite Verknüpfung":
+
+\begin{enumerate}
+  \item \textbf{Beide} Verknüpfungen müssen kommutative Gruppen liefern — bei $\ast$ allerdings auf $K \setminus \{0\}$, da die 0 generell kein multiplikatives Inverses haben kann.
+  \item \textbf{Distributivität} verbindet die beiden Verknüpfungen — eine vollkommen neue Anforderung, die in der reinen Gruppendefinition nicht vorkommt.
+  \item \textbf{Kommutativität} wird für $+$ in einer Gruppe nicht gefordert, im Körper jedoch zwingend.
+\end{enumerate}
+
+Es ist also nicht „Gruppe + zweite Verknüpfung", sondern „zwei verträgliche kommutative Gruppen, die durch Distributivität verbunden sind" — strukturell ein erheblicher Sprung.
+
+
+c) Klassifikation:
+
+\begin{itemize}
+  \item $(\mathbb{Z}, +)$: \textbf{kommutative Gruppe}. Alle vier Axiome erfüllt, $a+b=b+a$.
+  \item $(\mathbb{Z}, +, \ast)$: \textbf{kein Körper}, da $(\mathbb{Z} \setminus \{0\}, \ast)$ keine Gruppe ist — z.B. besitzt $2 \in \mathbb{Z}$ kein multiplikatives Inverses ($1/2 \notin \mathbb{Z}$).
+  \item $(\mathbb{R} \setminus \{0\}, \ast)$: \textbf{kommutative Gruppe} (laut Kapitel-Beispiel).
+  \item $(\mathbb{R}, +, \ast)$: \textbf{Körper} (Standardbeispiel aus dem Kapitel).
+  \item $(\mathbb{N}_0, +)$: \textbf{keine Gruppe}, da Inverse fehlen (nur 0 hat ein Inverses, alle anderen nicht).
+\end{itemize}
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{document}

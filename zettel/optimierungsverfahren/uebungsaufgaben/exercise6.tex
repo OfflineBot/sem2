@@ -1,0 +1,527 @@
+% ============================================================
+%  Übungsaufgaben Template (my_dhbw Stil, uebung_*.tex)
+%  Header "Übungsblatt", grün eingefärbte <details>-Lösungen.
+%  Renderer: pdflatex (zweimal)
+% ============================================================
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+\usepackage[top=2cm, bottom=2cm, left=2.4cm, right=2.4cm, footskip=1cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{ltablex}
+\keepXColumns
+\usepackage{colortbl}
+\usepackage[most,breakable]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{pdflscape}
+\usepackage{titlesec}
+\usepackage[colorlinks=true, linkcolor=accent, urlcolor=accent]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme ─────────────────────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{loesung}{RGB}{0, 100, 0}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{240, 252, 240}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer ─────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\footnotesize\color{accent}\nichttitle}
+\fancyhead[R]{\footnotesize\color{accent}\nichtsubtitle}
+\fancyfoot[R]{\footnotesize\color{accent}Blatt \thepage\,/\,\pageref{LastPage}}
+
+% ── Typografie ────────────────────────────────────────────────
+\titleformat{\section}
+    {\color{accent}\large\bfseries}{}{0pt}{}
+    [\vspace{-4pt}\color{accent}\rule{\linewidth}{1.5pt}]
+\titleformat{\subsection}
+    {\normalsize\bfseries\color{accent!85!black}}{}{0pt}{}{}
+\titleformat{\subsubsection}
+    {\small\bfseries\color{accent!70!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{10pt}{3pt}
+\titlespacing*{\subsection}{0pt}{6pt}{2pt}
+\titlespacing*{\subsubsection}{0pt}{4pt}{1pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\renewcommand{\arraystretch}{1.2}
+\setlist[itemize]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.4em}
+\setlist[enumerate]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.6em}
+
+% ── Boxen: solutionbox = Lösungsbox in grün ──────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={Abbildung: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={Tabelle: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{solutionbox}[1]{
+  enhanced,
+  colback=solutionbg, colframe=loesung,
+  title={#1}, fonttitle=\small\bfseries,
+  coltitle=white, colbacktitle=loesung,
+  breakable, before skip=8pt, after skip=8pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=single, framerule=0pt,
+  xleftmargin=4pt, xrightmargin=4pt,
+  aboveskip=6pt, belowskip=6pt,
+  keepspaces=true
+}
+
+\providecommand{\nichttitle}{Übungsblatt}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Optimierungsverfahren}
+\renewcommand{\nichtsubtitle}{Übungsblatt 6}
+
+
+\begin{document}
+
+\begin{center}
+{\Large\bfseries\color{accent}\nichttitle}
+\ifx\nichtsubtitle\empty\else
+  \\[2pt]{\normalsize\color{accent!80!black}\nichtsubtitle}
+\fi
+\\[2pt]
+\color{accent}\rule{0.4\linewidth}{0.8pt}\color{black}
+\end{center}
+\vspace{4pt}
+
+% ── BODY ──────────────────────────────────────────────────────
+
+\section{Übungsblatt 6 — 5. Gradientenfreie Optimierung}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 1 — Potenziell optimale Rechtecke verstehen \textit{(10 Punkte)}}\mbox{}\\[2pt]
+
+a) Erklären Sie kurz, was im DIRECT-Algorithmus ein \textbf{potenziell optimales Rechteck} ist und welche Rolle der Parameter k̃ dabei spielt. \textit{(4 P.)}
+
+
+b) Begründen Sie, warum DIRECT NICHT einfach in jeder Iteration nur das Rechteck mit kleinstem f(c⃗) unterteilt. Welche Konsequenz hätte eine solche Greedy-Strategie für die im Kapitel genannte Eigenschaft "global"? \textit{(6 P.)}
+
+
+\textbf{Lösung:}
+
+
+a) Ein Rechteck c⃗ⱼ ist potenziell optimal, wenn es eine \textbf{Konstante k̃ > 0} gibt, sodass sowohl
+
+\begin{itemize}
+  \item f(c⃗ⱼ) − k̃·dⱼ ≤ f(c⃗ᵢ) − k̃·dᵢ  ∀ i  (kein anderes Rechteck ist bei dieser Lipschitz-Annahme besser), als auch
+  \item f(c⃗ⱼ) − k̃·dⱼ ≤ f\_min − ε·|f\_min|  (echte Verbesserung gegenüber bisherigem Bestwert plausibel)
+\end{itemize}
+
+gelten. k̃ wird als \textbf{hypothetische Lipschitzkonstante} interpretiert: Die Idee ist, dass DIRECT keinen festen Lipschitz-Wert benötigt — stattdessen wird jedes k̃ > 0 zugelassen, sodass für jedes mögliche k̃ der jeweils beste Kandidat geteilt wird.
+
+
+b) Greedy (immer min f(c⃗) teilen) würde \textbf{nur kleine Rechtecke mit lokal gutem Funktionswert} weiterverfolgen. Große, bislang ungeteilte Rechtecke mit zwar mäßigem Centerwert, aber großem unerforschten Bereich, würden ignoriert. Damit würde DIRECT zu einer \textbf{lokalen Suche} degradieren — die im Kapitel genannte Eigenschaft "global" ginge verloren, weil weite Bereiche des Suchraums nie erkundet werden. Erst durch das Berücksichtigen verschiedener k̃ (kleines k̃ bevorzugt kleines f, großes k̃ bevorzugt großes d) entsteht ein \textbf{balanciertes Erkunden vs. Verfeinern}.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 — Nelder-Mead, eine vollständige Iteration \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben sei f(x,y) = (x−2)² + (y+1)² und der Simplex mit den drei Eckpunkten
+
+
+x⃗\_A = (0, 0),  x⃗\_B = (3, 0),  x⃗\_C = (1, 3).
+
+
+Verwenden Sie die Standardparameter α = 1, γ = 2, β = 0,5, δ = 0,5.
+
+
+a) Werten Sie f an allen Ecken aus, sortieren Sie den Simplex und bestimmen Sie x⃗₀, x⃗₁, x⃗ₙ. \textit{(4 P.)}
+
+
+b) Berechnen Sie den Centerpoint c⃗. \textit{(3 P.)}
+
+
+c) Führen Sie die Reflexion durch und entscheiden Sie begründet, welcher der Fälle (5a–5d) eintritt. \textit{(8 P.)}
+
+
+d) Geben Sie den neuen Simplex nach diesem Schritt an und nennen Sie eine Größe, anhand derer das Abbruchkriterium am Ende der Iteration geprüft wird. \textit{(5 P.)}
+
+
+\textbf{Lösung:}
+
+
+a) Funktionswerte:
+
+\begin{itemize}
+  \item f(x⃗\_A) = (0−2)² + (0+1)² = 4 + 1 = \textbf{5}
+  \item f(x⃗\_B) = (3−2)² + (0+1)² = 1 + 1 = \textbf{2}
+  \item f(x⃗\_C) = (1−2)² + (3+1)² = 1 + 16 = \textbf{17}
+\end{itemize}
+
+Sortiert (n = 2):
+
+x⃗₀ = x⃗\_B = (3, 0), f₀ = 2;  x⃗₁ = x⃗\_A = (0, 0), f₁ = 5;  x⃗ₙ = x⃗₂ = x⃗\_C = (1, 3), f₂ = 17.
+
+
+b) Centerpoint nutzt nur die n = 2 besten Punkte (also ohne x⃗ₙ):
+
+
+c⃗ = (1/2)·(x⃗₀ + x⃗₁) = (1/2)·((3,0) + (0,0)) = \textbf{(1,5; 0)}
+
+
+c) Reflexion mit α = 1:
+
+
+x⃗\_r = c⃗ + α(c⃗ − x⃗ₙ) = (1,5; 0) + ((1,5; 0) − (1; 3)) = (1,5; 0) + (0,5; −3) = \textbf{(2, −3)}
+
+
+f(x⃗\_r) = (2−2)² + (−3+1)² = 0 + 4 = \textbf{4}
+
+
+Prüfung der Fallunterscheidung:
+
+\begin{itemize}
+  \item f(x⃗₀) = 2 ≤ f(x⃗\_r) = 4 ≤ f(x⃗ₙ₋₁) = f₁ = 5 → erfüllt.
+\end{itemize}
+
+Damit greift der \textbf{erste Fall (Reflect akzeptieren)}: x⃗ₙ wird durch x⃗\_r ersetzt, kein Expand/Contract/Shrink. Begründung: x⃗\_r ist besser als der zweitschlechteste Punkt, aber nicht so spektakulär, dass eine Expansion lohnte.
+
+
+d) Neuer Simplex: \textbf{\{(3,0), (0,0), (2,−3)\}}.
+
+
+Abbruchkriterien laut Kapitel: z. B. ∑ⱼ ‖x⃗ⱼ − x⃗ᵢ‖ < ε oder f(x⃗ₙ) − f(x⃗₀) < ε oder maximale Iterationszahl erreicht. Konkret hier: f(x⃗ₙ) − f(x⃗₀) = 5 − 2 = 3 → noch weit von Konvergenz, also weiter zu Schritt 2.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 — DIRECT: pot. opt. Rechtecke berechnen \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+In einer DIRECT-Iteration liegen folgende vier Rechtecke vor (ε = 0,01):
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Rechteck}} & {\color{white}\textbf{dᵢ}} & {\color{white}\textbf{f(c⃗ᵢ)}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+R₁ & 0,2 & 2,5 \\
+R₂ & 0,4 & 4,0 \\
+R₃ & 0,7 & 5,0 \\
+R₄ & 1,0 & 3,0 \\
+\end{tabularx}
+}
+
+
+a) Geben Sie f\_min und die Schwelle f\_min − ε·|f\_min| an. \textit{(2 P.)}
+
+
+b) Bestimmen Sie für jedes Rechteck, ob es potenziell optimal ist. Geben Sie dazu jeweils das (möglicherweise leere) Intervall gültiger k̃ explizit an. \textit{(10 P.)}
+
+
+c) Welche Rechtecke werden in dieser Iteration unterteilt, und in welche Richtung erfolgt die Teilung (gemäß Schritt 3 des Algorithmus)? \textit{(3 P.)}
+
+
+\textbf{Lösung:}
+
+
+a) f\_min = 2,5; Schwelle = 2,5 − 0,01·2,5 = \textbf{2,475}.
+
+
+b) Bedingung: f(c⃗ⱼ) − k̃·dⱼ ≤ f(c⃗ᵢ) − k̃·dᵢ ∀ i  und  f(c⃗ⱼ) − k̃·dⱼ ≤ 2,475.
+
+
+\textbf{R₁ (d=0,2; f=2,5):}
+
+\begin{itemize}
+  \item vs. R₂: 2,5 − 0,2k̃ ≤ 4 − 0,4k̃ → k̃ ≤ 7,5
+  \item vs. R₃: 2,5 − 0,2k̃ ≤ 5 − 0,7k̃ → k̃ ≤ 5
+  \item vs. R₄: 2,5 − 0,2k̃ ≤ 3 − 1,0k̃ → 0,8k̃ ≤ 0,5 → k̃ ≤ 0,625
+  \item Schwelle: 2,5 − 0,2k̃ ≤ 2,475 → k̃ ≥ 0,125
+\end{itemize}
+
+→ k̃ ∈ [0,125; 0,625] \textbf{nicht leer ⇒ R₁ pot. opt.}
+
+
+\textbf{R₂ (d=0,4; f=4):}
+
+\begin{itemize}
+  \item vs. R₁: 4 − 0,4k̃ ≤ 2,5 − 0,2k̃ → −0,2k̃ ≤ −1,5 → k̃ ≥ 7,5
+  \item vs. R₄: 4 − 0,4k̃ ≤ 3 − 1,0k̃ → 0,6k̃ ≤ −1 → \textbf{unlösbar}
+\end{itemize}
+
+→ \textbf{R₂ nicht pot. opt.} (R₄ dominiert R₂ bei jedem k̃ > 0, da R₄ größeres d UND kleineres f hat.)
+
+
+\textbf{R₃ (d=0,7; f=5):}
+
+\begin{itemize}
+  \item vs. R₄: 5 − 0,7k̃ ≤ 3 − 1,0k̃ → 0,3k̃ ≤ −2 → \textbf{unlösbar}
+\end{itemize}
+
+→ \textbf{R₃ nicht pot. opt.}
+
+
+\textbf{R₄ (d=1,0; f=3):}
+
+\begin{itemize}
+  \item vs. R₁: 3 − 1,0k̃ ≤ 2,5 − 0,2k̃ → 0,8k̃ ≥ 0,5 → k̃ ≥ 0,625
+  \item vs. R₂: −0,6k̃ ≤ 1 → ∀ k̃ > 0
+  \item vs. R₃: −0,3k̃ ≤ 2 → ∀ k̃ > 0
+  \item Schwelle: 3 − 1,0k̃ ≤ 2,475 → k̃ ≥ 0,525
+\end{itemize}
+
+→ k̃ ∈ [0,625; ∞) \textbf{nicht leer ⇒ R₄ pot. opt.}
+
+
+\textbf{Pot. opt.: R₁ und R₄.}
+
+
+c) R₁ und R₄ werden geteilt. Gemäß Schritt 3 wird in einem Rechteck die Menge I aller Dimensionen mit der maximalen Seitenlänge bestimmt; entlang dieser Dimensionen werden Drittelungen vorgenommen, wobei mit der Dimension begonnen wird, in der die Probe c⃗ ± δ·e⃗ᵢ den besten Funktionswert liefert. Das verfeinert R₁ lokal um den bisher besten Punkt und exploriert gleichzeitig den großen, bisher ungeteilten Bereich R₄.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 — Transfer: Bauteil-Designprozess \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Sie optimieren ein Bauteil mit zwei Eingangsgrößen:
+
+\begin{itemize}
+  \item Wandstärke s ∈ [1, 10] mm (kontinuierlich)
+  \item Materialwahl m ∈ \{Stahl, Aluminium, Titan\} (kategorisch)
+\end{itemize}
+
+Die Zielfunktion "spezifisches Gewicht × Stückkosten" lässt sich nur durch Bau und Test eines Prototyps bestimmen — eine Auswertung kostet ca. 8 Stunden Arbeit. Es gibt keinerlei Ableitungsinformation.
+
+
+a) Begründen Sie kurz (zwei Argumente), warum hier ein gradientenfreies Verfahren das Mittel der Wahl ist. \textit{(3 P.)}
+
+
+b) Keiner der beiden Algorithmen aus dem Kapitel kann die kategorische Variable m direkt verarbeiten. Schlagen Sie eine pragmatische Vorgehensweise vor, mit der Sie dennoch beide einsetzen können — insbesondere: Welche der beiden Algorithmen lässt sich durch Ihren Vorschlag mit weniger Auswertungen einsetzen? \textit{(7 P.)}
+
+
+c) Bei sehr teurer Funktionsauswertung — würden Sie eher zu Nelder-Mead (mit Restarts) oder DIRECT raten? Geben Sie zwei begründete Argumente. \textit{(5 P.)}
+
+
+\textbf{Lösung:}
+
+
+a) (1) Die Zielfunktion ist eine \textbf{Black-Box}: kein analytischer Ausdruck → kein Gradient, keine Hesse, also ist gradientenbasierte Optimierung nicht durchführbar. (2) Selbst wenn man Finite-Differenzen-Gradienten approximieren wollte, kostet allein eine numerische Ableitung in s mehrere Auswertungen — und über die diskrete Variable m existiert ohnehin kein Gradient. Gradientenfreie Verfahren werten f direkt aus und akzeptieren auch nicht-differenzierbare bzw. diskontinuierliche Probleme.
+
+
+b) Vorgehen: \textbf{Äußere Schleife über die 3 Materialien}, innere kontinuierliche Optimierung über s.
+
+\begin{itemize}
+  \item Für jedes m ∈ \{Stahl, Al, Ti\} startet man unabhängig eine eindimensionale gradientenfreie Optimierung über s ∈ [1, 10].
+  \item Anschließend nimmt man das beste Tupel (m\textit{, s}).
+\end{itemize}
+
+Welcher Algorithmus profitiert mehr?
+
+\begin{itemize}
+  \item \textbf{Nelder-Mead} in 1D ist nur ein 2-Punkte-Simplex (Linie) und konvergiert lokal sehr schnell, sucht aber \textbf{nicht global} — bei nicht-konvexem Verhalten in s nötig: mehrere Restarts pro Material → viele Auswertungen.
+  \item \textbf{DIRECT} in 1D ist trivial anwendbar (Box-Constraint [1,10]), liefert eine \textbf{global gerichtete} Suche und benötigt typischerweise weniger Auswertungen, um den globalen Bereich grob zu finden.
+\end{itemize}
+
+→ Mit dem äußeren Loop ist \textbf{DIRECT} günstiger einzusetzen, sofern man eine gewisse Mindest-Globalität braucht. Nelder-Mead spart sich nur dann Auswertungen, wenn die Eindimensionalfunktion über s offensichtlich konvex/unimodal ist.
+
+
+c) Bei sehr teurer Auswertung empfehle ich \textbf{DIRECT}:
+
+\begin{enumerate}
+  \item \textbf{Determinismus}: DIRECT ist deterministisch, jede Auswertung ist gezielt platziert — Restart-Nelder-Mead "wirft Auswertungen weg", wenn ein Restart in einem schlechten Becken landet.
+  \item \textbf{Globalität ohne Restarts}: DIRECT findet auch in nicht-konvexen Landschaften ohne mehrfache Reinitialisierung den globalen Bereich; Nelder-Mead garantiert nur lokale Konvergenz, braucht also mehrere Läufe à 4n+ Funktionsauswertungen.
+\end{enumerate}
+
+(Gegenargument zur Vollständigkeit: Hat man bereits eine \textbf{gute Schätzung} für (m\textit{, s}), ist Nelder-Mead an dieser Stelle für die lokale Verfeinerung effizienter — DIRECT würde weiter Aufwand für globale Erkundung treiben.)
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 — Vergleich Nelder-Mead vs. DIRECT \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+a) Vervollständigen Sie die folgende Vergleichstabelle anhand der Inhalte des Kapitels: \textit{(8 P.)}
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Eigenschaft}} & {\color{white}\textbf{Nelder-Mead}} & {\color{white}\textbf{DIRECT}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Lokal / global & ? & ? \\
+Deterministisch? & ? & ? \\
+Geometrisches Suchobjekt & ? & ? \\
+Behandelt Box-Constraints nativ? & ? & ? \\
+Benötigt Lipschitzkonstante? & ? & ? \\
+Hauptiterationsoperation & ? & ? \\
+\end{tabularx}
+}
+
+
+b) Wählen Sie für die folgenden Szenarien begründet ein Verfahren: (i) lokale Verfeinerung um einen vermuteten Optimalpunkt, (ii) globales Suchen einer black-box-Funktion über einem Hyperwürfel ohne Vorwissen. \textit{(5 P.)}
+
+
+c) Geben Sie eine Situation an, in der \textbf{Nelder-Mead mit Restarts} dennoch DIRECT vorzuziehen ist, und begründen Sie. \textit{(2 P.)}
+
+
+\textbf{Lösung:}
+
+
+a)
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Eigenschaft}} & {\color{white}\textbf{Nelder-Mead}} & {\color{white}\textbf{DIRECT}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Lokal / global & lokal (global nur über Restarts) & global \\
+Deterministisch? & ja (bei festem Startsimplex) & ja \\
+Geometrisches Suchobjekt & Simplex mit n+1 Ecken & Hyperrechtecke (im normalisierten Einheitswürfel) \\
+Behandelt Box-Constraints nativ? & nein (keine NB im Kapitel; muss extern erzwungen werden) & ja (Grenz-NB explizit; Suchraum wird in Einheits-Hyperwürfel normalisiert) \\
+Benötigt Lipschitzkonstante? & nein & nein (Lipschitzian opt. \textbf{ohne} Lipschitzkonstante über alle k̃ > 0) \\
+Hauptiterationsoperation & Reflect / Expand / Contract / Shrink des Simplex & Auswahl pot. opt. Rechtecke + Drittelung entlang max. Seite \\
+\end{tabularx}
+}
+
+
+b) (i) \textbf{Nelder-Mead}: lokale Verfeinerung ist genau das, wofür der Simplex mit seinen Reflektions-/Kontraktionsschritten optimiert ist — feine Annäherung mit relativ wenigen Auswertungen pro Iteration (1–2 neue Punkte). DIRECT würde im Konvergenzbereich weiter unnötig globale Bereiche unterteilen.
+
+
+(ii) \textbf{DIRECT}: ist global, nutzt die Box-Constraints nativ über den Einheits-Hyperwürfel, ist deterministisch und braucht keinerlei Vorwissen über Lipschitzkonstanten. Nelder-Mead ohne Vorwissen würde zufällig in einem lokalen Minimum landen.
+
+
+c) Wenn die Funktion über dem Box-Constraint-Bereich \textbf{glatt und schwach multimodal} ist und der Suchraum \textbf{hochdimensional}: DIRECT skaliert schlecht in hohen Dimensionen, weil die Anzahl Rechtecke pro Iteration mit der Dimension wächst. Nelder-Mead mit z. B. 10 zufälligen Restarts findet hier mit deutlich weniger Auswertungen ein gutes (oft globales) Minimum.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 6 — Pseudocode-Analyse \textit{(10 Punkte)}}\mbox{}\\[2pt]
+
+Eine Studentin schreibt folgenden Pseudocode für \textbf{einen Schritt von Nelder-Mead} (Reflexion, ohne Expand/Contract/Shrink). Finden Sie \textbf{drei} Fehler und beschreiben Sie jeweils die korrekte Variante.
+
+
+\begin{lstlisting}
+function nelder_mead_step(S = [x_0, ..., x_n], f, alpha):
+    sortiere S, sodass f(x_0) <= f(x_1) <= ... <= f(x_n)
+
+    // Centerpoint
+    c = 0
+    for j = 0 to n:                 // (Zeile A)
+        c = c + x_j
+    c = c / (n + 1)                 // (Zeile B)
+
+    // Reflexion
+    x_r = c + alpha * (c - x_0)     // (Zeile C)
+
+    // Akzeptanz
+    if f(x_r) < f(x_n):             // (Zeile D)
+        x_n = x_r
+    return S
+\end{lstlisting}
+
+
+\textbf{Lösung:}
+
+
+\textbf{Fehler 1 — Centerpoint enthält den schlechtesten Punkt (Zeilen A + B).}
+
+Laut Kapitel (Schritt 4) ist c⃗ = (1/n)·∑ⱼ₌₀ⁿ⁻¹ x⃗ⱼ — also Summe über die \textbf{n besten} Punkte (Index 0 bis n−1), und Division durch \textbf{n} (nicht n+1). Der schlechteste Punkt x⃗ₙ ist genau jener, der ersetzt werden soll, und darf das Reflexionszentrum nicht mitverzerren. Korrektur:
+
+\begin{lstlisting}
+for j = 0 to n-1:
+    c = c + x_j
+c = c / n
+\end{lstlisting}
+
+
+\textbf{Fehler 2 — Falscher Punkt wird gespiegelt (Zeile C).}
+
+Reflektiert wird der \textbf{schlechteste} Punkt x⃗ₙ am Centerpoint, nicht der beste. Korrekt: \texttt{x\_r = c + alpha * (c - x\_n)}. Das aktuelle \texttt{(c - x\_0)} würde den besten Punkt invertieren — typischerweise weg vom Optimum, was den Algorithmus systematisch verschlechtert.
+
+
+\textbf{Fehler 3 — Akzeptanzregel zu lax (Zeile D).}
+
+Reflexionsergebnis darf nicht akzeptiert werden, sobald es nur "besser als x⃗ₙ" ist. Laut Kapitel ist die Reflexion nur dann unmittelbar zu übernehmen, wenn \texttt{f(x\_0) ≤ f(x\_r) ≤ f(x\_\{n-1\})}. Sonst:
+
+\begin{itemize}
+  \item f(x\_r) < f(x\_0) → Expand-Schritt (5b) ausführen
+  \item f(x\_r) ≥ f(x\_\{n-1\}) → Contract-Schritt (5c)
+\end{itemize}
+
+Der reine Vergleich \texttt{f(x\_r) < f(x\_n)} überspringt sowohl die Verbesserungschance durch Expansion (besseres Minimum verpasst) als auch die Korrektur durch Kontraktion bei zu weitem Reflexionsschritt — der Simplex degeneriert dadurch häufig.
+
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{document}

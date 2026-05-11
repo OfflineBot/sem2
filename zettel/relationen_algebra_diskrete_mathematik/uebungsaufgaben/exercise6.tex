@@ -1,0 +1,657 @@
+% ============================================================
+%  Übungsaufgaben Template (my_dhbw Stil, uebung_*.tex)
+%  Header "Übungsblatt", grün eingefärbte <details>-Lösungen.
+%  Renderer: pdflatex (zweimal)
+% ============================================================
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+\usepackage[top=2cm, bottom=2cm, left=2.4cm, right=2.4cm, footskip=1cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{ltablex}
+\keepXColumns
+\usepackage{colortbl}
+\usepackage[most,breakable]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{pdflscape}
+\usepackage{titlesec}
+\usepackage[colorlinks=true, linkcolor=accent, urlcolor=accent]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme ─────────────────────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{loesung}{RGB}{0, 100, 0}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{240, 252, 240}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer ─────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\footnotesize\color{accent}\nichttitle}
+\fancyhead[R]{\footnotesize\color{accent}\nichtsubtitle}
+\fancyfoot[R]{\footnotesize\color{accent}Blatt \thepage\,/\,\pageref{LastPage}}
+
+% ── Typografie ────────────────────────────────────────────────
+\titleformat{\section}
+    {\color{accent}\large\bfseries}{}{0pt}{}
+    [\vspace{-4pt}\color{accent}\rule{\linewidth}{1.5pt}]
+\titleformat{\subsection}
+    {\normalsize\bfseries\color{accent!85!black}}{}{0pt}{}{}
+\titleformat{\subsubsection}
+    {\small\bfseries\color{accent!70!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{10pt}{3pt}
+\titlespacing*{\subsection}{0pt}{6pt}{2pt}
+\titlespacing*{\subsubsection}{0pt}{4pt}{1pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\renewcommand{\arraystretch}{1.2}
+\setlist[itemize]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.4em}
+\setlist[enumerate]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.6em}
+
+% ── Boxen: solutionbox = Lösungsbox in grün ──────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={Abbildung: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={Tabelle: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{solutionbox}[1]{
+  enhanced,
+  colback=solutionbg, colframe=loesung,
+  title={#1}, fonttitle=\small\bfseries,
+  coltitle=white, colbacktitle=loesung,
+  breakable, before skip=8pt, after skip=8pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=single, framerule=0pt,
+  xleftmargin=4pt, xrightmargin=4pt,
+  aboveskip=6pt, belowskip=6pt,
+  keepspaces=true
+}
+
+\providecommand{\nichttitle}{Übungsblatt}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Relationen, Algebra, Diskrete Mathematik}
+\renewcommand{\nichtsubtitle}{Übungsblatt 6}
+
+
+\begin{document}
+
+\begin{center}
+{\Large\bfseries\color{accent}\nichttitle}
+\ifx\nichtsubtitle\empty\else
+  \\[2pt]{\normalsize\color{accent!80!black}\nichtsubtitle}
+\fi
+\\[2pt]
+\color{accent}\rule{0.4\linewidth}{0.8pt}\color{black}
+\end{center}
+\vspace{4pt}
+
+% ── BODY ──────────────────────────────────────────────────────
+
+\section{Übungsblatt 6 — Relationale Datenbanken}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 1 — Schlüsselbegriffe und Konsequenzen \textit{(8 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben sei folgende Relation \texttt{Ausleihe}:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{AusleihNr}} & {\color{white}\textbf{StudentMatrNr}} & {\color{white}\textbf{StudentName}} & {\color{white}\textbf{BuchISBN}} & {\color{white}\textbf{BuchTitel}} & {\color{white}\textbf{Datum}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+1 & 12345 & Meier & 978-0-1 & Algebra I & 2026-04-01 \\
+2 & 12345 & Meier & 978-0-2 & DB-Systeme & 2026-04-03 \\
+3 & 67890 & Schmidt & 978-0-1 & Algebra I & 2026-04-05 \\
+\end{tabularx}
+}
+
+
+a) Definiere die Begriffe \textbf{Primärschlüssel} und \textbf{Fremdschlüssel} mit den beiden geforderten Eigenschaften des Primärschlüssels. \textit{(3 P)}
+
+b) Bestimme einen geeigneten Primärschlüssel für die Relation \texttt{Ausleihe} und begründe deine Wahl. \textit{(2 P)}
+
+c) Welche zwei konkreten Probleme entstehen, wenn die Tabelle so wie oben verwendet wird? Belege deine Antwort an einer Beispielzeile. \textit{(3 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Ein \textbf{Primärschlüssel} ist ein Attribut bzw. eine Attributkombination, die jeden Datensatz (Tupel) \textbf{eindeutig} identifiziert und gleichzeitig \textbf{minimal} ist (kein Teilattribut darf weggelassen werden, ohne die Eindeutigkeit zu verlieren). Ein \textbf{Fremdschlüssel} ist ein Attribut in einer Relation, das in einer anderen Relation Primärschlüssel ist; er stellt die Beziehung zwischen den beiden Relationen her.
+
+
+b) Geeignet ist \texttt{AusleihNr}. Sie ist je Vorgang eindeutig vergeben und besteht aus einem einzigen Attribut, ist also automatisch minimal. Eine Kombination wie (\texttt{StudentMatrNr}, \texttt{BuchISBN}, \texttt{Datum}) wäre zwar ebenfalls eindeutig, aber unnötig breit, und scheitert spätestens daran, dass derselbe Student dasselbe Buch mehrfach am selben Tag ausleihen könnte.
+
+
+c) \textbf{Redundanz}: \texttt{StudentName} "Meier" steht in den Zeilen 1 und 2 doppelt; \texttt{BuchTitel} "Algebra I" in Zeilen 1 und 3. Wird in Zeile 1 der Name korrigiert, muss Zeile 2 manuell mitgepflegt werden, sonst entsteht eine \textbf{Update-Anomalie}. Lösung: Aufspalten in \texttt{Studenten}, \texttt{Bücher}, \texttt{Ausleihen} mit FK-Verknüpfung.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 — Schlechter Entwurf umbauen \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Eine Hochschule speichert die Sport-AGs ihrer Studierenden in folgender Tabelle \texttt{Sportarten}:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{MatrNr}} & {\color{white}\textbf{Name}} & {\color{white}\textbf{Fußball}} & {\color{white}\textbf{Basketball}} & {\color{white}\textbf{Schwimmen}} & {\color{white}\textbf{Klettern}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+11111 & Bauer & 1 & 0 & 1 & 0 \\
+22222 & Klein & 0 & 0 & 0 & 1 \\
+33333 & Lang & 1 & 1 & 0 & 0 \\
+\end{tabularx}
+}
+
+
+a) Nenne \textbf{zwei} strukturelle Schwachstellen dieses Entwurfs aus dem Kapitel "Probleme schlechter Entwürfe". \textit{(4 P)}
+
+b) Entwirf einen normalisierten Ersatz aus \textbf{zwei} Relationen. Gib Schemata, Primär- und Fremdschlüssel an und trage die obigen Daten ein. \textit{(7 P)}
+
+c) Was muss am Entwurf aus b) geändert werden, wenn neu die Sportart "Yoga" eingeführt wird, und was hätte am ursprünglichen Entwurf geändert werden müssen? \textit{(4 P)}
+
+
+\textbf{Lösung:}
+
+
+a) (1) \textbf{Viele 0-Felder}: Da die meisten Studierenden nur an wenigen Sportarten teilnehmen, ist die Tabelle mit Nullen "verschwendet". (2) \textbf{Schemaänderung bei neuen Sportarten}: Jede neue Sportart erzwingt eine neue Spalte — das Schema ist nicht stabil unter dem fachlichen Wachstum.
+
+
+b) Zwei Relationen mit FK-Verknüpfung:
+
+
+\texttt{Studenten(MatrNr PK, Name)}
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{MatrNr}} & {\color{white}\textbf{Name}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+11111 & Bauer \\
+22222 & Klein \\
+33333 & Lang \\
+\end{tabularx}
+}
+
+
+\texttt{Teilnahme(MatrNr FK→Studenten, Sportart)}, Primärschlüssel: (MatrNr, Sportart)
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{MatrNr}} & {\color{white}\textbf{Sportart}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+11111 & Fußball \\
+11111 & Schwimmen \\
+22222 & Klettern \\
+33333 & Fußball \\
+33333 & Basketball \\
+\end{tabularx}
+}
+
+
+c) \textbf{Neuer Entwurf}: gar nichts am Schema — es wird einfach ein neues Tupel \texttt{(MatrNr, "Yoga")} für jeden Yoga-Teilnehmer eingefügt. \textbf{Alter Entwurf}: Eine zusätzliche Spalte \texttt{Yoga} muss per \texttt{ALTER TABLE} hinzugefügt werden, alle bestehenden Zeilen erhalten dort den Wert 0. Genau dieses Problem soll die Normalisierung vermeiden.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 — Relationenalgebra anwenden \textit{(18 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben:
+
+
+\texttt{Studenten} (MatrNr ist PK):
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{MatrNr}} & {\color{white}\textbf{Name}} & {\color{white}\textbf{Kurs}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+1001 & Aydın & TINF24 \\
+1002 & Berg & TINF24 \\
+1003 & Cohn & WINF24 \\
+1004 & Diaz & TINF24 \\
+\end{tabularx}
+}
+
+
+\texttt{Belegung} (FK MatrNr → Studenten.MatrNr):
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{MatrNr}} & {\color{white}\textbf{Modul}} & {\color{white}\textbf{Note}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+1001 & Mathe & 1.7 \\
+1001 & Theo & 2.0 \\
+1002 & Mathe & 2.3 \\
+1003 & Mathe & 1.0 \\
+1004 & Theo & 3.7 \\
+\end{tabularx}
+}
+
+
+Berechne in \textbf{Relationenalgebra-Schreibweise} den jeweiligen Ausdruck UND gib das resultierende Tupel-/Tabellenergebnis an:
+
+
+a) Alle Namen von Studierenden im Kurs \texttt{TINF24}. \textit{(3 P)}
+
+b) Alle Modulnamen, die mindestens einmal belegt sind — duplikatfrei. \textit{(3 P)}
+
+c) Alle Paare (Name, Note), bei denen ein TINF24-Student das Modul \texttt{Mathe} mit besser als 2.0 (also Note < 2.0) belegt hat. \textit{(6 P)}
+
+d) Welche Modul-Belegungen aus \texttt{Belegung} gehen verloren, wenn man statt eines Natural Joins ein Kreuzprodukt mit anschließender Selektion \texttt{σ\_\{Studenten.MatrNr=Belegung.MatrNr\}} rechnet — und welche nicht? Begründe in einem Satz. \textit{(6 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Π\_\{Name\}(σ\_\{Kurs="TINF24"\}(Studenten))
+
+
+Ergebnis: \{ (Aydın), (Berg), (Diaz) \}
+
+
+b) Π\_\{Modul\}(Belegung)
+
+
+Da Π mengentheoretisch ohne Duplikate arbeitet (\texttt{select distinct}):
+
+Ergebnis: \{ (Mathe), (Theo) \}
+
+
+c) Π\_\{Name, Note\}(σ\_\{Kurs="TINF24" ∧ Modul="Mathe" ∧ Note<2.0\}(Studenten ⋈ Belegung))
+
+
+Schritt 1 — Natural Join über \texttt{MatrNr}:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{MatrNr}} & {\color{white}\textbf{Name}} & {\color{white}\textbf{Kurs}} & {\color{white}\textbf{Modul}} & {\color{white}\textbf{Note}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+1001 & Aydın & TINF24 & Mathe & 1.7 \\
+1001 & Aydın & TINF24 & Theo & 2.0 \\
+1002 & Berg & TINF24 & Mathe & 2.3 \\
+1003 & Cohn & WINF24 & Mathe & 1.0 \\
+1004 & Diaz & TINF24 & Theo & 3.7 \\
+\end{tabularx}
+}
+
+
+Schritt 2 — Selektion: Kurs=TINF24, Modul=Mathe, Note<2.0 → nur \texttt{(1001, Aydın, TINF24, Mathe, 1.7)} erfüllt alle drei Bedingungen.
+
+
+Schritt 3 — Projektion: \{ (Aydın, 1.7) \}
+
+
+d) Es geht \textbf{keine} echte Belegung verloren: Beide Ausdrücke liefern dieselben fünf gejointen Tupel, weil \texttt{MatrNr} der einzige gemeinsame Spaltenname ist und die Selektion exakt die Join-Bedingung des Natural Joins nachbildet. Der einzige Unterschied: Das Kreuzprodukt erzeugt zwischenzeitlich 4·5 = 20 Tupel, das Ergebnisschema enthält \texttt{MatrNr} doppelt, und es ist deutlich teurer zu berechnen.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 — SQL und Mengenoperationen \textit{(12 Punkte)}}\mbox{}\\[2pt]
+
+Zwei Mailinglisten als Relationen mit identischem Schema \texttt{(MatrNr, Email)}:
+
+
+\texttt{Newsletter\_IT}:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{MatrNr}} & {\color{white}\textbf{Email}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+1001 & a@dh \\
+1002 & b@dh \\
+1003 & c@dh \\
+\end{tabularx}
+}
+
+
+\texttt{Newsletter\_Mathe}:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{MatrNr}} & {\color{white}\textbf{Email}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+1002 & b@dh \\
+1004 & d@dh \\
+\end{tabularx}
+}
+
+
+a) Sind die beiden Schemata kompatibel im Sinne des Kapitels? Begründe und nenne die Bedingung, unter der ∪, ∩, ∖ überhaupt definiert sind. \textit{(3 P)}
+
+b) Berechne in Relationenalgebra die Menge der MatrNr, die \textbf{nur} den IT-Newsletter, \textbf{nicht} aber den Mathe-Newsletter abonniert hat. Gib das Ergebnis an. \textit{(4 P)}
+
+c) Schreibe für b) eine SQL-Anfrage. Erkläre kurz, warum hier \texttt{select distinct} (bzw. das mengentheoretische Verhalten) zur Definition aus dem Kapitel passt. \textit{(5 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Ja, kompatibel: Beide Relationen haben dasselbe Schema \texttt{(MatrNr, Email)} mit gleichen Attributnamen und gleichen Wertebereichen. Mengenoperationen ∩, ∪, ∖ sind nur bei \textbf{kompatiblem Schema} definiert (gleiche Stelligkeit, paarweise gleiche Domains der Attribute). Andernfalls wäre nur ein Kreuzprodukt × erlaubt.
+
+
+b) Π\_\{MatrNr\}(Newsletter\_IT) ∖ Π\_\{MatrNr\}(Newsletter\_Mathe)
+
+
+= \{1001, 1002, 1003\} ∖ \{1002, 1004\} = \textbf{\{1001, 1003\}}
+
+
+c)
+
+\begin{lstlisting}[language=sql]
+select distinct MatrNr from Newsletter_IT
+except
+select distinct MatrNr from Newsletter_Mathe;
+\end{lstlisting}
+
+(alternativ mit \texttt{not in}-Subquery). Im Kapitel heißt es ausdrücklich, dass die Vereinigung "ohne Duplikate" arbeitet und die Projektion mengentheoretisch eindeutigen Output liefert — \texttt{select distinct} realisiert genau dieses Verhalten in SQL, da SQL-Tabellen sonst Duplikate zulassen würden.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 — Join-Varianten vergleichen \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Eine Bibliothek nutzt:
+
+
+\texttt{Bücher(ISBN PK, Titel)}:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{ISBN}} & {\color{white}\textbf{Titel}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+B1 & Lineare Algebra \\
+B2 & Diskrete Mathematik \\
+B3 & Datenbanken \\
+\end{tabularx}
+}
+
+
+\texttt{Ausleihen(ISBN FK, MatrNr)}:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{ISBN}} & {\color{white}\textbf{MatrNr}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+B1 & 9001 \\
+B3 & 9002 \\
+B3 & 9003 \\
+\end{tabularx}
+}
+
+
+a) Berechne \texttt{Bücher ⋈ Ausleihen} (Natural Join) als Tabelle. Welches Buch erscheint nicht im Ergebnis und warum? \textit{(4 P)}
+
+b) Berechne den \textbf{Left Outer Join} \texttt{Bücher ⟕ Ausleihen}. Wie unterscheidet sich das Ergebnis von a)? \textit{(4 P)}
+
+c) Du sollst entscheiden, welcher Join-Typ in folgenden zwei Anwendungen jeweils der richtige ist. Wähle aus \textit{Inner Join}, \textit{Left Outer Join}, \textit{Semi Join} und begründe je in 1–2 Sätzen: \textit{(7 P)}
+
+– (i) Eine Übersicht "Buchbestand mit Ausleihstatus", in der \textbf{auch nie ausgeliehene Bücher} sichtbar sein müssen.
+
+– (ii) Eine interne Liste, die nur die \textbf{ISBNs der aktuell ausgeliehenen Bücher} enthält, ohne Studierenden-Daten zu duplizieren.
+
+
+\textbf{Lösung:}
+
+
+a) Natural Join über \texttt{ISBN}:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{ISBN}} & {\color{white}\textbf{Titel}} & {\color{white}\textbf{MatrNr}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+B1 & Lineare Algebra & 9001 \\
+B3 & Datenbanken & 9002 \\
+B3 & Datenbanken & 9003 \\
+\end{tabularx}
+}
+
+
+\texttt{B2 — Diskrete Mathematik} fehlt, weil es zu dieser ISBN keinen passenden Eintrag in \texttt{Ausleihen} gibt; der Inner / Natural Join verwirft alle linken Tupel ohne Match auf der rechten Seite.
+
+
+b) Left Outer Join behält \textbf{alle} Tupel der linken Relation \texttt{Bücher}; fehlende rechte Werte werden mit NULL aufgefüllt:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{ISBN}} & {\color{white}\textbf{Titel}} & {\color{white}\textbf{MatrNr}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+B1 & Lineare Algebra & 9001 \\
+B2 & Diskrete Mathematik & NULL \\
+B3 & Datenbanken & 9002 \\
+B3 & Datenbanken & 9003 \\
+\end{tabularx}
+}
+
+
+Unterschied: Buch B2 ist jetzt im Ergebnis, mit \texttt{MatrNr = NULL}.
+
+
+c) (i) \textbf{Left Outer Join}: Die Bibliothek will alle Bücher sehen — auch jene ohne aktuelle Ausleihen. Genau dafür existiert der Outer Join, der unmatched Tupel der linken Relation mit NULL erhält.
+
+
+(ii) \textbf{Semi Join} (\texttt{Bücher ⋉ Ausleihen}): Es soll geprüft werden, ob \textit{irgendeine} Ausleihe existiert, aber die MatrNr-Information selbst soll nicht im Ergebnis stehen und Bücher sollen nicht mehrfach erscheinen, nur weil sie mehrfach ausgeliehen sind. Der Semi Join liefert genau das: Tupel der linken Relation, für die mindestens ein Match existiert, ohne Spalten der rechten Seite zu duplizieren.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 6 — Fehler in einem SQL-/Algebra-Artefakt finden \textit{(12 Punkte)}}\mbox{}\\[2pt]
+
+Ein Kommilitone behauptet, mit folgender Anfrage alle Studierenden samt belegter Module zu finden:
+
+
+\begin{lstlisting}[language=sql]
+select s.Name, b.Modul
+from Studenten s, Belegung b
+where s.Kurs = 'TINF24';
+\end{lstlisting}
+
+
+(Tabellen siehe Aufgabe 3.)
+
+
+a) Führe die Anfrage gedanklich aus und gib das Ergebnis (ggf. exemplarisch) an. Wie viele Zeilen liefert sie? \textit{(5 P)}
+
+b) Welcher konzeptionelle Fehler liegt vor? Beziehe dich auf die im Kapitel beschriebene Konvention \texttt{from A,B where A.k=B.k} für Inner Joins. \textit{(4 P)}
+
+c) Korrigiere die Anfrage so, dass sie tatsächlich für jede TINF24-Person die jeweils belegten Module zurückgibt. \textit{(3 P)}
+
+
+\textbf{Lösung:}
+
+
+a) \texttt{from Studenten s, Belegung b} ist ein \textbf{Kreuzprodukt} — jedes der 4 Studenten-Tupel wird mit jedem der 5 Belegungs-Tupel kombiniert: 20 Zeilen. Die \texttt{where}-Klausel filtert nur nach \texttt{Kurs='TINF24'}, also bleiben die 3 TINF24-Studierenden (Aydın, Berg, Diaz) übrig, jeweils kombiniert mit \textit{allen} 5 Belegungen → \textbf{15 Zeilen}.
+
+
+Beispielzeilen (Auszug):
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Name}} & {\color{white}\textbf{Modul}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Aydın & Mathe \\
+Aydın & Theo \\
+Aydın & Mathe \\
+Aydın & Mathe \\
+Aydın & Theo \\
+Berg & Mathe \\
+\end{tabularx}
+}
+
+
+b) Es fehlt die \textbf{Join-Bedingung} zwischen den beiden Relationen. Im Kapitel ist die SQL-Konvention \texttt{from A,B where A.k=B.k} ausdrücklich genannt: Das Kreuzprodukt aus \texttt{from A,B} muss durch eine Gleichheitsbedingung über den passenden Primär-/Fremdschlüssel (hier \texttt{MatrNr}) wieder auf den fachlich gemeinten Inner Join eingeschränkt werden. Ohne diese Bedingung werden Module den falschen Personen zugeordnet — der Klassiker eines fehlenden Joins.
+
+
+c) Korrigierte Anfrage:
+
+
+\begin{lstlisting}[language=sql]
+select s.Name, b.Modul
+from Studenten s, Belegung b
+where s.MatrNr = b.MatrNr
+  and s.Kurs   = 'TINF24';
+\end{lstlisting}
+
+
+Ergebnis (3 Zeilen): (Aydın, Mathe), (Aydın, Theo), (Berg, Mathe), (Diaz, Theo) — also 4 Zeilen, da Aydın zwei Module belegt hat.
+
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{document}

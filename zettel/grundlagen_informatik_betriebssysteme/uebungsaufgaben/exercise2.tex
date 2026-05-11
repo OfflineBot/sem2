@@ -1,0 +1,423 @@
+% ============================================================
+%  Übungsaufgaben Template (my_dhbw Stil, uebung_*.tex)
+%  Header "Übungsblatt", grün eingefärbte <details>-Lösungen.
+%  Renderer: pdflatex (zweimal)
+% ============================================================
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+\usepackage[top=2cm, bottom=2cm, left=2.4cm, right=2.4cm, footskip=1cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{ltablex}
+\keepXColumns
+\usepackage{colortbl}
+\usepackage[most,breakable]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{pdflscape}
+\usepackage{titlesec}
+\usepackage[colorlinks=true, linkcolor=accent, urlcolor=accent]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme ─────────────────────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{loesung}{RGB}{0, 100, 0}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{240, 252, 240}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer ─────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\footnotesize\color{accent}\nichttitle}
+\fancyhead[R]{\footnotesize\color{accent}\nichtsubtitle}
+\fancyfoot[R]{\footnotesize\color{accent}Blatt \thepage\,/\,\pageref{LastPage}}
+
+% ── Typografie ────────────────────────────────────────────────
+\titleformat{\section}
+    {\color{accent}\large\bfseries}{}{0pt}{}
+    [\vspace{-4pt}\color{accent}\rule{\linewidth}{1.5pt}]
+\titleformat{\subsection}
+    {\normalsize\bfseries\color{accent!85!black}}{}{0pt}{}{}
+\titleformat{\subsubsection}
+    {\small\bfseries\color{accent!70!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{10pt}{3pt}
+\titlespacing*{\subsection}{0pt}{6pt}{2pt}
+\titlespacing*{\subsubsection}{0pt}{4pt}{1pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\renewcommand{\arraystretch}{1.2}
+\setlist[itemize]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.4em}
+\setlist[enumerate]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.6em}
+
+% ── Boxen: solutionbox = Lösungsbox in grün ──────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={Abbildung: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={Tabelle: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{solutionbox}[1]{
+  enhanced,
+  colback=solutionbg, colframe=loesung,
+  title={#1}, fonttitle=\small\bfseries,
+  coltitle=white, colbacktitle=loesung,
+  breakable, before skip=8pt, after skip=8pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=single, framerule=0pt,
+  xleftmargin=4pt, xrightmargin=4pt,
+  aboveskip=6pt, belowskip=6pt,
+  keepspaces=true
+}
+
+\providecommand{\nichttitle}{Übungsblatt}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Betriebssysteme}
+\renewcommand{\nichtsubtitle}{Übungsblatt 2}
+
+
+\begin{document}
+
+\begin{center}
+{\Large\bfseries\color{accent}\nichttitle}
+\ifx\nichtsubtitle\empty\else
+  \\[2pt]{\normalsize\color{accent!80!black}\nichtsubtitle}
+\fi
+\\[2pt]
+\color{accent}\rule{0.4\linewidth}{0.8pt}\color{black}
+\end{center}
+\vspace{4pt}
+
+% ── BODY ──────────────────────────────────────────────────────
+
+\section{Übungsblatt 2 — Geschichte (Meilensteine)}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 1 — Von der Mechanik zur Programmierbarkeit \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+a) Erkläre, was Jacquards lochkartengesteuerten Webstuhl (1801) konzeptionell von Pascals „Pascaline" (1642) unterscheidet — und warum gerade dieser Unterschied die Grundlage für Babbages Analytical Engine (1832) bildete. \textit{(6 P)}
+
+
+b) Ada Lovelace gilt mit ihrem Bernoulli-Programm (1832) als erste Programmiererin. Begründe, warum dies erst auf Babbages Analytical Engine — und nicht schon auf Schickards Maschine (1623) oder der Pascaline — möglich war. Nenne die zwei entscheidenden Architekturmerkmale. \textit{(5 P)}
+
+
+c) Holleriths Lochkarten-Tabulator (1887) war kein frei programmierbarer Rechner, wurde aber kommerziell ein Riesenerfolg (→ IBM). Welche praktische Eigenschaft machte ihn — anders als die Analytical Engine — anwendungsreif? \textit{(4 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Pascalines Funktion ist \textbf{fest in Zahnrädern verdrahtet}: sie kann ausschließlich 6-stellige Additionen ausführen. Jacquards Webstuhl trennt erstmals \textbf{Maschine (Mechanik) und Anweisung (Lochkarte)} — dasselbe Gerät webt je nach eingelegter Karte unterschiedliche Muster. Damit ist das Konzept eines \textbf{austauschbaren Programms} geboren. Babbage übernimmt 1832 genau diese Idee: die Analytical Engine soll ihre Befehle von Lochkarten lesen, statt sie wie die Difference Engine fest verbaut zu haben. Programmierbarkeit = Daten und Anweisungen werden vom Rechenwerk getrennt.
+
+
+b) Lovelace konnte ein nicht-triviales Programm (Berechnung der Bernoulli-Zahlen) nur entwerfen, weil die Analytical Engine zwei Eigenschaften besaß, die Schickard und Pascal fehlten:
+
+\begin{enumerate}
+  \item \textbf{Bedingte Sprünge / Schleifen} — die Maschine konnte abhängig vom Zwischenergebnis weitermachen oder zurückspringen.
+\begin{enumerate}
+  \item \textbf{Trennung von Speicher („Store") und Rechenwerk („Mill")} — Zwischenergebnisse konnten abgelegt und wiederverwendet werden.
+\end{enumerate}
+\end{enumerate}
+Schickard und Pascal lieferten reine Rechenautomaten ohne Steuerfluss und ohne adressierbaren Speicher; sie waren damit nicht „programmierbar" im algorithmischen Sinn.
+
+
+c) Hollerith adressierte ein \textbf{konkretes Massenproblem} (US-Volkszählung 1890) und nutzte einen damals \textbf{bereits industriell verfügbaren Datenträger} — die Lochkarte aus der Textilindustrie. Babbages Analytical Engine wurde dagegen nie fertiggestellt: zu komplex für die Fertigungstoleranzen der Zeit. Praxisreife = vorhandenes Bedürfnis + verfügbare Technik.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 — Bauelement-Generationen einordnen \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+Vervollständige die folgende Tabelle. Trage Jahr, Erfinder/Hersteller und das \textbf{Schaltelement-Prinzip} (mechanisch / Relais / Röhre / Transistor / IC / Mikroprozessor) ein. Begründe abschließend in 3–4 Sätzen, warum die Sprünge zwischen den Generationen jeweils \textbf{mehrere Größenordnungen} an Geschwindigkeit, Größe und Energieverbrauch brachten.
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{\#}} & {\color{white}\textbf{Meilenstein}} & {\color{white}\textbf{Jahr}} & {\color{white}\textbf{Erfinder/Hersteller}} & {\color{white}\textbf{Schaltelement}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+1 & Zuse Z3 & ? & ? & ? \\
+2 & ENIAC & ? & ? & ? \\
+3 & Erster Transistor & ? & ? & ? \\
+4 & Integrierter Schaltkreis & ? & ? & ? \\
+5 & Intel 4004 & ? & ? & ? \\
+6 & Frontier-Supercomputer & ? & — & ? \\
+\end{tabularx}
+}
+
+
+a) Tabelle ausfüllen \textit{(12 P)}
+
+b) Begründung der Größenordnungssprünge \textit{(8 P)}
+
+
+\textbf{Lösung:}
+
+
+a)
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{\#}} & {\color{white}\textbf{Meilenstein}} & {\color{white}\textbf{Jahr}} & {\color{white}\textbf{Erfinder/Hersteller}} & {\color{white}\textbf{Schaltelement}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+1 & Zuse Z3 & 1941 (Z1: 1938) & Konrad Zuse & Relais (elektromechanisch) \\
+2 & ENIAC & 1946 & Mauchly/Eckert & Vakuumröhre \\
+3 & Erster Transistor & 1947 & Bell Labs (Bardeen, Brattain, Shockley) & Transistor (diskret) \\
+4 & Integrierter Schaltkreis & 1958/59 & Kilby (TI) / Noyce (Fairchild) & IC (mehrere Transistoren auf einem Chip) \\
+5 & Intel 4004 & 1971 & Intel & Mikroprozessor (vollständige CPU auf einem IC) \\
+6 & Frontier (1,194 EFLOPS) & 2023 & — & hochintegrierte CPU/GPU-Chips, viele Mrd. Transistoren \\
+\end{tabularx}
+}
+
+
+b) Jeder Generationswechsel ersetzt das \textbf{Schaltelement} durch ein deutlich kleineres und energieärmeres Prinzip: Relais schalten in Millisekunden mit mechanischer Bewegung, Röhren in Mikrosekunden ohne bewegte Teile, Transistoren in Nanosekunden ohne Heizfaden, ICs packen tausende Transistoren auf wenige mm². Mit jeder Verkleinerung sinken \textbf{Schaltzeit, Verlustleistung und Defektrate} gleichzeitig — und die Stückkosten pro Schaltvorgang fallen exponentiell. Das ermöglicht erst Mikroprozessor (1971), PC (1981) und schließlich Exascale (2023, 1,194 EFLOPS = ca. 10¹⁸ Operationen/s).
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 — Fallstudie Mars Climate Orbiter \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+Die NASA-Sonde Mars Climate Orbiter ging 1999 verloren, weil eine Komponente Schub in \textbf{Pfund·Sekunden (lbf·s)} lieferte, eine andere die Werte aber als \textbf{Newton·Sekunden (N·s)} interpretierte. Der Umrechnungsfaktor ist \textbf{1 lbf ≈ 4,45 N}.
+
+
+a) Angenommen, ein Manöver soll einen Impuls von \textbf{200 N·s} erzeugen. Welcher Wert wird tatsächlich übertragen, wenn das sendende Modul „200" in lbf·s meldet und das empfangende Modul diese Zahl als N·s deutet? Berechne den \textbf{prozentualen Fehler} des realen Impulses. \textit{(6 P)}
+
+
+b) Ordne den Fehler in das Schema der Vorlesung \textbf{„BS-Fehler-Fallbeispiele"} ein und vergleiche ihn mit dem Ariane-5-Absturz (64-Bit Float → 16-Bit Int Overflow). Wo liegt der Bug — Hardware, Compiler, Schnittstelle, Spezifikation? \textit{(6 P)}
+
+
+c) Schlage \textbf{zwei} konkrete Schutzmechanismen auf Software-Ebene vor, die genau diese Fehlerklasse verhindert hätten. Begründe für jeden, warum er auch bei der F-16-Geschichte (negative Breitengrade nicht behandelt) gegriffen hätte — oder eben nicht. \textit{(8 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Das sendende Modul hat eigentlich den Wunsch-Impuls 200 N·s und rechnet ihn in seine Einheit lbf·s um:
+
+200 N·s ÷ 4,45 N/lbf ≈ \textbf{44,94 lbf·s}.
+
+Es sendet also „44,94". Das empfangende Modul deutet die Zahl als N·s und feuert nur einen Impuls von \textbf{44,94 N·s} statt der gewünschten 200 N·s.
+
+Fehler: (44,94 − 200) / 200 = \textbf{−77,5 \%} (es fehlen rund 77,5 \% des Impulses, also Faktor ≈ 4,45 zu wenig).
+
+\textit{(Alternativ-Rechnung mit „200 wird gesendet, Empfänger interpretiert 200 N·s statt 200 lbf·s = 890 N·s" ist symmetrisch ebenfalls Faktor 4,45 — beides akzeptabel, sofern konsistent.)}
+
+
+b) Beides sind \textbf{Schnittstellenfehler}, keine Hardware- oder Compiler-Bugs:
+
+\begin{itemize}
+  \item \textbf{Ariane 5}: Wertebereich der Schnittstelle nicht abgesichert — eine 64-Bit-Float-Horizontalgeschwindigkeit aus Ariane-4-Trägheitsplattform passte nicht in 16 Bit Int → Overflow, Steuerung crasht.
+\begin{itemize}
+  \item \textbf{Mars Climate Orbiter}: Einheit der Schnittstelle nicht spezifiziert/geprüft — Sender und Empfänger gehen von unterschiedlichen Maßeinheiten aus.
+\end{itemize}
+\end{itemize}
+Die Bugs liegen jeweils in der \textbf{ungeprüften Annahme zwischen zwei Modulen}, die isoliert betrachtet beide korrekt arbeiten. Im Spectre/Meltdown-Fall liegt der Bug dagegen tief in der Hardware (spekulative Ausführung) — eine andere Klasse.
+
+
+c) Mögliche Schutzmechanismen:
+
+\begin{enumerate}
+  \item \textbf{Typisierte Einheiten / Quantity-Types} (z. B. \texttt{Newton}, \texttt{PoundForce} als eigene Typen): Ein Compiler/Linter lehnt die direkte Zuweisung \texttt{n\_seconds = lb\_value} ab. → Hätte Mars Climate Orbiter direkt verhindert. Bei der F-16 (negative Breitengrade) hilft es \textbf{nicht}, weil dort beide Seiten denselben Typ („Grad") nutzen — der Bug ist ein Wertebereichs-Bug, kein Einheiten-Bug.
+\begin{enumerate}
+  \item \textbf{Plausibilitäts-/Range-Checks an der Schnittstelle} (Assertions: \texttt{0 ≤ impulse ≤ max\_design\_impulse}, \texttt{−90° ≤ lat ≤ 90°}): Ein um Faktor 4,45 zu kleiner/großer Schub fällt auf, ein negativer Breitengrad wird sauber bearbeitet statt zur Division-by-Zero zu führen. → Hätte \textbf{beide} Fälle (Mars Climate Orbiter und F-16) abgefangen, sowie den Ariane-5-Overflow durch Vorab-Prüfung des Wertebereichs.
+\end{enumerate}
+\end{enumerate}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 — Stammbaum Unix → Minix → Linux \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Die Vorlesung nennt drei Schlüsseldaten: \textbf{1968 Unix (Ritchie/Thompson)}, \textbf{1987 Minix (Tanenbaum)}, \textbf{1990 Linux (Torvalds)}.
+
+
+a) Skizziere in 4–6 Sätzen die kausale Kette: Warum entstand Minix als Reaktion auf Unix, und warum entstand Linux als Reaktion auf Minix? \textit{(6 P)}
+
+
+b) Ein Kommilitone behauptet: „Linux ist eigentlich nur ein neu kompiliertes Unix, deshalb funktioniert die ganze Unix-Software darauf." Korrigiere diese Aussage präzise — was ist \textbf{technisch} richtig, was ist \textbf{historisch/lizenzrechtlich} falsch? \textit{(5 P)}
+
+
+c) Welche Rolle spielt das Erscheinen des \textbf{IBM 5150 PC (1981)} dafür, dass Linux ab 1990 überhaupt eine relevante Plattform fand? \textit{(4 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Unix (1968) wurde an den Bell Labs entwickelt und in den 70ern an Universitäten verbreitet, ab Anfang der 80er aber kommerziell lizenziert und für Lehre teuer/unzugänglich. Tanenbaum schrieb deshalb \textbf{1987 Minix} als kleines, lehrtaugliches, frei lesbares Unix-ähnliches System für seine Vorlesung — bewusst aber \textbf{nicht für produktive Erweiterung gedacht} (Microkernel, eingeschränkte Lizenz). Torvalds wollte 1990/91 als Student auf seinem 386er ein „richtiges", erweiterbares Unix-ähnliches System haben und schrieb deshalb \textbf{Linux}, zunächst als Hobbyprojekt auf Minix-Basis, später unter GPL. Kausalkette: Unix zu teuer → Minix als Lehre-Ersatz → Minix zu beschränkt → Linux als freier, voll erweiterbarer Eigenbau.
+
+
+b) \textbf{Technisch richtig} ist, dass Linux dieselbe \textbf{POSIX-/Unix-API} implementiert; deshalb läuft Software, die gegen diese API geschrieben ist, nach Neukompilieren auch unter Linux. \textbf{Historisch/lizenzrechtlich falsch} ist die Behauptung, Linux sei „neu kompiliertes Unix": Linux ist eine \textbf{vollständige Neuimplementierung} ohne eine Zeile Original-Unix-Code (das wäre lizenzrechtlich gar nicht möglich gewesen). Es ist also \textbf{API-kompatibel}, aber kein abgeleitetes Werk.
+
+
+c) Der IBM 5150 (1981) etablierte eine \textbf{standardisierte, massenhaft verfügbare und billige Hardware-Plattform} (x86), für die jeder Student weltweit eine Maschine zu Hause haben konnte. Ohne diese Verbreitung hätte Torvalds' 386-Hobbykernel keine Anwender gefunden — Linux profitierte direkt davon, dass „PC-kompatibel" bis 1990 zum De-facto-Standard geworden war.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 — Pseudocode-Analyse im Stil Ariane 5 \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben sei folgender Pseudocode aus einem fiktiven Sensor-Treiber. Die Eingabe \texttt{velocity\_64} ist eine Horizontalgeschwindigkeit in m/s als 64-Bit-Float.
+
+
+\begin{lstlisting}
+function send_to_steering(velocity_64: float64):
+    velocity_16 : int16 = (int16) velocity_64     // (1) Cast
+    if velocity_16 > 0:                           // (2)
+        steering.update(velocity_16)
+    else:
+        steering.update(0)
+\end{lstlisting}
+
+
+Der Code wurde aus einem Vorgänger-System („Trägerrakete A") in ein neues („Trägerrakete B") übernommen. Bei A bewegte sich \texttt{velocity\_64} stets im Bereich \textbf{0…30 000 m/s}, bei B bis \textbf{80 000 m/s}.
+
+
+a) An welcher Zeile tritt im neuen System ein Fehler auf, und welcher? Welche \textbf{konkreten Werte} lösen ihn aus? (int16 deckt −32 768 … +32 767 ab.) \textit{(5 P)}
+
+
+b) Welches der \textbf{BS-Fehler-Fallbeispiele} der Vorlesung bildet dieser Code 1:1 nach? Begründe anhand zweier struktureller Gemeinsamkeiten. \textit{(5 P)}
+
+
+c) Schreibe den Code so um, dass der Bug nicht mehr auftritt — und erkläre, warum dein Fix sowohl \textbf{fail-safe} (definierter Fehlerzustand) als auch \textbf{fail-loud} (sichtbar) ist. \textit{(5 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Fehler in \textbf{Zeile (1)}: Werte oberhalb von 32 767 m/s lassen sich nicht in einen \texttt{int16} casten — es kommt zu einem \textbf{Overflow}. Bei A trat das Problem nie auf (max. 30 000 < 32 767), bei B ab 32 768 m/s. Der genaue Fehlerwert hängt von der Cast-Semantik ab: in den meisten Implementierungen wird das Bitmuster abgeschnitten und kippt ab 32 768 ins \textbf{Negative} (z. B. 32 768 → −32 768). Damit feuert Zeile (2) den Else-Zweig und liefert \texttt{0} an die Steuerung — \textbf{schlimmer als ein Crash, weil die Steuerung mit einem stillen Falschwert weiterarbeitet}.
+
+
+b) \textbf{Ariane 5} (1996): 64-Bit-Float-Geschwindigkeit aus dem Trägheitssystem wurde in einen 16-Bit-Int konvertiert; der von Ariane 4 übernommene Code war nie für Ariane-5-Geschwindigkeiten validiert worden, der Overflow legte die Steuerung lahm.
+
+Strukturelle Gemeinsamkeiten: (i) \textbf{Wiederverwendung von Code aus einem anderen Wertebereich ohne Re-Validierung} und (ii) \textbf{schmälerer Zieltyp als Quelltyp ohne Range-Check vor dem Cast}.
+
+
+c) Beispiel-Fix:
+
+
+\begin{lstlisting}
+function send_to_steering(velocity_64: float64):
+    if velocity_64 < 0 or velocity_64 > INT16_MAX:
+        log_error("velocity out of range:", velocity_64)
+        steering.enter_safe_mode()        // definierter Zustand
+        return
+    velocity_16 : int16 = (int16) velocity_64
+    steering.update(velocity_16)
+\end{lstlisting}
+
+
+\textbf{Fail-safe}: Bei Überschreitung wird die Steuerung explizit in einen vordefinierten sicheren Modus (z. B. Schubabschaltung, Lagehaltung) versetzt — nicht stillschweigend mit \texttt{0} weitergefahren.
+
+\textbf{Fail-loud}: Der Fehler wird \textbf{geloggt}, sodass er in Telemetrie/Postmortem auffällt, statt als „alles 0, alles gut" unterzugehen — genau das hatte beim Mars Climate Orbiter so lange gedauert zu erkennen.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 6 — Transfer: Was wäre der „nächste Meilenstein"? \textit{(10 Punkte)}}\mbox{}\\[2pt]
+
+Die Liste der Vorlesung endet bei \textbf{Frontier (2023, 1,194 EFLOPS)}. Stell dir vor, du sollst die Liste 2030 fortschreiben.
+
+
+a) Nenne \textbf{zwei} Eigenschaften, die ein Ereignis erfüllen muss, damit es in die Liste „Meilensteine" passt. Leite sie aus dem Muster der bestehenden Einträge ab (vergleiche z. B. ENIAC 1946, Intel 4004 1971, iPhone 2007). \textit{(4 P)}
+
+
+b) Schlage \textbf{einen} plausiblen Eintrag für 2024–2030 vor und begründe, warum er beide Kriterien erfüllt. \textit{(6 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Aus dem Muster der Einträge lassen sich zwei Kriterien ableiten:
+
+\begin{enumerate}
+  \item \textbf{Qualitative Neuheit}, nicht nur quantitative Verbesserung — ein neues \textit{Bauprinzip} (Röhre → Transistor → IC → Mikroprozessor) oder eine neue \textit{Nutzungsform} (PC im Haushalt 1981, Smartphone in der Hosentasche 2007).
+\begin{enumerate}
+  \item \textbf{Breitenwirkung}: das Ereignis verändert nicht nur ein Labor, sondern eröffnet eine neue Klasse von Anwendungen für viele Nutzer (ENIAC = wissenschaftliches Rechnen wird realisierbar; iPhone = mobiler Internet-Vollzugriff für Endkunden).
+\end{enumerate}
+\end{enumerate}
+
+b) Beispielvorschlag: \textbf{„2022 — ChatGPT (OpenAI): erstes massentaugliches generatives Sprachmodell"}.
+
+\begin{itemize}
+  \item \textbf{Qualitative Neuheit}: nicht nur größeres Modell, sondern eine neue \textit{Interaktionsform} mit dem Computer (natürliche Sprache statt Befehlssyntax/GUI) — strukturell vergleichbar mit dem Sprung Maus (Engelbart 1968) → grafische Bedienung.
+\begin{itemize}
+  \item \textbf{Breitenwirkung}: innerhalb von Monaten hunderte Millionen Nutzer; verändert Bildung, Softwareentwicklung, Recherche — analog zur Breitenwirkung des iPhones 2007.
+\end{itemize}
+\end{itemize}
+\textit{(Andere zulässige Antworten: erster generalistischer Quantenrechner mit nachgewiesenem Vorteil; erste Apple Vision Pro / breite Mixed-Reality-Plattform; erster vollständig autonomer Robotaxi-Dienst — sofern beide Kriterien sauber begründet werden.)}
+
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{document}

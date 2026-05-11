@@ -1,0 +1,771 @@
+% ============================================================
+%  Openbook / Formelsammlung Template — strikt nach my_dhbw
+%  Stil: 2-spaltig, kompakt, scriptsize Tabellen, dünne Regeln.
+%  Renderer: lualatex (zweimal, wg. Unicode-Inhalt)
+% ============================================================
+\documentclass[10pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+
+\usepackage[top=0.8cm, bottom=0.8cm, left=0.8cm, right=0.8cm, footskip=0.4cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{multicol}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{microtype}
+\usepackage{etoolbox}
+
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+% ltablex/longtable bewusst NICHT geladen — kollidiert mit multicols.
+\usepackage{colortbl}
+\usepackage[most]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{adjustbox}
+\usepackage[colorlinks=false]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme (my_dhbw accent) ────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{242, 255, 242}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer — wie my_dhbw formelsammlung.tex ────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0.3pt}
+\fancyfoot[L]{\tiny\color{accent}\nichttitle}
+\fancyfoot[R]{\tiny\color{accent}\thepage\,/\,\pageref{LastPage}}
+
+% ── Typografie — wie formelsammlung.tex ───────────────────────
+\titleformat{\section}
+    {\color{accent}\footnotesize\bfseries}{}{0pt}{}
+    [\vspace{-2pt}\color{accent!50}\rule{\linewidth}{0.4pt}]
+\titleformat{\subsection}
+    {\scriptsize\bfseries\color{accent!85!black}}{}{0pt}{}{}
+\titleformat{\subsubsection}
+    {\scriptsize\itshape\color{accent!60!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{4pt}{1pt}
+\titlespacing*{\subsection}{0pt}{3pt}{0pt}
+\titlespacing*{\subsubsection}{0pt}{2pt}{0pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1pt}
+\renewcommand{\arraystretch}{1.0}
+\setlist{noitemsep, topsep=0pt, parsep=0pt, leftmargin=1.1em}
+
+\setlength{\columnsep}{6mm}
+\setlength{\columnseprule}{0.2pt}
+
+% Globaler scriptsize-Body. Tabellen zusätzlich auf scriptsize zwingen.
+\AtBeginEnvironment{tabularx}{\scriptsize}
+\AtBeginEnvironment{tabular}{\scriptsize}
+
+% ── Boxen (kompakt) ───────────────────────────────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={\scriptsize Abbildung: #1}, fonttitle=\scriptsize\bfseries,
+  fontupper=\scriptsize, sharp corners,
+  boxsep=2pt, left=3pt, right=3pt, top=2pt, bottom=2pt,
+  before skip=3pt, after skip=3pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={\scriptsize Tabelle: #1}, fonttitle=\scriptsize\bfseries,
+  fontupper=\scriptsize, sharp corners,
+  boxsep=2pt, left=3pt, right=3pt, top=2pt, bottom=2pt,
+  before skip=3pt, after skip=3pt
+}
+\newtcolorbox{solutionbox}[1]{
+  colback=solutionbg, colframe=green!60!black!60,
+  title={\scriptsize #1}, fonttitle=\scriptsize\bfseries,
+  fontupper=\scriptsize, sharp corners,
+  boxsep=2pt, left=3pt, right=3pt, top=2pt, bottom=2pt,
+  before skip=3pt, after skip=3pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\tiny,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=none,
+  xleftmargin=2pt, xrightmargin=2pt,
+  aboveskip=2pt, belowskip=2pt,
+  keepspaces=true
+}
+
+\providecommand{\nichttitle}{Formelsammlung}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Optimierungsverfahren}
+\renewcommand{\nichtsubtitle}{Formelsammlung}
+
+
+\begin{document}
+
+\begin{center}
+{\small\bfseries\color{accent}\nichttitle}
+\end{center}
+\vspace{-6pt}
+
+\scriptsize
+\begin{multicols}{2}
+
+% ── BODY ──────────────────────────────────────────────────────
+
+\section{Optimierungsverfahren – Spickzettel}
+
+
+\subsection{1. Grundlagen}
+
+\textbf{Variablen} x⃗=(x₁..xₙ) gezielt | \textbf{Parameter} p⃗ nicht gezielt | \textbf{Zielfkt.} y=f(x⃗) | \textbf{NB}: hₖ(x⃗)=0, gⱼ(x⃗)≤0 | \textbf{X} Suchraum, \textbf{X\_z} zulässig, \textbf{Y} Zielraum
+
+
+\begin{lstlisting}
+min f(x⃗)  s.t.  hₖ(x⃗)=0, gⱼ(x⃗)≤0, xᵢˡ≤xᵢ≤xᵢᵘ
+\end{lstlisting}
+
+
+\textbf{Globales Min} x⃗\textit{: f(x⃗})≤f(x⃗) ∀x⃗∈X\_z | \textbf{Lokales Min}: nur in N(x⃗\textit{) | }\textit{Unimodal}\textit{ 1 Optimum, }\textit{Multimodal}* mehrere
+
+
+
+\subsubsection{Eigenschaften}
+
+
+{\small
+\begin{adjustbox}{max width=\linewidth}
+{\scriptsize
+\begin{tabular}{lll}
+\toprule
+\textbf{Eigenschaft} & \textbf{Algorithmen} & \textbf{Probleme} \\
+\midrule
+Reichweite & lokal/global & unimodal/multimodal \\
+Grad. & gradientenbasiert/-frei & diff/nicht-diff \\
+NB & ohne/=/≤ & ohne/=/≤ \\
+Ziele & 1/>1 & 1/>1 \\
+Linearität & linear/nichtlin. & linear/nichtlin. \\
+Ansatz & analytisch/numerisch & – \\
+Genauigkeit & exakt/approx. & – \\
+Zufall & det/stoch. & det/stoch. \\
+Variablen & dis/kom/kon/gem & dis/kom/kon/gem \\
+\bottomrule
+\end{tabular}
+}
+\end{adjustbox}
+}
+
+
+\begin{quote}
+Det. Algo: Gradient Descent, DIRECT. Stoch.: EAs. Stoch. Problem = Rauschen in Variablen/Funktion.
+\end{quote}
+
+
+\subsubsection{Stationäre Punkte}
+
+\textbf{SP}: ∇f(x⃗)=0⃗ (notwendig). \textbf{Gradient} ∇f=[∂f/∂x₁,…,∂f/∂xₙ]ᵀ Richtung stärksten Anstiegs. \textbf{Hesse} H=∇²f (hinreichend):
+
+
+
+{\small
+\begin{adjustbox}{max width=\linewidth}
+{\scriptsize
+\begin{tabular}{ll}
+\toprule
+\textbf{H-EW} & \textbf{Klassifikation} \\
+\midrule
+alle >0 (pos. def.) & lok. Min \\
+alle <0 (neg. def.) & lok. Max \\
+gemischt (indef.) & Sattel \\
+≥0/≤0 mit 0 (semi-def.) & nicht ausreichend \\
+\bottomrule
+\end{tabular}
+}
+\end{adjustbox}
+}
+
+
+Beispiele: x₁²+x₂² → EW 2,2 Min | x₁²+x₂²−5x₁x₂ → EW 7,−3 Sattel | x₁²+x₂²−2x₁x₂ → EW 4,0 semi-def.
+
+
+
+\subsubsection{Gradient Descent}
+
+\begin{enumerate}
+  \item x⃗₀ setzen 2. ∇f(x⃗ᵢ) 3. ≈0⃗→Ende 4. \textbf{x⃗ᵢ₊₁=x⃗ᵢ−c·∇f(x⃗ᵢ)} 5. zu 2
+\end{enumerate}
+
+\begin{quote}
+Falsches c → Oszillation/langsam. Alt: Quasi-Newton, BFGS, Truncated Newton, CG, Momentum. ML: SGD, Momentum/Nesterov, ADAM.
+\end{quote}
+
+3-Hump: f=2x₁²−1.05x₁⁴+x₁⁶/6+x₁x₂+x₂²; ∇f=[4x₁−4.2x₁³+x₁⁵+x₂, x₁+2x₂]ᵀ
+
+
+
+\subsection{2. Lineare Optimierung}
+
+\textbf{Standard}: min cᵀx; Ax=b; x≥0; b≥0
+
+
+
+\subsubsection{Umwandlung}
+
+
+{\small
+\begin{adjustbox}{max width=\linewidth}
+{\scriptsize
+\begin{tabular}{ll}
+\toprule
+\textbf{Original} & \textbf{→ Standard} \\
+\midrule
+0.4x₁+0.6x₂ ≤ 8.5 & +Slack x₃: …+x₃=8.5 (Slack≥0; >0 = nicht aktiv) \\
+xⱼ∈[a,b], a<0 & xⱼ=x'ⱼ−a \\
+xⱼ∈ℝ & xⱼ=xⱼₐ−xⱼᵦ, beide ≥0 \\
+max f & min −f \\
+\bottomrule
+\end{tabular}
+}
+\end{adjustbox}
+}
+
+
+
+\subsubsection{Investment-Beispiel}
+
+Typ A: 55 Obj/h, 1 Bed., 18 h/d, 400k | Typ B: 50/2/18/600k. Budget 12M−3.5M=8.5M, 70 Bed., Fläche 25·B (A=3·B):
+
+\begin{lstlisting}
+min −990x₁−900x₂; 0.4x₁+0.6x₂≤8.5; 3x₁+x₂≤25; 3x₁+6x₂≤70
+\end{lstlisting}
+
+Optimum x*=[5.33, 9, 0.96, 0, 0]ᵀ, f=−13380; x₃=0.96 → g₁ inaktiv.
+
+
+
+\subsubsection{Grafisch (2D)}
+
+\begin{enumerate}
+  \item Isolinien Zielfkt. 2. NB einzeichnen 3. zul. Bereich 4. Parallele bis Ecke/Kante 5. Ecke = Optimum
+\end{enumerate}
+
+
+\subsubsection{Simplex}
+
+\textbf{Eckpunkt} = Schnittpunkt NB; LP-Optimum dort. 1. Start-Ecke 2. beste Kante 3. nächste Ecke 4. keine Verbesserung → Stopp. (≈ wiederholtes Gauss)
+
+
+
+\subsubsection{Integer LP}
+
+
+{\small
+\begin{adjustbox}{max width=\linewidth}
+{\scriptsize
+\begin{tabular}{ll}
+\toprule
+\textbf{Methode} & \textbf{Beschreibung} \\
+\midrule
+Naiv & kontin. lösen + runden (NB-Verletzung möglich) \\
+Etwas besser & nächste Integer-Lösung die NB erfüllt \\
+Cutting Plane & 1. kontin. lösen 2. ganz? Stopp 3. Cut: verletzt akt. Lös, erhält alle Int. 4. zu 1 \\
+\bottomrule
+\end{tabular}
+}
+\end{adjustbox}
+}
+
+
+
+\subsection{3. Transportproblem}
+
+Voraussetzung: ∑aᵢ=∑bⱼ.
+
+\begin{lstlisting}
+min ∑∑ cᵢⱼxᵢⱼ; ∑ⱼxᵢⱼ=aᵢ; ∑ᵢxᵢⱼ=bⱼ; xᵢⱼ≥0
+\end{lstlisting}
+
+Phase 1: Startlösung. Phase 2: Stepping-Stone, MODI (≈Simplex).
+
+
+
+{\small
+\begin{adjustbox}{max width=\linewidth}
+{\scriptsize
+\begin{tabular}{lll}
+\toprule
+\textbf{Methode} & \textbf{Vorgehen} & \textbf{Bsp. f(X)} \\
+\midrule
+\textbf{NWER} & Nordwest-Zelle, min(aᵢ,bⱼ); Rest 0 & 9650 \\
+\textbf{MMM} & günstigste Zelle, max. Menge & 7000 \\
+\textbf{Vogel} & OK = 2.niedr.−niedr. (Zeile/Spalte); höchste OK → günstigste Zelle & 7000 \\
+\bottomrule
+\end{tabular}
+}
+\end{adjustbox}
+}
+
+
+
+\subsection{4. Nichtlineare Optimierung}
+
+
+\subsubsection{Quadratische Optimierung}
+
+\begin{lstlisting}
+min ½x⃗ᵀQx⃗ + c⃗ᵀx⃗;  Ax⃗≤b⃗; A_eq x⃗=b⃗_eq; b_l≤xᵢ≤b_u
+\end{lstlisting}
+
+
+\textbf{Q}: symmetrisch (Q=Qᵀ), pos. semi-def. (keine neg. EW); pos. def. → konvex, eindeutig.
+
+\textbf{Algos}: Interior-Point, CG, Simplex-Var., Augmented Lagrangian. \textbf{Solver}: CPLEX, GUROBI.
+
+\textbf{Anw.}: LSQ/Curve Fitting, MPC, Portfolio, Clustering, Feature Selection, SVM.
+
+
+
+\subsubsection{CLS (Constrained Least Squares)}
+
+NB z.B. bᵢ≥0, ∑bᵢ=1. Analytisch (XᵀX)⁻¹Xᵀy⃗ ungültig.
+
+
+‖y⃗−Xb⃗‖² = y⃗ᵀy⃗−2y⃗ᵀXb⃗+b⃗ᵀXᵀXb⃗ → \textbf{½b⃗ᵀXᵀXb⃗ − y⃗ᵀXb⃗}, also Q=XᵀX, c⃗=Xᵀy⃗.
+
+
+
+\subsubsection{KKT}
+
+\textbf{Lagrange}: L(x⃗,a,b)=f(x⃗)+∑aₖhₖ+∑bⱼgⱼ (alle Ungl. als gⱼ≤0)
+
+
+
+{\small
+\begin{adjustbox}{max width=\linewidth}
+{\scriptsize
+\begin{tabular}{ll}
+\toprule
+\textbf{\#} & \textbf{Bedingung} \\
+\midrule
+1 Stationarität & ∇ₓL = ∇f+∑aₖ∇hₖ+∑bⱼ∇gⱼ = 0⃗ \\
+2 Primal Feas. & hₖ=0, gⱼ≤0 \\
+3 Dual Feas. & bⱼ ≥ 0 \\
+4 Komplement. & bⱼ·gⱼ = 0 \\
+\bottomrule
+\end{tabular}
+}
+\end{adjustbox}
+}
+
+
+
+{\small
+\begin{adjustbox}{max width=\linewidth}
+{\scriptsize
+\begin{tabular}{ll}
+\toprule
+\textbf{gⱼ} & \textbf{bⱼ} \\
+\midrule
+=0 (aktiv) & bⱼ>0 möglich \\
+<0 (inaktiv) & bⱼ=0 erforderlich \\
+\bottomrule
+\end{tabular}
+}
+\end{adjustbox}
+}
+
+
+\begin{quote}
+Ohne ≤ → klass. Lagrange. Max → −f minimieren oder umformulieren. Hinreichend: ∇²ₓL pos. def. am KKT-Punkt.
+\end{quote}
+
+\textbf{Dose}: min Cπdh; πd²h/4=500; 2d−h≤0
+
+\begin{itemize}
+  \item ∂L/∂d=Cπh+a₁πdh/2+2b₁=0; ∂L/∂h=Cπd+a₁πd²/4−b₁=0
+  \item b₁=0 → C=0 (Widerspruch); b₁>0 → 2d=h → πd³/2=500 → d³=1000/π
+  \item d≈6.828, h≈13.656, a₁≈−0.0039, b₁≈0.0715, f≈2.93 €
+\end{itemize}
+
+
+\subsubsection{SQO}
+
+Sub-Problem (QO):
+
+\begin{itemize}
+  \item f̃ᵢ(d⃗)=f(x⃗ᵢ)+∇f(x⃗ᵢ)ᵀd⃗ + ½d⃗ᵀHd⃗
+  \item h̃ₖᵢ=hₖ(x⃗ᵢ)+∇hₖᵀd⃗;  g̃ⱼᵢ=gⱼ(x⃗ᵢ)+∇gⱼᵀd⃗
+  \item d⃗=x⃗*−x⃗ᵢ; H≈Hesse(L) via BFGS
+\end{itemize}
+
+Algo: 1. x⃗₀ 2. Sub-Problem → d⃗ 3. Liniensuche c>0 4. \textbf{x⃗ᵢ₊₁=x⃗ᵢ+c·d⃗} 5. Konv? sonst 2
+
+
+
+\subsection{5. Gradientenfreie Optimierung}
+
+
+\subsubsection{Nelder-Mead}
+
+\textbf{Simplex}: Polytop n+1 Ecken (1D Linie, 2D △, 3D Tetraeder).
+
+
+\begin{enumerate}
+  \item Init: x⃗ⱼ=x⃗₀+hⱼ·e⃗ⱼ
+  \item Sortiere f(x⃗₀)≤…≤f(x⃗ₙ)
+  \item Abbruch: ∑‖x⃗ⱼ−x⃗ᵢ‖<ε oder f(x⃗ₙ)−f(x⃗₀)<ε oder maxIter
+  \item Centerpoint c⃗=(1/n)∑ⱼ₌₀ⁿ⁻¹ x⃗ⱼ
+  \item Transformiere:
+\end{enumerate}
+
+
+{\small
+\begin{adjustbox}{max width=\linewidth}
+{\scriptsize
+\begin{tabular}{lll}
+\toprule
+\textbf{Schritt} & \textbf{Formel} & \textbf{Akzeptanz} \\
+\midrule
+\textbf{5a Reflect} & x⃗ᵣ=c⃗+α(c⃗−x⃗ₙ) & f₀≤fᵣ≤fₙ₋₁ → x⃗ₙ=x⃗ᵣ; fᵣ<f₀→5b; fᵣ≥fₙ₋₁→5c \\
+\textbf{5b Expand} & x⃗ₑ=c⃗+γ(x⃗ᵣ−c⃗) & besseres von x⃗ₑ/x⃗ᵣ ersetzt x⃗ₙ \\
+\textbf{5c Contract} & x⃗\_c=c⃗+β(x\_?−c⃗); x\_? = x⃗ᵣ wenn besser als x⃗ₙ, sonst x⃗ₙ & besser als x⃗ₙ → ersetzen, sonst 5d \\
+\textbf{5d Shrink} & x⃗ⱼ=x⃗₀+δ(x⃗ⱼ−x⃗₀) j>0 & – \\
+\bottomrule
+\end{tabular}
+}
+\end{adjustbox}
+}
+
+
+\begin{quote}
+Lokal; global durch Restarts.
+\end{quote}
+
+
+\subsubsection{DIRECT}
+
+DIviding RECTangles (Jones 1993). Lipschitzian opt. ohne L-Konstante. Eigenschaften: global, nichtlin., Grenz-NB, det., gradientenfrei, kontin., 1 Ziel.
+
+
+\begin{enumerate}
+  \item Init: Einheits-Hyperwürfel, c⃗₀, f\_min=f(c⃗₀), m=1, t=0
+  \item Pot. opt. Rechtecke (dᵢ Größe, f(c⃗ᵢ) Güte): c⃗ⱼ pot. opt. wenn ∃k̃>0:
+\begin{itemize}
+  \item f(c⃗ⱼ)−k̃dⱼ ≤ f(c⃗ᵢ)−k̃dᵢ ∀i
+  \item f(c⃗ⱼ)−k̃dⱼ ≤ f\_min − ε|f\_min|
+\end{itemize}
+  \item Sample: I=Dimensionen mit max. Seitenlänge 3δ; sample c⃗±δ·e⃗ᵢ; Drittel entlang I, beste Dim. zuerst
+  \item t++; T? Stopp, sonst 2
+\end{enumerate}
+
+
+\subsection{6. Metaheuristiken}
+
+
+{\small
+\begin{adjustbox}{max width=\linewidth}
+{\scriptsize
+\begin{tabular}{ll}
+\toprule
+\textbf{Heuristik} & \textbf{Inspiration} \\
+\midrule
+Simulated Annealing & Metallabkühlung; T hoch → viele Änderungen \\
+PSO & Schwarm; gute Lösung beeinflusst schlechte \\
+ACO & Pheromonpfade; kurze Wege mehr Pheromon (Routing) \\
+EA & Evolution \\
+\bottomrule
+\end{tabular}
+}
+\end{adjustbox}
+}
+
+
+
+\subsubsection{EA – Mapping}
+
+
+{\small
+\begin{adjustbox}{max width=\linewidth}
+{\scriptsize
+\begin{tabular}{ll}
+\toprule
+\textbf{Natur} & \textbf{Algo} \\
+\midrule
+Individuum & Lösungskandidat \\
+Population & Menge Kandidaten \\
+DNA & Codierung (z.B. ℝⁿ) \\
+Mutation & x⃗+ϵ, ϵ∼N(0,σ) \\
+Rekombination & (x⃗₁+x⃗₂)/2 \\
+Fitness & f(x⃗) \\
+\bottomrule
+\end{tabular}
+}
+\end{adjustbox}
+}
+
+
+Eigenschaften: lok+global, nichtlin., mit/ohne NB, stoch., gradientenfrei, kontin.+disk., 1+>1 Ziel.
+
+
+
+{\small
+\begin{adjustbox}{max width=\linewidth}
+{\scriptsize
+\begin{tabular}{lll}
+\toprule
+\textbf{Codierung} & \textbf{Mutation} & \textbf{Rekombination} \\
+\midrule
+Binär (Bits) & single bit flip & single point crossover \\
+DNA (C/G/A/T) & analog & analog \\
+Kontin. (ℝⁿ) & x⃗+ϵ & (x⃗₁+x⃗₂)/2 \\
+\bottomrule
+\end{tabular}
+}
+\end{adjustbox}
+}
+
+
+\textbf{HP}: Pop.größe, Mutationsschrittweite/-Wkt., \# Nachkommen.
+
+
+
+{\small
+\begin{adjustbox}{max width=\linewidth}
+{\scriptsize
+\begin{tabular}{ll}
+\toprule
+\textbf{Tuning} & \textbf{Beschreibung} \\
+\midrule
+Tuning & generell \\
+Self-adaptation & EA-spez., HP Teil von x⃗ \\
+Parameter Control & heuristisch (1+1-ES, 1/5-Rule) \\
+\bottomrule
+\end{tabular}
+}
+\end{adjustbox}
+}
+
+
+\begin{quote}
+Anw.: Routing, Termin-/Maschinenplanung, Chem./Mech. Design, Robotik, Spiele. Schwefel 1960s Zweiphasendüse.
+\end{quote}
+
+
+\subsubsection{1+1-ES}
+
+Param: Speicher g, a>1, σ⃗₀=1⃗.
+
+\begin{enumerate}
+  \item x⃗, y=f(x⃗) 2. Clone 3. xᵢ\_next+=ϵᵢ, ϵᵢ∼N(0,σᵢ) 4. y\_next 5. y\_next<y → 1 in G \& übernehmen, sonst 0; älteste raus
+  \item \textbf{1/5-Rule}: s=∑G/g; s>1/5 → σ⃗·=a; s<1/5 → σ⃗·=1/a 7. Stopp? sonst 2
+\end{enumerate}
+
+\begin{quote}
+1/5: opt. für Kugel ∑xᵢ², n→∞; nicht für multimodal.
+\end{quote}
+
+
+\subsubsection{CMA-ES}
+
+State-of-the-art kontin., adaptiert Kovarianzmatrix. \textbf{Rastrigin} (multimodal): f=10n+∑(xᵢ²−10cos(2πxᵢ)). Bei Bedarf Restarts/große Pop.
+
+
+
+\subsubsection{SMBO}
+
+Surrogate-Modell (ML) ersetzt teure f. Anw.: ML-Tuning, Engineering Design (Auto, Aerospace). Kombiniert Versuchsplanung + Stat./ML + Optimierung.
+
+
+
+\subsection{7. Mehrzieloptimierung}
+
+\begin{lstlisting}
+min y⃗=f(x⃗)=(f₁,…,fₘ)∈ℝᵐ
+\end{lstlisting}
+
+
+\textbf{Decision Space} Variablen | \textbf{Objective Space} Zielwerte
+
+
+Beispiele: f₁=(x−1)², f₂=(x+1)² → Pareto [−1,1] | f\_k=(x₁∓1)²+(x₂∓1)² → x\textit{₁=x}₂∈[−1,1]
+
+
+
+\subsubsection{Pareto}
+
+\textbf{Dominanz} (Min): x⃗′ ≻ x⃗″ wenn fᵢ(x⃗′)≤fᵢ(x⃗″) ∀i \textbf{und} fᵢ(x⃗′)<fᵢ(x⃗″) ∃i
+
+\textbf{Pareto-optimal}: nicht dominiert | \textbf{Pareto-Menge} (Decision) | \textbf{Pareto-Front} (Objective, monoton fallend, "unten links")
+
+
+\textbf{Pareto-Filter} O(n²): isPareto[i]=true; ∀(i,j) i≠j: dominiert j i? → false, break.
+
+
+\textbf{Dominated Region}: rechts/oberhalb Front (Treppenform).
+
+
+\textbf{Gewichtete Summe}: 1. Gewichtskombi 2. Einzelziel-Opt 3. Vereinigung ≈ Front
+
+
+
+\subsubsection{NSGA-II}
+
+\textbf{NDSR} (Rang): 1. non-dom Punkte = Rang i (Start 1) 2. entfernen 3. i++ 4. wdh.
+
+\textbf{Crowding Distance} (innerhalb Front): Σ Abstände umschließender Nachbarn pro Ziel, skaliert; Extrempunkte CD=∞ (immer gewählt).
+
+\begin{quote}
+Extrempunkt: ∃Ziel mit kein anderer Punkt größer ODER kleiner.
+\end{quote}
+
+Algo: 1. Init Pop 2. Eltern (NDSR \& CD) 3. Rekomb 4. Mut 5. Überlebende (NDSR \& CD) 6. Stopp? sonst 2
+
+
+
+\subsubsection{Hypervolumen}
+
+\textbf{HV}: Vol. aller dominierten Punkte bis Referenzpunkt | \textbf{HVB / S-Metric}: exklus. Beitrag (Rand oft ∞)
+
+Pro Sample i: Rechteck (f₁ᵢ, prev\_f₂) bis (next\_f₁, f₂ᵢ).
+
+
+
+{\small
+\begin{adjustbox}{max width=\linewidth}
+{\scriptsize
+\begin{tabular}{ll}
+\toprule
+\textbf{+} & \textbf{−} \\
+\midrule
+Pareto-compliant & Refpunkt nötig \\
+vergleicht Mengen & hoher Rechenaufwand \\
+skalenunabh. & bei vielen Zielen \\
+\bottomrule
+\end{tabular}
+}
+\end{adjustbox}
+}
+
+
+Alt. Tie-Breaks: R1/R2/R3, ϵ-Indikator, HV/HVB.
+
+
+
+\subsubsection{SMS-EMOA}
+
+Wie NSGA-II, \textbf{CD ersetzt durch HVB} in Eltern/Überlebenden-Auswahl.
+
+
+
+\subsubsection{Visualisierung}
+
+\textbf{Marching Squares}: 88×88 Grid, 7 Levels, thr\_k=min+k/(L+1)·(max−min); 16 Fälle, 0/15 keine Linie, mehrdeutig (5,10) → Mittel; lin. Interp. \textbf{t=(thr−vA)/(vB−vA)}
+
+\textbf{Heatmap-Palette}: [18,136,184] → [255,247,214] → [180,35,24]; Norm (v−min)/(max−min); 2 Hälften lin.
+
+\textbf{Treppenpfad}: 1. sortiere f₁↑ 2. moveTo(x₀,y₀) 3. ∀i>0: lineTo(xᵢ, yᵢ₋₁) → lineTo(xᵢ, yᵢ)
+
+
+
+{\small
+\begin{adjustbox}{max width=\linewidth}
+{\scriptsize
+\begin{tabular}{ll}
+\toprule
+\textbf{Familie} & \textbf{Charakter} \\
+\midrule
+Wavy bowls & quadr. + sin/cos \\
+Pure quadratic & rein quadr. \\
+Multimodal & quadr. + (1−cos) \\
+\bottomrule
+\end{tabular}
+}
+\end{adjustbox}
+}
+
+
+Bounds x₁,x₂∈[−2.5, 2.5]; Samples 10–120 (Std 40).
+
+
+
+\subsection{8. Methoden-Übersicht}
+
+
+
+{\scriptsize
+\begin{adjustbox}{max width=\linewidth}
+{\scriptsize
+\begin{tabular}{lllllllllll}
+\toprule
+\textbf{\#} & \textbf{Methode} & \textbf{Glob} & \textbf{Grad} & \textbf{NB} & \textbf{Z} & \textbf{Lin} & \textbf{Ansatz} & \textbf{Gen.} & \textbf{Det} & \textbf{Var} \\
+\midrule
+1 & SP/Hesse & ✅ & ✅ & – & 1 & ❌ & analyt & exakt & ✅ & ℝⁿ \\
+2 & Grad. Desc. & ❌ & ✅ & – & 1 & ❌ & num & ? & ✅ & ℝⁿ \\
+3 & Simplex & ✅ & ❌ & alle & 1 & ✅ & num & exakt & ✅ & ℝⁿ\&ℤⁿ \\
+4 & QO & ❌ & ✅ & alle & 1 & ❌ & num & ? & ✅ & ℝⁿ \\
+5 & KKT & ✅ & ✅ & alle & 1 & ❌ & analyt & exakt & ✅ & ℝⁿ \\
+6 & SQO & ❌ & ✅ & alle & 1 & ❌ & num & ? & ✅ & ℝⁿ \\
+7 & Nelder-Mead & ❌ & ❌ & – & 1 & ❌ & num & approx & ✅ & ℝⁿ \\
+8 & DIRECT & ✅ & ❌ & Grenz & 1 & ❌ & num & approx & ✅ & ℝⁿ \\
+9 & EA & ✅(?) & ❌ & / & / & / & num & approx & ❌ & / \\
+10 & (1+1)-ES & ❌ & ❌ & – & 1 & / & num & approx & ❌ & ℝⁿ \\
+11 & CMA-ES & ✅(?) & ❌ & – & 1 & / & num & approx & ❌ & ℝⁿ \\
+12 & SMBO & ✅(?) & ❌ & / & / & / & num & approx & ❌ & / \\
+13 & NSGA-II & ✅(?) & ❌ & – & >1 & ❌ & num & approx & ❌ & / \\
+14 & SMS-EMOA & ✅(?) & ❌ & – & >1 & ❌ & num & approx & ❌ & / \\
+\bottomrule
+\end{tabular}
+}
+\end{adjustbox}
+}
+
+
+
+\subsection{9. Quick Reference}
+
+\begin{itemize}
+  \item Ungl→Gl: \textbf{+Slack} (≥0)
+  \item max f → \textbf{min −f}
+  \item xⱼ∈[a,b], a<0 → \textbf{xⱼ=x'ⱼ−a}
+  \item Standard: \textbf{min, =, xᵢ≥0, bⱼ≥0}
+  \item Slack-Zweck: Differenz LHS/RHS, Ungl→Gl
+  \item Slack >0 ⇔ NB nicht aktiv
+\end{itemize}
+
+
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{multicols}
+\end{document}

@@ -1,0 +1,544 @@
+% ============================================================
+%  Probeklausur Template (my_dhbw Stil, klausur_*.tex)
+%  Formell mit Deckblatt-Header; Lösungen als grüne tcolorbox.
+%  Renderer: pdflatex (zweimal)
+% ============================================================
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+\usepackage[top=2cm, bottom=2cm, left=2.4cm, right=2.4cm, footskip=1cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{ltablex}
+\keepXColumns
+\usepackage{colortbl}
+\usepackage[most,breakable]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{pdflscape}
+\usepackage{titlesec}
+\usepackage[colorlinks=true, linkcolor=accent, urlcolor=accent]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme ─────────────────────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{loesung}{RGB}{0, 100, 0}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{240, 252, 240}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer ─────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\footnotesize\color{accent}Modulprüfung -- \nichttitle}
+\fancyhead[R]{\footnotesize\color{accent}\nichtsubtitle}
+\fancyfoot[L]{\footnotesize\color{accent}Matrikelnr.: \rule{3cm}{0.4pt}}
+\fancyfoot[R]{\footnotesize\color{accent}Blatt \thepage\,/\,\pageref{LastPage}}
+
+% ── Typografie ────────────────────────────────────────────────
+\titleformat{\section}
+    {\color{accent}\large\bfseries}{}{0pt}{}
+    [\vspace{-4pt}\color{accent}\rule{\linewidth}{1.5pt}]
+\titleformat{\subsection}
+    {\normalsize\bfseries\color{accent!85!black}}{}{0pt}{}{}
+\titleformat{\subsubsection}
+    {\small\bfseries\color{accent!70!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{12pt}{4pt}
+\titlespacing*{\subsection}{0pt}{8pt}{2pt}
+\titlespacing*{\subsubsection}{0pt}{6pt}{1pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\renewcommand{\arraystretch}{1.25}
+\setlist[itemize]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.4em}
+\setlist[enumerate]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.6em}
+
+% ── Boxen ─────────────────────────────────────────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={Abbildung: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={Tabelle: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{solutionbox}[1]{
+  enhanced,
+  colback=solutionbg, colframe=loesung,
+  title={#1}, fonttitle=\small\bfseries,
+  coltitle=white, colbacktitle=loesung,
+  breakable, before skip=8pt, after skip=8pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=single, framerule=0pt,
+  xleftmargin=4pt, xrightmargin=4pt,
+  aboveskip=6pt, belowskip=6pt,
+  keepspaces=true
+}
+
+\providecommand{\nichttitle}{Probeklausur}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Digitale Betriebswirtschaftslehre}
+\renewcommand{\nichtsubtitle}{Probeklausur 1}
+
+
+\begin{document}
+
+% Deckblatt
+\thispagestyle{empty}
+\begin{center}
+\vspace*{1cm}
+{\Huge\bfseries\color{accent}Probeklausur}\\[8pt]
+{\Large\color{accent}\nichttitle}\\[4pt]
+\ifx\nichtsubtitle\empty\else
+  {\large\color{accent!80!black}\nichtsubtitle}\\[6pt]
+\fi
+\color{accent}\rule{0.5\linewidth}{1pt}\color{black}
+\end{center}
+
+\vspace{1cm}
+\begin{tabularx}{\textwidth}{@{}l X@{}}
+\textbf{Studiengang:}      & \rule{6cm}{0.4pt} \\[6pt]
+\textbf{Matrikelnummer:}    & \rule{6cm}{0.4pt} \\[6pt]
+\textbf{Name, Vorname:}    & \rule{6cm}{0.4pt} \\[6pt]
+\textbf{Datum:}             & \rule{6cm}{0.4pt} \\[6pt]
+\textbf{Bearbeitungszeit:}  & 60 Minuten \\[6pt]
+\textbf{Hilfsmittel:}       & Taschenrechner (nicht programmierbar) \\
+\end{tabularx}
+
+\vspace{2cm}
+\begin{center}
+{\large\itshape Viel Erfolg!}
+\end{center}
+
+\newpage
+
+% ── BODY ──────────────────────────────────────────────────────
+
+\section{Probeklausur 1 — Digitale Betriebswirtschaftslehre}
+
+\textbf{Bearbeitungszeit}: 60 Minuten | \textbf{Hilfsmittel}: keine | \textbf{Punkte}: 100
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 1 — BWL-Ansätze und Produktionsfaktoren \textit{(14 Punkte)}}\mbox{}\\[2pt]
+
+Die fiktive "MediFlow GmbH" betreibt eine Plattform, auf der Arztpraxen Termine vergeben. Geschäftsführer Schmidt klagt: "Unser Hauptproblem ist, dass die Praxen unsere Auslastungsdaten nicht teilen wollen — dadurch können wir nicht prognostizieren, wann welche Praxis Engpässe hat."
+
+
+a) Erklären Sie kurz den \textbf{institutionenökonomischen Ansatz} nach Coase und benennen Sie seine Zielgröße. \textit{(4 P)}
+
+
+b) Ordnen Sie das geschilderte Problem einem zentralen Begriff aus diesem Ansatz zu und begründen Sie Ihre Zuordnung. \textit{(4 P)}
+
+
+c) Erläutern Sie, inwiefern \textbf{Daten} bei MediFlow zum modernen Produktionsfaktor werden. Skizzieren Sie dazu die typische Wertschöpfungskette für Daten und nennen Sie ein konkretes neues Geschäftsmodell, das MediFlow auf Datenbasis aufbauen könnte. \textit{(6 P)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 — Marktgleichgewicht und Datennutzung \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+Ein Hersteller von smarten Fahrradschlössern beobachtet folgende Marktfunktionen (P in €, Q in Tsd. Stück/Monat):
+
+
+\begin{itemize}
+  \item Nachfrage: Q\_D = 180 − 3P
+  \item Angebot: Q\_S = 30 + 2P
+\end{itemize}
+
+a) Berechnen Sie Gleichgewichtspreis P\textbackslash{}\textit{ und Gleichgewichtsmenge Q\textbackslash{}}. Zeigen Sie den vollständigen Rechenweg. \textit{(5 P)}
+
+
+b) Der Hersteller setzt einen Verkaufspreis von P = 25 €. Bestimmen Sie Q\_D und Q\_S bei diesem Preis und benennen Sie Art und Umfang des Ungleichgewichts. Welche Marktreaktion ist zu erwarten? \textit{(5 P)}
+
+
+c) Eine virale TikTok-Kampagne lässt die Nachfrage steigen auf Q\_D' = 230 − 3P. Berechnen Sie das neue Gleichgewicht (P\textbackslash{}\textit{\textbackslash{}}, Q\textbackslash{}\textit{\textbackslash{}}) und interpretieren Sie die Veränderung gegenüber a). \textit{(5 P)}
+
+
+d) Der Hersteller wertet täglich Google-Trends-Suchanfragen nach "Fahrradschloss smart" aus. Erklären Sie, welchen konkreten Wettbewerbsvorteil diese datenbasierte Nachfrageschätzung gegenüber einem Konkurrenten ohne Datenanalyse schafft. Nennen Sie zwei Managemententscheidungen, die direkt aus der erkannten Nachfrageverschiebung folgen sollten. \textit{(5 P)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 — Zielsystem und SMART \textit{(14 Punkte)}}\mbox{}\\[2pt]
+
+Ein mittelständischer Online-Modehändler formuliert das Ziel: "Wir wollen demnächst irgendwie besser werden."
+
+
+a) Bewerten Sie diese Zielformulierung nach allen fünf SMART-Kriterien und identifizieren Sie pro Kriterium konkret den Mangel. \textit{(5 P)}
+
+
+b) Formulieren Sie das Ziel SMART neu in einem einzigen Satz. \textit{(3 P)}
+
+
+c) Der Händler verfolgt parallel folgende drei Zielpaare. Klassifizieren Sie jedes Paar als komplementär, konkurrierend oder indifferent und begründen Sie jeweils kurz: \textit{(6 P)}
+
+\begin{itemize}
+  \item (1) Einführung eines Chatbots zur Kostensenkung im Kundenservice ↔ Erhöhung der Kundenzufriedenheit bei Beschwerdefällen
+  \item (2) Reduktion der Retourenquote ↔ Senkung der Logistikkosten
+  \item (3) Erweiterung des Sortiments um Sportbekleidung ↔ Sanierung der Mitarbeiterkantine
+\end{itemize}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 — Entscheidung unter Sicherheit (Berechnung) \textit{(18 Punkte)}}\mbox{}\\[2pt]
+
+Ein FinTech-Startup wählt zwischen drei Payment-Anbietern. Erwartetes Volumen: \textbf{300.000 Transaktionen/Jahr}.
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Anbieter}} & {\color{white}\textbf{Gebühr/Transaktion}} & {\color{white}\textbf{Fixkosten/Jahr}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+A (Basic) & 0,50 € & 5.000 € \\
+B (Pro) & 0,35 € & 20.000 € \\
+C (Enterprise) & 0,25 € & 50.000 € \\
+\end{tabularx}
+}
+
+
+a) Berechnen Sie die jährlichen Gesamtkosten für alle drei Anbieter und nennen Sie den optimalen Anbieter bei 300.000 Transaktionen. \textit{(6 P)}
+
+
+b) Bestimmen Sie rechnerisch die \textbf{kritische Transaktionsmenge}, ab der Anbieter C günstiger ist als Anbieter B. \textit{(6 P)}
+
+
+c) Ordnen Sie diese Entscheidung in die Typologie konstitutiv vs. laufend ein und begründen Sie. Erklären Sie zudem, welcher \textbf{Informationsstand} (Sicherheit/Risiko/Unsicherheit) hier vorliegt und warum die rein deterministische Rechnung in der Praxis dennoch problematisch sein kann. \textit{(6 P)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 — Entscheidung unter Unsicherheit \textit{(18 Punkte)}}\mbox{}\\[2pt]
+
+Ein Logistikunternehmen wählt zwischen drei IT-Strategien. Die Auszahlungen (in Mio. €, Jahresgewinn) hängen vom unbekannten Marktszenario ab:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Alternative}} & {\color{white}\textbf{Boom (Z1)}} & {\color{white}\textbf{Stagnation (Z2)}} & {\color{white}\textbf{Krise (Z3)}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+A: On-Premise & 8 & 5 & 2 \\
+B: Public Cloud & 14 & 4 & −3 \\
+C: Hybrid & 10 & 6 & 0 \\
+\end{tabularx}
+}
+
+
+a) Wenden Sie die \textbf{Maximin-Regel} und die \textbf{Maximax-Regel} an. Geben Sie pro Alternative den jeweils relevanten Wert sowie die gewählte Alternative an. \textit{(6 P)}
+
+
+b) Wenden Sie die \textbf{Hurwicz-Regel} mit λ = 0,4 (Optimismusgewicht) an. Berechnen Sie den Hurwicz-Wert pro Alternative und nennen Sie die Wahl. \textit{(6 P)}
+
+
+c) Wenden Sie die \textbf{Savage-Niehans-Regel} (Minimum-Regret) an. Stellen Sie die vollständige Bedauernsmatrix auf und ermitteln Sie die Wahl. \textit{(6 P)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 6 — Plattformmärkte, Marktformen und Principal-Agent \textit{(16 Punkte)}}\mbox{}\\[2pt]
+
+Ein neuer deutscher Lieferdienst "QuickBite" konkurriert mit zwei etablierten Plattformen, die zusammen ca. 90 \% Marktanteil halten. QuickBite vermittelt zwischen Restaurants und Endkunden. Investor Frau Weber (Eigenkapital 60 \%) misstraut CEO Herrn Klein, der vor allem Wachstum statt Profitabilität priorisiert.
+
+
+a) Klassifizieren Sie die Marktform (vor QuickBites Eintritt) und nennen Sie zwei typische \textbf{Markteintrittsbarrieren}, die einem neuen Anbieter im Lieferdienst-Markt begegnen. \textit{(5 P)}
+
+
+b) Erklären Sie, warum auf Plattformmärkten \textbf{Netzwerkeffekte} und \textbf{Lock-in-Effekte} den Markteintritt von QuickBite zusätzlich erschweren. Verwenden Sie das konkrete Szenario. \textit{(5 P)}
+
+
+c) Identifizieren Sie das Principal-Agent-Problem zwischen Weber und Klein. Schlagen Sie zwei konkrete Anreiz- bzw. Kontrollmechanismen vor und begründen Sie, warum diese die Informationsasymmetrie reduzieren. \textit{(6 P)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+
+\section{Musterlösung Klausur 1}
+
+\paragraph{Aufgabe 1 \textit{(14 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a)} \textit{(4 P)} Der institutionenökonomische Ansatz (Coase) betrachtet das Unternehmen als Geflecht von Verträgen und Regeln zwischen Akteuren. Zentrale Frage: Wie können Transaktionen effizient koordiniert werden? Zielgröße: \textbf{Minimierung der Transaktionskosten}. Unternehmen existieren, weil sie Transaktionen oft günstiger organisieren als der Markt.
+
+\textit{Bewertung}: 1 P Vertrags-/Regel-Sicht, 1 P Kernfrage Koordination, 1 P Transaktionskosten-Zielgröße, 1 P Markt-vs-Unternehmen-Logik.
+
+
+\textbf{b)} \textit{(4 P)} Das Problem ist eine \textbf{Informationsasymmetrie}: Die Praxen besitzen Auslastungsdaten, die MediFlow für Prognosen benötigt, aber nicht erhält. Begründung: Eine Vertragspartei (Praxen) verfügt über entscheidungsrelevante Informationen, die der anderen Partei (MediFlow) fehlen — die typische Konstellation der institutionenökonomischen Theorie.
+
+\textit{Bewertung}: 2 P korrekte Zuordnung Informationsasymmetrie, 2 P stimmige Begründung am Fall.
+
+
+\textbf{c)} \textit{(6 P)} Daten werden bei MediFlow zum vierten Produktionsfaktor neben Arbeit, Betriebsmitteln und Werkstoffen, weil sie unmittelbar zur Wertschöpfung beitragen. Wertschöpfungskette: \textbf{Sammlung (Termin- und Auslastungsdaten) → Verarbeitung/Analyse → Entscheidung → Wertschöpfung}. Der klassische Zyklus "Input → Produktion → Output" verschiebt sich zu "Daten → Analyse → Entscheidung → Wert".
+
+Neues Geschäftsmodell (Beispiele, ein konkretes ausreichend): Verkauf anonymisierter Auslastungsbenchmarks an Praxen; Nachfrageprognose-Service für Pharma-/Medizingerätehersteller; Predictive Staffing für Krankenhäuser.
+
+\textit{Bewertung}: 2 P Begründung Daten als Faktor, 2 P Wertschöpfungskette korrekt, 2 P plausibles datenbasiertes Geschäftsmodell.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a)} \textit{(5 P)} Gleichsetzen: 180 − 3P = 30 + 2P → 150 = 5P → \textbf{P\textbackslash{}* = 30 €}. Einsetzen: Q\textbackslash{}\textit{ = 180 − 3·30 = 90 (oder 30 + 2·30 = 90) → }\textit{Q\textbackslash{}} = 90 Tsd. Stück**.
+
+\textit{Bewertung}: 2 P Gleichsetzung, 2 P P\textbackslash{}\textit{, 1 P Q\textbackslash{}} mit Probe.
+
+
+\textbf{b)} \textit{(5 P)} Bei P = 25 €: Q\_D = 180 − 75 = 105; Q\_S = 30 + 50 = 80. Q\_D > Q\_S → \textbf{Nachfrageüberschuss von 25 Tsd. Stück}. Reaktion: Da der Preis zu niedrig ist, übersteigt die Nachfrage das Angebot; der Marktpreis wird steigen, bis P\textbackslash{}* = 30 € erreicht ist.
+
+\textit{Bewertung}: 1 P Q\_D, 1 P Q\_S, 1 P Differenz, 1 P Bezeichnung Nachfrageüberschuss, 1 P Reaktion (Preis steigt).
+
+
+\textbf{c)} \textit{(5 P)} 230 − 3P = 30 + 2P → 200 = 5P → \textbf{P\textbackslash{}\textit{\textbackslash{}} ≈ 40 €}. Q\textbackslash{}\textit{\textbackslash{}} = 230 − 3·40 = 110 → \textbf{Q\textbackslash{}\textit{\textbackslash{}} = 110 Tsd. Stück}. Interpretation: Rechtsverschiebung der Nachfragekurve führt zu \textbf{höherem Preis und höherer Menge}. Beide Marktteilnehmer "gewinnen" mengenmäßig; Konsumenten zahlen aber mehr.
+
+\textit{Bewertung}: 2 P Rechnung P\textbackslash{}\textit{\textbackslash{}}, 1 P Q\textbackslash{}\textit{\textbackslash{}}, 2 P Interpretation Rechtsverschiebung mit beiden Effekten.
+
+
+\textbf{d)} \textit{(5 P)} Wettbewerbsvorteil: Der Hersteller erkennt Nachfrageveränderungen \textbf{früher} als der Konkurrent (Frühindikator Suchanfragen vs. nachlaufender Verkaufszahlen). Dadurch kann er Preise und Mengen schneller anpassen, bevor sich am Markt sichtbare Knappheit/Überschuss zeigt.
+
+Zwei Managemententscheidungen aus erkannter Verschiebung: (1) \textbf{Produktionskapazitäten/Bestellmengen ausbauen}, um Nachfrageüberschuss zu bedienen; (2) \textbf{Verkaufspreis anheben}, da Markt höheren Preis trägt (P\textbackslash{}\textit{\textbackslash{}} > P\textbackslash{}*).
+
+\textit{Bewertung}: 2 P Vorteil Frühindikator/Time-to-Market, 1,5 P Kapazitätsentscheidung, 1,5 P Preisentscheidung.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 \textit{(14 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a)} \textit{(5 P)} Je 1 P:
+
+\begin{itemize}
+  \item \textbf{S} (Spezifisch): "irgendwie besser" — kein konkreter Bezug (Umsatz? Kundenzahl? Sortiment?).
+  \item \textbf{M} (Messbar): keine Kennzahl, keine Vergleichsgröße.
+  \item \textbf{A} (Attraktiv): keine Begründung, warum Ziel motivierend wäre.
+  \item \textbf{R} (Realistisch): ohne Bezugsgröße nicht beurteilbar, aber auch nicht ressourcenbezogen.
+  \item \textbf{T} (Terminiert): "demnächst" ist kein Termin.
+\end{itemize}
+
+\textbf{b)} \textit{(3 P)} Beispielhafte Lösung: "Wir steigern den Online-Umsatz im Geschäftsbereich Damenmode bis zum 31.12.2026 um mindestens 15 \% gegenüber dem Vorjahr." (Spezifisch, Messbar 15 \%, attraktiv und realistisch begründbar, Termin 31.12.2026.)
+
+\textit{Bewertung}: 3 P bei vollständiger SMART-Konformität (mind. 4 Kriterien klar erfüllt → 2 P; alle 5 → 3 P).
+
+
+\textbf{c)} \textit{(6 P)} Je 2 P (1 P Klassifikation, 1 P Begründung):
+
+\begin{itemize}
+  \item (1) \textbf{Konkurrierend (konfliktär)}: Chatbot senkt Kosten, beeinträchtigt aber emotionale Beschwerdebearbeitung — Kostenziel und Servicequalität wirken gegeneinander.
+  \item (2) \textbf{Komplementär}: Weniger Retouren bedeuten weniger Rücksendungen, Lager- und Bearbeitungsprozesse — Logistikkosten sinken automatisch mit.
+  \item (3) \textbf{Indifferent}: Sortimentserweiterung Sport und Kantinensanierung haben keine sachlogische Wechselwirkung.
+\end{itemize}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 \textit{(18 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a)} \textit{(6 P)} Gesamtkosten = Fixkosten + Gebühr · 300.000.
+
+\begin{itemize}
+  \item A: 5.000 + 0,50 · 300.000 = 5.000 + 150.000 = \textbf{155.000 €}
+  \item B: 20.000 + 0,35 · 300.000 = 20.000 + 105.000 = \textbf{125.000 €}
+  \item C: 50.000 + 0,25 · 300.000 = 50.000 + 75.000 = \textbf{125.000 €}
+\end{itemize}
+Bei genau 300.000 Transaktionen sind B und C \textbf{kostengleich (125.000 €)}. Empfehlung: \textbf{Anbieter B oder C} — bei knapp über 300.000 Transaktionen wird C günstiger.
+
+\textit{Bewertung}: je 1,5 P pro Anbieter (4,5 P), 1,5 P korrekte Schlussfolgerung Gleichstand.
+
+
+\textbf{b)} \textit{(6 P)} Bedingung Kosten C ≤ Kosten B:
+
+50.000 + 0,25·x ≤ 20.000 + 0,35·x
+
+30.000 ≤ 0,10·x
+
+x ≥ \textbf{300.000 Transaktionen}.
+
+Ab x > 300.000 Transaktionen ist C günstiger; bei x = 300.000 Gleichstand.
+
+\textit{Bewertung}: 2 P Ansatz Ungleichung, 2 P Umformung, 2 P Ergebnis 300.000.
+
+
+\textbf{c)} \textit{(6 P)}
+
+\begin{itemize}
+  \item \textbf{Konstitutiv vs. laufend}: Eher \textbf{konstitutiv}, da langfristige Anbieter-Bindung mit hohen Wechselkosten (Integrations-, Schulungskosten), grundlegende technische Architekturentscheidung mit mehrjähriger Wirkung. (2 P)
+  \item \textbf{Informationsstand}: Formal \textbf{Sicherheit}, da alle Eingangsgrößen (Gebühr, Fixkosten, Volumen) als bekannt angenommen werden. (2 P)
+  \item \textbf{Problem in der Praxis}: Das Volumen "300.000 Transaktionen/Jahr" ist eine Prognose und faktisch unsicher. Schwankt es z. B. auf 250.000 oder 400.000, kippt die Wahl zwischen B und C. Damit liegt real eher eine Risiko-/Unsicherheitsentscheidung vor — die deterministische Rechnung suggeriert Genauigkeit, die nicht gegeben ist. (2 P)
+\end{itemize}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 \textit{(18 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a)} \textit{(6 P)}
+
+\textbf{Maximin} (schlechtester Fall je Alternative → max):
+
+\begin{itemize}
+  \item A: min\{8;5;2\} = 2 | B: min\{14;4;−3\} = −3 | C: min\{10;6;0\} = 0
+  \item Maximum der Minima: \textbf{2 → A wählen}. (3 P)
+\end{itemize}
+
+\textbf{Maximax}:
+
+\begin{itemize}
+  \item A: max\{8;5;2\} = 8 | B: max\{14;4;−3\} = 14 | C: max\{10;6;0\} = 10
+  \item Maximum der Maxima: \textbf{14 → B wählen}. (3 P)
+\end{itemize}
+
+\textbf{b)} \textit{(6 P)} Hurwicz-Wert = λ · max + (1 − λ) · min, mit λ = 0,4:
+
+\begin{itemize}
+  \item A: 0,4·8 + 0,6·2 = 3,2 + 1,2 = \textbf{4,4}
+  \item B: 0,4·14 + 0,6·(−3) = 5,6 − 1,8 = \textbf{3,8}
+  \item C: 0,4·10 + 0,6·0 = 4,0 + 0 = \textbf{4,0}
+\end{itemize}
+Maximum: 4,4 → \textbf{A wählen}.
+
+\textit{Bewertung}: 1,5 P pro Alternative korrekt, 1,5 P Wahl.
+
+
+\textbf{c)} \textit{(6 P)} Bedauernsmatrix: pro Spalte (Zustand) bestes Ergebnis bestimmen, dann Differenz best − Alternative.
+
+Spaltenmaxima: Z1 = 14 (B), Z2 = 6 (C), Z3 = 2 (A).
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Alt}} & {\color{white}\textbf{Z1}} & {\color{white}\textbf{Z2}} & {\color{white}\textbf{Z3}} & {\color{white}\textbf{Max-Regret}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+A & 14−8 = 6 & 6−5 = 1 & 2−2 = 0 & \textbf{6} \\
+B & 14−14 = 0 & 6−4 = 2 & 2−(−3) = 5 & \textbf{5} \\
+C & 14−10 = 4 & 6−6 = 0 & 2−0 = 2 & \textbf{4} \\
+\end{tabularx}
+}
+
+
+Minimum der maximalen Regrets: 4 → \textbf{C wählen}.
+
+\textit{Bewertung}: 3 P Matrix korrekt, 1,5 P Max-Regret-Spalte, 1,5 P Wahl C.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 6 \textit{(16 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a)} \textit{(5 P)} Marktform vor Eintritt: zwei dominante Anbieter mit zusammen \textasciitilde{}90 \% Marktanteil und vielen Nachfragern (Endkunden) → \textbf{Oligopol} (genauer: enges Anbieter-Oligopol). (2 P)
+
+Zwei Markteintrittsbarrieren (je 1,5 P, Beispiele):
+
+\begin{itemize}
+  \item \textbf{Skaleneffekte}: Etablierte erreichen niedrigere Stückkosten (IT-Plattform, Marketing) — Neueinsteiger müssen schnell Volumen aufbauen.
+  \item \textbf{Hohe Investitionskosten} in Tech/Logistik/Marketing.
+  \item \textbf{Vertriebskanäle/Restaurantnetz}: Restaurants sind oft exklusiv an etablierte Plattformen gebunden.
+  \item \textbf{Regulierung} (Datenschutz, Arbeitsrecht für Kuriere).
+\end{itemize}
+
+\textbf{b)} \textit{(5 P)}
+
+\begin{itemize}
+  \item \textbf{Netzwerkeffekte}: Je mehr Restaurants auf einer Plattform sind, desto attraktiver ist sie für Kunden — und umgekehrt. Etablierte Plattformen mit großer Restaurant- und Kundenbasis bieten höheren Nutzen; QuickBite startet "leer" und hat den klassischen Henne-Ei-Nachteil. (2,5 P)
+  \item \textbf{Lock-in-Effekte}: Kunden haben Profile, gespeicherte Adressen, Treuepunkte und Gewohnheiten bei den Etablierten; ein Wechsel verursacht Aufwand und Verlust angesammelter Vorteile. Restaurants haben Schulungen, Tablets und Prozesse auf etablierte Systeme abgestimmt — Mehrfachintegration ist teuer. Beides erhöht Wechselkosten und bindet Nutzer. (2,5 P)
+\end{itemize}
+
+\textbf{c)} \textit{(6 P)}
+
+\textbf{Problem}: Klein (Agent) verfolgt mit "Wachstum statt Profitabilität" eigene Interessen (Status, Macht, Bewertung am Arbeitsmarkt für CEOs schneller Plattformen) auf Kosten von Webers (Principal) Renditeinteresse. Es liegt \textbf{Informationsasymmetrie} vor: Klein weiß besser als Weber, ob das Wachstum nachhaltig oder reines Cash-Burning ist. (2 P)
+
+
+Zwei Mechanismen (je 2 P):
+
+\begin{itemize}
+  \item \textbf{Leistungsabhängige Vergütung mit Profitabilitäts-KPIs} (z. B. Bonus an EBITDA, nicht nur GMV): Klein wird finanziell für die vom Principal gewünschte Zielgröße belohnt → Anreize werden angeglichen.
+  \item \textbf{Monitoring durch Reporting/Aufsichtsrat} mit monatlichem Cash-Burn-Reporting und Genehmigungsvorbehalt für Großausgaben: Reduziert Informationsasymmetrie, da Weber Handeln des Agents prüfen kann.
+\end{itemize}
+
+(Alternativen, die ebenfalls voll bewertet werden: Beteiligung am Eigenkapital/Stock Options mit Vesting; externe Audits; Meilensteinverträge.)
+
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{document}

@@ -1,0 +1,565 @@
+% ============================================================
+%  Übungsaufgaben Template (my_dhbw Stil, uebung_*.tex)
+%  Header "Übungsblatt", grün eingefärbte <details>-Lösungen.
+%  Renderer: pdflatex (zweimal)
+% ============================================================
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+\usepackage[top=2cm, bottom=2cm, left=2.4cm, right=2.4cm, footskip=1cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{ltablex}
+\keepXColumns
+\usepackage{colortbl}
+\usepackage[most,breakable]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{pdflscape}
+\usepackage{titlesec}
+\usepackage[colorlinks=true, linkcolor=accent, urlcolor=accent]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme ─────────────────────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{loesung}{RGB}{0, 100, 0}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{240, 252, 240}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer ─────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\footnotesize\color{accent}\nichttitle}
+\fancyhead[R]{\footnotesize\color{accent}\nichtsubtitle}
+\fancyfoot[R]{\footnotesize\color{accent}Blatt \thepage\,/\,\pageref{LastPage}}
+
+% ── Typografie ────────────────────────────────────────────────
+\titleformat{\section}
+    {\color{accent}\large\bfseries}{}{0pt}{}
+    [\vspace{-4pt}\color{accent}\rule{\linewidth}{1.5pt}]
+\titleformat{\subsection}
+    {\normalsize\bfseries\color{accent!85!black}}{}{0pt}{}{}
+\titleformat{\subsubsection}
+    {\small\bfseries\color{accent!70!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{10pt}{3pt}
+\titlespacing*{\subsection}{0pt}{6pt}{2pt}
+\titlespacing*{\subsubsection}{0pt}{4pt}{1pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\renewcommand{\arraystretch}{1.2}
+\setlist[itemize]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.4em}
+\setlist[enumerate]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.6em}
+
+% ── Boxen: solutionbox = Lösungsbox in grün ──────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={Abbildung: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={Tabelle: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{solutionbox}[1]{
+  enhanced,
+  colback=solutionbg, colframe=loesung,
+  title={#1}, fonttitle=\small\bfseries,
+  coltitle=white, colbacktitle=loesung,
+  breakable, before skip=8pt, after skip=8pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=single, framerule=0pt,
+  xleftmargin=4pt, xrightmargin=4pt,
+  aboveskip=6pt, belowskip=6pt,
+  keepspaces=true
+}
+
+\providecommand{\nichttitle}{Übungsblatt}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Relationen, Algebra, Diskrete Mathematik}
+\renewcommand{\nichtsubtitle}{Übungsblatt 9}
+
+
+\begin{document}
+
+\begin{center}
+{\Large\bfseries\color{accent}\nichttitle}
+\ifx\nichtsubtitle\empty\else
+  \\[2pt]{\normalsize\color{accent!80!black}\nichtsubtitle}
+\fi
+\\[2pt]
+\color{accent}\rule{0.4\linewidth}{0.8pt}\color{black}
+\end{center}
+\vspace{4pt}
+
+% ── BODY ──────────────────────────────────────────────────────
+
+\section{Übungsblatt 9 — Graphen}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 1 — Begriffe und Knotengrade \textit{(8 Punkte)}}\mbox{}\\[2pt]
+
+a) Definiere die Begriffe \textbf{Knotengrad}, \textbf{Multigraph} und \textbf{bipartiter Graph} jeweils in einem Satz. \textit{(3 P)}
+
+
+b) Gegeben sei der ungerichtete Graph G = (V, E) mit V = \{1, 2, 3, 4, 5\} und
+
+E = \{\{1,2\}, \{1,3\}, \{2,3\}, \{2,4\}, \{3,4\}, \{4,5\}\}.
+
+Bestimme den Knotengrad jedes Knotens und die Summe aller Knotengrade. Begründe, warum diese Summe stets gerade sein muss. \textit{(5 P)}
+
+
+\textbf{Lösung:}
+
+
+a)
+
+\begin{itemize}
+  \item \textbf{Knotengrad}: Anzahl der an einen Knoten angrenzenden Kanten.
+  \item \textbf{Multigraph}: Graph, in dem zwischen zwei Knoten mehrere (parallele) Kanten erlaubt sind.
+  \item \textbf{Bipartiter Graph}: Graph, dessen Knotenmenge in zwei disjunkte Mengen A und B zerlegt werden kann, sodass jede Kante einen Knoten aus A mit einem Knoten aus B verbindet.
+\end{itemize}
+
+b) Knotengrade:
+
+\begin{itemize}
+  \item deg(1) = 2 (Kanten zu 2, 3)
+  \item deg(2) = 3 (Kanten zu 1, 3, 4)
+  \item deg(3) = 3 (Kanten zu 1, 2, 4)
+  \item deg(4) = 3 (Kanten zu 2, 3, 5)
+  \item deg(5) = 1 (Kante zu 4)
+\end{itemize}
+
+Summe = 2 + 3 + 3 + 3 + 1 = \textbf{12}.
+
+
+Begründung: Jede Kante \{u, v\} trägt zu deg(u) und zu deg(v) jeweils 1 bei, also insgesamt 2. Die Gradsumme ist daher gleich 2·|E| und damit immer gerade (Handschlaglemma). Hier: 2·6 = 12. ✓
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 — Darstellungsformen umwandeln \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Ein gerichteter, gewichteter Graph beschreibt Flugverbindungen mit Flugzeit (in Stunden) zwischen vier Städten:
+
+A = Stuttgart, B = Berlin, C = Wien, D = Paris.
+
+
+Verbindungen: A→B (1.0), A→D (1.5), B→C (1.0), C→A (1.0), C→D (2.0), D→B (1.5).
+
+
+a) Stelle den Graphen als \textbf{Adjazenzmatrix} auf (Zeilenreihenfolge A, B, C, D; nicht vorhandene Kanten als 0). \textit{(5 P)}
+
+
+b) Gib die \textbf{Adjazenzliste} mit jeweils Vorgänger- und Nachfolgerlisten an. \textit{(6 P)}
+
+
+c) Beurteile, welche Darstellung für diesen konkreten Graphen speichereffizienter ist und ab welcher Kantendichte die andere Darstellung vorteilhafter würde. \textit{(4 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Adjazenzmatrix A (Zeile = Start, Spalte = Ziel):
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{}} & {\color{white}\textbf{A}} & {\color{white}\textbf{B}} & {\color{white}\textbf{C}} & {\color{white}\textbf{D}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+A & 0 & 1.0 & 0 & 1.5 \\
+B & 0 & 0 & 1.0 & 0 \\
+C & 1.0 & 0 & 0 & 2.0 \\
+D & 0 & 1.5 & 0 & 0 \\
+\end{tabularx}
+}
+
+
+Die Matrix ist nicht symmetrisch — der Graph ist gerichtet.
+
+
+b) Adjazenzlisten (gerichtet → zwei Listen pro Knoten):
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Knoten}} & {\color{white}\textbf{Nachfolger (Out)}} & {\color{white}\textbf{Vorgänger (In)}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+A & B(1.0), D(1.5) & C(1.0) \\
+B & C(1.0) & A(1.0), D(1.5) \\
+C & A(1.0), D(2.0) & B(1.0) \\
+D & B(1.5) & A(1.5), C(2.0) \\
+\end{tabularx}
+}
+
+
+c) Speicherbedarf:
+
+\begin{itemize}
+  \item Adjazenzmatrix: n² = 16 Einträge, davon nur 6 belegt → 10 Nullen werden mitgespeichert.
+  \item Adjazenzliste: 6 Kanten × (Ziel + Gewicht) ≈ 12 Einträge plus Listenverwaltung.
+\end{itemize}
+
+Der Graph ist \textbf{spärlich} (|E| = 6, max. n(n−1) = 12 Kanten, also ca. 50\% — bei realen Flugnetzen meist deutlich weniger). Die Adjazenzliste skaliert mit O(|V| + |E|), die Matrix mit O(|V|²). Für dichte Graphen mit |E| ≈ |V|² (etwa ab 60–70 \% Dichte) wird die Matrix vorteilhaft, weil dann die Listenverwaltung den Vorteil verliert und der Matrix-Zugriff in O(1) auf einzelne Kanten möglich ist.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 — Graphtypen identifizieren und konstruieren \textit{(12 Punkte)}}\mbox{}\\[2pt]
+
+a) Sei G ein ungerichteter Graph mit |V| = 6 und |E| = 6, in dem jeder Knoten Grad 2 hat. Welcher \textbf{Graphtyp aus der Tabelle} ist G zwingend, und welcher nicht? Begründe. \textit{(4 P)}
+
+
+b) Konstruiere einen \textbf{vollständigen} ungerichteten Graphen K₅. Wie viele Kanten hat er allgemein für n Knoten? Wende die Formel auf n = 5 und n = 8 an. \textit{(4 P)}
+
+
+c) Zeichne (oder beschreibe per Kantenliste) einen \textbf{bipartiten} Graphen mit den Mengen X = \{x₁, x₂, x₃\} und Y = \{y₁, y₂\} so, dass jeder Knoten aus X mit genau zwei Knoten aus Y und jeder Knoten aus Y mit genau drei Knoten aus X verbunden ist. Prüfe die Konsistenz der Gradsummen. \textit{(4 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Es gilt |E| = |V| = 6 und alle Knotengrade = 2 — das ist exakt die Definition eines \textbf{Kreises} aus der Typen-Tabelle. Es ist allerdings nicht zwingend ein \textbf{einziger} Kreis: G könnte auch in zwei disjunkte Dreiecke (3-Kreise) zerfallen. Ein \textbf{Baum} ist G nicht (Bäume sind zyklenfrei, hier gibt es Zyklen), ebenso wenig ein \textbf{Stern} (dort hätte ein Zentrum Grad n−1 = 5 und alle anderen Grad 1).
+
+
+b) Im vollständigen Graphen K\_n verbindet jede Kante zwei verschiedene Knoten, jedes Paar genau einmal:
+
+\[
+|E| = \binom{n}{2} = \frac{n(n-1)}{2}
+\]
+
+
+\begin{itemize}
+  \item n = 5: |E| = 5·4/2 = \textbf{10} Kanten.
+  \item n = 8: |E| = 8·7/2 = \textbf{28} Kanten.
+\end{itemize}
+
+K₅ als Kantenliste: \{1-2, 1-3, 1-4, 1-5, 2-3, 2-4, 2-5, 3-4, 3-5, 4-5\}.
+
+
+c) Geforderte Grade: deg(xᵢ) = 2 für i = 1,2,3 und deg(yⱼ) = 3 für j = 1,2.
+
+
+Konsistenzprüfung über die Gradsummen:
+
+\begin{itemize}
+  \item Summe in X: 3·2 = 6.
+  \item Summe in Y: 2·3 = 6.
+\end{itemize}
+
+Beide Summen müssen gleich sein, weil jede Kante eines bipartiten Graphen genau einen Endpunkt in X und einen in Y hat. ✓
+
+
+Eine mögliche Kantenmenge:
+
+E = \{\{x₁,y₁\}, \{x₁,y₂\}, \{x₂,y₁\}, \{x₂,y₂\}, \{x₃,y₁\}, \{x₃,y₂\}\}.
+
+
+Das ist gerade der vollständige bipartite Graph K\_\{3,2\} mit 6 Kanten.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 — Eulersche und Hamiltonsche Pfade \textit{(18 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben sei der ungerichtete Graph H = (V, E) mit V = \{1, 2, 3, 4, 5\} und folgender Adjazenzmatrix (1 = Kante, 0 = keine Kante):
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{}} & {\color{white}\textbf{1}} & {\color{white}\textbf{2}} & {\color{white}\textbf{3}} & {\color{white}\textbf{4}} & {\color{white}\textbf{5}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+1 & 0 & 1 & 1 & 1 & 0 \\
+2 & 1 & 0 & 1 & 0 & 1 \\
+3 & 1 & 1 & 0 & 1 & 1 \\
+4 & 1 & 0 & 1 & 0 & 1 \\
+5 & 0 & 1 & 1 & 1 & 0 \\
+\end{tabularx}
+}
+
+
+a) Bestimme die Knotengrade und entscheide anhand der Grade, ob ein \textbf{Eulerscher Zyklus} existieren kann. Bestimme zusätzlich, ob ein \textbf{Eulerscher Pfad} (offen, Anfang ≠ Ende) existiert. \textit{(6 P)}
+
+
+b) Gib einen \textbf{Hamiltonschen Zyklus} in H an oder begründe, warum keiner existiert. \textit{(6 P)}
+
+
+c) Erläutere den \textbf{Unterschied} zwischen Eulerschem und Hamiltonschem Pfad in eigenen Worten und gib ein Beispiel für einen Graphen an, der einen Eulerschen Zyklus besitzt, aber keinen Hamiltonschen Zyklus. \textit{(6 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Knotengrade aus der Zeilensumme:
+
+\begin{itemize}
+  \item deg(1) = 3, deg(2) = 3, deg(3) = 4, deg(4) = 3, deg(5) = 3.
+\end{itemize}
+
+Gesamtkantenzahl = (3+3+4+3+3)/2 = 8.
+
+
+Eulerscher Zyklus: existiert genau dann, wenn der Graph zusammenhängend ist und \textbf{alle} Knoten \textbf{geraden Grad} haben. Hier haben vier Knoten Grad 3 (ungerade) → \textbf{kein Eulerscher Zyklus}.
+
+
+Eulerscher (offener) Pfad: existiert genau dann, wenn der Graph zusammenhängend ist und \textbf{genau zwei} Knoten ungeraden Grad haben (das sind dann Anfang und Ende). Hier sind es \textbf{vier} ungerade Knoten → \textbf{kein Eulerscher Pfad}.
+
+
+b) Ein Hamiltonscher Zyklus muss jeden Knoten genau einmal besuchen und am Start enden. Versuch:
+
+
+1 → 2 → 5 → 4 → 3 → 1.
+
+
+Prüfung der Kanten anhand der Matrix: \{1,2\}✓, \{2,5\}✓, \{5,4\}✓, \{4,3\}✓, \{3,1\}✓. Alle fünf Knoten kommen je einmal vor, der Zyklus schließt bei 1. → \textbf{Hamiltonscher Zyklus existiert}: (1, 2, 5, 4, 3, 1).
+
+
+c) \textbf{Unterschied}: Ein Eulerscher Pfad benutzt \textbf{jede Kante genau einmal} (Knoten dürfen mehrfach besucht werden). Ein Hamiltonscher Pfad besucht \textbf{jeden Knoten genau einmal} (Kanten dürfen also nicht alle benutzt werden). Eulerschheit ist eine Eigenschaft über die Kantenmenge und effizient (über Knotengrade) entscheidbar; Hamiltonschheit ist eine Eigenschaft über die Knotenmenge und im Allgemeinen NP-schwer zu entscheiden.
+
+
+\textbf{Beispiel}: Zwei Dreiecke, die sich an einem gemeinsamen Knoten v berühren (Knotenmenge \{a, b, v, c, d\}, Kanten \{a-b, a-v, b-v, c-v, d-v, c-d\}). Alle Knotengrade sind gerade (a, b, c, d je 2; v hat 4) → Eulerscher Zyklus existiert. Ein Hamiltonscher Zyklus müsste den „Schnittknoten" v aber zweimal nutzen, um beide Dreiecke abzulaufen — das verstößt gegen die Hamilton-Bedingung. Also kein Hamiltonscher Zyklus.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 — Fehleranalyse einer Adjazenzmatrix \textit{(10 Punkte)}}\mbox{}\\[2pt]
+
+Eine Studentin behauptet, folgende Adjazenzmatrix repräsentiere einen \textbf{ungerichteten, einfachen} (kein Multigraph, keine Schleifen) Graphen mit 4 Knoten:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{}} & {\color{white}\textbf{1}} & {\color{white}\textbf{2}} & {\color{white}\textbf{3}} & {\color{white}\textbf{4}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+1 & 0 & 1 & 2 & 0 \\
+2 & 1 & 1 & 1 & 0 \\
+3 & 1 & 1 & 0 & 1 \\
+4 & 0 & 0 & 1 & 0 \\
+\end{tabularx}
+}
+
+
+a) Identifiziere \textbf{alle Verstöße} gegen die Eigenschaften eines ungerichteten, einfachen Graphen und benenne sie konkret mit Position in der Matrix. \textit{(6 P)}
+
+
+b) Korrigiere die Matrix minimal (möglichst wenige Änderungen), sodass sie einen ungerichteten, einfachen Graphen darstellt. Gib die korrigierte Matrix und die zugehörige Kantenmenge an. \textit{(4 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Drei Verstöße:
+
+
+\begin{enumerate}
+  \item \textbf{Nicht symmetrisch}: a₁₃ = 2, aber a₃₁ = 1. Bei einem ungerichteten Graphen muss A = Aᵀ gelten, weil eine Kante \{i, j\} in beiden Richtungen identisch eingetragen wird.
+  \item \textbf{Multigraph-Eintrag}: a₁₃ = 2 deutet bei einem Multigraphen auf zwei parallele Kanten zwischen 1 und 3 hin. In einem einfachen Graphen sind nur Werte 0 und 1 zulässig.
+  \item \textbf{Schleife}: a₂₂ = 1 bedeutet eine Kante von Knoten 2 zu sich selbst. Schleifen sind in einfachen Graphen nicht erlaubt.
+\end{enumerate}
+
+b) Minimale Korrektur:
+
+\begin{itemize}
+  \item a₁₃ = a₃₁ = 1 (Symmetrie herstellen, Mehrfachkante auf einfache Kante reduzieren).
+  \item a₂₂ = 0 (Schleife entfernen).
+\end{itemize}
+
+Korrigierte Matrix:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{}} & {\color{white}\textbf{1}} & {\color{white}\textbf{2}} & {\color{white}\textbf{3}} & {\color{white}\textbf{4}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+1 & 0 & 1 & 1 & 0 \\
+2 & 1 & 0 & 1 & 0 \\
+3 & 1 & 1 & 0 & 1 \\
+4 & 0 & 0 & 1 & 0 \\
+\end{tabularx}
+}
+
+
+Sie ist symmetrisch, enthält nur 0/1, und die Diagonale ist Null. Kantenmenge: E = \{\{1,2\}, \{1,3\}, \{2,3\}, \{3,4\}\}. Knotengrade: deg(1) = 2, deg(2) = 2, deg(3) = 3, deg(4) = 1; Gradsumme 8 = 2·|E| ✓.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 6 — Transfer: Modellierung eines Lerngruppen-Netzwerks \textit{(17 Punkte)}}\mbox{}\\[2pt]
+
+In einem DHBW-Kurs gibt es 6 Studierende: A, B, C, D, E, F. Eine Plattform protokolliert, wer mit wem \textbf{gemeinsam an Aufgaben arbeitet} (ungerichtete Beziehung) und zusätzlich, \textbf{wer wem regelmäßig Material zuschickt} (gerichtete Beziehung). Aus den Logs ergibt sich:
+
+
+\begin{itemize}
+  \item Gemeinsames Arbeiten: \{A,B\}, \{A,C\}, \{B,C\}, \{C,D\}, \{D,E\}, \{E,F\}, \{D,F\}.
+  \item Material-Zusenden (Sender → Empfänger): A→C, C→A, C→B, D→C, E→D, F→D, F→E.
+\end{itemize}
+
+a) Modelliere das gemeinsame Arbeiten als ungerichteten Graphen G₁ und ordne ihn einem Typ aus der Tabelle zu, sofern möglich. Gib die Knotengrade an. \textit{(5 P)}
+
+
+b) Modelliere das Material-Zusenden als gerichteten Graphen G₂. Bestimme zu jedem Knoten \textbf{Eingangsgrad} (Anzahl eingehender Kanten) und \textbf{Ausgangsgrad} (Anzahl ausgehender Kanten). \textit{(5 P)}
+
+
+c) Die Plattform soll erkennen, ob es im Graphen G₂ einen \textbf{Zyklus} gibt (also eine Gruppe, die im Kreis Material austauscht). Gib alle Zyklen in G₂ an und erläutere den Unterschied zwischen einem \textbf{Pfad} und einem \textbf{Zyklus} anhand eines konkreten Beispiels aus deinem Graphen. \textit{(7 P)}
+
+
+\textbf{Lösung:}
+
+
+a) G₁ = (V, E₁) mit V = \{A, B, C, D, E, F\} und
+
+E₁ = \{\{A,B\}, \{A,C\}, \{B,C\}, \{C,D\}, \{D,E\}, \{E,F\}, \{D,F\}\}, also |E₁| = 7.
+
+
+Knotengrade:
+
+\begin{itemize}
+  \item deg(A) = 2 (B, C)
+  \item deg(B) = 2 (A, C)
+  \item deg(C) = 3 (A, B, D)
+  \item deg(D) = 3 (C, E, F)
+  \item deg(E) = 2 (D, F)
+  \item deg(F) = 2 (D, E)
+\end{itemize}
+
+Gradsumme = 14 = 2·7 ✓.
+
+
+Typzuordnung: G₁ ist \textbf{kein} Baum (es gibt Zyklen, z. B. A-B-C-A). Er ist \textbf{kein Kreis} (|E| = 7 ≠ |V| = 6, und nicht alle Grade sind 2). Er ist \textbf{kein Stern} (kein Zentrum von Grad 5). Er ist \textbf{kein vollständiger Graph} (z. B. fehlt \{A,D\}). Er ist auch \textbf{nicht bipartit} (das Dreieck A-B-C ist ein ungerader Zyklus). Er entspricht damit \textbf{keinem} der genannten Spezialtypen — es ist einfach ein zusammenhängender ungerichteter Graph, der aus zwei Dreiecken (A-B-C und D-E-F) besteht, die durch die Brücke C-D verbunden sind.
+
+
+b) G₂ = (V, E₂) gerichtet mit
+
+E₂ = \{(A,C), (C,A), (C,B), (D,C), (E,D), (F,D), (F,E)\}, |E₂| = 7.
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Knoten}} & {\color{white}\textbf{Eingangsgrad (in)}} & {\color{white}\textbf{Ausgangsgrad (out)}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+A & 1 (von C) & 1 (nach C) \\
+B & 1 (von C) & 0 \\
+C & 2 (A, D) & 2 (A, B) \\
+D & 2 (E, F) & 1 (nach C) \\
+E & 1 (von F) & 1 (nach D) \\
+F & 0 & 2 (D, E) \\
+\end{tabularx}
+}
+
+
+Konsistenzprüfung: Σ in = Σ out = 7 = |E₂| ✓ (in gerichteten Graphen gilt Σ in-deg = Σ out-deg = |E|).
+
+
+c) \textbf{Zyklen in G₂}: Ein Zyklus ist ein geschlossener Pfad mit unterschiedlichen Kanten, der zum Startknoten zurückführt.
+
+
+\begin{itemize}
+  \item (A, C, A): A→C→A ist ein 2-Zyklus über die Kanten (A,C) und (C,A). Die beiden gerichteten Kanten sind unterschiedlich, also ist es ein gültiger Zyklus.
+  \item Weitere Zyklen existieren nicht: F hat in-deg 0 und kann daher in keinem Zyklus liegen; E geht nur an D, D nur an C, C verzweigt zu A oder B; B ist ein Senken-Knoten (out-deg 0). Damit ist die einzige geschlossene Struktur das Paar A↔C.
+\end{itemize}
+
+\textbf{Pfad vs. Zyklus} (konkretes Beispiel):
+
+\begin{itemize}
+  \item Der Pfad F → E → D → C → B besucht jeden Knoten höchstens einmal, beginnt bei F und endet bei B (Anfang ≠ Ende, offen).
+  \item Der Zyklus A → C → A schließt sich (Anfang = Ende), und die durchlaufenen Kanten (A,C) und (C,A) sind verschieden.
+\end{itemize}
+
+Kurz: Ein Pfad ist eine Knoten-/Kantensequenz ohne Knotenwiederholung; ein Zyklus ist ein geschlossener Pfad, dessen Endknoten gleich dem Startknoten ist und dessen Kanten alle verschieden sind. Bäume aus der Typen-Tabelle sind genau die zusammenhängenden Graphen ohne jeden Zyklus — G₂ ist also kein gerichteter Baum.
+
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{document}

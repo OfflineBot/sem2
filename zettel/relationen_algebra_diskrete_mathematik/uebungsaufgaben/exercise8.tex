@@ -1,0 +1,482 @@
+% ============================================================
+%  Übungsaufgaben Template (my_dhbw Stil, uebung_*.tex)
+%  Header "Übungsblatt", grün eingefärbte <details>-Lösungen.
+%  Renderer: pdflatex (zweimal)
+% ============================================================
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+\usepackage[top=2cm, bottom=2cm, left=2.4cm, right=2.4cm, footskip=1cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{ltablex}
+\keepXColumns
+\usepackage{colortbl}
+\usepackage[most,breakable]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{pdflscape}
+\usepackage{titlesec}
+\usepackage[colorlinks=true, linkcolor=accent, urlcolor=accent]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme ─────────────────────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{loesung}{RGB}{0, 100, 0}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{240, 252, 240}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer ─────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\footnotesize\color{accent}\nichttitle}
+\fancyhead[R]{\footnotesize\color{accent}\nichtsubtitle}
+\fancyfoot[R]{\footnotesize\color{accent}Blatt \thepage\,/\,\pageref{LastPage}}
+
+% ── Typografie ────────────────────────────────────────────────
+\titleformat{\section}
+    {\color{accent}\large\bfseries}{}{0pt}{}
+    [\vspace{-4pt}\color{accent}\rule{\linewidth}{1.5pt}]
+\titleformat{\subsection}
+    {\normalsize\bfseries\color{accent!85!black}}{}{0pt}{}{}
+\titleformat{\subsubsection}
+    {\small\bfseries\color{accent!70!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{10pt}{3pt}
+\titlespacing*{\subsection}{0pt}{6pt}{2pt}
+\titlespacing*{\subsubsection}{0pt}{4pt}{1pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\renewcommand{\arraystretch}{1.2}
+\setlist[itemize]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.4em}
+\setlist[enumerate]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.6em}
+
+% ── Boxen: solutionbox = Lösungsbox in grün ──────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={Abbildung: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={Tabelle: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{solutionbox}[1]{
+  enhanced,
+  colback=solutionbg, colframe=loesung,
+  title={#1}, fonttitle=\small\bfseries,
+  coltitle=white, colbacktitle=loesung,
+  breakable, before skip=8pt, after skip=8pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=single, framerule=0pt,
+  xleftmargin=4pt, xrightmargin=4pt,
+  aboveskip=6pt, belowskip=6pt,
+  keepspaces=true
+}
+
+\providecommand{\nichttitle}{Übungsblatt}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Relationen, Algebra, Diskrete Mathematik}
+\renewcommand{\nichtsubtitle}{Übungsblatt 8}
+
+
+\begin{document}
+
+\begin{center}
+{\Large\bfseries\color{accent}\nichttitle}
+\ifx\nichtsubtitle\empty\else
+  \\[2pt]{\normalsize\color{accent!80!black}\nichtsubtitle}
+\fi
+\\[2pt]
+\color{accent}\rule{0.4\linewidth}{0.8pt}\color{black}
+\end{center}
+\vspace{4pt}
+
+% ── BODY ──────────────────────────────────────────────────────
+
+\section{Übungsblatt 8 — Schaltnetze}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 1 — Halbaddierer: Begriff \& Grenze \textit{(8 Punkte)}}\mbox{}\\[2pt]
+
+a) Erkläre in eigenen Worten, was ein Halbaddierer (HA) berechnet, und gib seine beiden Ausgangsfunktionen \texttt{s} und \texttt{ü} als Boolesche Ausdrücke an.
+
+
+b) Begründe formal (mit Verweis auf die Wahrheitstabelle), warum ein HA \textbf{nicht} ausreicht, um zwei Bits aus einer mehrstelligen Binäraddition korrekt zu addieren, sobald aus einer niedrigeren Stelle ein Übertrag eintreffen kann. Konstruiere ein konkretes 2-Bit-Additionsbeispiel (z. B. \texttt{11 + 01}), bei dem ein reines HA-Schaltnetz an der zweiten Stelle ein falsches Ergebnis liefert.
+
+
+\textbf{Lösung:}
+
+
+a) Ein Halbaddierer addiert zwei einstellige Binärzahlen \texttt{a, b ∈ B} und liefert die Summenstelle \texttt{s} sowie den Übertrag \texttt{ü} in die nächsthöhere Stelle.
+
+
+\begin{itemize}
+  \item \texttt{s = a'b ∨ ab' = a ⊕ b}
+  \item \texttt{ü = a · b}
+\end{itemize}
+
+Er ist eine Funktion \texttt{F: B² → B²}.
+
+
+b) Aus der Wahrheitstabelle des HA folgt, dass er \textbf{genau zwei} Eingänge verarbeitet. Bei einer mehrstelligen Addition entsteht aber an jeder Stelle (außer der niederwertigsten) ein dritter Eingang: der Übertrag \texttt{ü₁} aus der Vorstelle. Der HA hat dafür keinen Eingang.
+
+
+Beispiel \texttt{11 + 01} (binär, also 3 + 1 = 4 = \texttt{100}):
+
+
+\begin{itemize}
+  \item Stelle 0: \texttt{a₀ = 1}, \texttt{b₀ = 1}. HA liefert \texttt{s₀ = 0}, \texttt{ü = 1}.
+  \item Stelle 1: \texttt{a₁ = 1}, \texttt{b₁ = 0}. HA liefert \texttt{s₁ = 1}, \texttt{ü = 0}.
+\end{itemize}
+
+Ergebnis des reinen HA-Netzes: \texttt{01} mit Übertrag aus Stelle 0 = \texttt{1} → wenn dieser Übertrag nicht eingespeist werden kann, ergibt sich \texttt{01} statt \texttt{100}. Korrekt wäre an Stelle 1: \texttt{a₁ ⊕ b₁ ⊕ ü₁ = 1 ⊕ 0 ⊕ 1 = 0} mit Übertrag \texttt{1} → \texttt{100}. Genau diesen dritten Eingang \texttt{ü₁} kann nur ein Volladdierer verarbeiten.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 — Volladdierer schrittweise durchrechnen \textit{(12 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben sind die zwei 4-Bit-Zahlen \texttt{A = 1011} und \texttt{B = 0111}. Diese sollen mit einer Kette aus \textbf{vier Volladdierern (Ripple-Carry-Adder)} addiert werden. Der Übertrag in die niederwertigste Stelle ist \texttt{ü₁⁽⁰⁾ = 0}.
+
+
+a) Fülle für jede Stelle \texttt{i = 0, 1, 2, 3} die Werte \texttt{aᵢ}, \texttt{bᵢ}, \texttt{ü₁⁽ⁱ⁾}, \texttt{sᵢ}, \texttt{ü₂⁽ⁱ⁾} aus. Verwende die Formeln aus dem Kapitel.
+
+
+b) Gib die 5-Bit-Summe (inkl. Endübertrag) an und prüfe das Ergebnis dezimal.
+
+
+\textbf{Lösung:}
+
+
+a) Mit \texttt{s = a ⊕ b ⊕ ü₁} und \texttt{ü₂ = ab ∨ aü₁ ∨ bü₁}. Bits werden niederwertig zuerst gerechnet (\texttt{a₀ = 1, a₁ = 1, a₂ = 0, a₃ = 1}; \texttt{b₀ = 1, b₁ = 1, b₂ = 1, b₃ = 0}).
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{i}} & {\color{white}\textbf{aᵢ}} & {\color{white}\textbf{bᵢ}} & {\color{white}\textbf{ü₁⁽ⁱ⁾}} & {\color{white}\textbf{sᵢ}} & {\color{white}\textbf{ü₂⁽ⁱ⁾}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+0 & 1 & 1 & 0 & 0 & 1 \\
+1 & 1 & 1 & 1 & 1 & 1 \\
+2 & 0 & 1 & 1 & 0 & 1 \\
+3 & 1 & 0 & 1 & 0 & 1 \\
+\end{tabularx}
+}
+
+
+Rechenweg pro Zeile:
+
+\begin{itemize}
+  \item i=0: \texttt{s = 1⊕1⊕0 = 0}; \texttt{ü₂ = 1·1 ∨ 1·0 ∨ 1·0 = 1}.
+  \item i=1: \texttt{s = 1⊕1⊕1 = 1}; \texttt{ü₂ = 1·1 ∨ 1·1 ∨ 1·1 = 1}.
+  \item i=2: \texttt{s = 0⊕1⊕1 = 0}; \texttt{ü₂ = 0·1 ∨ 0·1 ∨ 1·1 = 1}.
+  \item i=3: \texttt{s = 1⊕0⊕1 = 0}; \texttt{ü₂ = 1·0 ∨ 1·1 ∨ 0·1 = 1}.
+\end{itemize}
+
+b) Ergebnis (von höchstwertig nach niederwertig, mit Endübertrag vorne): \texttt{1 0010} — das ist binär \texttt{10010}.
+
+
+Probe: \texttt{A = 1011₂ = 11}, \texttt{B = 0111₂ = 7}. \texttt{11 + 7 = 18 = 10010₂}. ✓
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 — Spülmaschinensteuerung erweitern \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Die im Kapitel angegebene Steuerung lautet:
+
+
+\texttt{f(a, b, c) = 1}, wenn \textbf{Tür offen (a)} ODER (\textbf{Wasser zu niedrig (b)} UND \textbf{Heizung an (c)}).
+
+
+Ein Service-Techniker liest die Funktion fälschlich als \texttt{g(a,b,c) = (a ∨ b) ∧ c}.
+
+
+a) Stelle für \texttt{f} und \texttt{g} jeweils die vollständige Wahrheitstabelle (8 Zeilen) auf.
+
+
+b) Bestimme alle Eingangsbelegungen \texttt{(a,b,c)}, bei denen \texttt{f} und \texttt{g} unterschiedliche Ausgaben liefern.
+
+
+c) Beschreibe für jede dieser Belegungen in einem Satz, welches \textbf{physikalisch falsche Verhalten} der Spülmaschine die Fehlimplementierung \texttt{g} auslöst (z. B. „Maschine warnt nicht, obwohl …").
+
+
+\textbf{Lösung:}
+
+
+a) Wahrheitstabelle:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{a}} & {\color{white}\textbf{b}} & {\color{white}\textbf{c}} & {\color{white}\textbf{f = a ∨ (b∧c)}} & {\color{white}\textbf{g = (a∨b)∧c}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 1 & 0 & 0 \\
+0 & 1 & 0 & 0 & 0 \\
+0 & 1 & 1 & 1 & 1 \\
+1 & 0 & 0 & 1 & 0 \\
+1 & 0 & 1 & 1 & 1 \\
+1 & 1 & 0 & 1 & 0 \\
+1 & 1 & 1 & 1 & 1 \\
+\end{tabularx}
+}
+
+
+b) Unterschiede an Zeilen, in denen \texttt{f ≠ g}:
+
+\begin{itemize}
+  \item \texttt{(a,b,c) = (1,0,0)}: \texttt{f=1}, \texttt{g=0}.
+  \item \texttt{(a,b,c) = (1,1,0)}: \texttt{f=1}, \texttt{g=0}.
+\end{itemize}
+
+In beiden Fällen ist \texttt{a = 1} (Tür offen) und \texttt{c = 0} (Heizung aus).
+
+
+c) Konsequenz der Fehlimplementierung \texttt{g}:
+
+
+\begin{itemize}
+  \item Bei \texttt{(1,0,0)}: Tür offen, Wasser ok, Heizung aus → \texttt{f} würde abschalten/warnen, \texttt{g} hingegen meldet \textbf{nichts}. Die Maschine ignoriert eine offene Tür im Standby — Sicherheitsproblem.
+  \item Bei \texttt{(1,1,0)}: Tür offen, Wasser zu niedrig, Heizung aus → \texttt{f} schaltet ab, \texttt{g} schweigt. Erneut wird die offene Tür übersehen, obwohl gleichzeitig Wassermangel vorliegt.
+\end{itemize}
+
+Kurz: \texttt{g} koppelt die kritische Türerkennung an \texttt{c} (Heizung an) und unterdrückt damit Warnungen, sobald die Heizung aus ist — fachlich unzulässig.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 — Transfer: 1-Bit-Subtrahierer aus VA-Bausteinen \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+Ein \textbf{Halbsubtrahierer (HS)} berechnet aus \texttt{a, b ∈ B} die Differenz \texttt{d = a − b} (binär) sowie den \textbf{Borgübertrag} \texttt{bw} (Borrow: 1, falls \texttt{a < b}).
+
+
+a) Erstelle die vollständige Wahrheitstabelle eines HS für \texttt{d} und \texttt{bw}. Gib \texttt{d} und \texttt{bw} als möglichst einfache Boolesche Ausdrücke an.
+
+
+b) Vergleiche das HS-Ergebnis aus a) mit dem HA aus dem Kapitel. Welche Ausgangsfunktion ist \textbf{identisch}, welche unterscheidet sich, und woran liegt das?
+
+
+c) Konstruiere analog zum Volladdierer einen \textbf{Vollsubtrahierer (VS)} mit Eingang \texttt{bw₁} (Borrow von der Vorstelle). Gib die Funktionen \texttt{d} und \texttt{bw₂} an. Du darfst dich an der Struktur der VA-Formeln orientieren.
+
+
+\textbf{Lösung:}
+
+
+a) HS-Wahrheitstabelle (mit \texttt{d = a − b} interpretiert als 1-Bit-Differenz, \texttt{bw = 1} falls geliehen werden muss):
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{a}} & {\color{white}\textbf{b}} & {\color{white}\textbf{d}} & {\color{white}\textbf{bw}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+0 & 0 & 0 & 0 \\
+0 & 1 & 1 & 1 \\
+1 & 0 & 1 & 0 \\
+1 & 1 & 0 & 0 \\
+\end{tabularx}
+}
+
+
+(Bei \texttt{a=0, b=1}: \texttt{0 − 1} → Differenzbit \texttt{1} und Borrow \texttt{1}, da von der nächsten Stelle geborgt werden muss.)
+
+
+\begin{itemize}
+  \item \texttt{d = a'b ∨ ab' = a ⊕ b}
+  \item \texttt{bw = a'b}
+\end{itemize}
+
+b) Die Differenzfunktion \texttt{d} ist \textbf{identisch} zur Summenfunktion \texttt{s} des HA: beides ist \texttt{a ⊕ b}. Das ist kein Zufall: addiert man zwei Bits modulo 2 oder subtrahiert man sie modulo 2, ist das Resultat dasselbe (XOR). Unterschiedlich ist die Übertragsfunktion: HA liefert \texttt{ü = a·b} (Übertrag erst, wenn beide 1 sind), HS liefert \texttt{bw = a'·b} (Borrow nur, wenn der Subtrahend 1 und der Minuend 0 ist) — das ist asymmetrisch in \texttt{a} und \texttt{b}, da Subtraktion nicht kommutativ ist.
+
+
+c) Vollsubtrahierer mit zusätzlichem Eingang \texttt{bw₁}:
+
+
+\begin{itemize}
+  \item \texttt{d = a ⊕ b ⊕ bw₁}
+  \item \texttt{bw₂ = a'b ∨ a'·bw₁ ∨ b·bw₁}
+\end{itemize}
+
+Begründung: Die Differenz pro Stelle ist die XOR-Verknüpfung aller drei Eingänge, exakt wie beim VA. Der Borrow entsteht, wenn (i) \texttt{b} größer als \texttt{a} ist (\texttt{a'b}), oder (ii) \texttt{a} ist 0 und es war schon ein Borrow offen (\texttt{a'·bw₁}), oder (iii) \texttt{b = 1} und gleichzeitig ist ein Borrow offen, der noch abgezogen werden muss (\texttt{b·bw₁}). Strukturell entspricht das der VA-Übertragsformel \texttt{ab ∨ aü₁ ∨ bü₁}, nur dass \texttt{a} an den Stellen, an denen es nicht negiert auftritt, durch \texttt{a'} ersetzt wird, weil beim Subtrahieren das Vorzeichen des Minuenden umgekehrt zum Borrow beiträgt.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 — Fehlersuche im Volladdierer-Schaltnetz \textit{(13 Punkte)}}\mbox{}\\[2pt]
+
+Ein Studierender gibt folgende Implementierung eines Volladdierers an (Pseudocode, drei Eingänge \texttt{a, b, ue1}, zwei Ausgänge \texttt{s, ue2}):
+
+
+\begin{lstlisting}
+s   = (a XOR b) XOR ue1
+ue2 = (a AND b) OR (a AND ue1)
+\end{lstlisting}
+
+
+a) Vergleiche \texttt{ue2} mit der korrekten Formel aus dem Kapitel und benenne präzise, welcher Term fehlt.
+
+
+b) Bestimme \textbf{alle} Belegungen \texttt{(a, b, ue1)}, bei denen die fehlerhafte Implementierung ein falsches \texttt{ue2} liefert. Gib zu jeder dieser Belegungen \texttt{ue2\_korrekt} und \texttt{ue2\_fehler} an.
+
+
+c) Bleibt der Ausgang \texttt{s} von dem Fehler unberührt? Begründe.
+
+
+\textbf{Lösung:}
+
+
+a) Korrekt laut Kapitel: \texttt{ü₂ = ab ∨ aü₁ ∨ bü₁}. Im Pseudocode steht \texttt{(a AND b) OR (a AND ue1)}, es fehlt also der Term \textbf{\texttt{b AND ue1}} (\texttt{bü₁}).
+
+
+b) Fehlerhaftes \texttt{ue2} weicht genau dort ab, wo \texttt{bü₁ = 1}, aber weder \texttt{ab = 1} noch \texttt{aü₁ = 1} gilt. Das erfordert \texttt{b = 1} und \texttt{ü₁ = 1} und gleichzeitig \texttt{a = 0} (denn sonst wäre \texttt{ab} oder \texttt{aü₁} schon 1).
+
+
+Einzige fehlerhafte Belegung: \texttt{(a, b, ue1) = (0, 1, 1)}.
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{a}} & {\color{white}\textbf{b}} & {\color{white}\textbf{ue1}} & {\color{white}\textbf{ue2\_korrekt}} & {\color{white}\textbf{ue2\_fehler}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+0 & 1 & 1 & 1 & 0 \\
+\end{tabularx}
+}
+
+
+(Alle anderen 7 Belegungen liefern in beiden Formeln dasselbe — entweder beide 0 oder beide 1, da der fehlende Term dort nichts hinzufügt.)
+
+
+c) Ja, \texttt{s} ist korrekt. \texttt{s = a ⊕ b ⊕ ü₁} hängt nicht von \texttt{ü₂} ab; die Fehler im Übertragsterm ändern an der XOR-Verknüpfung der Eingänge nichts. Ein Ripple-Carry-Adder, der diesen fehlerhaften VA verwendet, würde aber an der \textbf{nächsthöheren Stelle} ein falsches \texttt{s} produzieren, weil dort \texttt{ü₁} der hier fehlerhafte Wert \texttt{ue2\_fehler} ist.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 6 — Analyse: HA-Kette vs. VA-Kette \textit{(14 Punkte)}}\mbox{}\\[2pt]
+
+Ein Kommilitone schlägt vor, eine \texttt{n}-Bit-Addition allein aus Halbaddierern aufzubauen, indem pro Stelle \textbf{zwei HAs hintereinandergeschaltet} werden: der erste addiert \texttt{aᵢ + bᵢ}, der zweite addiert das Zwischenergebnis mit dem eingehenden Übertrag \texttt{ü₁⁽ⁱ⁾}. Der Stellen-Übertrag \texttt{ü₂⁽ⁱ⁾} ergibt sich aus der ODER-Verknüpfung der beiden HA-Überträge.
+
+
+a) Zeige durch Aufstellen der entsprechenden Booleschen Ausdrücke, dass diese „2-HA-Konstruktion" funktional \textbf{äquivalent} zu einem Volladdierer ist. Berechne dazu \texttt{s} und \texttt{ü₂} der Konstruktion und vergleiche mit den Formeln aus dem Kapitel.
+
+
+b) Nenne zwei Trade-offs zwischen der 2-HA-Konstruktion und einem nativen VA mit den Kapitel-Formeln (\texttt{s = a⊕b⊕ü₁}, \texttt{ü₂ = ab ∨ aü₁ ∨ bü₁}). Welche Variante würdest du in einem Ripple-Carry-Adder einsetzen und warum?
+
+
+\textbf{Lösung:}
+
+
+a) Sei HA1 die Addition von \texttt{a, b}: liefert \texttt{s₁ = a ⊕ b}, \texttt{ü\_a = ab}. HA2 addiert \texttt{s₁ + ü₁}: liefert \texttt{s = s₁ ⊕ ü₁ = (a ⊕ b) ⊕ ü₁ = a ⊕ b ⊕ ü₁}. Das ist exakt die VA-Formel für \texttt{s}. ✓
+
+
+Übertrag der Konstruktion: \texttt{ü₂ = ü\_a ∨ ü\_b} mit \texttt{ü\_b = s₁ · ü₁ = (a ⊕ b) · ü₁}. Also:
+
+
+\texttt{ü₂ = ab ∨ (a ⊕ b)·ü₁}
+
+
+Zu zeigen: \texttt{ab ∨ (a ⊕ b)·ü₁ = ab ∨ aü₁ ∨ bü₁}.
+
+
+\texttt{(a ⊕ b)·ü₁ = (a'b ∨ ab')·ü₁ = a'bü₁ ∨ ab'ü₁}. Also:
+
+
+\texttt{ü₂ = ab ∨ a'bü₁ ∨ ab'ü₁}
+
+
+Vergleich mit Kapitel: \texttt{ab ∨ aü₁ ∨ bü₁}. Beide sind gleich, wenn man die rechte Seite expandiert: \texttt{aü₁ ∨ bü₁ = aü₁(b ∨ b') ∨ bü₁(a ∨ a') = abü₁ ∨ ab'ü₁ ∨ abü₁ ∨ a'bü₁ = abü₁ ∨ ab'ü₁ ∨ a'bü₁}. Mit \texttt{ab ∨ abü₁ = ab} (Absorption) folgt: \texttt{ab ∨ ab'ü₁ ∨ a'bü₁} — identisch zur 2-HA-Konstruktion. ✓ Funktional äquivalent.
+
+
+b) Trade-offs:
+
+
+\begin{itemize}
+  \item \textbf{Tiefe / Latenz}: Die 2-HA-Konstruktion hat zwei XOR-Stufen für \texttt{s} (HA1, dann HA2) und ein zusätzliches OR für \texttt{ü₂}. Der native VA aus dem Kapitel kann \texttt{s} als 3-fach-XOR direkt und \texttt{ü₂} als 3-fach-AND-OR-Term parallel realisieren — typischerweise eine Stufe weniger Tiefe, also kürzere Verzögerung pro Stelle. In einer Ripple-Carry-Kette summiert sich das pro Stelle auf.
+  \item \textbf{Modularität / Wiederverwendung}: Die 2-HA-Konstruktion verwendet nur \textbf{einen} Bausteintyp (HA), was Layout, Test und Bibliotheksverwaltung vereinfacht. Der native VA braucht eine eigene Zelle, dafür ist sie für diesen Zweck optimal verdrahtet.
+\end{itemize}
+
+Entscheidung: In einem Ripple-Carry-Adder ist die \textbf{kritische Pfadlänge} der Übertragskette der dominierende Faktor. Daher native VA-Zellen verwenden — die zusätzliche XOR-Stufe pro Stelle in der 2-HA-Variante würde die Gesamtlatenz bei \texttt{n}-Bit-Breite spürbar erhöhen. Die 2-HA-Variante ist nur sinnvoll, wenn man (z. B. didaktisch oder bei knappem Zellinventar) auf VA-Zellen verzichten muss.
+
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{document}

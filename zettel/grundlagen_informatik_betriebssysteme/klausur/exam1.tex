@@ -1,0 +1,630 @@
+% ============================================================
+%  Probeklausur Template (my_dhbw Stil, klausur_*.tex)
+%  Formell mit Deckblatt-Header; Lösungen als grüne tcolorbox.
+%  Renderer: pdflatex (zweimal)
+% ============================================================
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+\usepackage[top=2cm, bottom=2cm, left=2.4cm, right=2.4cm, footskip=1cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{ltablex}
+\keepXColumns
+\usepackage{colortbl}
+\usepackage[most,breakable]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{pdflscape}
+\usepackage{titlesec}
+\usepackage[colorlinks=true, linkcolor=accent, urlcolor=accent]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme ─────────────────────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{loesung}{RGB}{0, 100, 0}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{240, 252, 240}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer ─────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\footnotesize\color{accent}Modulprüfung -- \nichttitle}
+\fancyhead[R]{\footnotesize\color{accent}\nichtsubtitle}
+\fancyfoot[L]{\footnotesize\color{accent}Matrikelnr.: \rule{3cm}{0.4pt}}
+\fancyfoot[R]{\footnotesize\color{accent}Blatt \thepage\,/\,\pageref{LastPage}}
+
+% ── Typografie ────────────────────────────────────────────────
+\titleformat{\section}
+    {\color{accent}\large\bfseries}{}{0pt}{}
+    [\vspace{-4pt}\color{accent}\rule{\linewidth}{1.5pt}]
+\titleformat{\subsection}
+    {\normalsize\bfseries\color{accent!85!black}}{}{0pt}{}{}
+\titleformat{\subsubsection}
+    {\small\bfseries\color{accent!70!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{12pt}{4pt}
+\titlespacing*{\subsection}{0pt}{8pt}{2pt}
+\titlespacing*{\subsubsection}{0pt}{6pt}{1pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\renewcommand{\arraystretch}{1.25}
+\setlist[itemize]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.4em}
+\setlist[enumerate]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.6em}
+
+% ── Boxen ─────────────────────────────────────────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={Abbildung: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={Tabelle: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{solutionbox}[1]{
+  enhanced,
+  colback=solutionbg, colframe=loesung,
+  title={#1}, fonttitle=\small\bfseries,
+  coltitle=white, colbacktitle=loesung,
+  breakable, before skip=8pt, after skip=8pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=single, framerule=0pt,
+  xleftmargin=4pt, xrightmargin=4pt,
+  aboveskip=6pt, belowskip=6pt,
+  keepspaces=true
+}
+
+\providecommand{\nichttitle}{Probeklausur}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Betriebssysteme}
+\renewcommand{\nichtsubtitle}{Probeklausur 1}
+
+
+\begin{document}
+
+% Deckblatt
+\thispagestyle{empty}
+\begin{center}
+\vspace*{1cm}
+{\Huge\bfseries\color{accent}Probeklausur}\\[8pt]
+{\Large\color{accent}\nichttitle}\\[4pt]
+\ifx\nichtsubtitle\empty\else
+  {\large\color{accent!80!black}\nichtsubtitle}\\[6pt]
+\fi
+\color{accent}\rule{0.5\linewidth}{1pt}\color{black}
+\end{center}
+
+\vspace{1cm}
+\begin{tabularx}{\textwidth}{@{}l X@{}}
+\textbf{Studiengang:}      & \rule{6cm}{0.4pt} \\[6pt]
+\textbf{Matrikelnummer:}    & \rule{6cm}{0.4pt} \\[6pt]
+\textbf{Name, Vorname:}    & \rule{6cm}{0.4pt} \\[6pt]
+\textbf{Datum:}             & \rule{6cm}{0.4pt} \\[6pt]
+\textbf{Bearbeitungszeit:}  & 60 Minuten \\[6pt]
+\textbf{Hilfsmittel:}       & Taschenrechner (nicht programmierbar) \\
+\end{tabularx}
+
+\vspace{2cm}
+\begin{center}
+{\large\itshape Viel Erfolg!}
+\end{center}
+
+\newpage
+
+% ── BODY ──────────────────────────────────────────────────────
+
+\section{Probeklausur 1 — Betriebssysteme}
+
+\textbf{Bearbeitungszeit}: 60 Minuten | \textbf{Hilfsmittel}: keine | \textbf{Punkte}: 100
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 1 — BS-Grundlagen \& Systemaufrufe \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+a) Definieren Sie den Begriff \textbf{Betriebssystem} und nennen Sie drei seiner Hauptaufgaben. \textit{(3 P)}
+
+
+b) Begründen Sie, warum der Übergang \textbf{User-Mode → Kernel-Mode} nur indirekt über einen Systemaufruf erfolgen darf. Welche konkrete Konsequenz hätte es, wenn ein beliebiger Anwendungsprozess direkt in den Kernel-Mode wechseln könnte? Nennen Sie zwei Auswirkungen. \textit{(5 P)}
+
+
+c) Ein Texteditor öffnet eine Datei \texttt{notiz.txt} und liest 1024 Bytes daraus. Skizzieren Sie den vollständigen Ablauf eines \texttt{read()}-Syscalls in \textbf{fünf nummerierten Schritten}. Geben Sie pro Schritt an, in welchem Modus (User/Kernel) der Schritt stattfindet und welche Komponente ihn ausführt. \textit{(7 P)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 — Rechnerarchitektur \& Adressraum \textit{(12 Punkte)}}\mbox{}\\[2pt]
+
+a) Listen Sie die fünf Stufen der \textbf{Speicherhierarchie} in der korrekten Reihenfolge auf (von schnellster zu langsamster) und begründen Sie diese Reihenfolge mit \textit{einem} gemeinsamen technischen Trade-off. \textit{(4 P)}
+
+
+b) Eine eingebettete Steuerung verwendet einen 48-Bit-Adressbus.
+
+\begin{itemize}
+  \item Wie viele Speichereinheiten lassen sich theoretisch adressieren? \textit{(2 P)}
+\begin{itemize}
+  \item Wie viele \textbf{TiB} sind das, wenn 1 Einheit = 1 Byte? Geben Sie das Ergebnis als Zweierpotenz an. \textit{(2 P)}
+\end{itemize}
+\end{itemize}
+
+c) Ein 32-Bit-Betriebssystem soll auf einem System mit 8 GB physischem RAM laufen. Erklären Sie das technische Problem, das dabei aus der Registerbreite entsteht, und nennen Sie den Begriff für die übliche Workaround-Technik (Stichwort genügt). \textit{(4 P)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 — Prozesse, Threads \& Zombies \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+a) Vergleichen Sie \textbf{Prozess} und \textbf{Thread} in einer Tabelle anhand der vier Aspekte: Adressraum, Speicherschutz, Kontextwechsel-Aufwand, Erzeugungsaufwand. \textit{(4 P)}
+
+
+b) Ein Architekt behauptet: \textit{„Threads sind immer besser als Prozesse — sie sind schneller und teilen sich die Daten."} Bewerten Sie diese Aussage anhand der zwei folgenden Szenarien und entscheiden Sie für jedes Szenario begründet zwischen Multi-Prozess- und Multi-Thread-Architektur: \textit{(7 P)}
+
+
+\begin{itemize}
+  \item \textbf{Szenario A}: Web-Crawler, der 200 URLs gleichzeitig herunterlädt und in eine gemeinsame In-Memory-Queue schreibt.
+\begin{itemize}
+  \item \textbf{Szenario B}: Browser, der jede geöffnete Tab-Webseite isolieren muss, damit ein Absturz einer schadhaften Seite die anderen Tabs nicht mitnimmt.
+\end{itemize}
+\end{itemize}
+
+c) Was ist ein \textbf{Zombie-Prozess}? Erklären Sie, warum er problematisch ist, obwohl er weder CPU-Zeit noch Hauptspeicher (außer dem PCB-Eintrag) verbraucht. \textit{(4 P)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 — Scheduling-Berechnung \textit{(22 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben sind vier Prozesse:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Prozess}} & {\color{white}\textbf{Ankunft}} & {\color{white}\textbf{Bedienzeit}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+P1 & 0 & 8 \\
+P2 & 1 & 4 \\
+P3 & 2 & 9 \\
+P4 & 3 & 5 \\
+\end{tabularx}
+}
+
+
+a) Erstellen Sie das \textbf{Gantt-Diagramm für FCFS} und berechnen Sie die mittlere Wartezeit sowie die mittlere Durchlaufzeit. \textit{(6 P)}
+
+
+b) Erstellen Sie das \textbf{Gantt-Diagramm für SJF (non-preemptive)} und berechnen Sie die mittlere Wartezeit. \textit{(6 P)}
+
+
+c) Erstellen Sie das \textbf{Gantt-Diagramm für Round Robin mit Quantum = 4 ms}. Bei gleichzeitigen Ereignissen werden ankommende Prozesse vor dem gerade verdrängten Prozess in die Warteschlange eingereiht. Berechnen Sie die mittlere Wartezeit. \textit{(8 P)}
+
+
+d) Welches der drei Verfahren würden Sie für einen \textbf{interaktiven Mehrbenutzer-Server} wählen? Begründen Sie mit zwei Argumenten aus dem Vergleich. \textit{(2 P)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 — Realtime-Scheduling (EDF) \textit{(13 Punkte)}}\mbox{}\\[2pt]
+
+Drei periodische Tasks (Deadline = Periode):
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Task}} & {\color{white}\textbf{Periode P}} & {\color{white}\textbf{Bedienzeit C}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+T1 & 5 & 2 \\
+T2 & 8 & 3 \\
+T3 & 10 & 2 \\
+\end{tabularx}
+}
+
+
+a) Erklären Sie das \textbf{EDF-Prinzip} in 2–3 Sätzen. Ist EDF preemptive oder non-preemptive? \textit{(3 P)}
+
+
+b) Erstellen Sie den EDF-Schedule für \textbf{t = 0 bis t = 15 ms}. Bei gleicher Deadline wird der Task mit kleinerem Index zuerst gewählt. \textit{(6 P)}
+
+
+c) Berechnen Sie die Gesamtauslastung U = Σ(Cᵢ/Pᵢ). Welches Auslastungs-Kriterium muss erfüllt sein, damit EDF einen Task-Satz garantiert einplanen kann? Ist es hier erfüllt? \textit{(4 P)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 6 — Pseudocode-Analyse einer ISR \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Ein Praktikant hat eine ISR für einen Tastatur-Interrupt geschrieben:
+
+
+\begin{lstlisting}
+ISR_Tastatur():
+  1: zeichen = lese_aus_HW_Puffer()
+  2: starte_rechtschreibpruefung(zeichen)   // ca. 180 ms
+  3: aktualisiere_GUI(zeichen)
+  4: acknowledge_IC()
+  5: return
+\end{lstlisting}
+
+
+a) Identifizieren Sie \textbf{drei} Probleme dieses Codes und erklären Sie jeweils kurz, welche Konsequenz im Betrieb auftritt. \textit{(9 P)}
+
+
+b) Wie muss die ISR aufgeteilt werden? Beschreiben Sie das Prinzip (welche Arbeit gehört in die ISR, welche in eine \textit{deferred routine} / einen normalen Prozess?) und nennen Sie ein Designprinzip, das ISRs allgemein erfüllen müssen. \textit{(4 P)}
+
+
+c) Während diese ISR (Interrupt-Level 3) bei Schritt 2 läuft, signalisiert der Plattencontroller einen Interrupt mit IL = 7. Was passiert? Was passiert, wenn stattdessen ein zweiter Tastatur-Interrupt mit IL = 3 eintrifft? \textit{(2 P)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 7 — Betriebsmittel \& BS-Kategorie \textit{(8 Punkte)}}\mbox{}\\[2pt]
+
+a) Begründen Sie, warum die \textbf{CPU} als entziehbares, der \textbf{Drucker} dagegen als nicht-entziehbares Betriebsmittel klassifiziert wird. Was würde im Drucker-Fall passieren, wenn man ihn doch mitten im Auftrag entzieht? \textit{(4 P)}
+
+
+b) Eine Pipeline-Anlage einer Chemiefabrik wird durch ein Steuerrechner-System überwacht. Bei Drucküberschreitung muss innerhalb von 5 ms ein Notventil geöffnet werden. Welche \textbf{BS-Kategorie} ist passend? Welche \textbf{Scheduling-Variante} (preemptive / non-preemptive) ist hier zwingend, und welche Real-Time-Härte (hard / soft) liegt vor? Begründen Sie. \textit{(4 P)}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+
+\section{Musterlösung Klausur 1}
+
+\paragraph{Aufgabe 1 \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a) (3 P)} Betriebssystem = Systemsoftware als Schnittstelle zwischen Hardware und Software; steuert/überwacht Programmabwicklung, regelt den Rechnerbetrieb und stellt Benutzern/Anwendungen elementare Dienste bereit (1 P). Drei Hauptaufgaben aus: Prozessverwaltung, Speicherverwaltung, Geräteverwaltung, Dateiverwaltung, Energieverwaltung (je 0,5 P, max. 2 P).
+
+\textit{Bewertung: Definition allein ohne Aufgaben max. 1 P.}
+
+
+\textbf{b) (5 P)} Im Kernel-Mode ist der \textbf{gesamte Befehlssatz} zugelassen, \textbf{alle Speicherbereiche} und \textbf{alle Betriebsmittel} zugänglich (1 P). Müsste man User-Code dort ausführen, wäre die Trennung zwischen privilegiertem BS-Code und unprivilegierten Anwendungen aufgehoben (1 P). Konsequenzen: (i) \textbf{Sicherheit}: ein bösartiger oder fehlerhafter Prozess könnte Speicher anderer Prozesse / des Kernels lesen oder überschreiben, Passwörter abgreifen, Hardware umkonfigurieren (1,5 P). (ii) \textbf{Stabilität}: ein Programmierfehler im Anwender-Code würde das gesamte System in undefinierten Zustand versetzen (Bluescreen / Kernel Panic) statt nur den eigenen Prozess zu beenden (1,5 P).
+
+\textit{Bewertung: 1 P für Begründung „erweiterter Befehlssatz/Speicherzugriff", je 1,5–2 P pro Konsequenz.}
+
+
+\textbf{c) (7 P)} Je Schritt 1,4 P (≈ 1 P + 0,4 P Modusangabe).
+
+\begin{enumerate}
+  \item Editor (User-Mode) ruft Bibliotheksfunktion \texttt{read(fd, buf, 1024)} auf — diese setzt einen Trap-Befehl ab. \textit{(User-Mode)}
+  \item CPU schaltet in den Kernel-Mode um, sichert den Prozesskontext und springt über die IVT in die Syscall-Behandlungsroutine. \textit{(Übergang → Kernel-Mode)}
+  \item Sicherheitsprüfung: BS prüft Berechtigung (gehört der Filedescriptor dem Prozess? Lese-Recht?). \textit{(Kernel-Mode)}
+  \item BS führt eigentliche Funktion aus: liest 1024 Bytes über Dateisystem-/Treiberschicht, kopiert Daten in \texttt{buf}. \textit{(Kernel-Mode)}
+  \item Rückgabewert (Anzahl gelesener Bytes oder Fehlercode) wird gesetzt, Modus wechselt zurück, der Editor läuft an der Stelle nach \texttt{read()} weiter. \textit{(Kernel → User-Mode)}
+\end{enumerate}
+\textit{Bewertung: −0,5 P pro fehlende Modusangabe; Sicherheitsprüfung muss benannt sein.}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 \textit{(12 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a) (4 P)} Register → Cache → Hauptspeicher (RAM/ROM) → Sekundärspeicher (Festplatte/SSD) → (Tertiärspeicher/Backup) (2 P, Reihenfolge). Trade-off: \textbf{schneller Speicher ist teurer pro Bit und daher in kleinerer Menge verbaut} — Hierarchie balanciert Kosten gegen Zugriffszeit (2 P).
+
+
+\textbf{b) (4 P)}
+
+\begin{itemize}
+  \item 2⁴⁸ Speichereinheiten = 281 474 976 710 656 (2 P).
+  \item 2⁴⁸ Byte = 2⁴⁸⁻⁴⁰ TiB = \textbf{2⁸ TiB = 256 TiB} (2 P).
+\end{itemize}
+
+\textit{Bewertung: 1 P bei richtiger Potenz aber Rechenfehler.}
+
+
+\textbf{c) (4 P)} Mit 32-Bit Adressregistern lassen sich nur 2³² = 4 GiB direkt adressieren (2 P) — der reine Adressraum ist kleiner als der vorhandene RAM, ein Teil bliebe unzugänglich. Workaround: \textbf{PAE (Physical Address Extension)} bzw. allgemein „Paging mit erweitertem physischem Adressraum" (2 P).
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a) (4 P)} Je Zeile 1 P:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Aspekt}} & {\color{white}\textbf{Prozess}} & {\color{white}\textbf{Thread}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Adressraum & eigener & gemeinsam mit Prozess \\
+Speicherschutz & ja (HW-isoliert) & nein \\
+Kontextwechsel & aufwendig (MMU, TLB-Flush) & leicht (nur Register/Stack) \\
+Erzeugung & schwer (Adressraum dupliziert) & minimal \\
+\end{tabularx}
+}
+
+
+\textbf{b) (7 P)} Aussage ist \textbf{falsch in dieser Pauschalität} (1 P).
+
+\begin{itemize}
+  \item \textbf{Szenario A (Crawler)}: viele I/O-blockierende Aufgaben mit gemeinsamer Datenstruktur (Queue) — \textbf{Multi-Thread} (3 P): schneller Kontextwechsel, geteilter Heap erlaubt direkte Queue-Nutzung ohne IPC, geringer Erzeugungs-Overhead bei 200 parallelen Workern; Synchronisation per Mutex möglich.
+  \item \textbf{Szenario B (Browser-Tabs)}: \textbf{Multi-Prozess} (3 P): kein Speicherschutz zwischen Threads — ein Absturz / eine Sandbox-Verletzung würde den ganzen Browser mitreißen (Stoff: „Absturz reißt alle mit"). Der höhere Erzeugungs- und Kommunikationsaufwand ist gegenüber Sicherheit zweitrangig. Reale Browser (Chrome) tun genau das.
+\end{itemize}
+
+\textit{Bewertung: ohne Begründung pro Szenario nur 1 P.}
+
+
+\textbf{c) (4 P)} Zombie = Prozess, dessen Code-Ausführung beendet ist, aber dessen Eintrag in der Prozesstabelle noch existiert, weil der \textbf{Elternprozess den Beendigungs-Status (\texttt{wait}) noch nicht abgeholt hat} (2 P). Problematisch: jeder Zombie belegt einen \textbf{PCB} und blockiert eine \textbf{PID}; die Zahl der PIDs ist endlich. Bei einem fehlerhaften Daemon, der hunderte Kinder erzeugt und nie abräumt, kann die Prozesstabelle volllaufen und das System keine neuen Prozesse mehr starten (2 P).
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 \textit{(22 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a) FCFS (6 P)}
+
+
+\begin{lstlisting}
+| P1      | P2   | P3       | P4    |
+0         8     12         21      26
+\end{lstlisting}
+
+
+(Gantt 2 P)
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Prozess}} & {\color{white}\textbf{Start}} & {\color{white}\textbf{Ende}} & {\color{white}\textbf{Wartezeit}} & {\color{white}\textbf{Durchlaufzeit}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+P1 & 0 & 8 & 0 & 8 \\
+P2 & 8 & 12 & 7 & 11 \\
+P3 & 12 & 21 & 10 & 19 \\
+P4 & 21 & 26 & 18 & 23 \\
+\end{tabularx}
+}
+
+
+\begin{itemize}
+  \item Mittlere Wartezeit = (0+7+10+18)/4 = \textbf{8,75 ms} (2 P)
+  \item Mittlere Durchlaufzeit = (8+11+19+23)/4 = \textbf{15,25 ms} (2 P)
+\end{itemize}
+
+\textbf{b) SJF non-preemptive (6 P)}
+
+Bei t=0 nur P1 verfügbar → P1 (0–8). Bei t=8 sind P2(4), P3(9), P4(5) bereit → kürzester P2. Dann P4, dann P3.
+
+
+\begin{lstlisting}
+| P1      | P2   | P4    | P3       |
+0         8     12      17         26
+\end{lstlisting}
+
+(Gantt 2 P)
+
+
+Wartezeiten: P1=0, P2=8−1=7, P4=12−3=9, P3=17−2=15.
+
+Mittlere Wartezeit = (0+7+9+15)/4 = \textbf{7,75 ms} (4 P).
+
+
+\textbf{c) Round Robin Q=4 (8 P)}
+
+Warteschlange-Konvention: Ankommende vor verdrängtem Prozess.
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Zeit}} & {\color{white}\textbf{Läuft}} & {\color{white}\textbf{Rest danach}} & {\color{white}\textbf{Queue nach Ereignis}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+0–4 & P1 & 4 & [P2, P3, P4, P1] \\
+4–8 & P2 & 0 ✓ & [P3, P4, P1] \\
+8–12 & P3 & 5 & [P4, P1, P3] \\
+12–16 & P4 & 1 & [P1, P3, P4] \\
+16–20 & P1 & 0 ✓ & [P3, P4] \\
+20–24 & P3 & 1 & [P4, P3] \\
+24–25 & P4 & 0 ✓ & [P3] \\
+25–26 & P3 & 0 ✓ & — \\
+\end{tabularx}
+}
+
+
+(Gantt 4 P)
+
+
+Endzeiten: P1=20, P2=8, P3=26, P4=25.
+
+Wartezeit = Endzeit − Ankunft − Bedienzeit:
+
+P1=12, P2=3, P3=15, P4=17.
+
+Mittlere Wartezeit = (12+3+15+17)/4 = \textbf{11,75 ms} (4 P)
+
+
+\textbf{d) (2 P)} \textbf{Round Robin} für interaktiven Server: garantiert (i) \textbf{Fairness} — jeder Nutzer bekommt regelmäßig CPU-Anteile, und (ii) \textbf{kurze Antwortzeit} für interaktive Kurz-Requests, da kein Job alle anderen blockiert. FCFS würde lange Jobs alle anderen verzögern lassen; SJF setzt Bedienzeitwissen voraus und kann zu Verhungern führen.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 \textit{(13 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a) (3 P)} EDF wählt unter allen bereit-stehenden Tasks denjenigen mit der \textbf{frühesten absoluten Deadline} zur Ausführung aus (2 P). Bei jedem neuen Task-Release wird neu entschieden — EDF ist also \textbf{preemptive} (1 P).
+
+
+\textbf{b) (6 P)} Releases: T1 bei 0,5,10,15; T2 bei 0,8; T3 bei 0,10. Absolute Deadlines = Release+P.
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{t}} & {\color{white}\textbf{Bereit (Rest, abs. Deadline)}} & {\color{white}\textbf{gewählt}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+0 & T1(2,5), T2(3,8), T3(2,10) & T1 \\
+2 & T2(3,8), T3(2,10) & T2 \\
+5 & T1↑(2,10), T3(2,10) & T1 (tie → kleinerer Index) \\
+7 & T3(2,10) & T3 \\
+9 & — & idle (oder T2↑ noch nicht: T2 kommt bei 8 mit D=16) → T2 \\
+9 & T2(3,16) & T2 \\
+10 & T1↑(2,15), T2(2,16), T3↑(2,20) & T1 \\
+12 & T2(2,16), T3(2,20) & T2 \\
+14 & T3(2,20) & T3 \\
+\end{tabularx}
+}
+
+
+Schedule (Gantt):
+
+\begin{lstlisting}
+| T1 | T2  | T1 | T3 | T2 | T1 | T2 | T3 |
+0    2    5    7    9   10   12   14   15  (T3 läuft bis 16)
+\end{lstlisting}
+
+
+Korrektur: Bei t=8 erscheint T2 (Release 8, D=16). Bis dahin hat T3 (gestartet bei 7) bereits 1 ms gerechnet, Rest 1. Bei t=8: T3(1,10) vs T2(3,16) → T3 weiter. T3 fertig bei 9. Dann ab 9 nur T2 bereit → T2 läuft 9–10 (1 von 3 erledigt). Bei t=10 neue Releases T1(2,15), T3(2,20); T2 hat Rest 2, D=16. EDF: T1(D=15) zuerst → T1 10–12. Dann T2(D=16) 12–14. Dann T3(D=20) 14–16.
+
+
+Vergebene Punkte: 6 P bei korrektem Schedule + nachvollziehbarer EDF-Begründung; −1 P pro falschem Slot.
+
+
+\textbf{c) (4 P)}
+
+U = 2/5 + 3/8 + 2/10 = 0,4 + 0,375 + 0,2 = \textbf{0,975} (2 P).
+
+EDF ist \textbf{optimal} für preemptives Single-Processor-Scheduling: ein Tasksatz ist genau dann einplanbar, wenn \textbf{U ≤ 1} (1 P). Hier 0,975 ≤ 1 → erfüllt, alle Deadlines werden eingehalten (1 P).
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 6 \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a) (9 P, je 3 P pro Problem)}
+
+
+\begin{enumerate}
+  \item \textbf{ISR ist viel zu lang (180 ms Rechtschreibprüfung)}: ISRs müssen so kurz wie möglich sein. Während der Bearbeitung sind gleich- oder niedriger-priorisierte Interrupts blockiert — Maus, Netzwerk, weitere Tastendrücke gehen verloren oder hängen 180 ms. System fühlt sich „eingefroren" an.
+  \item \textbf{\texttt{acknowledge\_IC()} steht erst am Ende, hinter der Langläufer-Funktion}: Der Interrupt-Controller sieht den IRQ erst nach 180+ ms als bestätigt — er kann zwischenzeitlich keine weiteren Interrupts dieser Priorität annehmen oder muss die Anfrage immer wieder wiederholen.
+  \item \textbf{GUI-Update aus Interrupt-Kontext}: GUI-Code läuft in der Regel im User-Mode des zuständigen Fenster-Prozesses und nutzt eigene Locks/Speicherbereiche. Ein direkter Aufruf aus der ISR (Kernelmode) verletzt Schichten und kann Deadlocks oder inkonsistente Zustände erzeugen.
+\end{enumerate}
+
+\textit{Alternativ akzeptiert: keine \texttt{cli}/Maskierung beim Sichern des Status, kein expliziter Statusspeicher auf Stack genannt — je 3 P statt einem der obigen Punkte.}
+
+
+\textbf{b) (4 P)} \textbf{Top-Half / Bottom-Half-Prinzip}: In der ISR (Top Half) nur das absolut Zeitkritische erledigen — Hardware-Puffer auslesen, IC bestätigen, Daten in eine Kernel-Queue legen (2 P). Die langwierige Verarbeitung (Rechtschreibprüfung, GUI-Update) wird als \textit{deferred routine} / \textit{bottom half} / „Tasklet" eingeplant oder wird durch einen normalen User-Prozess abgeholt (1 P). Designprinzip: \textbf{„Das Ergebnis darf nicht vom Auftreten eines Interrupts abhängen"} — und ISRs müssen so kurz wie möglich sein, weil sie andere Interrupts verdrängen (1 P).
+
+
+\textbf{c) (2 P)} Höhere Priorität (IL=7): Da dieser Interrupt eine höhere Priorität hat, wird die laufende ISR \textbf{unterbrochen} (genested), die Platten-ISR läuft, danach kehrt die CPU in die Tastatur-ISR zurück (1 P). Gleiches IL=3: gleich- oder niedriger-priorisierte Interrupts werden während der Bearbeitung \textbf{nicht angenommen} — der zweite Tastendruck wartet (oder geht verloren, wenn der HW-Puffer überläuft) (1 P).
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 7 \textit{(8 Punkte)}}\mbox{}\\[2pt]
+
+\textbf{a) (4 P)} Die \textbf{CPU} ist entziehbar, weil der vollständige Ausführungszustand eines Prozesses in dessen \textbf{PCB} gesichert werden kann (Register, PC, Flags). Der Prozess kann später exakt an derselben Stelle fortgesetzt werden, ohne Schaden (2 P). Der \textbf{Drucker} ist nicht entziehbar, weil sein „Zustand" Papier+Tinte+halb gedruckte Seite ist — würde man ihm den Druckauftrag mitten im Druck entreißen und einem anderen Job zuweisen, \textbf{vermischen sich die Druckseiten} (Papierverschwendung, unbrauchbares Resultat); der ursprüngliche Auftrag müsste komplett neu gestartet werden (2 P).
+
+
+\textbf{b) (4 P)}
+
+\begin{itemize}
+  \item BS-Kategorie: \textbf{Echtzeit-Betriebssystem} (1 P), typischerweise embedded eingebaut.
+  \item Scheduling: zwingend \textbf{preemptive} (1 P) — wenn ein höher-priorisierter Notventil-Task auftritt, muss der laufende Task sofort verdrängt werden, da non-preemptive das Einhalten der 5-ms-Schranke nicht garantieren kann.
+  \item \textbf{Hard Real Time} (1 P): Verspätung über 5 ms = schwerer Fehler / Sicherheitsrisiko (Explosion, Personenschaden) — nicht nur „lästig" wie bei Soft Real Time (1 P Begründung).
+\end{itemize}
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{document}

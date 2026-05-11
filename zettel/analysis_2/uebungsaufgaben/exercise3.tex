@@ -1,0 +1,500 @@
+% ============================================================
+%  Übungsaufgaben Template (my_dhbw Stil, uebung_*.tex)
+%  Header "Übungsblatt", grün eingefärbte <details>-Lösungen.
+%  Renderer: pdflatex (zweimal)
+% ============================================================
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+\usepackage[top=2cm, bottom=2cm, left=2.4cm, right=2.4cm, footskip=1cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{ltablex}
+\keepXColumns
+\usepackage{colortbl}
+\usepackage[most,breakable]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{pdflscape}
+\usepackage{titlesec}
+\usepackage[colorlinks=true, linkcolor=accent, urlcolor=accent]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme ─────────────────────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{loesung}{RGB}{0, 100, 0}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{240, 252, 240}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer ─────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\footnotesize\color{accent}\nichttitle}
+\fancyhead[R]{\footnotesize\color{accent}\nichtsubtitle}
+\fancyfoot[R]{\footnotesize\color{accent}Blatt \thepage\,/\,\pageref{LastPage}}
+
+% ── Typografie ────────────────────────────────────────────────
+\titleformat{\section}
+    {\color{accent}\large\bfseries}{}{0pt}{}
+    [\vspace{-4pt}\color{accent}\rule{\linewidth}{1.5pt}]
+\titleformat{\subsection}
+    {\normalsize\bfseries\color{accent!85!black}}{}{0pt}{}{}
+\titleformat{\subsubsection}
+    {\small\bfseries\color{accent!70!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{10pt}{3pt}
+\titlespacing*{\subsection}{0pt}{6pt}{2pt}
+\titlespacing*{\subsubsection}{0pt}{4pt}{1pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\renewcommand{\arraystretch}{1.2}
+\setlist[itemize]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.4em}
+\setlist[enumerate]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.6em}
+
+% ── Boxen: solutionbox = Lösungsbox in grün ──────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={Abbildung: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={Tabelle: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{solutionbox}[1]{
+  enhanced,
+  colback=solutionbg, colframe=loesung,
+  title={#1}, fonttitle=\small\bfseries,
+  coltitle=white, colbacktitle=loesung,
+  breakable, before skip=8pt, after skip=8pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=single, framerule=0pt,
+  xleftmargin=4pt, xrightmargin=4pt,
+  aboveskip=6pt, belowskip=6pt,
+  keepspaces=true
+}
+
+\providecommand{\nichttitle}{Übungsblatt}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Analysis 2}
+\renewcommand{\nichtsubtitle}{Übungsblatt 3}
+
+
+\begin{document}
+
+\begin{center}
+{\Large\bfseries\color{accent}\nichttitle}
+\ifx\nichtsubtitle\empty\else
+  \\[2pt]{\normalsize\color{accent!80!black}\nichtsubtitle}
+\fi
+\\[2pt]
+\color{accent}\rule{0.4\linewidth}{0.8pt}\color{black}
+\end{center}
+\vspace{4pt}
+
+% ── BODY ──────────────────────────────────────────────────────
+
+\section{Übungsblatt 3 — Vektoranalysis}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 1 — Totales Differenzial \& Richtungsableitung \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Betrachte die Funktion $f(x,y) = x^2 \cdot \ln(y)$.
+
+
+a) (3 P) Klassifiziere $f$ — handelt es sich um ein Skalar- oder Vektorfeld? Begründe anhand der Definition.
+
+
+b) (4 P) Bestimme das totale Differenzial $df$ und werte es an der Stelle $(1, e)$ in den Achsenrichtungen $(dx=1, dy=0)$ und $(dx=0, dy=1)$ aus.
+
+
+c) (8 P) Berechne die Richtungsableitung an $(1, e)$ in der Richtung, die mit der $x$-Achse den Winkel \$60°$ einschließt (also $dy = \textbackslash{}sqrt\{3\}\textbackslash{}cdot dx$). Bestimme dazu zuerst den korrekten normierten Richtungsvektor $\textbackslash{}vec\{a\}$ und begründe, warum die Normierung $|\textbackslash{}vec\{a\}|=1\$ zwingend nötig ist.
+
+
+\textbf{Lösung:}
+
+
+a) $f: \mathbb{R}^2 \to \mathbb{R}$ — jedem Punkt $(x,y)$ wird genau eine reelle Zahl zugeordnet. Also ein \textbf{Skalarfeld}.
+
+
+b) Partielle Ableitungen: $\frac{\partial f}{\partial x} = 2x\ln(y)$, $\frac{\partial f}{\partial y} = \frac{x^2}{y}$.
+
+\[
+df = 2x\ln(y)\,dx + \frac{x^2}{y}\,dy
+\]
+
+An $(1,e)$: $\frac{\partial f}{\partial x} = 2\cdot 1\cdot \ln(e) = 2$ und $\frac{\partial f}{\partial y} = \frac{1}{e}$.
+
+Achsenrichtung $x$: $df = 2$. Achsenrichtung $y$: $df = 1/e$.
+
+
+c) Allgemeiner Richtungsvektor: $\vec{v} = (1, \sqrt{3})$, Betrag $|\vec{v}| = \sqrt{1+3} = 2$. Normiert:
+
+\[
+\vec{a} = \tfrac{1}{2}(1, \sqrt{3}) = (0{,}5;\ 0{,}5\sqrt{3})
+\]
+
+Probe: $|\vec{a}|^2 = 0{,}25 + 0{,}75 = 1$ ✓.
+
+\[
+\frac{\partial f}{\partial \vec{a}}\bigg|_{(1,e)} = 2\cdot 0{,}5 + \frac{1}{e}\cdot 0{,}5\sqrt{3} = 1 + \frac{\sqrt{3}}{2e}
+\]
+
+Begründung Normierung: Die Richtungsableitung ist als Skalarprodukt $\nabla f \cdot \vec{a}$ definiert. Wäre $|\vec{a}| \neq 1$, würde das Ergebnis mit der Länge des Vektors skalieren — ein "doppelt so langer" Vektor in dieselbe Richtung lieferte das doppelte Ergebnis. Sie soll aber nur die Änderungsrate \textbf{pro Längeneinheit} in einer Richtung beschreiben, deshalb fordert die Definition $|\vec{a}|=1$.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 — Gradient, kritische Punkte und steilster Anstieg \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben: $f(x,y) = 2 - x - 2y + xy$.
+
+
+a) (4 P) Bestimme $\operatorname{grad}(f)$.
+
+
+b) (4 P) Finde alle kritischen Punkte (notwendige Bedingung für Extremstellen).
+
+
+c) (7 P) Ein Wanderer steht im Punkt $P=(3,2)$ auf der durch $f$ beschriebenen Höhenkarte. In welche Richtung muss er gehen, damit er den steilsten Aufstieg nimmt? Wie groß ist die momentane Anstiegsrate? Gib die Aufstiegsrichtung als normierten Vektor an.
+
+
+\textbf{Lösung:}
+
+
+a) $\nabla f = \begin{pmatrix} -1+y \\ -2+x \end{pmatrix}$.
+
+
+b) $\nabla f = \vec{0}$ liefert das Gleichungssystem $-1+y=0$ und $-2+x=0$, also $\boxed{(x,y) = (2,1)}$ — ein einziger kritischer Punkt.
+
+
+c) Bei $P=(3,2)$:
+
+\[
+\nabla f(3,2) = \begin{pmatrix} -1+2 \\ -2+3 \end{pmatrix} = \begin{pmatrix} 1 \\ 1 \end{pmatrix}
+\]
+
+Eigenschaft des Gradienten: er zeigt in Richtung des steilsten Anstiegs, sein Betrag ist die Anstiegsrate.
+
+
+Anstiegsrate: $|\nabla f| = \sqrt{1^2 + 1^2} = \sqrt{2}$.
+
+
+Normierte Aufstiegsrichtung: $\vec{e} = \frac{1}{\sqrt{2}}\begin{pmatrix}1\\1\end{pmatrix} = \begin{pmatrix}1/\sqrt{2}\\1/\sqrt{2}\end{pmatrix}$.
+
+
+Der Wanderer bewegt sich also genau diagonal nach Nordosten und gewinnt dabei pro Schritt $\sqrt{2} \approx 1{,}414$ Höheneinheiten.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 — Divergenz vs. Rotation: Analyse eines Vektorfelds \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben das Vektorfeld $\vec{f}(x,y) = (x^2y,\ x - y^2)^T$.
+
+
+a) (4 P) Berechne $\operatorname{div}(\vec{f})$ und $\operatorname{rot}(\vec{f})$ (in $\mathbb{R}^2$ skalar).
+
+
+b) (3 P) Bestimme alle Punkte/Kurven, an denen $\vec{f}$ \textbf{quellenfrei} ist.
+
+
+c) (3 P) Bestimme alle Punkte/Kurven, an denen $\vec{f}$ \textbf{wirbelfrei} ist.
+
+
+d) (4 P) Existieren Punkte, an denen $\vec{f}$ \textbf{gleichzeitig} quellen- und wirbelfrei ist? Falls ja, gib sie an.
+
+
+e) (6 P) Vergleiche Divergenz und Rotation als Charakterisierungen eines Vektorfelds. Begründe anhand des Beispielfelds $(-y, x)^T$ aus dem Kapitel, warum aus $\operatorname{div}(\vec{f})=0$ nicht $\operatorname{rot}(\vec{f})=0$ folgt — und umgekehrt.
+
+
+\textbf{Lösung:}
+
+
+a) $\operatorname{div}(\vec{f}) = \frac{\partial}{\partial x}(x^2y) + \frac{\partial}{\partial y}(x-y^2) = 2xy - 2y = 2y(x-1)$.
+
+$\operatorname{rot}(\vec{f}) = \frac{\partial}{\partial x}(x-y^2) - \frac{\partial}{\partial y}(x^2y) = 1 - x^2$.
+
+
+b) Quellenfrei $\Leftrightarrow 2y(x-1) = 0 \Leftrightarrow y=0$ \textbf{oder} $x=1$ (Vereinigung zweier Geraden).
+
+
+c) Wirbelfrei $\Leftrightarrow 1-x^2 = 0 \Leftrightarrow x = \pm 1$ (zwei vertikale Geraden).
+
+
+d) Schnittmenge: $x=\pm 1$ und ($y=0$ oder $x=1$).
+
+\begin{itemize}
+  \item $x=1$: jede Stelle $(1,y)$ erfüllt beides → ganze Gerade $x=1$.
+  \item $x=-1$: zusätzlich $y=0$ nötig → Punkt $(-1, 0)$.
+\end{itemize}
+
+Lösungsmenge: $\{(1,y)\,|\,y\in\mathbb{R}\}\ \cup\ \{(-1,0)\}$.
+
+
+e) Divergenz misst die \textbf{Quellenstärke} (skalar): wie viel Materie/Fluss in einem Punkt entsteht oder verschwindet. Rotation misst die \textbf{Wirbelstärke} (skalar in $\mathbb{R}^2$): wie stark das Feld um einen Punkt rotiert. Beide Operatoren extrahieren \textbf{unabhängige} Eigenschaften.
+
+
+Beispiel: $\vec{g}(x,y) = (-y, x)^T$. Es gilt $\operatorname{div}(\vec{g}) = 0 + 0 = 0$ (überall quellenfrei), aber $\operatorname{rot}(\vec{g}) = 1 - (-1) = 2 \neq 0$ (überall wirbelhaft). Umgekehrt ist das radiale Feld $(x,y)^T$ wirbelfrei ($\operatorname{rot}=0$), aber nicht quellenfrei ($\operatorname{div}=2$). Damit kann man von einer der beiden Größen nicht auf die andere schließen.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 — Gradient Descent für lineare Regression \textit{(25 Punkte)}}\mbox{}\\[2pt]
+
+Wir trainieren eine einfache lineare Regression $\hat{y}_i = \beta_0 + \beta_1 x_i$ auf den drei Datenpunkten:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{$i$}} & {\color{white}\textbf{$x_i$}} & {\color{white}\textbf{$y_i$}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+1 & 1 & 2 \\
+2 & 2 & 2 \\
+3 & 3 & 4 \\
+\end{tabularx}
+}
+
+
+Als Loss verwenden wir den \textbf{mittleren quadratischen Fehler} (MSE, ohne Wurzel):
+
+\[
+f(\beta_0, \beta_1) = \frac{1}{3}\sum_{i=1}^{3}(y_i - \beta_0 - \beta_1 x_i)^2
+\]
+
+
+a) (5 P) Bestimme $\nabla f(\beta_0, \beta_1)$ in geschlossener Form.
+
+
+b) (8 P) Führe ausgehend vom Startwert $\beta^{(0)} = (0, 0)$ \textbf{einen} Gradient-Descent-Schritt mit Lernrate $\eta = 0{,}1$ aus. Gib $\beta^{(1)}$ explizit an.
+
+
+c) (6 P) Im Kapitel steht: "$\operatorname{rot}(\operatorname{grad}(f)) = 0$ → keine Endlosschleife". Erläutere unter Verwendung des Satzes von Schwarz, was diese Aussage konkret für Gradient Descent garantiert.
+
+
+d) (6 P) Erkläre anhand der Stichworte "Diskretisierung" und "lokale vs. globale Minima", unter welchen Bedingungen Gradient Descent trotz korrekter Mathematik \textbf{kein} zufriedenstellendes Ergebnis liefert. Nenne zu jedem Stichwort ein konkretes Failure-Szenario.
+
+
+\textbf{Lösung:}
+
+
+a) Mit der Kettenregel:
+
+\[
+\frac{\partial f}{\partial \beta_0} = \frac{1}{3}\sum_{i=1}^{3} 2(y_i - \beta_0 - \beta_1 x_i)(-1) = -\frac{2}{3}\sum_{i}(y_i - \beta_0 - \beta_1 x_i)
+\]
+
+\[
+\frac{\partial f}{\partial \beta_1} = -\frac{2}{3}\sum_{i} x_i(y_i - \beta_0 - \beta_1 x_i)
+\]
+
+
+b) Bei $\beta^{(0)}=(0,0)$ ist der Residualterm einfach $y_i$:
+
+
+\begin{itemize}
+  \item $\sum y_i = 2+2+4 = 8 \Rightarrow \partial_{\beta_0} f = -\frac{2}{3}\cdot 8 = -\frac{16}{3}$
+  \item $\sum x_i y_i = 1\cdot 2 + 2\cdot 2 + 3\cdot 4 = 18 \Rightarrow \partial_{\beta_1} f = -\frac{2}{3}\cdot 18 = -12$
+\end{itemize}
+
+Update-Regel: $\beta^{(1)} = \beta^{(0)} - \eta \cdot \nabla f$.
+
+\[
+\beta_0^{(1)} = 0 - 0{,}1\cdot\left(-\tfrac{16}{3}\right) = \tfrac{16}{30} = \tfrac{8}{15} \approx 0{,}533
+\]
+
+\[
+\beta_1^{(1)} = 0 - 0{,}1\cdot(-12) = 1{,}2
+\]
+
+\[
+\boxed{\beta^{(1)} \approx (0{,}533;\ 1{,}2)}
+\]
+
+
+c) Der Satz von Schwarz besagt: für $f \in C^2$ gilt $\partial^2 f / \partial \beta_0 \partial \beta_1 = \partial^2 f / \partial \beta_1 \partial \beta_0$. Daraus folgt unmittelbar
+
+\[
+\operatorname{rot}(\nabla f) = \frac{\partial^2 f}{\partial \beta_0 \partial \beta_1} - \frac{\partial^2 f}{\partial \beta_1 \partial \beta_0} = 0
+\]
+
+Konsequenz: das Gradientenfeld ist \textbf{wirbelfrei} und besitzt damit ein Potential (nämlich $f$ selbst). Würde GD entlang einer geschlossenen Bahn rotieren ohne $f$ zu reduzieren, müsste die Bahn netto Rotation einschließen — dies widerspräche $\operatorname{rot}(\nabla f)=0$. Jeder Schritt entlang $-\nabla f$ verringert (für hinreichend kleines $\eta$) den Loss strikt, das Verfahren kann also nicht in einer kreisförmigen Endlosschleife mit konstantem Loss hängen bleiben.
+
+
+d) \textbf{Diskretisierung}: GD nähert den kontinuierlichen Fluss $-\nabla f$ durch endliche Schritte $\eta \nabla f$. Ist $\eta$ zu groß, "überspringt" das Verfahren das Minimum und divergiert (Loss explodiert oszillierend). Ist $\eta$ zu klein, bleibt es in flachen Plateaus quasi stehen.
+
+
+\textbf{Lokale vs. globale Minima}: Bei nicht-konvexem Loss (im Kapitel-Beispiel zwar nicht der Fall — MSE ist konvex — aber bei tieferen Modellen typisch) garantiert die notwendige Bedingung $\nabla f = 0$ nur einen kritischen Punkt. GD konvergiert also möglicherweise zu einem lokalen Minimum, aus dem es das globale nicht mehr unterscheiden kann.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 — Code-Analyse: Fehler in der Richtungsableitung \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Ein Praktikant implementiert die Richtungsableitung von $f(x,y) = \sqrt{xy}$ an der Stelle $(4,4)$:
+
+
+\begin{lstlisting}[language=python]
+def richtungsableitung(f, point, v):
+    # partielle Ableitungen an point
+    fx = partial(f, 'x', point)   # bei (4,4): 0.5
+    fy = partial(f, 'y', point)   # bei (4,4): 0.5
+    return fx*v[0] + fy*v[1]
+
+# Aufruf: richtungsableitung(f, (4,4), (1, sqrt(3)))
+# Ausgabe: 0.5 + 0.5 * sqrt(3)  ≈ 1.366
+\end{lstlisting}
+
+
+a) (4 P) Welche Definitionsanforderung wird hier verletzt? Welcher Wert sollte laut der Beispieltabelle des Kapitels für $f=\sqrt{xy}$ an $(4,4)$ in Richtung $\vec{a}=(0{,}5;\ 0{,}5\sqrt{3})$ tatsächlich herauskommen?
+
+
+b) (5 P) Korrigiere den Code (Pseudocode genügt). Erkläre die Korrektur in einem Satz.
+
+
+c) (6 P) Was passiert, wenn man im \textbf{fehlerhaften} Code stattdessen $\vec{v}' = (2, 2\sqrt{3})$ übergibt — und was passiert im \textbf{korrigierten} Code? Berechne beide Ergebnisse explizit und schließe daraus, welche fundamentale Eigenschaft der Richtungsableitung der Original-Code verletzt.
+
+
+\textbf{Lösung:}
+
+
+a) Die Richtungsableitung ist nur für \textbf{normierte} Richtungsvektoren $|\vec{a}|=1$ definiert. Übergeben wird $\vec{v}=(1, \sqrt{3})$ mit $|\vec{v}|=\sqrt{1+3}=2 \neq 1$. Korrektes Ergebnis laut Tabelle: $0{,}25\cdot(1+\sqrt{3}) \approx 0{,}683$.
+
+
+b) Korrektur: vor dem Skalarprodukt normieren.
+
+\begin{lstlisting}[language=python]
+def richtungsableitung(f, point, v):
+    norm = sqrt(v[0]**2 + v[1]**2)
+    a = (v[0]/norm, v[1]/norm)
+    fx = partial(f, 'x', point)
+    fy = partial(f, 'y', point)
+    return fx*a[0] + fy*a[1]
+\end{lstlisting}
+
+Erklärung: Die Skalierung mit $1/|\vec{v}|$ stellt sicher, dass das Resultat unabhängig von der Länge des Eingabevektors nur die Änderungsrate \textbf{pro Längeneinheit in der Richtung} misst.
+
+
+c) Mit $\vec{v}' = (2, 2\sqrt{3})$, $|\vec{v}'| = \sqrt{4+12} = 4$:
+
+
+\textbf{Fehlerhafter Code:} $0{,}5\cdot 2 + 0{,}5\cdot 2\sqrt{3} = 1 + \sqrt{3} \approx 2{,}732$ — \textbf{doppelt} so groß wie zuvor.
+
+
+\textbf{Korrigierter Code:} Normierung liefert $\vec{a}' = (0{,}5;\ 0{,}5\sqrt{3})$ — exakt derselbe normierte Vektor wie zuvor. Ergebnis: $0{,}5\cdot 0{,}5 + 0{,}5\cdot 0{,}5\sqrt{3} = 0{,}25(1+\sqrt{3}) \approx 0{,}683$ — unverändert.
+
+
+Schluss: Der Original-Code verletzt die \textbf{Längeninvarianz} der Richtungsableitung: ein Verdoppeln des Eingabevektors verdoppelt fälschlich das Ergebnis. Die mathematische Definition fordert aber, dass die Richtungsableitung nur von der \textbf{Richtung}, nicht von der \textbf{Länge} des Eingabevektors abhängt.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 6 — Operator-Identität \& Laplace \textit{(10 Punkte)}}\mbox{}\\[2pt]
+
+a) (3 P) Erkläre die Identität $\operatorname{rot}(\operatorname{grad}(f)) = 0$ und benenne den zugrunde liegenden Satz. Welche unmittelbare Konsequenz hat das für jedes Gradientenfeld?
+
+
+b) (4 P) Sei $f(x,y) = \dfrac{x^2}{2y}$. Berechne $\nabla f$ und den Laplace-Operator $\Delta f = \operatorname{div}(\operatorname{grad}(f))$.
+
+
+c) (3 P) Wozu wird der diskretisierte Laplace-Operator in der Bildverarbeitung eingesetzt? Erkläre kurz den Zusammenhang zur zweiten Ableitung.
+
+
+\textbf{Lösung:}
+
+
+a) Für $f \in C^2$ gilt $\partial^2 f / \partial x \partial y = \partial^2 f / \partial y \partial x$ (\textbf{Satz von Schwarz}). Damit ist
+
+\[
+\operatorname{rot}(\nabla f) = \frac{\partial^2 f}{\partial x \partial y} - \frac{\partial^2 f}{\partial y \partial x} = 0
+\]
+
+Konsequenz: \textbf{Jedes Gradientenfeld ist wirbelfrei}. Umgekehrt besitzt jedes wirbelfreie Feld auf einfach zusammenhängenden Gebieten ein Potential.
+
+
+b) $\nabla f = \begin{pmatrix} \partial f / \partial x \\ \partial f / \partial y \end{pmatrix} = \begin{pmatrix} x/y \\ -x^2/(2y^2) \end{pmatrix}$.
+
+
+Zweite Ableitungen:
+
+\[
+\frac{\partial^2 f}{\partial x^2} = \frac{\partial}{\partial x}\left(\frac{x}{y}\right) = \frac{1}{y}
+\]
+
+\[
+\frac{\partial^2 f}{\partial y^2} = \frac{\partial}{\partial y}\left(-\frac{x^2}{2y^2}\right) = -\frac{x^2}{2}\cdot(-2)y^{-3} = \frac{x^2}{y^3}
+\]
+
+\[
+\Delta f = \frac{1}{y} + \frac{x^2}{y^3}
+\]
+
+
+c) Der diskretisierte Laplace-Operator wird in der Bildverarbeitung zur \textbf{Kantenerkennung} eingesetzt. Hintergrund: $\Delta f$ summiert die zweiten Ableitungen — er reagiert daher stark auf Stellen mit abrupten Änderungen der Helligkeit (Nulldurchgänge der zweiten Ableitung markieren Kanten). In flachen Bildregionen ist $\Delta f \approx 0$, an Kanten/Konturen erreicht er hohe Beträge. So kann man Konturen extrahieren, ohne die Kantenrichtung explizit zu kennen.
+
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{document}

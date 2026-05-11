@@ -1,0 +1,572 @@
+% ============================================================
+%  Übungsaufgaben Template (my_dhbw Stil, uebung_*.tex)
+%  Header "Übungsblatt", grün eingefärbte <details>-Lösungen.
+%  Renderer: pdflatex (zweimal)
+% ============================================================
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+\usepackage[top=2cm, bottom=2cm, left=2.4cm, right=2.4cm, footskip=1cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{ltablex}
+\keepXColumns
+\usepackage{colortbl}
+\usepackage[most,breakable]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{pdflscape}
+\usepackage{titlesec}
+\usepackage[colorlinks=true, linkcolor=accent, urlcolor=accent]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme ─────────────────────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{loesung}{RGB}{0, 100, 0}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{240, 252, 240}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer ─────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\footnotesize\color{accent}\nichttitle}
+\fancyhead[R]{\footnotesize\color{accent}\nichtsubtitle}
+\fancyfoot[R]{\footnotesize\color{accent}Blatt \thepage\,/\,\pageref{LastPage}}
+
+% ── Typografie ────────────────────────────────────────────────
+\titleformat{\section}
+    {\color{accent}\large\bfseries}{}{0pt}{}
+    [\vspace{-4pt}\color{accent}\rule{\linewidth}{1.5pt}]
+\titleformat{\subsection}
+    {\normalsize\bfseries\color{accent!85!black}}{}{0pt}{}{}
+\titleformat{\subsubsection}
+    {\small\bfseries\color{accent!70!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{10pt}{3pt}
+\titlespacing*{\subsection}{0pt}{6pt}{2pt}
+\titlespacing*{\subsubsection}{0pt}{4pt}{1pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\renewcommand{\arraystretch}{1.2}
+\setlist[itemize]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.4em}
+\setlist[enumerate]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.6em}
+
+% ── Boxen: solutionbox = Lösungsbox in grün ──────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={Abbildung: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={Tabelle: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{solutionbox}[1]{
+  enhanced,
+  colback=solutionbg, colframe=loesung,
+  title={#1}, fonttitle=\small\bfseries,
+  coltitle=white, colbacktitle=loesung,
+  breakable, before skip=8pt, after skip=8pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=single, framerule=0pt,
+  xleftmargin=4pt, xrightmargin=4pt,
+  aboveskip=6pt, belowskip=6pt,
+  keepspaces=true
+}
+
+\providecommand{\nichttitle}{Übungsblatt}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Optimierungsverfahren}
+\renewcommand{\nichtsubtitle}{Übungsblatt 4}
+
+
+\begin{document}
+
+\begin{center}
+{\Large\bfseries\color{accent}\nichttitle}
+\ifx\nichtsubtitle\empty\else
+  \\[2pt]{\normalsize\color{accent!80!black}\nichtsubtitle}
+\fi
+\\[2pt]
+\color{accent}\rule{0.4\linewidth}{0.8pt}\color{black}
+\end{center}
+\vspace{4pt}
+
+% ── BODY ──────────────────────────────────────────────────────
+
+\section{Übungsblatt 4 — 3. Transportproblem}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 1 — LP-Formulierung \& Voraussetzung \textit{(10 Punkte)}}\mbox{}\\[2pt]
+
+a) Geben Sie die vollständige LP-Formulierung des klassischen Transportproblems an (Zielfunktion, Angebots-, Bedarfs- und Vorzeichenrestriktionen) und benennen Sie die Bedeutung jedes Symbols.
+
+
+b) Begründen Sie, warum die Voraussetzung ∑aᵢ = ∑bⱼ für die Lösbarkeit als geschlossenes Transportproblem zwingend ist. Was passiert formal, wenn ∑aᵢ > ∑bⱼ (Überangebot)? Schlagen Sie eine Konstruktion vor, mit der ein offenes Problem in ein geschlossenes überführt werden kann, und erläutern Sie, welche Kosten in der erweiterten Tabelle anzusetzen sind.
+
+
+\textbf{Lösung:}
+
+
+a) LP-Modell:
+
+
+\[
+\min f(X) = \sum_{i=1}^{m}\sum_{j=1}^{n} c_{ij}\,x_{ij}
+\]
+
+
+unter den Nebenbedingungen
+
+
+\[
+\sum_{j=1}^{n} x_{ij} = a_i \quad \forall i=1,\dots,m \qquad \text{(Angebotszeilen voll abgesetzt)}
+\]
+
+\[
+\sum_{i=1}^{m} x_{ij} = b_j \quad \forall j=1,\dots,n \qquad \text{(Bedarfsspalten voll gedeckt)}
+\]
+
+\[
+x_{ij} \ge 0 \quad \forall i,j
+\]
+
+
+Bedeutung: m Anbieter mit Angebot aᵢ, n Nachfrager mit Bedarf bⱼ, cᵢⱼ Stücktransportkosten von i nach j, xᵢⱼ die transportierte Menge.
+
+
+b) Summiert man alle Angebotsgleichungen, ergibt sich ∑ᵢ∑ⱼ xᵢⱼ = ∑ᵢ aᵢ. Dasselbe Doppelsumme aus den Bedarfsgleichungen liefert ∑ⱼ bⱼ. Damit alle Gleichungen gleichzeitig erfüllbar sind, muss zwingend ∑aᵢ = ∑bⱼ gelten — andernfalls ist das Gleichungssystem widersprüchlich und der zulässige Bereich leer.
+
+
+Bei ∑aᵢ > ∑bⱼ (Überangebot Δ = ∑aᵢ − ∑bⱼ) wird ein \textbf{fiktiver (Dummy-)Nachfrager} B\_\{n+1\} mit Bedarf b\_\{n+1\} = Δ eingefügt. Die Transportkosten in dieser Spalte werden auf c\_\{i,n+1\} = 0 gesetzt, weil keine echte Verbringung stattfindet — die dort zugewiesene Menge bleibt einfach beim Anbieter. Dadurch gilt ∑aᵢ = ∑bⱼ + Δ = neue Bedarfssumme, das Problem ist geschlossen und mit den drei Startverfahren lösbar. Analog wird bei Mehrbedarf ein Dummy-Anbieter ergänzt.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 — Nord-West-Ecken-Regel \textit{(12 Punkte)}}\mbox{}\\[2pt]
+
+Eine Spedition beliefert drei Baustellen B1, B2, B3 aus drei Lagern A1, A2, A3. Kostentabelle (€/Tonne) und Mengen (Tonnen):
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{}} & {\color{white}\textbf{B1}} & {\color{white}\textbf{B2}} & {\color{white}\textbf{B3}} & {\color{white}\textbf{aᵢ}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+A1 & 6 & 8 & 10 & 20 \\
+A2 & 7 & 11 & 11 & 30 \\
+A3 & 4 & 5 & 12 & 30 \\
+bⱼ & 30 & 40 & 10 & 80 \\
+\end{tabularx}
+}
+
+
+a) Prüfen Sie die Zulässigkeit als geschlossenes Transportproblem.
+
+b) Bestimmen Sie eine Startlösung mittels NWER. Geben Sie nach jedem Schritt die belegte Zelle, die zugewiesene Menge sowie die verbleibenden aᵢ/bⱼ an.
+
+c) Berechnen Sie den Gesamtaufwand f(X).
+
+
+\textbf{Lösung:}
+
+
+a) ∑aᵢ = 20+30+30 = 80, ∑bⱼ = 30+40+10 = 80. ✓ Geschlossen.
+
+
+b) Die Zellen werden in lexikografischer Nordwest-Reihenfolge bearbeitet. Restmengen jeweils nach Zuweisung in Klammern.
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Schritt}} & {\color{white}\textbf{Zelle}} & {\color{white}\textbf{min(aᵢ, bⱼ)}} & {\color{white}\textbf{xᵢⱼ}} & {\color{white}\textbf{a verbleibend}} & {\color{white}\textbf{b verbleibend}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+1 & (1,1) & min(20, 30) & 20 & a₁ = 0 & b₁ = 10 \\
+2 & (2,1) & min(30, 10) & 10 & a₂ = 20 & b₁ = 0 \\
+3 & (2,2) & min(20, 40) & 20 & a₂ = 0 & b₂ = 20 \\
+4 & (3,2) & min(30, 20) & 20 & a₃ = 10 & b₂ = 0 \\
+5 & (3,3) & min(10, 10) & 10 & a₃ = 0 & b₃ = 0 \\
+\end{tabularx}
+}
+
+
+Belegte Felder: 5 = m+n−1 (3+3−1). Lösung nicht degeneriert.
+
+
+Startlösung:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{}} & {\color{white}\textbf{B1}} & {\color{white}\textbf{B2}} & {\color{white}\textbf{B3}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+A1 & \textbf{20} & – & – \\
+A2 & \textbf{10} & \textbf{20} & – \\
+A3 & – & \textbf{20} & \textbf{10} \\
+\end{tabularx}
+}
+
+
+c) f(X) = 20·6 + 10·7 + 20·11 + 20·5 + 10·12 = 120 + 70 + 220 + 100 + 120 = \textbf{630 €}.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 — Matrixminimum-Methode \textit{(12 Punkte)}}\mbox{}\\[2pt]
+
+Bestimmen Sie für dieselbe Tabelle aus Aufgabe 2 eine Startlösung mit der Matrixminimum-Methode (MMM). Dokumentieren Sie für jeden Schritt die ausgewählte Zelle, das aktuelle Minimum cᵢⱼ in der Restmatrix sowie die nach der Zuweisung gestrichene Zeile bzw. Spalte. Berechnen Sie den Aufwand und vergleichen Sie ihn mit der NWER-Lösung.
+
+
+\textbf{Lösung:}
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Schritt}} & {\color{white}\textbf{min cᵢⱼ}} & {\color{white}\textbf{Zelle}} & {\color{white}\textbf{Menge}} & {\color{white}\textbf{gestrichen}} & {\color{white}\textbf{Restmengen}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+1 & 4 & (3,1) & min(30, 30) = 30 & A3 ∧ B1 (gleichzeitig erschöpft, Spalte B1 mit Null aufgefüllt: x\_\{1,1\}=x\_\{2,1\}=0) & a₃ = 0, b₁ = 0 \\
+2 & 8 & (1,2) & min(20, 40) = 20 & A1 & a₁ = 0, b₂ = 20 \\
+3 & 11 & (2,2) & min(30, 20) = 20 & B2 & a₂ = 10, b₂ = 0 \\
+4 & 11 & (2,3) & min(10, 10) = 10 & A2 ∧ B3 & – \\
+\end{tabularx}
+}
+
+
+Startlösung:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{}} & {\color{white}\textbf{B1}} & {\color{white}\textbf{B2}} & {\color{white}\textbf{B3}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+A1 & – & \textbf{20} & – \\
+A2 & – & \textbf{20} & \textbf{10} \\
+A3 & \textbf{30} & – & – \\
+\end{tabularx}
+}
+
+
+f(X) = 30·4 + 20·8 + 20·11 + 10·11 = 120 + 160 + 220 + 110 = \textbf{610 €}.
+
+
+Vergleich: 610 < 630, MMM verbessert NWER um 20 €. Plausibel, da MMM die Kosten von Anfang an berücksichtigt.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 — Vogelsche Approximationsmethode \textit{(18 Punkte)}}\mbox{}\\[2pt]
+
+Wenden Sie für die Tabelle aus Aufgabe 2 die Vogel-Methode an.
+
+
+a) Berechnen Sie für die erste Iteration die Opportunitätskosten (OK) jeder Zeile und Spalte. Welche Zeile/Spalte erhält den Zuschlag und warum?
+
+b) Führen Sie die Methode bis zur vollständigen Belegung durch. Tabellieren Sie pro Iteration die OK-Werte, die gewählte Zeile/Spalte, die belegte Zelle und die zugewiesene Menge.
+
+c) Berechnen Sie f(X). Welche Eigenschaft der Vogel-Methode erklärt den (typischerweise) deutlichen Vorteil gegenüber NWER?
+
+
+\textbf{Lösung:}
+
+
+a) Iteration 1 — OK = (zweitniedrigste − niedrigste) Kosten.
+
+
+Zeilen:
+
+\begin{itemize}
+  \item A1: sortiert \{6, 8, 10\} → OK = 8 − 6 = \textbf{2}
+  \item A2: \{7, 11, 11\} → OK = 11 − 7 = \textbf{4}
+  \item A3: \{4, 5, 12\} → OK = 5 − 4 = \textbf{1}
+\end{itemize}
+
+Spalten:
+
+\begin{itemize}
+  \item B1: \{4, 6, 7\} → OK = 6 − 4 = \textbf{2}
+  \item B2: \{5, 8, 11\} → OK = 8 − 5 = \textbf{3}
+  \item B3: \{10, 11, 12\} → OK = 11 − 10 = \textbf{1}
+\end{itemize}
+
+Maximum: A2 mit OK = 4. Hier wäre der Verzicht auf die billigste Zelle (c₂₁ = 7) besonders teuer (Sprung auf 11). Daher zuerst Zeile A2: günstigste Zelle (2,1) mit c = 7, Menge = min(30, 30) = 30 → x₂₁ = 30.
+
+
+b) Vollständige Iterationsfolge:
+
+
+
+{\footnotesize
+\begin{tabularx}{\linewidth}{XXXXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{It.}} & {\color{white}\textbf{OK Zeilen (A1/A2/A3)}} & {\color{white}\textbf{OK Spalten (B1/B2/B3)}} & {\color{white}\textbf{max OK}} & {\color{white}\textbf{Zelle}} & {\color{white}\textbf{Menge}} & {\color{white}\textbf{erschöpft}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+1 & 2 / \textbf{4} / 1 & 2 / 3 / 1 & A2 = 4 & (2,1), c = 7 & 30 & A2 ∧ B1 \\
+2 & 2 / – / \textbf{7} & – / 3 / 2 & A3 = 7 & (3,2), c = 5 & 30 & A3 \\
+3 & A1: 2 & B2: 8, B3: 10 & (Zwangsbelegung A1) & (1,2), c = 8 & 10 & B2 \\
+4 & – & – & – & (1,3), c = 10 & 10 & – \\
+\end{tabularx}
+}
+
+
+Iteration 2 im Detail (übrig: A1, A3 und B2, B3):
+
+\begin{itemize}
+  \item A1: \{8, 10\} → OK = 2; A3: \{5, 12\} → OK = 7
+  \item B2: \{5, 8\} → OK = 3; B3: \{10, 12\} → OK = 2
+\end{itemize}
+
+Max = A3 = 7 → Zelle (3,2): c₃₂ = 5, Menge = min(30, 40) = 30 → x₃₂ = 30. A3 erschöpft.
+
+
+Iteration 3 (übrig A1 = 20; B2 = 10, B3 = 10): nur eine Zeile aktiv, daher direkt günstigste Zelle (1,2) mit c = 8 → x₁₂ = 10. B2 erschöpft.
+
+
+Iteration 4: x₁₃ = 10.
+
+
+Startlösung:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{}} & {\color{white}\textbf{B1}} & {\color{white}\textbf{B2}} & {\color{white}\textbf{B3}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+A1 & – & \textbf{10} & \textbf{10} \\
+A2 & \textbf{30} & – & – \\
+A3 & – & \textbf{30} & – \\
+\end{tabularx}
+}
+
+
+c) f(X) = 30·7 + 30·5 + 10·8 + 10·10 = 210 + 150 + 80 + 100 = \textbf{540 €}.
+
+
+Erklärung: Die OK quantifizieren die \textit{Strafkosten}, die anfallen, wenn das jeweilige Minimum verpasst und auf die zweitbeste Alternative ausgewichen werden muss. Die Methode bearbeitet zuerst genau die Zeile/Spalte, bei der diese Strafe am größten wäre, und sichert dort die billigste Zelle. Damit werden teure Zwangsbelegungen am Ende des Verfahrens vermieden — bei NWER und (in geringerem Maße) MMM können diese in Restzeilen liegen bleiben.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 — Trade-off-Analyse \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Sie kennen jetzt drei Startverfahren mit den Aufwänden 630 € (NWER), 610 € (MMM) und 540 € (Vogel) für dasselbe Problem.
+
+
+a) Begründen Sie, warum der Aufwand der NWER systematisch eine \textit{obere Schranke} unter den drei Methoden darstellt. Worin besteht der konstruktive Unterschied zu MMM?
+
+b) Konstruieren Sie ein 2×2-Beispiel (∑aᵢ = ∑bⱼ = 10), bei dem NWER und MMM dieselbe Lösung liefern. Welche Bedingung an die Kostenmatrix muss dafür erfüllt sein?
+
+c) Das Kapitel beschreibt Phase 2 (Stepping-Stone, MODI ≈ Simplex) als anschließenden Optimierungsschritt. Welche der drei Startmethoden wählen Sie, wenn Phase 2 ohnehin angeschlossen wird, und welche, wenn aus Zeitgründen nur die Startlösung verwendet wird? Begründen Sie.
+
+
+\textbf{Lösung:}
+
+
+a) NWER ignoriert die Kostenmatrix vollständig und bewegt sich rein topologisch von Nord-West nach Süd-Ost. Die Belegung ist daher unabhängig von cᵢⱼ; im Erwartungswert wird sie über zufällig hohe wie niedrige Kosten gleichmäßig verteilt. MMM hingegen wählt aktiv das jeweils kleinste cᵢⱼ und vermeidet damit \textit{systematisch} hohe Werte, solange noch Wahlfreiheit besteht. Daraus folgt f(X)\_MMM ≤ f(X)\_NWER (im Gleichheitsfall stimmt die NW-Reihenfolge zufällig mit den niedrigsten Kosten überein). Vogel verfeinert MMM, indem nicht das globale, sondern das \textit{lokal kritischste} Minimum gewählt wird (Strafkostenlogik).
+
+
+b) Beispiel: a = (4, 6), b = (4, 6).
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{}} & {\color{white}\textbf{B1}} & {\color{white}\textbf{B2}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+A1 & 1 & 5 \\
+A2 & 9 & 2 \\
+\end{tabularx}
+}
+
+
+NWER: x₁₁ = 4 (a₁ erschöpft), x₂₁ = 0, x₂₂ = 6. Aufwand 4·1 + 6·2 = 16.
+
+MMM: min ist c₁₁ = 1, x₁₁ = 4; dann c₂₂ = 2, x₂₂ = 6. Identische Lösung.
+
+
+Bedingung: Das globale Kostenminimum muss exakt in der Nordwest-Ecke (1,1) liegen, und nach der ersten Belegung muss die jeweils nächste Wahl der NWER (Folgezelle entlang des „Pfades") wieder mit dem aktuellen Minimum der Restmatrix übereinstimmen. In der Praxis: monoton fallende cᵢⱼ entlang der NW-SO-Diagonale, hohe Werte in den Anti-Diagonalfeldern.
+
+
+c) Wenn Phase 2 (Stepping-Stone/MODI) folgt: \textbf{NWER} ist akzeptabel, da die Optimierung den Startpunkt ohnehin in eine optimale Basislösung überführt — der Mehraufwand der Vogel-Methode amortisiert sich nicht. NWER ist zudem mechanisch am einfachsten und liefert garantiert m+n−1 Basisvariablen.
+
+
+Wenn nur die Startlösung verwendet wird: \textbf{Vogel-Methode}. Sie liefert empirisch im Mittel Lösungen sehr nah am Optimum (im Beispiel −90 € gegenüber NWER) und ist in vielen Praxisfällen nicht weiter verbesserbar oder nur um wenige Prozent schlechter als das echte Optimum. Der höhere Rechenaufwand pro Iteration (OK-Berechnung) wird durch den eingesparten Phase-2-Schritt überkompensiert.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 6 — Pseudocode-Fehleranalyse \textit{(10 Punkte)}}\mbox{}\\[2pt]
+
+Ein Praktikant implementiert die NWER wie folgt:
+
+
+\begin{lstlisting}
+function NWER(a, b, m, n):
+    x = nullmatrix(m, n)
+    i, j = 1, 1
+    while i <= m and j <= n:
+        x[i][j] = min(a[i], b[j])
+        a[i] = a[i] - x[i][j]
+        b[j] = b[j] - x[i][j]
+        if a[i] == 0:
+            j = j + 1                # (*)
+        else:
+            i = i + 1                # (**)
+    return x
+\end{lstlisting}
+
+
+a) Identifizieren Sie den Fehler in den Zeilen (\textbackslash{}\textit{) und (\textbackslash{}}\textbackslash{}*) und geben Sie die korrekte Indexfortschaltung an.
+
+b) Demonstrieren Sie das Fehlverhalten an dem Mini-Beispiel a = (5, 5), b = (3, 3, 4): Welche Lösung liefert der fehlerhafte Code, welche die korrekte NWER, und welche der beiden Lösungen verletzt eine Restriktion?
+
+c) Welcher Sonderfall tritt auf, wenn nach einer Zuweisung gleichzeitig a[i] = 0 \textit{und} b[j] = 0 gelten? Wie geht die NWER laut Kapitel damit um?
+
+
+\textbf{Lösung:}
+
+
+a) Die Zweige sind vertauscht. Wenn die Zeile erschöpft ist (a[i] = 0), muss in die \textit{nächste Zeile} (i ← i+1) gewechselt werden, nicht in die nächste Spalte. Korrekt:
+
+
+\begin{lstlisting}
+        if a[i] == 0:
+            i = i + 1
+        else:                # b[j] == 0
+            j = j + 1
+\end{lstlisting}
+
+
+Die Bedingung des else-Zweigs ist im fehlerhaften Code zudem nur implizit korrekt, falls min(a, b) immer mindestens einen Wert auf 0 setzt — was hier zwar gilt, aber der Klarheit halber explizit \texttt{elif b[j] == 0:} heißen sollte.
+
+
+b) Beispiel a = (5, 5), b = (3, 3, 4), Summe 10 = 10. Kosten irrelevant für NWER.
+
+
+\textbf{Korrekte NWER:}
+
+\begin{itemize}
+  \item (1,1): min(5,3) = 3 → x₁₁ = 3, a₁ = 2, b₁ = 0, j → 2
+  \item (1,2): min(2,3) = 2 → x₁₂ = 2, a₁ = 0, b₂ = 1, i → 2
+  \item (2,2): min(5,1) = 1 → x₂₂ = 1, b₂ = 0, j → 3
+  \item (2,3): min(4,4) = 4 → x₂₃ = 4. Fertig.
+\end{itemize}
+
+Zeilensumme A1: 3+2 = 5 ✓; A2: 1+4 = 5 ✓; Spaltensummen: 3, 3, 4 ✓.
+
+
+\textbf{Fehlerhafter Code:}
+
+\begin{itemize}
+  \item (1,1): x₁₁ = 3, a₁ = 2, b₁ = 0. a₁ ≠ 0 → i = 2 (statt j = 2). Aber Zeile 1 hat noch Restangebot 2.
+  \item (2,1): min(5, 0) = 0 → x₂₁ = 0, a₂ = 5, b₁ = 0. a₂ ≠ 0 → i = 3 → Schleifenabbruch.
+\end{itemize}
+
+Liefert nur x₁₁ = 3, alles andere 0. Spalte B2 (Bedarf 3) und B3 (Bedarf 4) bleiben ungedeckt; Angebot A1 (Rest 2) und A2 (5) wird nicht abgesetzt. \textbf{Verletzt sowohl Bedarfs- als auch Angebotsrestriktion} — keine zulässige Lösung.
+
+
+c) Tritt simultane Erschöpfung auf, wäre als nächstes formal Zeile \textit{und} Spalte zu wechseln, was die Anzahl belegter Felder unter m+n−1 senkt → \textbf{Degeneration}. Laut Kapitel wird dann die als nächstes betretene Zeile bzw. Spalte zusätzlich mit einer expliziten Null als Belegung aufgefüllt, damit die Basisstärke m+n−1 erhalten bleibt und die Folgeverfahren (Stepping-Stone, MODI) korrekt arbeiten können.
+
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{document}

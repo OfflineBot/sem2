@@ -1,0 +1,403 @@
+% ============================================================
+%  Übungsaufgaben Template (my_dhbw Stil, uebung_*.tex)
+%  Header "Übungsblatt", grün eingefärbte <details>-Lösungen.
+%  Renderer: pdflatex (zweimal)
+% ============================================================
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+\usepackage[top=2cm, bottom=2cm, left=2.4cm, right=2.4cm, footskip=1cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{ltablex}
+\keepXColumns
+\usepackage{colortbl}
+\usepackage[most,breakable]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{pdflscape}
+\usepackage{titlesec}
+\usepackage[colorlinks=true, linkcolor=accent, urlcolor=accent]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme ─────────────────────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{loesung}{RGB}{0, 100, 0}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{240, 252, 240}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer ─────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\footnotesize\color{accent}\nichttitle}
+\fancyhead[R]{\footnotesize\color{accent}\nichtsubtitle}
+\fancyfoot[R]{\footnotesize\color{accent}Blatt \thepage\,/\,\pageref{LastPage}}
+
+% ── Typografie ────────────────────────────────────────────────
+\titleformat{\section}
+    {\color{accent}\large\bfseries}{}{0pt}{}
+    [\vspace{-4pt}\color{accent}\rule{\linewidth}{1.5pt}]
+\titleformat{\subsection}
+    {\normalsize\bfseries\color{accent!85!black}}{}{0pt}{}{}
+\titleformat{\subsubsection}
+    {\small\bfseries\color{accent!70!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{10pt}{3pt}
+\titlespacing*{\subsection}{0pt}{6pt}{2pt}
+\titlespacing*{\subsubsection}{0pt}{4pt}{1pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\renewcommand{\arraystretch}{1.2}
+\setlist[itemize]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.4em}
+\setlist[enumerate]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.6em}
+
+% ── Boxen: solutionbox = Lösungsbox in grün ──────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={Abbildung: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={Tabelle: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{solutionbox}[1]{
+  enhanced,
+  colback=solutionbg, colframe=loesung,
+  title={#1}, fonttitle=\small\bfseries,
+  coltitle=white, colbacktitle=loesung,
+  breakable, before skip=8pt, after skip=8pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=single, framerule=0pt,
+  xleftmargin=4pt, xrightmargin=4pt,
+  aboveskip=6pt, belowskip=6pt,
+  keepspaces=true
+}
+
+\providecommand{\nichttitle}{Übungsblatt}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Betriebssysteme}
+\renewcommand{\nichtsubtitle}{Übungsblatt 5}
+
+
+\begin{document}
+
+\begin{center}
+{\Large\bfseries\color{accent}\nichttitle}
+\ifx\nichtsubtitle\empty\else
+  \\[2pt]{\normalsize\color{accent!80!black}\nichtsubtitle}
+\fi
+\\[2pt]
+\color{accent}\rule{0.4\linewidth}{0.8pt}\color{black}
+\end{center}
+\vspace{4pt}
+
+% ── BODY ──────────────────────────────────────────────────────
+
+\section{Übungsblatt 5 — Betriebsmittel}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 1 — Klassifikation von Betriebsmitteln \textit{(12 Punkte)}}\mbox{}\\[2pt]
+
+a) Definieren Sie den Begriff \textit{Betriebsmittel} und nennen Sie die vier im Kapitel eingeführten Klassifikationsdimensionen mit jeweils einem Beispiel. \textit{(4 P)}
+
+
+b) Ein Studierender behauptet: „Die CPU ist ein gemeinsames Betriebsmittel, weil mehrere Prozesse gleichzeitig auf ihr laufen können." Nehmen Sie begründet Stellung. Beziehen Sie dabei den Unterschied zwischen \textit{quasi-gleichzeitiger} und \textit{echt gleichzeitiger} Nutzung ein und ordnen Sie die CPU korrekt in alle vier Kategorien ein. \textit{(5 P)}
+
+
+c) Leiten Sie aus der Eigenschaft „nicht entziehbar + exklusiv" eine direkte Konsequenz für das Betriebssystem-Scheduling ab. \textit{(3 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Ein \textbf{Betriebsmittel} ist eine Hard- oder Software-Ressource des Rechners, die von Prozessen genutzt wird. Klassifikationsdimensionen:
+
+\begin{itemize}
+  \item \textbf{Entziehbar} (z. B. CPU) — kann jederzeit ohne Schaden entzogen werden.
+  \item \textbf{Nicht entziehbar} (z. B. Drucker) — muss bis zur Beendigung der Nutzung beim Prozess bleiben.
+  \item \textbf{Exklusiv} — maximal ein Prozess gleichzeitig.
+  \item \textbf{Gemeinsam} (z. B. Festplatte) — quasi-gleichzeitig durch mehrere Prozesse nutzbar.
+\end{itemize}
+
+b) Die Behauptung ist falsch. Auf einem einzelnen CPU-Kern läuft zu jedem Zeitpunkt physisch genau \textbf{ein} Prozess; die scheinbare Parallelität entsteht durch schnelles Umschalten (Scheduling) — das ist \textit{quasi-gleichzeitig}. \textit{Gemeinsam} bezieht sich nach der Tabelle gerade auf solche quasi-gleichzeitige Nutzung wie bei der Festplatte, wo Anfragen interleaved bearbeitet werden, ohne dass sich die Prozesse stören. Die CPU wird jedoch im Kontextwechsel \textbf{vollständig entzogen} (Register, PC, Stackpointer eines anderen Prozesses werden geladen) — sie ist daher zu jedem Zeitpunkt \textbf{exklusiv} belegt. Korrekte Einordnung: \textbf{entziehbar + exklusiv}.
+
+
+c) Ein nicht entziehbares, exklusives Betriebsmittel (z. B. Drucker) kann das BS einem Prozess nicht im laufenden Betrieb wegnehmen, um es einem höher priorisierten Prozess zuzuweisen. Daraus folgt: Anfragen müssen \textbf{serialisiert} (per Warteschlange) bedient werden, und das Scheduling kann das Mittel nicht zur Lastverteilung nutzen. Außerdem entsteht eine erhöhte Verklemmungsgefahr, da das BS nicht durch Preemption auflösen kann.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 — Einordnungstabelle \textit{(10 Punkte)}}\mbox{}\\[2pt]
+
+Tragen Sie für jedes der folgenden Betriebsmittel beide Klassifikations-Dimensionen ein (entziehbar/nicht entziehbar \textbf{und} exklusiv/gemeinsam) und begründen Sie jede Einordnung in einem Satz.
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{\#}} & {\color{white}\textbf{Betriebsmittel}} & {\color{white}\textbf{entziehbar?}} & {\color{white}\textbf{exklusiv/gemeinsam?}} & {\color{white}\textbf{Begründung}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+1 & Arbeitsspeicher-Seite eines Prozesses &  &  &  \\
+2 & Etikettendrucker im Labor &  &  &  \\
+3 & Datei \texttt{/var/log/syslog} (nur lesend) &  &  &  \\
+4 & TCP-Port 443 eines Webservers &  &  &  \\
+5 & Magnetband-Laufwerk während eines Backups &  &  &  \\
+\end{tabularx}
+}
+
+
+\textbf{Lösung:}
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{\#}} & {\color{white}\textbf{Betriebsmittel}} & {\color{white}\textbf{entziehbar?}} & {\color{white}\textbf{exklusiv/gemeinsam?}} & {\color{white}\textbf{Begründung}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+1 & RAM-Seite & entziehbar & exklusiv (pro Seite) & Kann via Paging ausgelagert (entzogen) werden; eine konkrete physische Frame ist genau einem Prozess zugeordnet (Shared Memory ausgenommen). \\
+2 & Etikettendrucker & nicht entziehbar & exklusiv & Ein begonnener Druckjob darf nicht unterbrochen werden (sonst Ausschuss); zwei Prozesse gleichzeitig würden Etiketten verschachteln. \\
+3 & Logdatei (nur lesend) & entziehbar & gemeinsam & Lesezugriff blockiert niemanden; das BS kann den File-Descriptor jederzeit schließen/neu öffnen, mehrere Reader sind quasi-gleichzeitig möglich. \\
+4 & TCP-Port 443 & nicht entziehbar & exklusiv & \texttt{bind()} belegt den Port für den haltenden Prozess bis zum Schließen; ein zweiter Prozess scheitert mit \textit{Address in use}. \\
+5 & Magnetband im Backup & nicht entziehbar & exklusiv & Sequentielles Medium: Wechsel zu anderem Job zerstört Position/Konsistenz; nur ein Prozess darf das Band führen. \\
+\end{tabularx}
+}
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 — Transfer: Akku eines Tablets \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Im Kapitel werden BS-Kategorien (Mainframes, Server, PC, Echtzeit, Embedded, \textbf{Tablets}, Handhelds, Smartcards) genannt. Der Akku ist im Kapitel \textit{nicht} explizit als Betriebsmittel aufgelistet, lässt sich aber mit dem Klassifikationsschema sauber einordnen.
+
+
+a) Klassifizieren Sie \textit{elektrische Energie aus dem Akku} nach beiden Dimensionen (entziehbar/nicht entziehbar, exklusiv/gemeinsam) und begründen Sie. \textit{(5 P)}
+
+
+b) Ein BS-Designer behauptet: „Energie verhält sich grundlegend anders als CPU oder Drucker — keine der vier Kategorien passt wirklich." Argumentieren Sie \textit{für} und \textit{gegen} diese These. Nennen Sie \textbf{eine} Eigenschaft von Energie, die im Vier-Felder-Schema des Kapitels tatsächlich nicht erfasst wird. \textit{(6 P)}
+
+
+c) Welche zwei BS-Kategorien aus dem Kapitel sind durch Energie als Betriebsmittel besonders herausgefordert, und welche planungsrelevante Konsequenz folgt jeweils daraus? \textit{(4 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Energie ist \textbf{entziehbar} (das BS kann durch Drosseln/Schlafzustand laufenden Prozessen Energie reduzieren — analog zur entziehbaren CPU) und \textbf{gemeinsam} (mehrere Prozesse beziehen quasi-gleichzeitig aus demselben Vorrat, vergleichbar mit der Festplatte). Im Unterschied zu beiden Beispielen aus dem Kapitel ist der Vorrat aber endlich.
+
+
+b) \textbf{Pro These}: CPU-Zeit und Festplatte sind regenerative Mittel — sie stehen nach Freigabe wieder vollständig zur Verfügung. Energie hingegen ist \textbf{konsumtiv}: einmal verbraucht, ist sie weg. Das Vier-Felder-Schema unterscheidet nur, \textit{wie} Mittel zugeteilt werden, nicht, ob sie sich erneuern.
+
+\textbf{Contra These}: Trotzdem trägt das Schema: Zuteilungspolitik (entziehbar/exklusiv) ist orthogonal zur Erneuerbarkeit. Auch RAM ist endlich, wird aber problemlos eingeordnet.
+
+\textbf{Nicht erfasste Eigenschaft}: \textit{Verbrauch über die Zeit} / Endlichkeit des Gesamtvorrats. Das Kapitel beschreibt nur Belegungs-, nicht Mengenfragen.
+
+
+c) \textbf{Embedded} und \textbf{Tablets/Handhelds} (zwei aus den drei mobilen/eingebetteten Kategorien). Konsequenz Embedded: Scheduler muss Energie-Budgets pro Task einplanen, ggf. Aufgaben auslassen. Konsequenz Tablet/Handheld: BS muss aggressives Power-Management betreiben (Hintergrundprozesse einfrieren, Display dimmen), weil Nutzererwartung an Akkulaufzeit hart ist.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 — Vergleich: Mainframe-BS vs. Embedded-BS \textit{(18 Punkte)}}\mbox{}\\[2pt]
+
+Zwei der im Kapitel genannten BS-Kategorien sind \textbf{Mainframes (z/OS)} und \textbf{Embedded-Systeme}.
+
+
+a) Stellen Sie für beide Kategorien tabellarisch gegenüber: typische Hardware, dominierende Betriebsmittel-Art (entziehbar vs. nicht entziehbar, exklusiv vs. gemeinsam) und ein typisches Anwendungsbeispiel. \textit{(8 P)}
+
+
+b) Warum ist das Konzept „nicht entziehbares Betriebsmittel" für ein Mainframe-BS in der Praxis kritischer als für ein Embedded-BS? Begründen Sie mit Bezug auf typische Workloads. \textit{(6 P)}
+
+
+c) Treffen Sie eine begründete Entscheidung: Wenn Sie nur \textbf{eine} der vier Klassifikationen (entziehbar/nicht entziehbar/exklusiv/gemeinsam) aus dem Kapitel streichen müssten — welche wäre für Mainframe-Designer am ehesten verzichtbar, welche für Embedded-Designer? \textit{(4 P)}
+
+
+\textbf{Lösung:}
+
+
+a)
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Aspekt}} & {\color{white}\textbf{Mainframe (z/OS)}} & {\color{white}\textbf{Embedded}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Hardware & viele CPUs, große Plattenfarmen, Bandroboter & µController, kleiner Flash, oft 1 CPU-Kern \\
+Dominierende Mittel-Art & viele \textit{gemeinsame} Mittel (Platten, CPU-Pool), zusätzlich \textit{nicht entziehbare exklusive} Mittel (Bandlaufwerke, Drucker für Massendrucke) & wenige \textit{exklusive} Mittel (1 Sensor, 1 Aktor); CPU oft als einziges \textit{entziehbares} Mittel \\
+Beispielanwendung & Banktransaktionen, Lohnabrechnung im Batch & Motorsteuergerät, Waschmaschine \\
+\end{tabularx}
+}
+
+
+b) Mainframes verarbeiten typischerweise viele konkurrierende Batch-/Transaktionsjobs, die \textit{gleichzeitig} auf nicht entziehbare Mittel (Bandlaufwerke, Großdrucker, exklusive Datasets) zugreifen wollen. Daraus entstehen Warteschlangen, Verklemmungspotenzial und Spooling-Bedarf — die Verwaltung nicht entziehbarer Mittel ist das Kerngeschäft. Embedded-Systeme haben dagegen meist eine \textit{feste} Aufgabe und einen \textit{bekannten} Mittelbedarf zur Übersetzungszeit; der Sensor „gehört" dem Steuer-Task ohnehin allein, eine dynamische Vergabe entfällt weitgehend. Das Problem der nicht-entziehbaren Mittel reduziert sich damit auf einen Designentscheid statt auf ein Laufzeit-Schedulingproblem.
+
+
+c) \textbf{Mainframe}: am ehesten verzichtbar ist \textit{exklusiv} — fast jedes physische Mittel im Mainframe wird durch Spooler/Virtualisierung ohnehin als gemeinsames Mittel präsentiert; die Designer abstrahieren Exklusivität weg.
+
+\textbf{Embedded}: am ehesten verzichtbar ist \textit{gemeinsam} — gemeinsam genutzte Mittel sind selten, jedes Peripheriegerät ist typischerweise exklusiv einem Task zugeordnet.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 — Pseudocode-Analyse: Druckerverwaltung \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Ein Junior-Entwickler implementiert in einem Multiprozess-System folgende Druckerzuteilung:
+
+
+\begin{lstlisting}
+acquire_printer(prozess P):
+    if printer.busy == false:
+        printer.owner = P
+        printer.busy  = true
+        return OK
+    else:
+        # Drucker ist gerade in Benutzung von Q.
+        # Wir entziehen Q den Drucker und geben ihn P,
+        # damit hochpriore Jobs schneller fertig werden.
+        printer.owner = P
+        return OK
+
+release_printer(prozess P):
+    if printer.owner == P:
+        printer.busy = false
+\end{lstlisting}
+
+
+a) Identifizieren Sie den Hauptfehler im Verständnis von Betriebsmitteln, der dieser Implementierung zugrunde liegt. Beziehen Sie sich präzise auf die Klassifikation aus dem Kapitel. \textit{(5 P)}
+
+
+b) Beschreiben Sie konkret, was passiert, wenn Prozess Q gerade ein 200-seitiges Dokument druckt und auf Seite 87 von Prozess P verdrängt wird, der ein 5-seitiges Dokument startet. Welcher Schaden entsteht physisch, welcher logisch? \textit{(6 P)}
+
+
+c) Skizzieren Sie eine korrigierte Variante von \texttt{acquire\_printer} (Pseudocode reicht), die die Klassifikation des Druckers respektiert. \textit{(4 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Der Drucker ist nach Tabelle ein \textbf{nicht entziehbares, exklusives} Betriebsmittel — \textit{jederzeit entziehbar ohne Schaden} gilt explizit nur für die CPU, \textit{nicht} für den Drucker. Die Implementierung behandelt ihn wie ein entziehbares Mittel (Preemption durch einfaches Überschreiben von \texttt{printer.owner}) und verletzt damit die Definition aus dem Kapitel: „nicht entziehbar = muss bis Beendigung bleiben".
+
+
+b) \textbf{Physisch}: Q's Druckjob ist nach Seite 87 unterbrochen; P startet seinen 5-Seiten-Job unmittelbar danach auf demselben Papierstapel. Die Seiten 88–200 von Q werden niemals gedruckt, P's Seiten landen mitten im Q-Stapel — Toner/Papier sind verbraucht, Output unbrauchbar.
+
+\textbf{Logisch}: Q glaubt weiterhin, er besitze den Drucker (sein Anwendungs-Status wurde nicht informiert); ruft Q später \texttt{release\_printer} auf, setzt der Owner-Check zwar \texttt{busy=false} \textit{nicht}, weil \texttt{printer.owner == P} ≠ Q — aber zwischenzeitlich ist die Datenstruktur inkonsistent: zwei Prozesse halten konzeptionell denselben Drucker. Außerdem ist \texttt{release\_printer} durch \texttt{printer.busy = false} mit \texttt{owner = P} dauerhaft inkonsistent möglich, sobald P freigibt während Q noch lebt.
+
+
+c) Korrigierte Variante:
+
+
+\begin{lstlisting}
+acquire_printer(prozess P):
+    while printer.busy == true:
+        warte_in_warteschlange(P)        # blockierend
+    printer.owner = P
+    printer.busy  = true
+    return OK
+\end{lstlisting}
+
+
+Der Drucker wird nur freiwillig durch \texttt{release\_printer} des aktuellen Owners freigegeben; wartende Prozesse werden FIFO/prioritätsbasiert geweckt. Damit bleibt die Eigenschaft \textit{nicht entziehbar + exklusiv} gewahrt.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 6 — Smartcard-Szenario \textit{(10 Punkte)}}\mbox{}\\[2pt]
+
+Eine Smartcard (eine der im Kapitel genannten BS-Kategorien) hat 32 KB Flash, einen kleinen Krypto-Coprozessor und einen Zufallszahlengenerator (TRNG). Drei Applets laufen logisch parallel: \texttt{Banking}, \texttt{OePNV-Ticket}, \texttt{Login-Token}.
+
+
+a) Ordnen Sie die drei Hardware-Ressourcen (Flash, Krypto-Coprozessor, TRNG) jeweils nach beiden Dimensionen aus dem Kapitel ein. \textit{(6 P)}
+
+
+b) Eines der drei Applets fordert mitten in einer laufenden Krypto-Operation eines anderen Applets ebenfalls den Krypto-Coprozessor an. Erklären Sie auf Basis Ihrer Einordnung aus a), warum das Smartcard-BS hier zwingend warten muss und nicht (wie bei der CPU) per Preemption umschalten darf. \textit{(4 P)}
+
+
+\textbf{Lösung:}
+
+
+a)
+
+\begin{itemize}
+  \item \textbf{Flash} (32 KB Speicher): \textbf{entziehbar} — Adressbereiche können per Memory-Management remapped/freigegeben werden — und \textbf{gemeinsam} — alle drei Applets bekommen je eigene Bereiche, quasi-gleichzeitige Nutzung wie bei der Festplatte.
+  \item \textbf{Krypto-Coprozessor}: \textbf{nicht entziehbar} — eine begonnene RSA-Operation kann nicht im Halbschritt unterbrochen werden, ohne den internen Zustand (Schlüsselregister, Zwischenergebnisse) zu zerstören — und \textbf{exklusiv} — er hat eine Pipeline für genau eine Operation.
+  \item \textbf{TRNG}: \textbf{entziehbar} (jeder Bit-Sample steht für sich, ein Lesen kann jederzeit beendet werden), \textbf{exklusiv} pro Lesezugriff, weil das Schieberegister sonst zwischen Applets vermischte Bits liefern würde — eine gemeinsame Nutzung über mehrere Lesezyklen ist aber problemlos möglich, sodass die Einordnung „exklusiv pro Zugriff, gemeinsam über die Zeit" sauber das Schema strapaziert.
+\end{itemize}
+
+b) Der Krypto-Coprozessor ist \textit{nicht entziehbar + exklusiv}. Genau diese Kombination verbietet Preemption: Würde das BS den laufenden Coprozessor-Job zugunsten des neuen Applets unterbrechen, gingen interne Zwischenresultate (z. B. der aktuelle Modulo-Multiplikationszustand bei RSA) verloren, und das verdrängte Applet erhielte ein \textbf{falsches} kryptographisches Ergebnis — bei Banking sicherheitskritisch. Im Gegensatz dazu ist die CPU \textit{entziehbar}, weil ihr vollständiger Zustand (Register, PC) im PCB gesichert und später bitgenau wiederhergestellt werden kann. Der Coprozessor besitzt diese Save/Restore-Fähigkeit nicht; daher muss das anfragende Applet in einer Warteschlange blockieren, bis der laufende Job ordnungsgemäß terminiert.
+
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{document}

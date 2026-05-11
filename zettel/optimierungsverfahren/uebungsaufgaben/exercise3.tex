@@ -1,0 +1,699 @@
+% ============================================================
+%  Übungsaufgaben Template (my_dhbw Stil, uebung_*.tex)
+%  Header "Übungsblatt", grün eingefärbte <details>-Lösungen.
+%  Renderer: pdflatex (zweimal)
+% ============================================================
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+\usepackage[top=2cm, bottom=2cm, left=2.4cm, right=2.4cm, footskip=1cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{ltablex}
+\keepXColumns
+\usepackage{colortbl}
+\usepackage[most,breakable]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{pdflscape}
+\usepackage{titlesec}
+\usepackage[colorlinks=true, linkcolor=accent, urlcolor=accent]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme ─────────────────────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{loesung}{RGB}{0, 100, 0}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{240, 252, 240}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer ─────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\footnotesize\color{accent}\nichttitle}
+\fancyhead[R]{\footnotesize\color{accent}\nichtsubtitle}
+\fancyfoot[R]{\footnotesize\color{accent}Blatt \thepage\,/\,\pageref{LastPage}}
+
+% ── Typografie ────────────────────────────────────────────────
+\titleformat{\section}
+    {\color{accent}\large\bfseries}{}{0pt}{}
+    [\vspace{-4pt}\color{accent}\rule{\linewidth}{1.5pt}]
+\titleformat{\subsection}
+    {\normalsize\bfseries\color{accent!85!black}}{}{0pt}{}{}
+\titleformat{\subsubsection}
+    {\small\bfseries\color{accent!70!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{10pt}{3pt}
+\titlespacing*{\subsection}{0pt}{6pt}{2pt}
+\titlespacing*{\subsubsection}{0pt}{4pt}{1pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\renewcommand{\arraystretch}{1.2}
+\setlist[itemize]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.4em}
+\setlist[enumerate]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.6em}
+
+% ── Boxen: solutionbox = Lösungsbox in grün ──────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={Abbildung: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={Tabelle: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{solutionbox}[1]{
+  enhanced,
+  colback=solutionbg, colframe=loesung,
+  title={#1}, fonttitle=\small\bfseries,
+  coltitle=white, colbacktitle=loesung,
+  breakable, before skip=8pt, after skip=8pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=single, framerule=0pt,
+  xleftmargin=4pt, xrightmargin=4pt,
+  aboveskip=6pt, belowskip=6pt,
+  keepspaces=true
+}
+
+\providecommand{\nichttitle}{Übungsblatt}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Optimierungsverfahren}
+\renewcommand{\nichtsubtitle}{Übungsblatt 3}
+
+
+\begin{document}
+
+\begin{center}
+{\Large\bfseries\color{accent}\nichttitle}
+\ifx\nichtsubtitle\empty\else
+  \\[2pt]{\normalsize\color{accent!80!black}\nichtsubtitle}
+\fi
+\\[2pt]
+\color{accent}\rule{0.4\linewidth}{0.8pt}\color{black}
+\end{center}
+\vspace{4pt}
+
+% ── BODY ──────────────────────────────────────────────────────
+
+\section{Übungsblatt 3 — 2. Lineare Optimierung (LP)}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 1 — Slack-Variablen verstehen und einsetzen \textit{(12 Punkte)}}\mbox{}\\[2pt]
+
+a) Definieren Sie den Begriff \textbf{Slack-Variable} im Kontext der Standardformat-Umwandlung. Worin besteht die fachliche Notwendigkeit, sie einzuführen? \textit{(3 P)}
+
+
+b) Wandeln Sie die folgende Ungleichung mit Hilfe einer Slack-Variable in eine Gleichung um:
+
+
+\[
+1.2\,x_1 + 0.8\,x_2 + 2.0\,x_3 \;\leq\; 14
+\]
+
+
+Geben Sie Wertebereich der eingeführten Variable an. \textit{(3 P)}
+
+
+c) Nach der Lösung eines LP nimmt die zu obiger Nebenbedingung eingeführte Slack-Variable den Wert $s = 0$ an, eine andere Slack-Variable einer weiteren Ungleichung den Wert $s' = 4.7$. Interpretieren Sie beide Werte fachlich (Stichwort: bindend / nicht bindend) und erläutern Sie, was das ökonomisch z. B. für „Budget" bzw. „Lagerfläche" bedeutet. \textit{(6 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Eine Slack-Variable ist eine \textbf{nicht-negative Hilfsvariable}, die als Differenz zwischen LHS und RHS einer Ungleichung eingeführt wird, um diese in eine Gleichheits-Nebenbedingung zu überführen. Im Standardformat sind ausschließlich Gleichheits-NB zulässig (sowie $x_i \geq 0$, $b_j \geq 0$); Ungleichungen müssen also durch Slacks „aufgefüllt" werden, damit Verfahren wie Simplex anwendbar werden.
+
+
+b) $\;1.2\,x_1 + 0.8\,x_2 + 2.0\,x_3 + s_1 = 14$, mit $s_1 \geq 0$.
+
+
+c)
+
+\begin{itemize}
+  \item $s = 0$: Die Nebenbedingung ist \textbf{bindend / aktiv}, d. h. die Ressource wird vollständig ausgeschöpft. Bei einer Budget-NB heißt das: das Budget ist exakt aufgebraucht — eine Erhöhung um eine Einheit könnte den Zielfunktionswert verbessern (Schattenpreis $> 0$).
+  \item $s' = 4.7$: Die NB ist \textbf{nicht bindend}, es gibt einen Puffer von 4.7 Einheiten. Bei einer Lagerflächen-NB: 4.7 Einheiten Fläche bleiben ungenutzt; eine Vergrößerung der Fläche bringt keinen unmittelbaren Vorteil, da sie aktuell nicht limitierend ist.
+\end{itemize}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 — Vollständige Umwandlung in Standardformat \textit{(18 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben sei das folgende LP:
+
+
+\$\$
+
+\textbackslash{}begin\{aligned\}
+
+\textbackslash{}max\textbackslash{}quad \& 3x\_1 + 2x\_2 - x\_3\textbackslash{}\textbackslash{}
+
+\textbackslash{}text\{u.d.N.\}\textbackslash{}quad \& 2x\_1 + x\_2 \textbackslash{};\textbackslash{}leq\textbackslash{}; 10\textbackslash{}\textbackslash{}
+
+\& -x\_1 + 3x\_3 \textbackslash{};\textbackslash{}geq\textbackslash{}; 4\textbackslash{}\textbackslash{}
+
+\& x\_1 + x\_2 + x\_3 \textbackslash{};=\textbackslash{}; 5\textbackslash{}\textbackslash{}
+
+\& x\_1 \textbackslash{}in \textbackslash{}mathbb\{R\},\textbackslash{}quad x\_2 \textbackslash{}geq -2,\textbackslash{}quad x\_3 \textbackslash{}geq 0
+
+\textbackslash{}end\{aligned\}
+
+\$\$
+
+
+Bringen Sie das LP \textbf{schrittweise} in das Standardformat (min, Gleichheits-NB, alle Variablen $\geq 0$, $b_j \geq 0$). Begründen Sie jeden Umwandlungsschritt knapp.
+
+
+\textbf{Lösung:}
+
+
+\textbf{Schritt 1 — Max → Min.} $\max f \;\Leftrightarrow\; \min(-f)$:
+
+
+\[
+\min\;-3x_1 - 2x_2 + x_3
+\]
+
+
+\textbf{Schritt 2 — Unbeschränktes $x_1$.} Substitution durch Differenz zweier nicht-negativer Variablen:
+
+\[
+x_1 = x_{1a} - x_{1b}, \qquad x_{1a},\,x_{1b}\geq 0.
+\]
+
+
+\textbf{Schritt 3 — Variable $x_2 \geq -2$.} Verschiebung um $-a = +2$:
+
+\[
+x_2' = x_2 + 2 \;\Rightarrow\; x_2 = x_2' - 2,\qquad x_2' \geq 0.
+\]
+
+
+\textbf{Schritt 4 — Slacks für die Ungleichungen.}
+
+\begin{itemize}
+  \item $2x_1 + x_2 \leq 10$: Slack $s_1 \geq 0$ addieren.
+  \item $-x_1 + 3x_3 \geq 4$: Slack $s_2 \geq 0$ subtrahieren.
+\end{itemize}
+
+\textbf{Schritt 5 — Substitutionen einsetzen.}
+
+
+NB 1: $\;2(x_{1a}-x_{1b}) + (x_2' - 2) + s_1 = 10 \;\Rightarrow\; 2x_{1a} - 2x_{1b} + x_2' + s_1 = 12$
+
+
+NB 2: $\;-(x_{1a}-x_{1b}) + 3x_3 - s_2 = 4 \;\Rightarrow\; -x_{1a} + x_{1b} + 3x_3 - s_2 = 4$
+
+
+NB 3: $\;(x_{1a}-x_{1b}) + (x_2'-2) + x_3 = 5 \;\Rightarrow\; x_{1a} - x_{1b} + x_2' + x_3 = 7$
+
+
+Zielfunktion: $\min\,-3(x_{1a}-x_{1b}) - 2(x_2'-2) + x_3 = \min\,-3x_{1a} + 3x_{1b} - 2x_2' + x_3$ (Konstante $+4$ weggelassen, da optimierungsirrelevant).
+
+
+\textbf{Schritt 6 — Prüfung $b_j \geq 0$.} $b = (12, 4, 7)^\top$, alle $\geq 0$ ✓.
+
+
+\textbf{Standardform:}
+
+
+\$\$
+
+\textbackslash{}begin\{aligned\}
+
+\textbackslash{}min\textbackslash{}quad \& -3x\_\{1a\} + 3x\_\{1b\} - 2x\_2' + x\_3\textbackslash{}\textbackslash{}
+
+\textbackslash{}text\{u.d.N.\}\textbackslash{}quad \& 2x\_\{1a\} - 2x\_\{1b\} + x\_2' + s\_1 = 12\textbackslash{}\textbackslash{}
+
+\& -x\_\{1a\} + x\_\{1b\} + 3x\_3 - s\_2 = 4\textbackslash{}\textbackslash{}
+
+\& x\_\{1a\} - x\_\{1b\} + x\_2' + x\_3 = 7\textbackslash{}\textbackslash{}
+
+\& x\_\{1a\},\textbackslash{},x\_\{1b\},\textbackslash{},x\_2',\textbackslash{},x\_3,\textbackslash{},s\_1,\textbackslash{},s\_2 \textbackslash{}geq 0
+
+\textbackslash{}end\{aligned\}
+
+\$\$
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 — Grafische Lösung \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Eine Bäckerei produziert pro Tag $x_1$ Hundert Brote und $x_2$ Hundert Brötchen. Pro Hundert Brote werden 2 kg Mehl und 1 h Backzeit verbraucht, pro Hundert Brötchen 1 kg Mehl und 2 h Backzeit. Verfügbar sind 8 kg Mehl und 10 h Backzeit. Der Deckungsbeitrag ist 4 €/Hundert Brote und 3 €/Hundert Brötchen.
+
+
+a) Stellen Sie das LP auf. \textit{(3 P)}
+
+
+b) Lösen Sie es \textbf{grafisch} nach dem 5-Schritte-Schema aus dem Kapitel: Isolinien, NB einzeichnen, zulässigen Bereich kennzeichnen, Parallelverschiebung, Optimum ablesen. Beschreiben Sie jeden Schritt textlich, da kein Plot abzugeben ist (Eckpunkte explizit ausrechnen). \textit{(8 P)}
+
+
+c) An welcher/welchen NB liegt das Optimum bindend an? Berechnen Sie die zugehörigen Slack-Werte $s_1$ (Mehl) und $s_2$ (Zeit). \textit{(4 P)}
+
+
+\textbf{Lösung:}
+
+
+a)
+
+\$\$
+
+\textbackslash{}begin\{aligned\}
+
+\textbackslash{}max\textbackslash{}quad \& f(x) = 4x\_1 + 3x\_2\textbackslash{}\textbackslash{}
+
+\textbackslash{}text\{u.d.N.\}\textbackslash{}quad \& 2x\_1 + x\_2 \textbackslash{}leq 8\textbackslash{}quad\textbackslash{}text\{(Mehl)\}\textbackslash{}\textbackslash{}
+
+\& x\_1 + 2x\_2 \textbackslash{}leq 10\textbackslash{}quad\textbackslash{}text\{(Zeit)\}\textbackslash{}\textbackslash{}
+
+\& x\_1, x\_2 \textbackslash{}geq 0
+
+\textbackslash{}end\{aligned\}
+
+\$\$
+
+
+b)
+
+\begin{enumerate}
+  \item \textbf{Isolinien}: $4x_1 + 3x_2 = c$ sind Geraden mit Steigung $-\tfrac{4}{3}$.
+  \item \textbf{NB einzeichnen}: $2x_1 + x_2 = 8$ (Achsenabschnitte $(4,0)$, $(0,8)$); $x_1 + 2x_2 = 10$ (Achsenabschnitte $(10,0)$, $(0,5)$); zusätzlich Achsen $x_1=0$, $x_2=0$.
+  \item \textbf{Zulässiger Bereich}: Polygon mit Eckpunkten $(0,0)$, $(4,0)$, $\bar P$, $(0,5)$, wobei $\bar P$ der Schnitt der beiden geneigten NB ist.
+  \item \textbf{Schnittpunkt $\bar P$}: $2x_1 + x_2 = 8$ und $x_1 + 2x_2 = 10$. Erste Gleichung mal 2: $4x_1 + 2x_2 = 16$, abziehen: $3x_1 = 6 \Rightarrow x_1 = 2$, einsetzen: $x_2 = 4$. Also $\bar P = (2,4)$.
+  \item \textbf{Parallelverschiebung \& Eckwerte}:
+\end{enumerate}
+
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Eckpunkt}} & {\color{white}\textbf{$f$}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+$(0,0)$ & 0 \\
+$(4,0)$ & 16 \\
+$(2,4)$ & $\mathbf{20}$ \\
+$(0,5)$ & 15 \\
+\end{tabularx}
+}
+
+
+Die Isolinie wird parallel verschoben, bis sie den Bereich nur noch im Punkt $(2,4)$ berührt.
+
+
+\textbf{Optimum:} $x^* = (2, 4)$, $f^* = 20$ €/Tag.
+
+
+c) Einsetzen:
+
+\begin{itemize}
+  \item Mehl: $2\cdot 2 + 4 = 8 \;\Rightarrow\; s_1 = 8 - 8 = 0$ → \textbf{bindend}.
+  \item Zeit: $2 + 2\cdot 4 = 10 \;\Rightarrow\; s_2 = 10 - 10 = 0$ → \textbf{bindend}.
+\end{itemize}
+
+Beide Ressourcen sind voll ausgeschöpft (typisch für eine Eckpunkt-Lösung am Schnitt zweier NB).
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 — Transfer: Modellierung \& Standardformat \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+Ein Schreinerbetrieb stellt \textbf{Tische} ($T$) und \textbf{Stühle} ($S$) her. Pro Tisch werden 4 m² Holz und 1 h Lackierzeit benötigt; pro Stuhl 1 m² Holz und 3 h Lackierzeit. Verfügbar sind 20 m² Holz und 18 h Lackierzeit. Der Deckungsbeitrag liegt bei 30 € pro Tisch und 40 € pro Stuhl. \textbf{Zusätzlich} garantiert der Betrieb einem Großkunden mindestens 2 Tische pro Woche.
+
+
+a) Modellieren Sie das LP. \textit{(4 P)}
+
+
+b) Bringen Sie es vollständig in das Standardformat. Achten Sie insbesondere auf die $\geq$-NB und die Vorzeichen-Forderung $b_j \geq 0$. \textit{(8 P)}
+
+
+c) Bestimmen Sie das Optimum, indem Sie die Eckpunkte des zulässigen Bereichs aufzählen und die Zielfunktion auswerten. Geben Sie Optimalwert und ökonomische Interpretation an. \textit{(8 P)}
+
+
+\textbf{Lösung:}
+
+
+a)
+
+\$\$
+
+\textbackslash{}begin\{aligned\}
+
+\textbackslash{}max\textbackslash{}quad \& f = 30T + 40S\textbackslash{}\textbackslash{}
+
+\textbackslash{}text\{u.d.N.\}\textbackslash{}quad \& 4T + S \textbackslash{}leq 20\textbackslash{}\textbackslash{}
+
+\& T + 3S \textbackslash{}leq 18\textbackslash{}\textbackslash{}
+
+\& T \textbackslash{}geq 2\textbackslash{}\textbackslash{}
+
+\& T, S \textbackslash{}geq 0
+
+\textbackslash{}end\{aligned\}
+
+\$\$
+
+
+b) \textbf{Schritt 1 — Max → Min:} $\min\,-30T - 40S$.
+
+
+\textbf{Schritt 2 — Slacks:}
+
+\begin{itemize}
+  \item $4T + S \leq 20 \;\Rightarrow\; 4T + S + s_1 = 20$
+  \item $T + 3S \leq 18 \;\Rightarrow\; T + 3S + s_2 = 18$
+  \item $T \geq 2 \;\Rightarrow\; T - s_3 = 2$. RHS $= 2 \geq 0$ ✓, also keine Multiplikation mit -1 nötig.
+\end{itemize}
+
+(Alternativ: $T \geq 2 \Leftrightarrow -T \leq -2$; $\times(-1)$ ergäbe $-T \leq -2 \to T-s_3=2$, identisch.)
+
+
+\textbf{Standardform:}
+
+\$\$
+
+\textbackslash{}begin\{aligned\}
+
+\textbackslash{}min\textbackslash{}quad \& -30T - 40S\textbackslash{}\textbackslash{}
+
+\textbackslash{}text\{u.d.N.\}\textbackslash{}quad \& 4T + S + s\_1 = 20\textbackslash{}\textbackslash{}
+
+\& T + 3S + s\_2 = 18\textbackslash{}\textbackslash{}
+
+\& T - s\_3 = 2\textbackslash{}\textbackslash{}
+
+\& T, S, s\_1, s\_2, s\_3 \textbackslash{}geq 0
+
+\textbackslash{}end\{aligned\}
+
+\$\$
+
+
+c) \textbf{Eckpunkte des zulässigen Bereichs} (auf $T$-$S$-Ebene):
+
+
+Aktive NB-Paare bestimmen Schnitte; Zulässigkeit jeweils prüfen.
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Eckpunkt}} & {\color{white}\textbf{Herleitung}} & {\color{white}\textbf{zulässig?}} & {\color{white}\textbf{$f$}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+$(2,0)$ & $T=2,\;S=0$ & ja & 60 \\
+$(5,0)$ & $S=0,\;4T+S=20$ & ja & 150 \\
+$(2, \tfrac{16}{3})$ & $T=2,\;T+3S=18 \Rightarrow S=\tfrac{16}{3}\approx 5.33$; check $4\cdot 2+\tfrac{16}{3}=\tfrac{40}{3}\approx 13.3 \leq 20$ ✓ & ja & $60+\tfrac{640}{3}\approx 273.3$ \\
+Schnitt $4T+S=20\;\&\;T+3S=18$ & $12T+3S=60 \Rightarrow 11T = 42 \Rightarrow T=\tfrac{42}{11}\approx 3.82,\;S=\tfrac{20-4T}{1} = 20 - \tfrac{168}{11} = \tfrac{52}{11}\approx 4.73$; check $T\geq 2$ ✓ & ja & $30\cdot\tfrac{42}{11}+40\cdot\tfrac{52}{11} = \tfrac{1260+2080}{11} = \tfrac{3340}{11}\approx 303.6$ \\
+Schnitt $4T+S=20\;\&\;T=2$ & $T=2,\;S=12$; check $T+3S=2+36=38 > 18$ & \textbf{nein} & — \\
+\end{tabularx}
+}
+
+
+\textbf{Optimum:} $T^* = \tfrac{42}{11}\approx 3.82$, $S^* = \tfrac{52}{11}\approx 4.73$, $f^* = \tfrac{3340}{11}\approx 303.64$ €.
+
+
+\textbf{Interpretation:} Beide Ressourcen-NB (Holz und Lackierzeit) sind am Optimum bindend, die Liefergarantie ist nicht bindend ($T^*\approx 3.82 > 2$). In der Praxis ist das Ergebnis nicht ganzzahlig — Schreiner produzieren keine Bruchteile von Möbeln. Das Problem ist in der Realität ein Integer-LP (siehe Aufgabe 5).
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 — Integer LP: Naive Rundung vs. Cutting Plane \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben sei das ILP:
+
+\$\$
+
+\textbackslash{}begin\{aligned\}
+
+\textbackslash{}max\textbackslash{}quad \& 5x\_1 + 4x\_2\textbackslash{}\textbackslash{}
+
+\textbackslash{}text\{u.d.N.\}\textbackslash{}quad \& 6x\_1 + 4x\_2 \textbackslash{}leq 24\textbackslash{}\textbackslash{}
+
+\& x\_1 + 2x\_2 \textbackslash{}leq 6\textbackslash{}\textbackslash{}
+
+\& x\_1, x\_2 \textbackslash{}geq 0,\textbackslash{};\textbackslash{}text\{ganzzahlig\}
+
+\textbackslash{}end\{aligned\}
+
+\$\$
+
+
+a) Lösen Sie zunächst die \textbf{kontinuierliche Relaxation}. Geben Sie $x^*_{\text{LP}}$ und $f^*_{\text{LP}}$ an. \textit{(5 P)}
+
+
+b) Wenden Sie das \textbf{naive Verfahren} an: Runden auf die nächstgelegene Integer-Lösung. Prüfen Sie die NB und kommentieren Sie, ob das Vorgehen aus dem Kapitel hier funktioniert. \textit{(4 P)}
+
+
+c) Wenden Sie das \textbf{etwas bessere} Verfahren an (nächstgelegene zulässige Integer-Lösung suchen). \textit{(3 P)}
+
+
+d) Skizzieren Sie das \textbf{Cutting-Plane-Vorgehen}: Geben Sie eine konkrete Schnittebene (Cut) an, die $x^*_{\text{LP}}$ aus a) verletzt, aber alle ganzzahligen zulässigen Punkte enthält. Begründen Sie. \textit{(5 P)}
+
+
+e) Vergleichen Sie die drei Strategien hinsichtlich Korrektheit und Lösungsqualität. \textit{(3 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Eckpunkte der Relaxation: $(0,0)$, $(4,0)$, $(0,3)$ und Schnitt von $6x_1+4x_2=24$ mit $x_1+2x_2=6$:
+
+\begin{itemize}
+  \item $6x_1 + 4x_2 = 24$, $\;2x_1 + 4x_2 = 12$ (zweite $\times 2$)  →  $4x_1 = 12$, $x_1 = 3$, $x_2 = 1.5$.
+\end{itemize}
+
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Ecke}} & {\color{white}\textbf{$f$}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+$(0,0)$ & 0 \\
+$(4,0)$ & 20 \\
+$(3,1.5)$ & $\mathbf{21}$ \\
+$(0,3)$ & 12 \\
+\end{tabularx}
+}
+
+
+$x^*_{\text{LP}} = (3,\,1.5)$, $f^*_{\text{LP}} = 21$.
+
+
+b) Nächstgelegene Integer-Lösung: $x_2 = 1.5 \to 2$ (oder 1), $x_1 = 3$ bleibt.
+
+\begin{itemize}
+  \item $(3, 2)$: $6\cdot 3 + 4\cdot 2 = 26 > 24$ → \textbf{NB verletzt}, unzulässig.
+  \item $(3, 1)$ wäre zulässig (siehe c), entspricht aber einem Abrunden, nicht dem „nächstgelegenen Integer".
+\end{itemize}
+
+→ Naives Runden funktioniert hier \textbf{nicht}, weil $(3,2)$ den zulässigen Bereich verlässt — exakt das Risiko, das im Kapitel als Schwäche der Methode genannt wird.
+
+
+c) Suche nächstgelegene \textbf{zulässige} Integer-Punkte um $(3, 1.5)$:
+
+\begin{itemize}
+  \item $(3, 1)$: $18+4=22\leq24$ ✓, $3+2=5\leq6$ ✓; $f = 19$.
+  \item $(2, 2)$: $12+8=20$ ✓, $2+4=6$ ✓; $f = 18$.
+\end{itemize}
+
+Beste in der direkten Nachbarschaft: $(3,1)$ mit $f=19$. Aber Vorsicht: Das ist nicht zwingend das \textbf{globale} Integer-Optimum — Aufzählen aller Integer-Punkte:
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{$(x_1, x_2)$}} & {\color{white}\textbf{NB1}} & {\color{white}\textbf{NB2}} & {\color{white}\textbf{$f$}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+$(4,0)$ & 24 ✓ & 4 ✓ & $\mathbf{20}$ \\
+$(3,1)$ & 22 ✓ & 5 ✓ & 19 \\
+$(2,2)$ & 20 ✓ & 6 ✓ & 18 \\
+$(0,3)$ & 12 ✓ & 6 ✓ & 12 \\
+\end{tabularx}
+}
+
+
+Globales Integer-Optimum: $x^*_{\text{ILP}} = (4, 0)$, $f^*_{\text{ILP}} = 20$. Die nächstgelegene zulässige Integer-Lösung um $(3,1.5)$ liefert nur $f = 19 < 20$ und ist damit suboptimal.
+
+
+d) \textbf{Cut-Konstruktion.} Gesucht: eine Ungleichung, die $(3, 1.5)$ verletzt, aber von allen $(x_1, x_2)\in\{(4,0),(3,1),(2,2),(0,3),\dots\}$ erfüllt wird. Die Bedingung $x_1 + 2x_2 \leq 6$ ist im LP-Optimum bindend ($3 + 3 = 6$). Wegen Ganzzahligkeit der zulässigen Lösungen gilt zusätzlich:
+
+\[
+x_2 \leq 1 \;\;\text{für}\;\; x_1 \geq 3 \quad\text{bzw. allgemein}\quad x_1 + 2x_2 \leq 6,\;x_2\in\mathbb{Z}.
+\]
+
+
+Ein gültiger Cut ist z. B. $\boxed{x_2 \leq 1}$:
+
+\begin{itemize}
+  \item $(3, 1.5)$: $1.5 > 1$ → \textbf{verletzt} ✓
+  \item Alle Integer-Lösungen mit $f \geq f^*_{\text{ILP}}=20$? Zumindest $(4,0)$ und $(3,1)$ erfüllen es; $(2,2)$ und $(0,3)$ werden ausgeschlossen, was ok ist, weil sie ohnehin nicht optimal sind.
+\end{itemize}
+
+Stärker und „fairer" (schließt nichts Optimales aus) wäre $x_1 + x_2 \leq 4$:
+
+\begin{itemize}
+  \item $(3,1.5)$: $4.5 > 4$ → verletzt ✓
+  \item $(4,0)$: $4 \leq 4$ ✓; $(3,1)$: $4\leq 4$ ✓; $(2,2)$: $4\leq 4$ ✓; $(0,3)$: $3\leq 4$ ✓; alle ganzzahligen zulässigen Punkte erfüllen ihn. ✓
+\end{itemize}
+
+Nach Hinzufügen des Cuts wird das LP erneut gelöst (Schritt 1 des Cutting-Plane-Schemas), bis die Lösung ganzzahlig ist.
+
+
+e)
+
+\begin{itemize}
+  \item \textbf{Naiv (b):} schnell, aber kann unzulässige Lösungen liefern → \textbf{nicht korrekt}.
+  \item \textbf{Nächstgelegene zulässige (c):} liefert garantiert eine zulässige Lösung, aber möglicherweise weit vom globalen Integer-Optimum entfernt (hier $f=19$ statt 20).
+  \item \textbf{Cutting Plane (d):} terminiert mit der \textbf{echten} Integer-Optimallösung; höherer Aufwand (wiederholtes LP-Lösen), aber korrekt und systematisch.
+\end{itemize}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 6 — Fehler im Lösungsweg finden \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Eine Studentin reicht folgenden Lösungsweg ein:
+
+
+\begin{quote}
+\textbf{Aufgabe.} $\max\,2x_1 + 3x_2$, u.d.N.: $x_1 + x_2 \leq 4$, $\;x_1 - x_2 \geq -1$, $\;x_1, x_2 \geq 0$.
+\end{quote}
+>
+
+\begin{quote}
+\textbf{Standardformat:}
+\end{quote}
+\begin{quote}
+1. „Aus max wird min: $\min\,2x_1 + 3x_2$." \textit{(Schritt I)}
+\end{quote}
+\begin{quote}
+2. „Slacks einführen:
+\end{quote}
+\begin{quote}
+$\;\;x_1 + x_2 + s_1 = 4$
+\end{quote}
+\begin{quote}
+$\;\;x_1 - x_2 + s_2 = -1$" \textit{(Schritt II)}
+\end{quote}
+\begin{quote}
+3. „Im optimalen Tableau ergibt sich $s_1 = 2 > 0$. Damit ist die NB $x_1 + x_2 \leq 4$ \textbf{bindend}." \textit{(Schritt III)}
+\end{quote}
+
+Identifizieren Sie \textbf{alle drei} Fehler in den Schritten I–III, erläutern Sie jeweils, \textbf{warum} es ein Fehler ist (mit Verweis auf die Definitionen aus dem Kapitel), und geben Sie die korrekte Form an.
+
+
+\textbf{Lösung:}
+
+
+\textbf{Fehler in Schritt I — Vorzeichen bei Max→Min.}
+
+Es gilt $\max f(x) \;\Leftrightarrow\; \min(-f(x))$, \textbf{nicht} $\min f(x)$. Korrekt:
+
+\[
+\min\,-2x_1 - 3x_2.
+\]
+
+Ohne das Minuszeichen wird das Vorzeichen der Zielfunktion vergessen — der Studi minimiert dann fälschlich den Erlös statt den Verlust und erhält ein völlig anderes Optimum (typischerweise $(0,0)$).
+
+
+\textbf{Fehler in Schritt II — Slack bei $\geq$-NB und $b_j \geq 0$.}
+
+Bei einer $\geq$-Ungleichung wird die Slack \textbf{subtrahiert} (Surplus), nicht addiert. Außerdem fordert das Standardformat $b_j \geq 0$; -1 verletzt diese Bedingung. Vorgehen:
+
+\begin{itemize}
+  \item $x_1 - x_2 \geq -1$  →  Surplus addieren mit Vorzeichen \$-\$: $x_1 - x_2 - s_2 = -1$.
+  \item $b = -1 < 0$, also Multiplikation mit -1:
+\end{itemize}
+\[
+-x_1 + x_2 + s_2 = 1,\qquad s_2 \geq 0.
+\]
+
+
+(Alternativ direkt umstellen: $x_1 - x_2 \geq -1 \Leftrightarrow -x_1 + x_2 \leq 1$, dann Slack addieren — gleiches Ergebnis.)
+
+
+\textbf{Fehler in Schritt III — Interpretation der Slack-Variable.}
+
+Im Kapitel ist explizit definiert: \textbf{Slack > 0 ⇒ NB nicht aktiv / nicht bindend}. Bindend ist eine NB nur dann, wenn die zugehörige Slack $= 0$. Die Studentin verwechselt die beiden Fälle. Korrekt:
+
+\begin{quote}
+$s_1 = 2 > 0$ → die NB $x_1 + x_2 \leq 4$ ist \textbf{nicht bindend}; es bleibt ein Puffer von 2 Einheiten.
+\end{quote}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{document}

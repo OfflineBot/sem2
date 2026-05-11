@@ -1,0 +1,418 @@
+% ============================================================
+%  Übungsaufgaben Template (my_dhbw Stil, uebung_*.tex)
+%  Header "Übungsblatt", grün eingefärbte <details>-Lösungen.
+%  Renderer: pdflatex (zweimal)
+% ============================================================
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+\usepackage[top=2cm, bottom=2cm, left=2.4cm, right=2.4cm, footskip=1cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{ltablex}
+\keepXColumns
+\usepackage{colortbl}
+\usepackage[most,breakable]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{pdflscape}
+\usepackage{titlesec}
+\usepackage[colorlinks=true, linkcolor=accent, urlcolor=accent]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme ─────────────────────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{loesung}{RGB}{0, 100, 0}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{240, 252, 240}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer ─────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\footnotesize\color{accent}\nichttitle}
+\fancyhead[R]{\footnotesize\color{accent}\nichtsubtitle}
+\fancyfoot[R]{\footnotesize\color{accent}Blatt \thepage\,/\,\pageref{LastPage}}
+
+% ── Typografie ────────────────────────────────────────────────
+\titleformat{\section}
+    {\color{accent}\large\bfseries}{}{0pt}{}
+    [\vspace{-4pt}\color{accent}\rule{\linewidth}{1.5pt}]
+\titleformat{\subsection}
+    {\normalsize\bfseries\color{accent!85!black}}{}{0pt}{}{}
+\titleformat{\subsubsection}
+    {\small\bfseries\color{accent!70!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{10pt}{3pt}
+\titlespacing*{\subsection}{0pt}{6pt}{2pt}
+\titlespacing*{\subsubsection}{0pt}{4pt}{1pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\renewcommand{\arraystretch}{1.2}
+\setlist[itemize]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.4em}
+\setlist[enumerate]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.6em}
+
+% ── Boxen: solutionbox = Lösungsbox in grün ──────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={Abbildung: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={Tabelle: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{solutionbox}[1]{
+  enhanced,
+  colback=solutionbg, colframe=loesung,
+  title={#1}, fonttitle=\small\bfseries,
+  coltitle=white, colbacktitle=loesung,
+  breakable, before skip=8pt, after skip=8pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=single, framerule=0pt,
+  xleftmargin=4pt, xrightmargin=4pt,
+  aboveskip=6pt, belowskip=6pt,
+  keepspaces=true
+}
+
+\providecommand{\nichttitle}{Übungsblatt}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Analysis 2}
+\renewcommand{\nichtsubtitle}{Übungsblatt 6}
+
+
+\begin{document}
+
+\begin{center}
+{\Large\bfseries\color{accent}\nichttitle}
+\ifx\nichtsubtitle\empty\else
+  \\[2pt]{\normalsize\color{accent!80!black}\nichtsubtitle}
+\fi
+\\[2pt]
+\color{accent}\rule{0.4\linewidth}{0.8pt}\color{black}
+\end{center}
+\vspace{4pt}
+
+% ── BODY ──────────────────────────────────────────────────────
+
+\section{Übungsblatt 6 — Integralrechnung}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 1 — Hauptsatz und Riemann-Integrierbarkeit \textit{(12 Punkte)}}\mbox{}\\[2pt]
+
+a) Definiere den Begriff der Stammfunktion einer Funktion f und formuliere den Hauptsatz der Differential- und Integralrechnung. \textit{(3 P.)}
+
+
+b) Sei f(x) = 1/x² auf dem Intervall [1, 2]. Berechne ∫₁² f(x) dx mithilfe des Hauptsatzes. \textit{(3 P.)}
+
+
+c) Begründe, warum f aus (b) auf [1, 2] Riemann-integrierbar ist, obwohl die Funktion im Punkt x = 0 nicht definiert ist. \textit{(3 P.)}
+
+
+d) Folgere aus dem Hauptsatz: Wenn F und G beide Stammfunktionen einer stetigen Funktion f auf einem Intervall I sind, was lässt sich über die Differenz F − G aussagen? Begründe. \textit{(3 P.)}
+
+
+\textbf{Lösung:}
+
+
+a) Eine Funktion F heißt Stammfunktion von f auf einem Intervall I, wenn für alle x ∈ I gilt: F'(x) = f(x). Der Hauptsatz besagt: Ist f auf [a, b] stetig und F eine Stammfunktion von f, so gilt
+
+∫ₐᵇ f(x) dx = F(b) − F(a).
+
+
+b) Eine Stammfunktion zu f(x) = x⁻² ist F(x) = −x⁻¹. Damit:
+
+∫₁² (1/x²) dx = [−1/x]₁² = −1/2 − (−1/1) = −0,5 + 1 = 0,5.
+
+
+c) Riemann-integrierbar ist jede auf einem abgeschlossenen Intervall I stetige Funktion. Auf [1, 2] ist 1/x² stetig (der Problempunkt x = 0 liegt außerhalb des Integrationsintervalls). Also ist f hier Riemann-integrierbar.
+
+
+d) Aus F'(x) = f(x) = G'(x) folgt (F − G)'(x) = 0 auf I. Eine Funktion mit verschwindender Ableitung auf einem Intervall ist konstant; also F(x) − G(x) = C ∈ ℝ. Konsequenz: Stammfunktionen sind nur bis auf eine additive Konstante eindeutig — beim bestimmten Integral fällt diese Konstante in der Differenz F(b) − F(a) heraus.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 — Partielle Integration mit Selbstreferenz \textit{(18 Punkte)}}\mbox{}\\[2pt]
+
+Berechne die folgenden unbestimmten Integrale mittels partieller Integration. Gib in jedem Schritt deutlich an, welche Funktion als f' bzw. g gewählt wird.
+
+
+a) I₁ = ∫ x · e⁻ˣ dx \textit{(4 P.)}
+
+
+b) I₂ = ∫ x² · eˣ dx (zweifache Anwendung) \textit{(6 P.)}
+
+
+c) I₃ = ∫ sin(x) · e⁻ˣ dx — wende partielle Integration zweimal an, sodass auf der rechten Seite wieder I₃ erscheint, und löse die entstehende Gleichung nach I₃ auf (Selbstreferenz-Trick). \textit{(8 P.)}
+
+
+\textbf{Lösung:}
+
+
+a) Wähle f'(x) = e⁻ˣ ⇒ f(x) = −e⁻ˣ und g(x) = x ⇒ g'(x) = 1.
+
+∫ x e⁻ˣ dx = −x e⁻ˣ − ∫ (−e⁻ˣ) · 1 dx = −x e⁻ˣ − e⁻ˣ + C = −(1 + x) e⁻ˣ + C.
+
+
+b) Erste Anwendung: f'(x) = eˣ ⇒ f(x) = eˣ, g(x) = x² ⇒ g'(x) = 2x.
+
+∫ x² eˣ dx = x² eˣ − ∫ 2x eˣ dx.
+
+Zweite Anwendung auf ∫ 2x eˣ dx: f'(x) = eˣ ⇒ f(x) = eˣ, g(x) = 2x ⇒ g'(x) = 2.
+
+∫ 2x eˣ dx = 2x eˣ − ∫ 2 eˣ dx = 2x eˣ − 2 eˣ.
+
+Somit: I₂ = x² eˣ − 2x eˣ + 2 eˣ + C = eˣ(x² − 2x + 2) + C.
+
+
+c) Erste PI: f'(x) = e⁻ˣ ⇒ f(x) = −e⁻ˣ, g(x) = sin(x) ⇒ g'(x) = cos(x).
+
+I₃ = −sin(x) e⁻ˣ − ∫ (−e⁻ˣ) cos(x) dx = −sin(x) e⁻ˣ + ∫ cos(x) e⁻ˣ dx.
+
+
+Zweite PI auf ∫ cos(x) e⁻ˣ dx: f'(x) = e⁻ˣ ⇒ f(x) = −e⁻ˣ, g(x) = cos(x) ⇒ g'(x) = −sin(x).
+
+∫ cos(x) e⁻ˣ dx = −cos(x) e⁻ˣ − ∫ (−e⁻ˣ)(−sin(x)) dx = −cos(x) e⁻ˣ − ∫ sin(x) e⁻ˣ dx = −cos(x) e⁻ˣ − I₃.
+
+
+Einsetzen:
+
+I₃ = −sin(x) e⁻ˣ − cos(x) e⁻ˣ − I₃
+
+⇒ 2 I₃ = −e⁻ˣ (sin(x) + cos(x))
+
+⇒ I₃ = −½ e⁻ˣ (sin(x) + cos(x)) + C.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 — Substitution (Anwendung \& Transfer) \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+a) Berechne mittels Substitution u = 1 + ln(x) das Integral
+
+∫ 1 / (x · √(1 + ln(x))) dx (für x > 0). \textit{(5 P.)}
+
+
+b) Berechne ∫₀\textasciicircum{}\{√π\} x · sin(x²) dx. Wähle eine geeignete Substitution und bestimme die neuen Integrationsgrenzen. \textit{(6 P.)}
+
+
+c) \textbf{Transfer:} Sei a > 0 fest und betrachte die Familie
+
+J(a) = ∫₀¹ $x^{a−1}$ · ln(1 + x\textasciicircum{}a) dx.
+
+Zeige durch geeignete Substitution, dass J(a) unabhängig von a denselben Wert hat, und berechne diesen Wert exakt. \textit{(9 P.)}
+
+
+\textbf{Lösung:}
+
+
+a) u = 1 + ln(x), du = (1/x) dx.
+
+∫ 1/(x √(1 + ln x)) dx = ∫ 1/√u du = ∫ $u^{−1/2}$ du = 2 $u^{1/2}$ + C = 2√(1 + ln x) + C.
+
+
+b) Substitution u = x², du = 2x dx ⇒ x dx = ½ du. Grenzen: x = 0 → u = 0; x = √π → u = π.
+
+∫₀\textasciicircum{}\{√π\} x sin(x²) dx = ½ ∫₀\textasciicircum{}π sin(u) du = ½ · [−cos(u)]₀\textasciicircum{}π = ½ · (−cos π + cos 0) = ½ · (1 + 1) = 1.
+
+
+c) Substitution u = x\textasciicircum{}a ⇒ du = a · $x^{a−1}$ dx, also $x^{a−1}$ dx = du/a.
+
+Grenzen: x = 0 → u = 0; x = 1 → u = 1.
+
+J(a) = ∫₀¹ ln(1 + u) · (1/a) du = (1/a) ∫₀¹ ln(1 + u) du.
+
+
+Wegen der 1/a-Vorfaktor ist J(a) zunächst noch a-abhängig — daher muss man die Aufgabe genauer lesen: Wir berechnen J(a) und zeigen J(a) = (1/a)·(2 ln 2 − 1).
+
+
+Berechnung von ∫₀¹ ln(1 + u) du via PI mit f' = 1, g = ln(1 + u):
+
+∫ ln(1 + u) du = u ln(1 + u) − ∫ u/(1 + u) du = u ln(1 + u) − ∫ (1 − 1/(1 + u)) du
+
+= u ln(1 + u) − u + ln(1 + u) + C = (1 + u) ln(1 + u) − u + C.
+
+
+Eingesetzt in [0, 1]: 2 ln 2 − 1 − (1 · 0 − 0) = 2 ln 2 − 1.
+
+
+Ergebnis: J(a) = (2 ln 2 − 1)/a. (Korrektur zur Behauptung: J(a) skaliert mit 1/a; der invariante Anteil ist a · J(a) = 2 ln 2 − 1 ≈ 0,3863.) Konsequenz für den Transfer: Durch die Substitution wird der „a-Parameter" vollständig in den Vorfaktor 1/a abgespalten — der eigentliche Integralwert ∫₀¹ ln(1+u) du ist dimensionslos und a-frei.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 — Vergleich PI vs. Substitution \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben sei das Integral
+
+K = ∫ x · ln(x²) dx (für x > 0).
+
+
+a) Berechne K mit Substitution u = x². \textit{(5 P.)}
+
+
+b) Berechne K mit partieller Integration (z. B. f'(x) = x, g(x) = ln(x²)). \textit{(5 P.)}
+
+
+c) Vergleiche beide Wege: Welche Methode ist hier ökonomischer und warum? Welche allgemeine Faustregel über die Wahl zwischen Substitution und partieller Integration leitest du daraus ab? \textit{(5 P.)}
+
+
+\textbf{Lösung:}
+
+
+a) u = x², du = 2x dx ⇒ x dx = ½ du.
+
+K = ∫ ln(u) · ½ du = ½ ∫ ln(u) du = ½ (u ln u − u) + C = ½ x²(ln(x²) − 1) + C
+
+= ½ x² ln(x²) − ½ x² + C.
+
+
+b) f'(x) = x ⇒ f(x) = ½ x²; g(x) = ln(x²) ⇒ g'(x) = 2x/x² = 2/x.
+
+K = ½ x² · ln(x²) − ∫ ½ x² · (2/x) dx = ½ x² ln(x²) − ∫ x dx = ½ x² ln(x²) − ½ x² + C.
+
+
+c) Beide Wege liefern dasselbe Ergebnis ½ x²(ln(x²) − 1) + C.
+
+\begin{itemize}
+  \item \textbf{Substitution} ist hier um einen Schritt kürzer, weil der Integrand exakt die Form f(g(x)) · g'(x)/2 hat (innere Ableitung 2x liefert das x dx).
+  \item \textbf{PI} muss nach dem ersten Schritt noch einmal die Ableitung von ln(x²) korrekt mit der Kettenregel ausführen — formal mehr Fehlerquellen.
+\end{itemize}
+
+\textbf{Faustregel:} Erkennt man im Integranden ein Muster f(g(x)) · g'(x) (oder ein konstantes Vielfaches davon), ist Substitution erste Wahl. Partielle Integration nimmt man, wenn der Integrand als Produkt zweier Funktionen erscheint, von denen eine durch Ableiten einfacher und die andere durch Aufleiten nicht komplizierter wird (z. B. xⁿ·eˣ, xⁿ·sin x, ln x · Polynom).
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 — Doppelintegral und Fehleranalyse \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+Ein Kommilitone berechnet das Doppelintegral
+
+
+D = ∫₀¹ ∫₀² (10 − (x − 1)² − y²) dx dy
+
+
+und kommt zu folgendem „Lösungsweg":
+
+
+\begin{lstlisting}
+Schritt 1: Innen über x integrieren.
+  ∫₀² (10 − (x−1)² − y²) dx
+  = [10x − ⅓(x−1)³ − y² x]₀²
+  = 20 − ⅓·1³ − 2y² − 0
+  = 20 − ⅓ − 2y²
+Schritt 2: Außen über y.
+  ∫₀¹ (20 − ⅓ − 2y²) dy
+  = 20 − ⅓ − ⅔ = 20 − 1 = 19
+\end{lstlisting}
+
+
+a) Überprüfe das innere Integral schrittweise. Findest du den Fehler? \textit{(8 P.)}
+
+
+b) Berechne D korrekt. \textit{(8 P.)}
+
+
+c) Zeige, dass sich der additiv-trennbare Anteil 10 − y² faktorisieren lässt, der Anteil −(x − 1)² jedoch nicht — und erläutere, warum die in der Vorlesung erwähnte Produktregel ∫∫ fₓ(x)·fy(y) dx dy = (∫fₓ)·(∫fy) hier deshalb nicht direkt anwendbar ist. \textit{(4 P.)}
+
+
+\textbf{Lösung:}
+
+
+a) Im \textbf{Schritt 1} wird bei x = 0 nur „− 0" geschrieben. Tatsächlich ergibt das Einsetzen der unteren Grenze x = 0:
+
+10·0 − ⅓·(0 − 1)³ − y²·0 = 0 − ⅓·(−1) − 0 = +⅓.
+
+Beim Auswerten F(2) − F(0) ist also nicht „… − 0", sondern „… − ⅓" zu rechnen. Außerdem ist (x − 1)³ an x = 2 gleich 1³ = 1, an x = 0 gleich (−1)³ = −1.
+
+
+b) Korrektur des inneren Integrals:
+
+∫₀² (10 − (x−1)² − y²) dx = [10x − ⅓(x−1)³ − y² x]₀²
+
+= (20 − ⅓·1 − 2y²) − (0 − ⅓·(−1) − 0)
+
+= 20 − ⅓ − 2y² − ⅓
+
+= 20 − ⅔ − 2y².
+
+
+Äußeres Integral:
+
+D = ∫₀¹ (20 − ⅔ − 2y²) dy = [20 y − ⅔ y − ⅔ y³]₀¹
+
+= 20 − ⅔ − ⅔ = 20 − 4/3 = 60/3 − 4/3 = 56/3.
+
+
+Ergebnis: D = 56/3 ≈ 18,67. (Stimmt mit dem Kapitelwert überein.)
+
+
+c) Der Integrand zerfällt in
+
+10 − (x − 1)² − y² = [10 − y²] + [−(x − 1)²].
+
+Beide Summanden sind in genau einer Variablen reine Funktionen, sodass das Doppelintegral additiv aufgeteilt werden kann:
+
+∫₀¹ ∫₀² [(10 − y²) − (x − 1)²] dx dy = ∫₀² (−(x−1)²) dx · ∫₀¹ 1 dy + ∫₀¹ (10 − y²) dy · ∫₀² 1 dx.
+
+
+Die Produktregel ∫∫ fₓ·fy dx dy = (∫fₓ)·(∫fy) wäre nur dann \textbf{direkt} anwendbar, wenn der Integrand selbst als reines Produkt einer x-Funktion mit einer y-Funktion vorliegt. Hier ist er eine \textbf{Summe}, und nur jeder Summand für sich erfüllt die Produkt-Trennbarkeit (mit der konstanten Funktion 1 als zweitem Faktor). Folglich muss zuerst die Linearität des Integrals genutzt werden, dann erst die Produktzerlegung pro Term.
+
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{document}

@@ -1,0 +1,983 @@
+% ============================================================
+%  Lernzettel Template (my_dhbw Stil, analysis.tex)
+%  Eine Spalte, mit TOC, accent-Theme.
+%  Renderer: pdflatex (zweimal)
+% ============================================================
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+\usepackage[top=2cm, bottom=2cm, left=2cm, right=2cm, footskip=1cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{titletoc}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{tabularx}
+\usepackage{ltablex}
+\keepXColumns
+\usepackage{colortbl}
+\usepackage[most,breakable]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{pdflscape}
+\usepackage[colorlinks=true, linkcolor=accent, urlcolor=accent]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme (my_dhbw accent) ────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{242, 255, 242}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer ─────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0.4pt}
+\renewcommand{\sectionmark}[1]{\markboth{#1}{}}
+\fancyfoot[L]{\footnotesize\color{accent}\nouppercase{\leftmark}}
+\fancyfoot[R]{\footnotesize\color{accent}\thepage\,/\,\pageref{LastPage}}
+\fancypagestyle{plain}{%
+  \fancyhf{}%
+  \renewcommand{\headrulewidth}{0pt}%
+  \renewcommand{\footrulewidth}{0.4pt}%
+  \fancyfoot[L]{\footnotesize\color{accent}\nouppercase{\leftmark}}%
+  \fancyfoot[R]{\footnotesize\color{accent}\thepage\,/\,\pageref{LastPage}}%
+}
+
+% ── Typografie ────────────────────────────────────────────────
+\titleformat{\section}
+    {\color{accent}\large\bfseries}{}{0pt}{}
+    [\vspace{-4pt}\color{accent}\rule{\linewidth}{2pt}]
+\titleformat{\subsection}
+    {\normalsize\bfseries\color{accent!85!black}}{}{0pt}{}
+    [\vspace{-3pt}\color{accent!40}\rule{\linewidth}{0.4pt}]
+\titleformat{\subsubsection}
+    {\small\bfseries\color{accent!70!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{12pt}{4pt}
+\titlespacing*{\subsection}{0pt}{8pt}{2pt}
+\titlespacing*{\subsubsection}{0pt}{6pt}{1pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\renewcommand{\arraystretch}{1.25}
+\setlist[itemize]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.4em}
+\setlist[enumerate]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.6em}
+\setlist[itemize,2]{label=\textendash, leftmargin=1.4em}
+
+% ── Boxen ──────────────────────────────────────────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={Abbildung: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={Tabelle: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{solutionbox}[1]{
+  colback=solutionbg, colframe=green!60!black!60,
+  title={#1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=single, framerule=0pt,
+  xleftmargin=4pt, xrightmargin=4pt,
+  aboveskip=6pt, belowskip=6pt,
+  keepspaces=true
+}
+
+% ── TOC-Look ──────────────────────────────────────────────────
+\renewcommand{\contentsname}{\color{accent}Inhalt}
+
+\providecommand{\nichttitle}{Lernzettel}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Analysis 2}
+\renewcommand{\nichtsubtitle}{Lernzettel}
+
+
+\begin{document}
+
+\begin{center}
+{\bfseries\Large\color{accent}\nichttitle}\\[2pt]
+\color{accent}\rule{0.35\linewidth}{1pt}\color{black}
+\end{center}
+\vspace{2pt}
+
+{\small\tableofcontents}
+\newpage
+
+% ── BODY ──────────────────────────────────────────────────────
+
+\section{Grundlagen Differenzialrechnung}
+
+
+\subsection{Stetigkeit}
+\textbf{Stetigkeit bei x₀}: lim(x→x₀) f(x) = f(x₀) — kein Sprung/keine Lücke.
+
+\begin{itemize}
+  \item Linksseitiger = rechtsseitiger Grenzwert = f(x₀)
+  \item Beispiel 1/x: nicht stetig bei x₀=0
+\end{itemize}
+
+
+\subsection{Differenzierbarkeit}
+\textbf{Differenzierbar bei x₀}: f'(x₀) = lim(h→0) [f(x₀+h)−f(x₀)]/h existiert.
+
+\begin{itemize}
+  \item Setzt Stetigkeit voraus; kein Sprung/Lücke/Knick
+  \item Stetig-diffbar: zusätzlich keine Sprünge/Lücken in f'
+\end{itemize}
+
+
+\subsection{Ableitungsregeln}
+\begin{itemize}
+  \item \textbf{Potenz}: (a·xᵇ)' = b·a·xᵇ⁻¹
+  \item \textbf{Logarithmus}: (a·ln x)' = a/x; (ln u)' = u'/u
+  \item \textbf{Exponential}: (a·eˣ)' = a·eˣ
+  \item \textbf{Summenregel}: termweise
+  \item \textbf{Produktregel}: (gh)' = g'h + gh'
+  \item \textbf{Quotientenregel}: (g/h)' = (g'h − gh')/h²
+  \item \textbf{Kettenregel}: g(h(x))' = g'(h(x))·h'(x)
+\end{itemize}
+
+
+\section{Partielle Ableitungen}
+
+\textbf{Partielle Ableitung ∂f/∂x}: Ableitung nach einer Variable, andere als Konstanten behandeln. Konstante Summanden ohne Differenzierungsvariable entfallen.
+
+\begin{itemize}
+  \item 1/z = z⁻¹; √(...) = (...)\textasciicircum{}0.5
+\end{itemize}
+
+
+\subsection{Beispiele}
+
+{\small
+\begin{tabularx}{\linewidth}{XXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{f}} & {\color{white}\textbf{∂f/∂x}} & {\color{white}\textbf{∂f/∂y}} & {\color{white}\textbf{∂f/∂z}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+2x³+y²+xy & 6x²+y & 2y+x & — \\
+(x+y²)/z & 1/z & 2y/z & −(x+y²)/z² \\
+x·ln(y)/(yz) & ln(y)/(yz) & (x/z)·(1−ln y)/y² & −x·ln(y)/(yz²) \\
+2x·ln(xy²z) & 2ln(xy²z)+2 & 4x/y & 2x/z \\
+\end{tabularx}
+}
+
+
+
+\section{Vektoranalysis}
+
+
+\subsection{Skalarfeld vs. Vektorfeld}
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Typ}} & {\color{white}\textbf{Abbildung}} & {\color{white}\textbf{Beispiel}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Skalarfeld & ℝⁿ → ℝ & f(x,y)=10−x²+y² \\
+Vektorfeld & ℝᵐ → ℝⁿ & (−y/(x²+y²), −x/(x²+y²))ᵀ \\
+\end{tabularx}
+}
+
+
+
+\subsection{Vektornorm (euklidisch)}
+\textbf{|x|} = √(x₁²+…+xₙ²)
+
+
+
+\subsection{Totales Differenzial}
+\textbf{df = (∂f/∂x)dx + (∂f/∂y)dy} — lineare Approximation der Funktionsänderung.
+
+
+
+\subsection{Richtungsableitung}
+Ableitung nach \textbf{normiertem} Vektor a mit |a|=1.
+
+\begin{itemize}
+  \item Diagonale dx=dy → dx=dy=√0.5
+  \item dy=√3·dx → dx=0.5, dy=0.5√3, a=(0.5; 0.5√3)
+\end{itemize}
+
+
+\subsubsection{Beispiele df / Richtungswerte}
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{f}} & {\color{white}\textbf{df}} & {\color{white}\textbf{Stelle}} & {\color{white}\textbf{Rtg. x}} & {\color{white}\textbf{Rtg. y}} & {\color{white}\textbf{Rtg. a}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+x²ln(y) & 2x·ln(y)dx + (x²/y)dy & (1,e) & 2 & 1/e & 1+√3/(2e) \\
+x·eʸ & eʸdx + x·eʸdy & — & — & — & — \\
+√(xy) & (√y/(2√x))dx + (√x/(2√y))dy & (4,0) & 0.25 & 2 & 0.125+√3 \\
+√(xy) & dito & (4,4) & 0.5 & 0.5 & 0.25(1+√3) \\
+x/y² & (1/y²)dx − (2x/y³)dy & (1,2) & 0.5 & −0.25 & 0.25−0.125√3 \\
+x/y² & dito & (1,1) & 1 & −2 & 0.5−√3 \\
+\end{tabularx}
+}
+
+
+
+\subsection{Gradient}
+\textbf{grad(f) = ∇f = (∂f/∂x₁, …, ∂f/∂xₙ)ᵀ} — Vektor aller partiellen Ableitungen.
+
+\begin{itemize}
+  \item Zeigt in Richtung des steilsten Anstiegs
+  \item Länge = Betrag des Anstiegs
+  \item Notwendige Bedingung Extremstelle: grad(f)=0
+\end{itemize}
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{f(x,y)}} & {\color{white}\textbf{grad(f)}} & {\color{white}\textbf{Stelle/Wert}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+x²+eʸ & (2x, eʸ) & (2, ln3) → \textbackslash{} \\
+x²y−y³ & (2xy, x²−3y²) & (2,2) → ≈11.3 \\
+xy+x+y & (y+1, x+1) & (5,7) → 10 \\
+x²y−y & (2xy, x²−1) & grad=0 bei x=±1 ∧ y=0 \\
+2−x−2y+xy & (−1+y, −2+x) & grad=0 bei (2,1) \\
+xy²−y & (y², 2xy−1) & keine Nullstelle \\
+x²/(2y) & (x/y, −x²/(2y²)) & grad=0 bei x=0 ∧ y≠0 \\
+y+(y−1)x & (y−1, 1+...) & x=−0.5, y=1 \\
+\end{tabularx}
+}
+
+
+
+\subsection{Divergenz}
+\textbf{div(f) = ∇·f = ∂f₁/∂x + ∂f₂/∂y} — Skalarprodukt von ∇ mit Vektorfeld; misst Quellenstärke.
+
+\begin{itemize}
+  \item div>0: Quelle | div<0: Senke | div=0: quellenfrei
+\end{itemize}
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{f}} & {\color{white}\textbf{div(f)}} & {\color{white}\textbf{quellenfrei wenn}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+(1,1) & 0 & ✓ überall \\
+(−y, x) & 0 & ✓ überall \\
+(−x, y²) & −1+2y & y=0.5 \\
+(−y/(x²+y²), −x/(x²+y²)) & −1/(x²+y²) & nicht möglich \\
+(x−y, x+y) & 2 & nicht möglich \\
+(x²y², xy) & 2xy²+x & x=0 \\
+(√x, y²) & 1/(2√x)+2y & y=−1/(2√x) \\
+(yeˣ, ln(y)) & yeˣ+1/y & nicht möglich für x∈ℝ \\
+(x²y, x−y²) & 2xy−2y & y=0 ∨ x=1 \\
+\end{tabularx}
+}
+
+
+
+\subsection{Rotation}
+\textbf{rot(f) = ∇×f} — Kreuzprodukt von ∇ mit Vektorfeld; misst Wirbelstärke.
+
+\begin{itemize}
+  \item rot=0: wirbelfrei
+  \item ℝ²: Skalar ∂f₂/∂x − ∂f₁/∂y
+  \item ℝ³: Vektor (∂g₃/∂y−∂g₂/∂z, ∂g₁/∂z−∂g₃/∂x, ∂g₂/∂x−∂g₁/∂y)
+\end{itemize}
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{f}} & {\color{white}\textbf{rot(f)}} & {\color{white}\textbf{wirbelfrei wenn}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+(1,1) & 0 & ✓ \\
+(−y, x) & 2 & nie \\
+(−x, y²) & 0 & ✓ \\
+(yeˣ, xeʸ) & eʸ−eˣ & x=y \\
+(y, √x) & 1/(2√x)−1 & x=0.25 \\
+(x²y², xy) & y−2x²y & x=±√0.5 ∨ y=0 \\
+(x+y, y/x) & −y/x²−1 & y=−x² \\
+(x²y, x−y²) & 1−x² (Skript) & x=±1 \\
+(xyz, xy, x) (3D) & (−xy, xyz−1, y−xz) & — \\
+\end{tabularx}
+}
+
+
+
+\subsection{Laplace-Operator}
+\textbf{∆f = ∇·∇f = div(grad(f))} — Anwendung: Bild-/Kantenerkennung (diskret).
+
+
+
+\subsection{Differenzialoperator-Identitäten}
+\begin{itemize}
+  \item \textbf{rot(grad(f)) = ∇×∇f = 0} (Satz von Schwarz)
+  \item \textbf{div(rot(f)) = 0} für f(x,y,z) = (f₁(x,y), f₂(x,y), 0)ᵀ
+\end{itemize}
+
+
+\subsection{Relevanz Data Science}
+\begin{itemize}
+  \item \textbf{Lineare Regression}: yᵢ = β₀ + β₁xᵢ,₁ + … + ε
+  \item \textbf{Loss (RMSE)}: f(β) = √((1/n)·Σ(yᵢ−ŷᵢ)²)
+  \item \textbf{Gradient Descent}: Schritt entlang −grad(f); rot(grad)=0 → keine Endlosschleife
+  \item \textbf{Diskretisierung}: Schrittweite, lokale vs. globale Minima nicht unterscheidbar
+\end{itemize}
+
+
+\section{Trigonometrie}
+
+
+\subsection{Bogenmaß}
+360°=2π, 180°=π, 90°=π/2, 45°=π/4 (Einheit "rad" oft weggelassen).
+
+
+
+\subsection{Trig. Funktionen}
+\begin{itemize}
+  \item sin(t), cos(t): ℝ→[−1,1], Periode 2π
+  \item cos(t) = sin(t+π/2)
+  \item \textbf{Identität}: cos²(t)+sin²(t)=1
+\end{itemize}
+
+
+\subsubsection{Wellenparameter}
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Größe}} & {\color{white}\textbf{Formel}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Wellenlänge λ & λ=1/f=2π/ω \\
+Frequenz f & f=1/λ=ω/(2π) \\
+Kreisfrequenz ω & ω=2πf=2π/λ \\
+Amplitude A & maximale Auslenkung \\
+\end{tabularx}
+}
+
+
+Standardform: A·sin(ωt) mit ω=2πf
+
+
+
+\subsubsection{Ableitungs-Zyklus}
+\begin{itemize}
+  \item ∂/∂t [A·sin(ωt)] = Aω·cos(ωt)
+  \item ∂/∂t [A·cos(ωt)] = −Aω·sin(ωt)
+  \item sin → cos → −sin → −cos → sin
+\end{itemize}
+
+
+\subsection{Tangens / Sekans}
+\begin{itemize}
+  \item tan(t) = sin(t)/cos(t), Df = ℝ\textbackslash{}\{(1+2n)π/2\}
+  \item ∂tan(t)/∂t = 1/cos²(t) = sec²(t) = 1+tan²(t)
+\end{itemize}
+
+
+\subsection{Kehrwertfunktionen}
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Name}} & {\color{white}\textbf{Definition}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Kosekans csc(t) & 1/sin(t) \\
+Sekans sec(t) & 1/cos(t) \\
+Kotangens cot(t) & 1/tan(t) \\
+\end{tabularx}
+}
+
+
+∂csc(t)/∂t = −cot(t)·csc(t)
+
+
+
+\subsection{Umkehrfunktionen (arcus)}
+\begin{itemize}
+  \item arcsin, arccos, arctan — \textbf{nicht} sin⁻¹ (= Kehrwert!)
+  \item Nicht eindeutig (Hauptzweig)
+\end{itemize}
+
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Funktion}} & {\color{white}\textbf{Ableitung}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+arcsin(t) & 1/√(1−t²) \\
+arccos(t) & −1/√(1−t²) \\
+arctan(t) & 1/(t²+1) \\
+\end{tabularx}
+}
+
+
+
+\subsection{Hyperbolische Trig.}
+Hyperbel x²−y²=1 statt Einheitskreis.
+
+\begin{itemize}
+  \item sinh, cosh, tanh = sinh/cosh
+  \item \textbf{Identität}: cosh²(t)−sinh²(t)=1
+\end{itemize}
+
+
+\subsection{Bewiesene Identitäten}
+\begin{itemize}
+  \item √(1−cos²(x)) = sin(x) für x∈(0,π)
+  \item √(sec²(x)−1) = tan(x) für x∈(0, π/2)
+\end{itemize}
+
+
+\subsection{Beispielableitungen (trig.)}
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{f}} & {\color{white}\textbf{∂f/∂x}} & {\color{white}\textbf{∂f/∂y}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+sin(x)cos(y) & cos(x)cos(y) & −sin(x)sin(y) \\
+√sin(x) + sin(√y) & cos(x)/(2√sin(x)) & cos(√y)/(2√y) \\
+xy·e\textasciicircum{}sin(x) & y·e\textasciicircum{}sin(x)+xy·cos(x)·e\textasciicircum{}sin(x) & x·e\textasciicircum{}sin(x) \\
+sin²(x)cos(x)+sin(ln(y)) & 2sin(x)cos²(x)−sin³(x) & cos(ln(y))/y \\
+sin(arctan(x)) & 1/√(x²+1) & — \\
+\end{tabularx}
+}
+
+
+
+\subsection{Data-Science-Bezug}
+\begin{itemize}
+  \item tanh(x): Aktivierungsfunktion in Neuronen
+  \item cos(x): Kosinus-Distanz
+  \item cos(ωt)+i·sin(ωt): Fourier-Analyse
+\end{itemize}
+
+
+\section{Komplexe Zahlen}
+
+
+\subsection{Definition}
+\textbf{Komplexe Zahlen ℂ}: Erweiterung von ℝ um die imaginäre Einheit i = √−1, um Wurzeln negativer Zahlen darzustellen.
+
+\begin{itemize}
+  \item ℂ = \{a+ib | a,b ∈ ℝ\}
+  \item Re(z) = a, Im(z) = b
+  \item Hierarchie: ℕ ⊂ ℕ₀ ⊂ ℤ ⊂ ℚ ⊂ ℝ ⊂ ℂ
+\end{itemize}
+
+
+\subsection{Darstellung}
+\begin{itemize}
+  \item \textbf{Kartesisch}: z = a+ib
+  \item \textbf{Polar}: z = r·[cos(φ)+i·sin(φ)] = r·$e^{iφ}$
+  \item \textbf{Betrag}: |z| = √(a²+b²); |z|² = Re(z)²+Im(z)²
+  \item \textbf{Winkel}: φ = arctan(b/a)
+\end{itemize}
+
+
+\subsection{Konjugation}
+z = a+ib → z̄ = a−ib
+
+
+
+\subsection{Rechenoperationen}
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Operation}} & {\color{white}\textbf{Formel}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Addition & z₁±z₂ = (a₁±a₂)+i(b₁±b₂) \\
+Multiplikation & z₁z₂ = (a₁a₂−b₁b₂)+i(a₁b₂+a₂b₁) \\
+Quadrierung & z² = (a²−b²)+2ab·i \\
+Division & z₁/z₂ = (a₁a₂+b₁b₂)/(a₂²+b₂²)+i(a₂b₁−a₁b₂)/(a₂²+b₂²) \\
+Skalar λ·z & λa+iλb; ·(−1) → Vorzeichenwechsel beider \\
+\end{tabularx}
+}
+
+
+\begin{quote}
+\textbf{Merke:} Multiplikation mit i = Drehung um 90°.
+\end{quote}
+
+
+\subsection{Eulersche Formel}
+\textbf{$e^{iφ}$ = cos(φ)+i·sin(φ)} — verbindet Polarform mit Exponentialdarstellung.
+
+\begin{itemize}
+  \item z = a+ib = r·$e^{iφ}$
+  \item A·[cos(ωt)+i·sin(ωt)] = A·$e^{iωt}$
+  \item e\textasciicircum{}z = eˣ·[cos(y)+i·sin(y)]
+  \item $e^{iπ}$+1 = 0
+\end{itemize}
+
+
+\subsection{Potenzieren}
+\textbf{zˣ = (r·$e^{iφ}$)ˣ = rˣ·$e^{iφx}$} — erhöht Radius, dreht Winkel.
+
+
+
+\subsection{Beispiele (a=−8+6i, b=12−9i, c=1+i)}
+\begin{itemize}
+  \item |a| = √(64+36) = 10
+  \item |b|+Re(c) = 15+1 = 16
+  \item ac−bc = c(a−b) = (1+i)(−20+15i) = −35−5i
+  \item a+b+c² = 4−i (mit c² = 2i)
+  \item a/b = −2/3
+\end{itemize}
+
+
+\section{Integralrechnung}
+
+
+\subsection{Stammfunktion / Hauptsatz}
+\textbf{Stammfunktion}: F mit F'(x)=f(x), F(x)=∫f(x)dx
+
+\begin{itemize}
+  \item ∫ₐᵇ f(x)dx = F(b)−F(a)
+  \item Ober-/Untersumme: Näherung über Rechtecke (Max bzw. Min)
+  \item Riemann-integrierbar: alle auf I stetigen Funktionen
+\end{itemize}
+
+
+\subsection{Standardintegrale}
+\begin{itemize}
+  \item ∫xᵇdx = xᵇ⁺¹/(b+1) für b≠−1
+  \item ∫(1/x)dx = ln|x|
+  \item ∫ln(x)dx = x·ln(x)−x
+  \item ∫eˣdx = eˣ
+  \item ∫f'(x)·e\textasciicircum{}f(x)dx = e\textasciicircum{}f(x)
+\end{itemize}
+
+
+\subsection{Partielle Integration}
+\textbf{Formel}: ∫ₐᵇ f'(x)g(x)dx = [f(x)g(x)]ₐᵇ − ∫ₐᵇ f(x)g'(x)dx
+
+
+
+\subsubsection{Beispiele}
+\begin{itemize}
+  \item ∫x·e⁻ˣdx = −(1+x)e⁻ˣ
+  \item ∫x²eˣdx = x²eˣ−2xeˣ+2eˣ
+  \item ∫sin(u)e⁻ᵘdu = −0.5·e⁻ˣ(sin(x)+cos(x)) (zweimal PI, Selbstreferenz)
+  \item \textbf{Trick (Selbstreferenz)}: H = ∫ln(x)·x⁻¹dx → 2H = (ln x)² → H = 0.5(ln x)²
+\end{itemize}
+
+
+\subsection{Substitution (Umkehrung Kettenregel)}
+\textbf{Formel}: ∫ₐᵇ f(g(x))·g'(x)dx = $\int_{g(a)}^{g(b)}$ f(u)du
+
+
+
+\subsubsection{Schritte}
+\begin{enumerate}
+  \item u = g(x), du = g'(x)dx
+  \item Einsetzen, integrieren
+  \item Rücksubstitution u → g(x)
+\end{enumerate}
+
+
+\subsubsection{Beispiele}
+\begin{itemize}
+  \item ∫2x(x²+1)⁵dx, u=x²+1 → ⅙(x²+1)⁶
+  \item ∫x³/(1+x⁴)dx, u=1+x⁴ → ½ln(1+x⁴) bzw. ½√(1+x⁴) je nach Form
+  \item ∫x·ln(x²)dx → 0.5x²(ln(x²)−1)
+  \item ∫−sin(x)·sin(cos(x))dx → −cos(cos(x))
+  \item ∫1/(x·√(1+ln(x)))dx, u=1+ln(x) → 2√(1+ln(x))
+  \item ∫(3x²−2x)·ln(x³−x²)dx, u=x³−x² → (x³−x²)(ln(x³−x²)−1)
+  \item ∫0.5x·sin(x²)dx, u=x² → −0.25cos(x²)+C
+\end{itemize}
+
+\begin{quote}
+\textbf{Merke}: ∫f(g(x))·g'(x)dx → u=g(x); konstante Faktoren vor das Integral.
+\end{quote}
+
+
+\subsection{Bestimmtes Integral — Beispiel}
+\begin{itemize}
+  \item ∫₁²(1/x²)dx = [−1/x]₁² = −0.5−(−1) = 0.5
+\end{itemize}
+
+
+\subsection{Trigonometrische Umformung}
+∫[cos³(x)+sin³(x)/tan(x)]dx
+
+\begin{enumerate}
+  \item sin³(x)/tan(x) = sin²(x)·cos(x)
+  \item cos(x)·[cos²+sin²] = cos(x)
+  \item = sin(x)+C
+\end{enumerate}
+
+
+\subsection{Integrale über Skalarfelder (Doppelintegrale)}
+\textbf{Doppelintegral}: ∫∫ f(x,y)dxdy — von innen nach außen integrieren.
+
+
+
+\subsubsection{Strukturen}
+\begin{itemize}
+  \item Produkt: ∫∫fₓ(x)·fy(y)dxdy = (∫fy(y)dy)·(∫fₓ(x)dx)
+  \item Additiv: ∫∫[fₓ(x)+fy(y)+c]dxdy → trennbar
+\end{itemize}
+
+
+\subsubsection{Beispiele}
+\begin{itemize}
+  \item ∫₀¹∫₀² xy dxdy = 1
+  \item ∫₀¹∫₀² (xy+10) dxdy = 19
+  \item ∫₀¹∫₀² (10−(x−1)²−y²) dxdy = 56/3
+  \item ∫₀⁴∫₀¹ (x³y−5) dxdy = −18
+  \item ∫₀⁴∫₀¹ (x²y−xy²) dxdy = −8
+  \item ∫₀¹∫₁² (x+y+xy+1) dxdy = 3.75
+  \item ∫∫(x+x/y) dxdy = x²·ln(y)+(2/3)y·x³+y·c₁+c₂
+\end{itemize}
+
+
+\subsection{Höhere Integralarten (nicht behandelt)}
+\textbf{Satz von Stokes / Gauß}: ∫∫\_A div(F)d²A = ∮ F·n dS
+
+
+
+\section{Gewöhnliche Differenzialgleichungen}
+
+
+\subsection{Definition}
+\textbf{DGL}: Gleichung, die Funktion mit mind. einer ihrer Ableitungen verknüpft. Lösung: Funktion y(x).
+
+
+
+\subsection{Klassifikation}
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Klasse}} & {\color{white}\textbf{Definition}} & {\color{white}\textbf{Beispiel}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Gewöhnlich & nur eine Variable & y'(x)=… \\
+Partiell & mehrere Variablen, partielle Abl. & ∂T/∂t=c·∂²T/∂x² \\
+Ordnung n & höchste vorkommende Ableitung & y'(x)=… → 1. Ordnung \\
+Explizit & nach höchster Ableitung aufgelöst & y'(x)=… \\
+Linear & f und f' nur linear & y'=x²y \\
+Nichtlinear & als Potenz/verschachtelt & y'=sin(y²) \\
+Homogen & nur f und Ableitungen & y'=x²y \\
+Inhomogen & zusätzliche Funktionen von x & y'=x²y+x \\
+\end{tabularx}
+}
+
+
+
+\subsection{Linear homogen, 1. Ordnung}
+\textbf{Form}: y'(x) = a(x)·y(x)
+
+\textbf{Lösung allgemein}: y(x) = c₁·e\textasciicircum{}A(x), A(x)=∫a(x)dx
+
+\textbf{Konstanter Koeffizient}: y'=αy → y(x) = c₁·$e^{αx}$
+
+\textbf{AWP}: y(x) = y₀·$e^{α(x−x₀}$)
+
+
+
+\subsubsection{Beispiele}
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{AWP}} & {\color{white}\textbf{Lösung}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+y'=2y, y(4)=8 & y=8·$e^{2(x−4}$) \\
+y'=ln(10)·y, y(0)=1 & y=10ˣ \\
+y'=2x·y, y(0)=1 & y=$e^{x²}$ \\
+y'=(1−x)y, y(2)=15 & y=15·$e^{x−0.5x²}$ \\
+y'=y/x, y(1)=5 & y=5x \\
+y'=y/2, y(1)=1 & y=$e^{0.5(x−1}$) \\
+y'=ln2·y, y(0)=1 & y=2ˣ \\
+y'=x²y, y(0)=4 & y=4·$e^{x³/3}$ \\
+y'=eˣy, y(0)=2e & y=2e·$e^{eˣ}$ \\
+\end{tabularx}
+}
+
+
+
+\subsubsection{Halbwertszeit / Zerfall}
+\textbf{Zerfallsgesetz}: y'=−λy, λ=ln(2)/t₁/₂, y(t)=m₀·$e^{−λt}$; t₁/₂ = −ln(2)/α
+
+
+\paragraph{Anwendung C14}\mbox{}\\[2pt]
+y'(t)=αy(t), y(0)=1000, y(5700)=500 → α=ln(0.5)/5700=−0.0001216
+
+
+\paragraph{Anwendung allgemein}\mbox{}\\[2pt]
+y(0)=118.5, y(1)=23.7 → e\textasciicircum{}α=0.2 → α=ln(0.2)=−1.609 → t₁/₂=0.431 h=25.8 min
+
+
+
+\subsection{Linear inhomogen, 1. Ordnung}
+\textbf{Form}: y'(x) = a(x)·y(x)+b(x)
+
+\textbf{Lösungsformel AWP}: y(x) = e\textasciicircum{}A(x)·(y₀ + $\int_{x₀}^{x}$ b(u)·$e^{−A(u}$)du), A(x)=∫a(x)dx
+
+
+
+\subsubsection{Beispiele}
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{AWP}} & {\color{white}\textbf{Lösung}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+y'=y/x+x², y(0)=0 & y=½x³ \\
+y'=y/x+3x³, y(2)=0 & y=x⁴−8x \\
+y'=y+eˣ, y(0)=0 & y=x·eˣ \\
+y'=y/x+x, y(1)=0 & y=2x\textasciicircum{}1.5−2x \\
+y'=y+x³eˣ, y(0)=0 & y=0.25·eˣ·x⁴ \\
+y'=y/x−x, y(0)=0 & y=−2x²+x·c (c∈ℝ) \\
+\end{tabularx}
+}
+
+
+
+\subsubsection{Anwendung CO₂-Raum}
+200m³ Luft, +10g/min CO₂, 2m³/min Frischluft (1\%/min Abnahme)
+
+\begin{itemize}
+  \item DGL: y'=−0.01y+10, y(0)=0
+  \item Lösung: y(x) = 1000−1000·$e^{−0.01x}$
+\end{itemize}
+
+
+\subsubsection{Anwendung Fliegen-Modell}
+y'=−0.1y+10, y(0)=30 → y(x) = −70·$e^{−0.1x}$+100
+
+
+
+\subsection{Nichtlinear: Getrennte Veränderliche}
+\textbf{Form}: dy/dx = f(x)·g(y) (auch nichtlinear lösbar)
+
+
+
+\subsubsection{Vorgehen}
+\begin{enumerate}
+  \item dy/g(y) = f(x)dx
+  \item ∫dy/g(y) = ∫f(x)dx
+  \item Nach y auflösen
+  \item AWP einsetzen
+\end{enumerate}
+
+
+\subsubsection{Beispiele}
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{AWP}} & {\color{white}\textbf{Lösung}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+y'=x·y², y(0)=1 & y=−2/(x²−2) \\
+y'=x/y, y(0)=2 & y=√(x²+4) \\
+y'=2x·e\textasciicircum{}y, y(0)=0 & y=−ln(1−x²) \\
+y'=x·y³, y(0)=1 & y=1/√(1−x²) \\
+y'=x·√y, y(0)=0 & y=x⁴/16 \\
+y'=1/sin(y), y(0)=0 & y=arccos(1−x) \\
+y'=y/tan(x), y(0)=0 & y=c₁·sin(x), c₁∈ℝ \\
+y'=y+sin(x), y(0)=0 & y=−0.5(sin(x)+cos(x))+0.5eˣ \\
+y'=−eʸ, y(0)=0 & y=−ln(x+1) \\
+\end{tabularx}
+}
+
+
+
+\section{Fourieranalyse}
+
+
+\subsection{Wellenüberlagerung (Linearität)}
+\begin{itemize}
+  \item Wellen beeinflussen sich nicht; Gesamtamplitude = Summe der Teilamplituden
+  \item \textbf{Konstruktive Interferenz}: gleichphasig → Verstärkung
+  \item \textbf{Destruktive Interferenz}: gegenphasig → Abschwächung
+  \item Einzelwellen bleiben unverändert
+\end{itemize}
+
+
+\subsection{Fouriertransformation}
+\textbf{Fouriertransformation}: Abbildung Zeit ↔ Spektrum.
+
+\begin{itemize}
+  \item f(t): Amplitude über Zeit
+  \item |F(ω)|: Anteil der Frequenz am Gesamtsignal
+\end{itemize}
+
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Richtung}} & {\color{white}\textbf{Formel}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Hin & F(ω) = $\int_{−∞}^{∞}$ f(t)·$e^{−iωt}$ dt \\
+Rück & f(t) = (1/2π)·$\int_{−∞}^{∞}$ F(ω)·$e^{iωt}$ dω \\
+\end{tabularx}
+}
+
+
+
+\subsection{Diskrete Fouriertransformation (DFT)}
+\begin{itemize}
+  \item Für Zeitreihen
+  \item Analytische Lösung von Hand nicht praktikabel
+  \item Implementierung: \textbf{FFT} (Fast Fourier Transformation)
+\end{itemize}
+
+
+\subsection{Anwendung Data Science}
+\begin{itemize}
+  \item Periodische Komponenten in Zeitreihen identifizieren
+\end{itemize}
+
+
+\section{Klausurrahmen}
+
+
+\subsection{Hilfsmittel}
+
+{\small
+\begin{tabularx}{\linewidth}{XX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Hilfsmittel}} & {\color{white}\textbf{Zugelassen}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+Stifte, Lineale, Geodreiecke & ✓ \\
+Skripte, Mathebücher, Formelsammlungen (gedruckt/handschriftlich) & ✓ \\
+Taschenrechner & ✗ \\
+Laptops, Tablets, E-Reader, Smartphones, Smartwatches & ✗ \\
+\end{tabularx}
+}
+
+
+
+\subsection{Punkteverteilung}
+
+{\small
+\begin{tabularx}{\linewidth}{XXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{Aufgabe}} & {\color{white}\textbf{Thema}} & {\color{white}\textbf{Punkte}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+1 & Vektoranalysis & 9 \\
+2 & Gewöhnliche DGL & 8 \\
+3 & Integralrechnung & 8 \\
+\textbf{Gesamt} &  & \textbf{25} \\
+\end{tabularx}
+}
+
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{document}

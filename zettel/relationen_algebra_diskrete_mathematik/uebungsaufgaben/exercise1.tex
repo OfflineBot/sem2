@@ -1,0 +1,513 @@
+% ============================================================
+%  Übungsaufgaben Template (my_dhbw Stil, uebung_*.tex)
+%  Header "Übungsblatt", grün eingefärbte <details>-Lösungen.
+%  Renderer: pdflatex (zweimal)
+% ============================================================
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\setmainfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setsansfont[
+  Path=/usr/share/fonts/TTF/,
+  Extension=.ttf,
+  BoldFont=DejaVuSans-Bold,
+  ItalicFont=DejaVuSans-Oblique,
+  BoldItalicFont=DejaVuSans-BoldOblique
+]{DejaVuSans}
+\setmonofont[Path=/usr/share/fonts/TTF/,Extension=.ttf]{DejaVuSansMono}
+\usepackage[top=2cm, bottom=2cm, left=2.4cm, right=2.4cm, footskip=1cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{parskip}
+
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{ltablex}
+\keepXColumns
+\usepackage{colortbl}
+\usepackage[most,breakable]{tcolorbox}
+\usepackage{listings}
+\usepackage[normalem]{ulem}
+\usepackage{pdflscape}
+\usepackage{titlesec}
+\usepackage[colorlinks=true, linkcolor=accent, urlcolor=accent]{hyperref}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── Theme ─────────────────────────────────────────────────────
+\definecolor{accent}{RGB}{0, 60, 113}
+\definecolor{primaryblue}{RGB}{0, 60, 113}
+\definecolor{loesung}{RGB}{0, 100, 0}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{figurebg}{RGB}{232, 241, 255}
+\definecolor{tablehintbg}{RGB}{240, 255, 240}
+\definecolor{solutionbg}{RGB}{240, 252, 240}
+\definecolor{rulegray}{RGB}{180, 180, 180}
+\definecolor{tableheadbg}{RGB}{0, 60, 113}
+
+% ── Header/Footer ─────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\footnotesize\color{accent}\nichttitle}
+\fancyhead[R]{\footnotesize\color{accent}\nichtsubtitle}
+\fancyfoot[R]{\footnotesize\color{accent}Blatt \thepage\,/\,\pageref{LastPage}}
+
+% ── Typografie ────────────────────────────────────────────────
+\titleformat{\section}
+    {\color{accent}\large\bfseries}{}{0pt}{}
+    [\vspace{-4pt}\color{accent}\rule{\linewidth}{1.5pt}]
+\titleformat{\subsection}
+    {\normalsize\bfseries\color{accent!85!black}}{}{0pt}{}{}
+\titleformat{\subsubsection}
+    {\small\bfseries\color{accent!70!black}}{}{0pt}{}{}
+\titlespacing*{\section}{0pt}{10pt}{3pt}
+\titlespacing*{\subsection}{0pt}{6pt}{2pt}
+\titlespacing*{\subsubsection}{0pt}{4pt}{1pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\renewcommand{\arraystretch}{1.2}
+\setlist[itemize]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.4em}
+\setlist[enumerate]{noitemsep, topsep=3pt, parsep=0pt, leftmargin=1.6em}
+
+% ── Boxen: solutionbox = Lösungsbox in grün ──────────────────
+\newtcolorbox{figurebox}[1]{
+  colback=figurebg, colframe=accent!50,
+  title={Abbildung: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{tablehintbox}[1]{
+  colback=tablehintbg, colframe=green!50!black!50,
+  title={Tabelle: #1}, fonttitle=\small\bfseries,
+  breakable, before skip=6pt, after skip=6pt
+}
+\newtcolorbox{solutionbox}[1]{
+  enhanced,
+  colback=solutionbg, colframe=loesung,
+  title={#1}, fonttitle=\small\bfseries,
+  coltitle=white, colbacktitle=loesung,
+  breakable, before skip=8pt, after skip=8pt
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  breaklines=true,
+  frame=single, framerule=0pt,
+  xleftmargin=4pt, xrightmargin=4pt,
+  aboveskip=6pt, belowskip=6pt,
+  keepspaces=true
+}
+
+\providecommand{\nichttitle}{Übungsblatt}
+\providecommand{\nichtsubtitle}{}
+
+\renewcommand{\nichttitle}{Relationen, Algebra, Diskrete Mathematik}
+\renewcommand{\nichtsubtitle}{Übungsblatt 1}
+
+
+\begin{document}
+
+\begin{center}
+{\Large\bfseries\color{accent}\nichttitle}
+\ifx\nichtsubtitle\empty\else
+  \\[2pt]{\normalsize\color{accent!80!black}\nichtsubtitle}
+\fi
+\\[2pt]
+\color{accent}\rule{0.4\linewidth}{0.8pt}\color{black}
+\end{center}
+\vspace{4pt}
+
+% ── BODY ──────────────────────────────────────────────────────
+
+\section{Übungsblatt 1 — Logik}
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 1 — Aussagen, Belegungen und Tautologien \textit{(12 Punkte)}}\mbox{}\\[2pt]
+
+a) Entscheide für jeden der folgenden Sätze, ob es sich um eine atomare Aussage im Sinne der Logik handelt. Begründe jeweils kurz. \textit{(4 P)}
+
+
+(i) "Die Zahl 91 ist eine Primzahl."
+
+(ii) "Wie spät ist es?"
+
+(iii) "x + 3 = 7."
+
+(iv) "Diese Aufgabe ist viel zu schwer."
+
+
+b) Sei F(a,b,c) := (a → b) ∧ (¬a → c). Gib eine Belegung an, die F erfüllt, und eine, die F nicht erfüllt. \textit{(3 P)}
+
+
+c) Zeige durch eine Wahrheitstafel, dass G(a,b) := (a → b) ↔ (¬b → ¬a) eine Tautologie ist, und benenne das zugrundeliegende logische Gesetz. \textit{(5 P)}
+
+
+\textbf{Lösung:}
+
+
+a)
+
+(i) Aussage — eindeutig falsch (91 = 7·13).
+
+(ii) Keine Aussage — Frage, kein Wahrheitswert zuweisbar.
+
+(iii) Keine Aussage — enthält freie Variable x, der Wahrheitswert hängt von der Belegung von x ab.
+
+(iv) Keine Aussage — subjektiv, nicht eindeutig wahr/falsch.
+
+
+b) Belegung erfüllend: a=w, b=w, c=w. Dann a→b = w und ¬a→c = f→w = w, also F = w.
+
+Belegung nicht erfüllend: a=w, b=f, c=w. Dann a→b = f, also F = f.
+
+
+c) Wahrheitstafel:
+
+
+
+{\footnotesize
+\begin{tabularx}{\linewidth}{XXXXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{a}} & {\color{white}\textbf{b}} & {\color{white}\textbf{a→b}} & {\color{white}\textbf{¬b}} & {\color{white}\textbf{¬a}} & {\color{white}\textbf{¬b→¬a}} & {\color{white}\textbf{(a→b) ↔ (¬b→¬a)}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+w & w & w & f & f & w & w \\
+w & f & f & w & f & f & w \\
+f & w & w & f & w & w & w \\
+f & f & w & w & w & w & w \\
+\end{tabularx}
+}
+
+
+Letzte Spalte ist immer w → Tautologie. Zugrundeliegend: \textbf{Kontraposition} (a→b ↔ ¬b→¬a).
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 2 — Normalformen berechnen \textit{(20 Punkte)}}\mbox{}\\[2pt]
+
+Sei F(a,b,c) := ¬(a → (b ∧ ¬c)).
+
+
+a) Eliminiere → und wende DeMorgan an, bis Negationen nur noch direkt vor Variablen stehen. \textit{(4 P)}
+
+
+b) Bestimme eine disjunktive Normalform (DN) von F. \textit{(4 P)}
+
+
+c) Bestimme die kanonische disjunktive Normalform (kDN) von F. Gib die Minterme in der vorgegebenen Sortierung (innerhalb: lexikographisch nach a,b,c; zwischen Termen: ¬x:=0, x:=1, aufsteigende Binärzahl) an. \textit{(7 P)}
+
+
+d) Begründe ohne erneute Wahrheitstafel, dass F nicht widerspruchsvoll ist, und gib eine erfüllende Belegung direkt aus der kDN an. \textit{(5 P)}
+
+
+\textbf{Lösung:}
+
+
+a) F = ¬(a → (b ∧ ¬c)) = ¬(¬a ∨ (b ∧ ¬c)) (Implikation ersetzt)
+
+= ¬¬a ∧ ¬(b ∧ ¬c) (DeMorgan)
+
+= a ∧ (¬b ∨ ¬¬c) (DeMorgan)
+
+= a ∧ (¬b ∨ c) (doppelte Negation)
+
+
+b) DN durch Distributivgesetz:
+
+F = a ∧ (¬b ∨ c) = (a ∧ ¬b) ∨ (a ∧ c) = a¬b ∨ ac
+
+
+c) Variable c fehlt im Term a¬b, Variable b fehlt im Term ac. Auffüllen:
+
+\begin{itemize}
+  \item a¬b = a¬b ∧ (c ∨ ¬c) = a¬bc ∨ a¬b¬c
+  \item ac = ac ∧ (b ∨ ¬b) = abc ∨ a¬bc
+\end{itemize}
+
+Vereinigung mit Idempotenz (a¬bc kommt zweimal vor → einmal):
+
+\{ a¬b¬c, a¬bc, abc \}
+
+
+Sortierung mit ¬x=0, x=1 in Reihenfolge a,b,c:
+
+\begin{itemize}
+  \item a¬b¬c → 100 = 4
+  \item a¬bc → 101 = 5
+  \item abc → 111 = 7
+\end{itemize}
+
+kDN(F) = a¬b¬c ∨ a¬bc ∨ abc
+
+
+d) Da die kDN nicht-leer ist, existiert mindestens ein Minterm, der F erfüllt — also ist F erfüllbar und damit nicht widerspruchsvoll. Aus dem ersten Minterm a¬b¬c liest man die Belegung direkt ab: a=w, b=f, c=f.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 3 — Resolutionsbeweis \textit{(18 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben sind die folgenden Voraussetzungen über einen Server-Zustand:
+
+
+\begin{itemize}
+  \item V₁: Wenn der Dienst läuft (d), dann antwortet der Healthcheck (h).
+  \item V₂: Wenn der Healthcheck antwortet (h), dann ist der Port offen (p).
+  \item V₃: Der Dienst läuft (d).
+\end{itemize}
+
+Behauptung: Der Port ist offen (p).
+
+
+a) Formalisiere V₁, V₂, V₃ und die negierte Behauptung in Aussagenlogik und überführe alles in eine Klauselmenge. \textit{(5 P)}
+
+
+b) Beweise die Behauptung mittels Resolution. Gib jeden Resolutionsschritt mit den verwendeten Klauseln und dem entfernten Literal an. \textit{(8 P)}
+
+
+c) Erkläre, warum genau \textbf{ein} Literal pro Resolutionsschritt entfernt werden muss. Was passiert, wenn man fälschlich zwei komplementäre Literalpaare auf einmal "weg-resolviert"? Konstruiere ein Mini-Beispiel, in dem dieser Fehler einen falschen Beweis erzeugen würde. \textit{(5 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Formalisierung: V₁ = d→h, V₂ = h→p, V₃ = d. Negierte Behauptung: ¬p.
+
+KN: (¬d ∨ h) ∧ (¬h ∨ p) ∧ d ∧ ¬p.
+
+Klauselmenge: M = \{ \{¬d, h\}, \{¬h, p\}, \{d\}, \{¬p\} \}.
+
+
+b) Resolution:
+
+\begin{enumerate}
+  \item res(\{¬d, h\}, \{d\}) = \{h\} — entferntes Literal: d / ¬d.
+  \item res(\{h\}, \{¬h, p\}) = \{p\} — entferntes Literal: h / ¬h.
+  \item res(\{p\}, \{¬p\}) = □ — entferntes Literal: p / ¬p.
+\end{enumerate}
+
+Leere Klausel hergeleitet → M ist widerspruchsvoll → Behauptung p folgt aus \{V₁, V₂, V₃\}.
+
+
+c) Die Resolutionsregel res\{A,B\} = (A∖\{a\}) ∪ (B∖\{¬a\}) ist nur dann korrekt (d. h. erhält die logische Folgerung), wenn genau \textbf{ein} komplementäres Literalpaar entfernt wird. Werden zwei Paare gleichzeitig entfernt, kann eine Klausel entstehen, die aus den Ausgangsklauseln logisch nicht folgt.
+
+
+Mini-Beispiel: A = \{a, b\}, B = \{¬a, ¬b\}. Beide Klauseln sind erfüllbar (z. B. a=w, b=f: A=w, B=w). "Doppel-Resolution" über a/¬a und b/¬b ergäbe □ — also angeblich Widerspruch, obwohl die Klauselmenge erfüllbar ist. Korrekt liefert res(A,B) entweder \{b, ¬b\} (über a) oder \{a, ¬a\} (über b) — beides Tautologien (kein Widerspruch).
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 4 — Kontraposition vs. Inversion \textit{(10 Punkte)}}\mbox{}\\[2pt]
+
+Eine Mitstudentin behauptet: "Aus \textit{Wenn ein Programm terminiert, dann verbraucht es endlich viel Speicher} folgt sofort \textit{Wenn ein Programm nicht terminiert, dann verbraucht es nicht endlich viel Speicher}."
+
+
+a) Übersetze beide Aussagen in Aussagenlogik (t = "terminiert", e = "endlich viel Speicher"). \textit{(2 P)}
+
+
+b) Zeige mit einer Wahrheitstafel, dass t→e und ¬t→¬e \textbf{nicht} logisch äquivalent sind. \textit{(4 P)}
+
+
+c) Welche Implikation folgt tatsächlich aus t→e durch Kontraposition? Formuliere sie sowohl symbolisch als auch in deutschem Klartext. \textit{(4 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Originalaussage: t → e. Behauptung der Mitstudentin (Inversion): ¬t → ¬e.
+
+
+b)
+
+
+
+{\small
+\begin{tabularx}{\linewidth}{XXXXXX}
+\hline
+\rowcolor{tableheadbg}
+{\color{white}\textbf{t}} & {\color{white}\textbf{e}} & {\color{white}\textbf{t→e}} & {\color{white}\textbf{¬t}} & {\color{white}\textbf{¬e}} & {\color{white}\textbf{¬t→¬e}} \\[2pt]
+\hline
+\endhead
+\hline
+\endfoot
+w & w & w & f & f & w \\
+w & f & f & f & w & w \\
+f & w & w & w & f & f \\
+f & f & w & w & w & w \\
+\end{tabularx}
+}
+
+
+In Zeile 2 unterscheiden sich die Spalten (f vs. w), in Zeile 3 ebenfalls (w vs. f) → keine Äquivalenz. Das Skript hält dies explizit fest: a→b ≠ ¬a→¬b.
+
+
+c) Kontraposition: t → e ↔ ¬e → ¬t. Symbolisch: ¬e → ¬t. Klartext: "Wenn ein Programm nicht endlich viel Speicher verbraucht, dann terminiert es nicht."
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 5 — Prädikatenlogik: Formalisierung und Fehlersuche \textit{(15 Punkte)}}\mbox{}\\[2pt]
+
+In einer kleinen Welt seien die Prädikate gegeben:
+
+\begin{itemize}
+  \item \texttt{Stud(x)} — x ist Studierende:r
+  \item \texttt{Best(x,p)} — x hat Prüfung p bestanden
+  \item \texttt{Pflicht(p)} — p ist eine Pflichtprüfung
+\end{itemize}
+
+a) Formalisiere in Prädikatenlogik: \textit{(6 P)}
+
+(i) "Jede:r Studierende hat mindestens eine Pflichtprüfung bestanden."
+
+(ii) "Es gibt eine Pflichtprüfung, die alle Studierenden bestanden haben."
+
+(iii) "Kein:e Studierende:r hat alle Pflichtprüfungen bestanden."
+
+
+b) Ein:e Kommiliton:in formalisiert "Alle Studierenden haben alle Pflichtprüfungen bestanden" als
+
+F := ∀x ∀p (Stud(x) ∧ Pflicht(p) → Best(x,p))
+
+und "Kein:e Studierende:r hat eine Pflichtprüfung bestanden" als
+
+G := ∀x ∀p (Stud(x) ∧ Pflicht(p) → ¬Best(x,p)).
+
+
+Behauptet wird, F und G seien Negationen voneinander. Widerlege dies mit einem konkreten Mini-Modell (Individuenbereich, Belegung der Prädikate) und gib die korrekte Negation von F an. \textit{(6 P)}
+
+
+c) Erkläre, warum die Reihenfolge der Quantoren in (i) und (ii) den Unterschied macht — obwohl in beiden ∀ und ∃ vorkommen. \textit{(3 P)}
+
+
+\textbf{Lösung:}
+
+
+a)
+
+(i) ∀x (Stud(x) → ∃p (Pflicht(p) ∧ Best(x,p)))
+
+(ii) ∃p (Pflicht(p) ∧ ∀x (Stud(x) → Best(x,p)))
+
+(iii) ¬∃x (Stud(x) ∧ ∀p (Pflicht(p) → Best(x,p)))
+
+Äquivalent: ∀x (Stud(x) → ∃p (Pflicht(p) ∧ ¬Best(x,p)))
+
+
+b) Mini-Modell: Individuen \{Anna, P1, P2\}. \texttt{Stud(Anna)=w}, \texttt{Pflicht(P1)=w}, \texttt{Pflicht(P2)=w}, \texttt{Best(Anna,P1)=w}, \texttt{Best(Anna,P2)=f}.
+
+
+In diesem Modell:
+
+\begin{itemize}
+  \item F: Anna hat P2 nicht bestanden → F = f.
+  \item G: Anna hat P1 bestanden → G = f.
+\end{itemize}
+
+Beide gleichzeitig falsch — wären sie Negationen voneinander, müsste genau eine wahr sein. Widerspruch.
+
+
+Korrekte Negation von F:
+
+¬F = ¬∀x ∀p (Stud(x) ∧ Pflicht(p) → Best(x,p))
+
+= ∃x ∃p (Stud(x) ∧ Pflicht(p) ∧ ¬Best(x,p))
+
+("Es gibt eine:n Studierende:n und eine Pflichtprüfung, die diese:r nicht bestanden hat.")
+
+
+c) In (i) steht ∀x außen, ∃p innen — die Wahl der bestandenen Prüfung p \textbf{darf von x abhängen} (jede:r darf eine andere bestehen). In (ii) steht ∃p außen — es muss \textbf{eine einzige} Prüfung p geben, die für alle x zugleich gilt. (ii) ist daher echt stärker und impliziert (i), aber nicht umgekehrt; dieser "∀∃ vs. ∃∀"-Unterschied ist der Kern der Quantorenreihenfolge.
+
+
+
+\noindent\textcolor{rulegray}{\rule{\linewidth}{0.4pt}}
+
+
+\paragraph{Aufgabe 6 — Vorrangregeln und Klammerung \textit{(10 Punkte)}}\mbox{}\\[2pt]
+
+Gegeben sei der unklammerte Ausdruck
+
+
+E := ¬a ∧ b ∨ c → a ↔ ¬b ∨ c
+
+
+a) Setze gemäß den Vorrangregeln des Skripts (¬:1, ∧:2, ∨:3, →:4, ↔:5) \textbf{alle} Klammern, sodass die Auswertungsreihenfolge eindeutig ist. \textit{(4 P)}
+
+
+b) Berechne den Wahrheitswert von E für die Belegung a=f, b=w, c=f. \textit{(3 P)}
+
+
+c) Eine Mitstudentin schreibt stattdessen ((¬a ∧ b) ∨ c → a) ↔ (¬b ∨ c) und behauptet, das sei dieselbe Formel. Ist das korrekt? Begründe knapp und gib bei Bedarf eine Belegung an, in der sich beide Formeln unterscheiden. \textit{(3 P)}
+
+
+\textbf{Lösung:}
+
+
+a) Reihenfolge: zuerst ¬, dann ∧, dann ∨, dann →, zuletzt ↔.
+
+\begin{itemize}
+  \item ¬a → (¬a); ¬b → (¬b)
+  \item ∧: (¬a) ∧ b → ((¬a) ∧ b)
+  \item ∨: ((¬a) ∧ b) ∨ c → (((¬a) ∧ b) ∨ c); (¬b) ∨ c → ((¬b) ∨ c)
+  \item →: (((¬a) ∧ b) ∨ c) → a → ((((¬a) ∧ b) ∨ c) → a)
+  \item ↔ (Wurzel): ( ((((¬a) ∧ b) ∨ c) → a) ↔ ((¬b) ∨ c) )
+\end{itemize}
+
+Vollständig geklammert:
+
+E = ((((¬a) ∧ b) ∨ c) → a) ↔ ((¬b) ∨ c)
+
+
+b) Belegung a=f, b=w, c=f:
+
+\begin{itemize}
+  \item ¬a = w, ¬b = f
+  \item (¬a) ∧ b = w ∧ w = w
+  \item ((¬a) ∧ b) ∨ c = w ∨ f = w
+  \item (… → a) = w → f = f
+  \item (¬b) ∨ c = f ∨ f = f
+  \item f ↔ f = w
+\end{itemize}
+
+E = \textbf{w}.
+
+
+c) Die Klammerung der Mitstudentin ist \textbf{identisch} zur korrekten in (a) — sie hat die innere ¬a-Klammer nur zusätzlich weggelassen (was wegen Rang 1 für ¬ erlaubt ist), aber die ↔-Wurzel und die →-Klammerung sind dieselben. Beide Formeln sind also äquivalent (sogar syntaktisch deckungsgleich nach Anwenden der Vorrangregeln). Eine unterscheidende Belegung existiert nicht.
+
+
+
+
+
+% ──────────────────────────────────────────────────────────────
+
+\end{document}
