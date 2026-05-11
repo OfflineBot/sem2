@@ -84,6 +84,25 @@ const LS = {
 };
 
 /* ============================================================
+ * Inline SVG icons (lucide-derived). Inline because we want zero
+ * extra HTTP requests and zero icon-font baggage on a static site.
+ * `currentColor` so each button's existing palette still drives the
+ * stroke colour — Primary stays accent-tinted, Ghost stays accent2, etc.
+ * ============================================================ */
+const ICONS = {
+    eye:
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+        '<path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>',
+    download:
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+        '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>',
+    copy:
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+        '<rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>' +
+        '<path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>',
+};
+
+/* ============================================================
  * Helpers
  * ============================================================ */
 
@@ -334,7 +353,11 @@ function fileRow(slug, cat, fname) {
 
     const name = document.createElement("span");
     name.className = "file-name";
-    name.textContent = fname.replace(/\.pdf$/i, "");
+    const nameText = fname.replace(/\.pdf$/i, "");
+    name.textContent = nameText;
+    // Full filename surfaces on hover/long-press because the mobile
+    // layout ellipsises overflowing names.
+    name.title = nameText;
     li.appendChild(name);
 
     const actions = document.createElement("div");
@@ -343,32 +366,43 @@ function fileRow(slug, cat, fname) {
     const url = pdfUrl(slug, cat, fname);
     const displayName = pascalSpaced(slug) + " — " + pascalSpaced(cat) + " · " + fname.replace(/\.pdf$/i, "");
 
-    const view = document.createElement("button");
-    view.type = "button";
-    view.className = "btn btn-primary";
-    view.textContent = "Ansehen";
-    view.addEventListener("click", () => {
+    // Buttons render with an inline SVG + a text label. On mobile the
+    // label collapses (CSS) so each button becomes a 44×44 icon-only
+    // tile; the file name then claims the rest of the row width. The
+    // `aria-label` keeps screen readers informed when the label is
+    // hidden.
+    const makeBtn = (cls, icon, label, ariaLabel, onClick) => {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = "btn " + cls;
+        b.setAttribute("aria-label", ariaLabel || label);
+        b.innerHTML = icon + '<span class="btn-label">' + escapeHtml(label) + "</span>";
+        b.addEventListener("click", onClick);
+        return b;
+    };
+
+    const view = makeBtn("btn-primary", ICONS.eye, "Ansehen", "Ansehen", () => {
         closeModal("course", { silent: true });
         openViewer(url, displayName);
     });
     actions.appendChild(view);
 
+    // Download is an <a download> so the browser handles "save as"
+    // natively (matters on iOS/Safari, which ignores JS-triggered
+    // downloads of cross-origin files).
     const dl = document.createElement("a");
     dl.className = "btn btn-secondary";
     dl.href = url;
     dl.download = fname;
-    dl.textContent = "Download";
+    dl.setAttribute("aria-label", "Download");
+    dl.innerHTML = ICONS.download + '<span class="btn-label">Download</span>';
     actions.appendChild(dl);
 
-    const copy = document.createElement("button");
-    copy.type = "button";
-    copy.className = "btn btn-ghost";
-    copy.textContent = "Prompt kopieren";
-    copy.addEventListener("click", () => {
+    const copy = makeBtn("btn-ghost", ICONS.copy, "Prompt kopieren", "Prompt kopieren", () => {
         // Use the GitHub-raw URL here, not the host-site URL: AI tools
         // resolve raw.githubusercontent.com reliably regardless of where
         // the page itself is being served from.
-        copyPrompt(pdfRawGithubUrl(slug, cat, fname), displayName, copy);
+        copyPromptIcon(pdfRawGithubUrl(slug, cat, fname), displayName, copy);
     });
     actions.appendChild(copy);
 
@@ -537,6 +571,35 @@ function copyPrompt(url, displayName, btn) {
         btn.classList.toggle("copied", ok);
         setTimeout(() => {
             btn.textContent = orig;
+            btn.classList.remove("copied");
+        }, 1500);
+    };
+    if (navigator.clipboard?.writeText) {
+        navigator.clipboard.writeText(out).then(() => done(true), () => fallbackCopy(out, done));
+    } else {
+        fallbackCopy(out, done);
+    }
+}
+
+/**
+ * Variant for the icon-style copy button — the button now contains an
+ * <svg> plus a `<span class="btn-label">`. Swap only the label text so
+ * the icon stays visible during the "Kopiert!" flash. Original
+ * `copyPrompt` is kept for any direct callers that pass plain-text
+ * buttons.
+ */
+function copyPromptIcon(url, displayName, btn) {
+    const tpl = loadPromptTemplate();
+    const out = tpl
+        .replace(/\{PDF_URL\}/g, url)
+        .replace(/\{DISPLAY_NAME\}/g, displayName);
+    const label = btn.querySelector(".btn-label");
+    const done = ok => {
+        const orig = label?.textContent;
+        if (label) label.textContent = ok ? "Kopiert!" : "Fehler";
+        btn.classList.toggle("copied", ok);
+        setTimeout(() => {
+            if (label && orig != null) label.textContent = orig;
             btn.classList.remove("copied");
         }, 1500);
     };
