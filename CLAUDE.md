@@ -39,8 +39,8 @@ UI flow in `app.js`:
    `{PDF_URL}` / `{DISPLAY_NAME}` in coloured `<span class="ph">` elements.
    Stored in localStorage as `sem2.customPrompt`.
 5. **Theme switcher**: a `<select>` in the header sets `data-theme` on
-   `<html>`. Two themes live in `style.css`: `mocha` (Catppuccin Mocha,
-   default) and `gruvbox`. Persisted as `sem2.theme`.
+   `<html>`. Three themes live in `style.css`: `mocha` (Catppuccin Mocha,
+   default), `gruvbox`, and `serenity`. Persisted as `sem2.theme`.
 
 `CONFIG` (top of `app.js`) holds `tabOrder`, `displayNames` (slug → label
 override), `courseSemester` (slug → semester number), `defaultSemester`,

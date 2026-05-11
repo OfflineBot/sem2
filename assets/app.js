@@ -10,7 +10,7 @@
  *   - course click → modal listing files with [Ansehen][Download][Prompt kopieren]
  *   - viewer overlay uses history.pushState so browser-back closes it
  *   - prompt template editor with placeholder highlighting
- *   - theme switcher: catppuccin-mocha (default) | gruvbox
+ *   - theme switcher: catppuccin-mocha (default) | gruvbox | serenity
  */
 
 const CONFIG = {

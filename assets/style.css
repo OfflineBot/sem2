@@ -1,5 +1,5 @@
 /* ============================================================
- * Themes — Catppuccin Mocha (default) + Gruvbox Dark
+ * Themes — Catppuccin Mocha (default) + Gruvbox Dark + Serenity
  * ============================================================ */
 
 :root,
@@ -46,6 +46,29 @@
     --ph-pdf-bg:   color-mix(in srgb, var(--accent2) 25%, transparent);
     --ph-pdf-fg:   var(--accent2);
     --ph-name-bg:  color-mix(in srgb, var(--green) 25%, transparent);
+    --ph-name-fg:  var(--green);
+}
+
+[data-theme="serenity"] {
+    --base:      #1a1b26;
+    --mantle:    #161824;
+    --crust:     #13141d;
+    --surface0:  #2a2d3b;
+    --surface1:  #363948;
+    --surface2:  #4d5269;
+    --text:      #d4c9c8;
+    --subtext:   #beb3b2;
+    --muted:     #8a8281;
+    --accent:    #b69ace; /* lavender */
+    --accent2:   #91a8d0; /* Pantone Serenity blue */
+    --green:     #95b894;
+    --yellow:    #d4b97a;
+    --red:       #d8909a;
+    --pink:      #f7cac9; /* Rose Quartz */
+
+    --ph-pdf-bg:   color-mix(in srgb, var(--accent2) 22%, transparent);
+    --ph-pdf-fg:   var(--accent2);
+    --ph-name-bg:  color-mix(in srgb, var(--green) 22%, transparent);
     --ph-name-fg:  var(--green);
 }
 
