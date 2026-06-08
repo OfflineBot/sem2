@@ -1,0 +1,243 @@
+\documentclass[10pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage[a4paper,top=0.8cm,bottom=1.35cm,left=0.7cm,right=0.7cm,footskip=0.85cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage[table]{xcolor}
+\usepackage{multicol}
+\usepackage{fancyhdr}
+\usepackage{array}
+
+% ---------- Farben ----------
+\definecolor{head}{rgb}{0.05,0.30,0.13}
+\definecolor{sub}{rgb}{0.13,0.49,0.24}
+\definecolor{grau}{rgb}{0.45,0.45,0.45}
+
+% ---------- Layout ----------
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.4pt}
+\setlength{\columnsep}{10pt}
+\setlength{\abovedisplayskip}{1.5pt}
+\setlength{\belowdisplayskip}{1.5pt}
+\setlength{\abovedisplayshortskip}{0.5pt}
+\setlength{\belowdisplayshortskip}{0.5pt}
+\renewcommand{\baselinestretch}{1.22}
+\renewcommand{\arraystretch}{1.05}
+
+% ---------- Ueberschriften ----------
+\newcommand{\Sec}[1]{\par\vspace{1.8pt}{\color{head}\normalsize\bfseries #1}\nopagebreak\par\vspace{-1pt}{\color{head}\rule{\linewidth}{0.9pt}}\par\nopagebreak\vspace{1pt}}
+\newcommand{\Sub}[1]{\par\vspace{1pt}{\color{sub}\bfseries #1}\nopagebreak\par\vspace{0.2pt}}
+\newcommand{\hint}[1]{{\color{grau}\itshape #1}}
+\newcommand{\fld}[1]{{\color{sub}\bfseries #1:}~}
+
+% ---------- Listen ----------
+\newenvironment{tl}{\begin{list}{\textbullet}{%
+  \setlength{\leftmargin}{1.1em}\setlength{\labelsep}{0.45em}%
+  \setlength{\itemsep}{0pt}\setlength{\parsep}{0pt}\setlength{\topsep}{1pt}%
+  \setlength{\partopsep}{0pt}}}{\end{list}}
+\newcounter{nlc}
+\newenvironment{nl}{\begin{list}{\color{sub}\bfseries\arabic{nlc}.}{\usecounter{nlc}%
+  \setlength{\leftmargin}{1.25em}\setlength{\labelsep}{0.35em}%
+  \setlength{\itemsep}{0pt}\setlength{\parsep}{0pt}\setlength{\topsep}{1pt}%
+  \setlength{\partopsep}{0pt}}}{\end{list}}
+
+% ---------- Kopf/Fuss ----------
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0.4pt}
+\fancyfoot[L]{\footnotesize\color{grau}Fortgeschrittene Lineare Algebra — Open-Book-Formelsammlung}
+\fancyfoot[R]{\footnotesize\color{grau}Seite \thepage}
+
+\newcommand{\transp}{^{\mathsf{T}}}
+\newcommand{\inv}{^{-1}}
+
+\begin{document}
+\small
+
+\begin{center}
+{\color{head}\Large\bfseries Fortgeschrittene Lineare Algebra — Zerlegungen \& mehr}\\[1pt]
+{\color{grau}\footnotesize Theorie: welche Zerlegung wann? \,·\, $CR$ \,·\, $LU/LR$ \,·\, Cholesky \,·\, $QR$ \,·\, Diagonalisierung \,·\, SVD \,·\, Pseudoinverse \,·\, Finite Differenzen \,·\, Abstände \,·\, Unterraum \,·\, inneres Produkt \,·\, Eigenwerte \,·\, Hyperebenen \,·\, PCA}
+\end{center}
+\vspace{2pt}
+
+\begin{multicols}{3}
+
+% ============================================================
+\Sec{Theorie: welche Zerlegung wann?}
+
+\Sub{Matrix-Format \hint{($A$ ist $m\times n$)}}
+$m=$ Zeilen, $n=$ Spalten. $A\vec x$: $\vec x\in\mathbb{R}^{n}$ (Spaltenzahl), Ergebnis $\in\mathbb{R}^{m}$.
+Spaltenraum $\subseteq\mathbb{R}^{m}$, Nullraum $\subseteq\mathbb{R}^{n}$.
+
+\Sub{Übersicht}
+\begin{tabular}{@{}p{1.45cm}@{\,}p{1.55cm}@{\,}p{3.0cm}@{}}
+\textbf{Zerleg.} & \textbf{Matrix} & \textbf{wofür}\\[1pt]
+$CR$ & bel.\ $m\times n$ & Rang, Unterräume, Basen\\
+$LU{=}LR$ & quadr.\ $n\times n$ & LGS (viele $\vec b$), $\det$, Inverse\\
+Cholesky & symm.\ PD & LGS, $\sim2\times$ schneller als $LU$\\
+$QR$ & beliebig & LGS/Ausgleich, stabil\\
+$Q\Lambda Q\transp$ & symm.\ $n{\times}n$ & $A^k$, $A\inv$, Definitheit\\
+$S\Lambda S\inv$ & quadr.\ diag.bar & wie oben, nicht-symm.\\
+SVD & \emph{jede} & Rang, Näherung, PCA, $A^{+}$\\
+$A^{+}$ & jede & Ausgleich, min.\ Norm\\
+\end{tabular}
+
+\Sub{Was ist am effizientesten?}
+Nimm die \emph{speziellste anwendbare} Zerlegung. Aufwand: Cholesky $<$ $LU$ $<$ $QR$ $<$ SVD.
+\begin{tl}
+\item symm.\ + pos.\ definit $\to$ \textbf{Cholesky}
+\item quadratisch, „normal“ $\to$ \textbf{$LU$}
+\item schlecht konditioniert / Ausgleich $\to$ \textbf{$QR$}
+\item nicht quadratisch / Rang / Näherung $\to$ \textbf{SVD}
+\end{tl}
+
+% ============================================================
+\Sec{$A=CR$}
+\fld{Ziel} unabhängige Spalten $C$ $\times$ Bauplan $R$; Rang \& vier Unterräume sichtbar machen.\\
+\fld{Vorteil} liest direkt Rang, Basis Spalten-/Zeilenraum, Nullraum ab.\\
+\fld{Limit} jede $m\times n$; nichts Spezielles nötig.\\
+\fld{Formel} $A=CR$, $r=\#$Pivots $=$ Spalten von $C$.
+\begin{nl}
+\item $A$ auf RZSF (Pivots $=1$, über+unter Nullen).
+\item $C=$ Pivot-Spalten aus $A$; $R=$ Nicht-Null-Zeilen der RZSF.
+\item Probe $CR=A$.
+\end{nl}
+
+% ============================================================
+\Sec{$A=LU$ \hint{($=LR$, Links-Rechts)}}
+\fld{Ziel} $A=LU$: $L$ untere $\Delta$ ($1$en Diag), $U$ obere $\Delta$ (Gauß strukturiert).\\
+\fld{Vorteil} für \emph{viele} rechte Seiten $\vec b$ nur \emph{einmal} zerlegen, dann je $L\vec y{=}\vec b$, $U\vec x{=}\vec y$. Auch $\det$, Inverse.\\
+\fld{Limit} nur \textbf{quadratisch} $n\times n$; alle führenden Hauptminoren $\neq0$. Pivot $0$ $\to$ Zeilentausch $PA=LU$.\\
+\fld{Formel \& Ablauf}
+\begin{nl}
+\item Gauß $\to U$; $\ell_{ij}=$ Faktor aus $Z_i-\ell\,Z_j$ \hint{(positiv!)}.
+\item $L\vec y=\vec b$ vorwärts, $U\vec x=\vec y$ rückwärts.
+\end{nl}
+$\det A=u_{11}\cdots u_{nn}$. Inverse: $A\vec x_i=\vec e_i$ spaltenweise.
+
+% ============================================================
+\Sec{Cholesky $A=LL\transp$}
+\fld{Ziel} „Wurzel“ einer symm.\ PD Matrix; ein Dreieck statt zwei.\\
+\fld{Vorteil} $\sim2\times$ schneller \& stabiler als $LU$; testet zugleich auf PD.\\
+\fld{Limit} nur \textbf{symmetrisch + positiv definit}. \hint{Wurzel $\le0$ $\Rightarrow$ nicht PD.}\\
+\fld{Formel} $\ \ell_{jj}=\sqrt{a_{jj}-\textstyle\sum_{k<j}\ell_{jk}^2}$,
+\[ \ell_{ij}=\big(a_{ij}-\textstyle\sum_{k<j}\ell_{ik}\ell_{jk}\big)\big/\ell_{jj}\quad(i>j) \]
+\fld{Lösen} $L\vec y=\vec b$, dann $L\transp\vec x=\vec y$.
+
+% ============================================================
+\Sec{$A=QR$ (Gram-Schmidt)}
+\fld{Ziel} $Q$ orthonormale Spalten ($Q\transp Q=E$), $R$ obere $\Delta$.\\
+\fld{Vorteil} sehr \emph{stabil} (auch schlecht konditioniert); $Q\inv=Q\transp$. \textbf{Neue rechte Seite $\vec b$: nicht neu zerlegen} — nur $R\vec x=Q\transp\vec b$ lösen. Spart bei Regression $X\transp X=R\transp R$.\\
+\fld{Limit} existiert für \emph{jede} Matrix (für $m\times n$ reduzierte Form $A=Q\big(\begin{smallmatrix}R\\0\end{smallmatrix}\big)$).\\
+\fld{Formel \& Ablauf} \hint{Gram-Schmidt musst du nicht selbst rechnen können — aber LGS damit lösen:}
+\[ R\vec x=Q\transp\vec b\quad\text{(rückwärts einsetzen)} \]
+\hint{Bauplan GS: $\tilde q_k=\vec v_k-\sum_{i<k}\frac{\tilde q_i\transp\vec v_k}{\|\tilde q_i\|^2}\tilde q_i$, $\hat q_k=\tilde q_k/\|\tilde q_k\|$, $R=Q\transp A$.}
+
+% ============================================================
+\Sec{Diagonalisierung $A=S\Lambda S\inv$}
+\fld{Ziel} $A$ „diagonal machen“: $\Lambda=$ Eigenwerte, $S=$ Eigenvektoren. Symm.: $A=Q\Lambda Q\transp$ ($Q$ orthogonal).\\
+\fld{Vorteil} $A^k=S\Lambda^k S\inv$, $A\inv=S\Lambda\inv S\inv$ (nur Kehrwerte der $\lambda$); Definitheit aus $\lambda$. Symm.: $S\inv=Q\transp$.\\
+\fld{Limit} nur \textbf{quadratisch} $n\times n$ \& diagonalisierbar ($n$ unabh.\ EV). Symmetrisch $\Rightarrow$ immer möglich (orthogonal).\\
+\fld{Formel \& Ablauf}
+\begin{nl}
+\item $\lambda_i$ aus $\det(A-\lambda E)=0$.
+\item EV: $(A-\lambda_i E)\vec v=\vec0$, eine Komponente frei.
+\item $S=$ EV-Spalten (symm.: normieren $\to Q$), $\Lambda=\mathrm{diag}(\lambda_i)$.
+\end{nl}
+
+% ============================================================
+\Sec{SVD $A=U\Sigma V\transp$}
+\fld{Ziel} jede Matrix als Drehen $\to$ Strecken $\to$ Drehen; Singulärwerte $\sigma_i\ge0$.\\
+\fld{Vorteil} \emph{universell}: auch nicht quadr.\ / nicht voll Rang. Liefert Rang ($\#\sigma_i{\neq}0$), beste Rang-$k$-Näherung (LoRA), Pseudoinverse, PCA.\\
+\fld{Limit} keine — für \textbf{jede} $m\times n$. \hint{(teuerste Zerlegung).}\\
+\fld{Formel \& Ablauf}
+\begin{nl}
+\item $A\transp A$ $\to$ Eigenwerte $\lambda_i$, normierte EV $=$ Spalten $V$.
+\item $\sigma_i=\sqrt{\lambda_i}$ absteigend $=\Sigma$.
+\item $\vec u_i=\frac{1}{\sigma_i}A\vec v_i$ $=$ Spalten $U$ ($\sigma_i\neq0$); volle $U$: zu ONB ergänzen.
+\end{nl}
+\textbf{Reduziert:} nur $\sigma_i\neq0$ behalten ($U_r\,m{\times}r$, $\Sigma_r\,r{\times}r$, $V_r\,n{\times}r$).
+
+% ============================================================
+\Sec{Pseudoinverse $A^{+}$}
+\fld{Ziel} „Ersatz-Inverse“ für nicht-quadr./nicht-invertierbare $A$; löst $A\vec x=\vec b$ bestmöglich.\\
+\fld{Vorteil} überbestimmtes LGS $\to$ kleinster Fehler; unterbestimmt $\to$ kleinste Norm. Aus SVD direkt.\\
+\fld{Limit} für \emph{jede} Matrix definiert.\\
+\fld{Formel \& Ablauf} $A^{+}=V\Sigma^{+}U\transp$, $\ \vec x=A^{+}\vec b$.
+\begin{nl}
+\item SVD von $A$ bestimmen: $A=U\Sigma V\transp$ \hint{(über $A\transp A$, siehe SVD)}.
+\item $\Sigma^{+}$: Kehrwerte der $\sigma_i\neq0$ auf die Diagonale, dann transponieren.
+\item $A^{+}=V\Sigma^{+}U\transp$; Lösung $\vec x=A^{+}\vec b$.
+\end{nl}
+
+\end{multicols}
+\newpage
+\begin{center}
+{\color{head}\Large\bfseries Sonstiges \& Grundlagen}\\[1pt]
+{\color{grau}\footnotesize Finite Differenzen \,·\, Abstände \,·\, Untervektorraum \,·\, inneres Produkt \,·\, Eigenwerte \,·\, Hyperebenen \,·\, PCA \,·\, Rechenregeln}
+\end{center}
+\vspace{2pt}
+\begin{multicols}{3}
+
+% ============================================================
+\Sec{Finite Differenzen}
+\Sub{Ableitungen}
+vor $\tfrac{f(x+h)-f(x)}{h}$,\ \ rück $\tfrac{f(x)-f(x-h)}{h}$,\ \ zentr $\tfrac{f(x+h)-f(x-h)}{2h}$,\ \ 2.\ Abl.\ $\tfrac{u_{i-1}-2u_i+u_{i+1}}{h^2}$.
+\Sub{Randwertproblem $-u''=f$}
+Pro innerem Punkt: $-u_{i-1}+2u_i-u_{i+1}=h^2 f_i$ (Rand $u=0$). Zusammen $T\vec u=h^2\vec f$, $T=\mathrm{tridiag}(2;-1)$, mit Gauß lösen. $T$ symm.\ \& PD.
+
+% ============================================================
+\Sec{Abstände}
+\Sub{Punkt $\vec p$ $\to$ Ebene $\vec n\transp\vec x+b=0$}
+\[ d=\frac{|\vec n\transp\vec p+b|}{\|\vec n\|},\qquad \text{Seite}=\mathrm{sign}(\vec n\transp\vec p+b) \]
+\Sub{Punkt $\vec p$ $\to$ Punkt $\vec q$}
+\[ d=\|\vec p-\vec q\|=\sqrt{\textstyle\sum_i(p_i-q_i)^2} \]
+
+% ============================================================
+\Sec{Untervektorraum}
+$U\subseteq V$ Unterraum $\Leftrightarrow$ (1)~$\vec0\in U$, (2)~abgeschl.\ unter $+$, (3)~abgeschl.\ unter $\cdot$.
+\hint{Schnelltest: durch den Ursprung? Geraden/Ebenen durch $0$ = Unterraum, verschobene nicht.}
+
+% ============================================================
+\Sec{Inneres Produkt}
+$\langle\cdot,\cdot\rangle$ inneres Produkt $\Leftrightarrow$ \textbf{symmetrisch} + \textbf{bilinear} + \textbf{positiv definit}.
+Form $\langle x,y\rangle=\vec x\transp A\vec y$: prüfe $A=A\transp$ \emph{und} $A$ PD (Hauptminoren $>0$).
+\hint{Standard $\vec x\transp\vec y$; orthogonal $\Leftrightarrow\langle x,y\rangle=0$. Norm $\|\vec x\|=\sqrt{\langle x,x\rangle}$.}
+
+% ============================================================
+\Sec{Eigenwerte / Eigenvektoren}
+$A\vec v=\lambda\vec v$. \fld{$\lambda$} $\det(A-\lambda E)=0$; $2\times2$: $\lambda=\frac{\mathrm{tr}\pm\sqrt{\mathrm{tr}^2-4\det}}{2}$.\\
+\fld{$\vec v$} $(A-\lambda E)\vec v=\vec0$, \emph{eine} Zeile $\to$ Beziehung $\to$ eine Komponente frei \hint{(nie $\vec0$!)}.
+\hint{$\sum\lambda=\mathrm{tr}$, $\prod\lambda=\det$; Dreiecksm.: $\lambda=$ Diagonale.}
+
+% ============================================================
+\Sec{Hyperebenen}
+Ebene $\vec n\transp\vec x+b=0$; Punkt $\vec p$: $\ w=\vec n\transp\vec p+b$.
+\begin{tl}
+\item \textbf{Seite} $=$ Vorzeichen($w$); \textbf{Abstand} $=|w|/\|\vec n\|$
+\item \textbf{Margin} $=$ kleinster Abstand; trennend: Klassen $w>0$ bzw.\ $<0$
+\end{tl}
+\textbf{Bauen:} $\vec n=$ Richtung zwischen Klassen, $b=-\vec n\transp\vec m$ ($\vec m=$ Mittelpunkt).
+
+% ============================================================
+\Sec{PCA}
+\begin{nl}
+\item \textbf{Zentrieren:} Spaltenmittel abziehen $\to A_c$.
+\item \textbf{Kovarianz:} $C=\frac{1}{n-1}A_c\transp A_c$ \hint{($n=$ \#Datenpunkte)}.
+\item Größter Eigenwert von $C$ $\to$ PC1 (norm.\ $\vec w$).
+\end{nl}
+Scores $\vec s=A_c\vec w$; Rückrechnung $A_c\approx\vec s\,\vec w\transp$ ($+$ Mittel). \hint{SVD: $\lambda_i=\sigma_i^2/(n-1)$.}\\
+\textbf{Deutung:} \emph{großer} Eigenwert $\lambda$ $\hat=$ \emph{viel Varianz} $\hat=$ wichtigere / aussagekräftigere Komponente. Anteil erklärter Varianz $=\dfrac{\lambda_i}{\sum_j\lambda_j}$ \hint{(je größer, desto aussagekräftiger)}.
+
+% ============================================================
+\Sec{Rechenregeln \hint{(Spickzettel)}}
+$(AB)\transp\!=\!B\transp A\transp$, $(AB)\inv\!=\!B\inv A\inv$, $(A\inv)\transp\!=\!(A\transp)\inv$.\\
+$|AB|\!=\!|A||B|$, $|A\transp|\!=\!|A|$, $|A\inv|\!=\!\tfrac1{|A|}$, $|cA|\!=\!c^n|A|$.
+Symm.\ beweisen: $M\transp$ ausrechnen $=M$. Definitheit: alle $\lambda>0$ (PD), $\ge0$ (PSD), gemischt (indefinit); $A\transp A$ stets PSD.\\
+\textbf{Regression:} $\vec c=(X\transp X)\inv X\transp\vec y$. Güte: $R^2\in[0,1]$ \emph{groß} $=$ erklärt viel Varianz (guter Fit); $p$-Wert \emph{klein} ($<0{,}05$) $=$ signifikant/aussagekräftig.
+
+\end{multicols}
+\end{document}
