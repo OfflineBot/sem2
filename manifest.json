@@ -20,9 +20,6 @@
         "exam2.pdf",
         "exam3.pdf"
       ],
-      "lernzettel": [
-        "zettel.pdf"
-      ],
       "openbook": [
         "openbook.pdf"
       ],
@@ -172,12 +169,14 @@
         "uebung_06_vektorraeume.pdf"
       ]
     },
+    "matrix_zerteilungen": {
+      "openbook": [
+        "openbook.pdf"
+      ]
+    },
     "numerische_methoden": {
       "klausur": [
         "exam1.pdf"
-      ],
-      "lernzettel": [
-        "zettel.pdf"
       ],
       "openbook": [
         "openbook.pdf"
@@ -191,9 +190,6 @@
         "exam1.pdf",
         "exam2.pdf",
         "exam3.pdf"
-      ],
-      "lernzettel": [
-        "zettel.pdf"
       ],
       "openbook": [
         "openbook.pdf"
@@ -215,9 +211,6 @@
         "exam1.pdf",
         "exam2.pdf",
         "exam3.pdf"
-      ],
-      "lernzettel": [
-        "zettel.pdf"
       ],
       "openbook": [
         "openbook.pdf"
