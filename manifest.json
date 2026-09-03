@@ -35,6 +35,27 @@
         "exercise9.pdf"
       ]
     },
+    "bilanzierung": {
+      "lernzettel": [
+        "bilanzierung.pdf"
+      ]
+    },
+    "business_intelligence": {
+      "lernzettel": [
+        "business_intelligence.pdf"
+      ]
+    },
+    "cloud_computing_big_data": {
+      "lernzettel": [
+        "big_data_storage.pdf",
+        "cloud_computing.pdf"
+      ]
+    },
+    "controlling_instrumente": {
+      "lernzettel": [
+        "controlling_instrumente.pdf"
+      ]
+    },
     "digitale_betriebswirtschaftslehre": {
       "klausur": [
         "exam1.pdf"
@@ -81,6 +102,11 @@
         "uebung_07_ethik_nlp_strategie.pdf"
       ]
     },
+    "finanzierung_investition": {
+      "lernzettel": [
+        "finanzierung_und_investition.pdf"
+      ]
+    },
     "grundlagen_informatik_betriebssysteme": {
       "klausur": [
         "exam1.pdf",
@@ -108,6 +134,11 @@
         "exercise12.pdf"
       ]
     },
+    "grundlagen_statistik": {
+      "lernzettel": [
+        "grundlagen_statistik.pdf"
+      ]
+    },
     "informatik": {
       "klausur": [
         "klausur_a.pdf",
@@ -126,6 +157,12 @@
         "uebung_03_arithmetik.pdf",
         "uebung_04_boolesche_algebra.pdf",
         "uebung_05_speicher_architektur.pdf"
+      ]
+    },
+    "it_recht_it_sicherheit": {
+      "lernzettel": [
+        "it_recht.pdf",
+        "it_security.pdf"
       ]
     },
     "kommsysteme": {
@@ -150,6 +187,11 @@
         "uebung_07_anwendungsschicht_hex.pdf"
       ]
     },
+    "kostenrechnung": {
+      "lernzettel": [
+        "kostenrechnung.pdf"
+      ]
+    },
     "lineare-algebra": {
       "klausur": [
         "probeklausur_02.pdf",
@@ -172,6 +214,12 @@
     "matrix_zerteilungen": {
       "openbook": [
         "openbook.pdf"
+      ]
+    },
+    "moderne_datenbankkonzepte": {
+      "lernzettel": [
+        "praktische_umsetzung.pdf",
+        "theoretische_konzepte.pdf"
       ]
     },
     "numerische_methoden": {
@@ -206,6 +254,11 @@
         "exercise9.pdf"
       ]
     },
+    "projektmanagement": {
+      "lernzettel": [
+        "grundlagen_projektmanagement.pdf"
+      ]
+    },
     "relationen_algebra_diskrete_mathematik": {
       "klausur": [
         "exam1.pdf",
@@ -227,6 +280,26 @@
         "exercise9.pdf",
         "exercise10.pdf",
         "exercise11.pdf"
+      ]
+    },
+    "stochastik": {
+      "lernzettel": [
+        "fortgeschrittene_statistik.pdf"
+      ]
+    },
+    "supervised_learning": {
+      "lernzettel": [
+        "supervised_learning.pdf"
+      ]
+    },
+    "systems_engineering": {
+      "lernzettel": [
+        "systems_engineering.pdf"
+      ]
+    },
+    "theoretische_informatik": {
+      "lernzettel": [
+        "theoretische_informatik.pdf"
       ]
     }
   }

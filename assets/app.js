@@ -37,6 +37,12 @@ const CONFIG = {
         kommsysteme: "Kommunikationssysteme",
         "lineare-algebra": "Lineare Algebra",
         digitale_betriebswirtschaftslehre: "Digitale BWL (DOL)",
+        moderne_datenbankkonzepte: "Moderne Datenbank-Konzepte",
+        cloud_computing_big_data: "Cloud Computing und Big Data",
+        it_recht_it_sicherheit: "IT-Recht und IT-Sicherheit",
+        controlling_instrumente: "Controlling-Instrumente",
+        finanzierung_investition: "Finanzierung und Investition",
+        supervised_learning: "Supervised Learning (KI und ML)",
     },
     // Course slug → semester. Default is `defaultSemester`.
     courseSemester: {
@@ -47,11 +53,34 @@ const CONFIG = {
         informatik: 1,
         kommsysteme: 1,
         "lineare-algebra": 1,
+
+        // 3. Semester
+        moderne_datenbankkonzepte: 3,
+        systems_engineering: 3,
+        cloud_computing_big_data: 3,
+        theoretische_informatik: 3,
+
+        // 4. Semester
+        stochastik: 4,
+        projektmanagement: 4,
+        it_recht_it_sicherheit: 4,
+
+        // Semester noch nicht bestaetigt -> Sammelbereich (sortiert ans Ende)
+        bilanzierung: 0,
+        business_intelligence: 0,
+        controlling_instrumente: 0,
+        finanzierung_investition: 0,
+        grundlagen_statistik: 0,
+        kostenrechnung: 0,
+        supervised_learning: 0,
     },
     defaultSemester: 2,
     semesterTitles: {
+        0: "Noch nicht zugeordnet",
         1: "1. Semester",
         2: "2. Semester",
+        3: "3. Semester",
+        4: "4. Semester",
     },
 };
 
@@ -116,7 +145,9 @@ function pascalSpaced(slug) {
 }
 
 function semesterFor(slug) {
-    return CONFIG.courseSemester[slug] || CONFIG.defaultSemester;
+    // `??` statt `||`: 0 ist ein gueltiger Bucket ("Noch nicht zugeordnet")
+    // und darf nicht auf defaultSemester zurueckfallen.
+    return CONFIG.courseSemester[slug] ?? CONFIG.defaultSemester;
 }
 
 function escapeHtml(s) {
