@@ -217,9 +217,34 @@
       ]
     },
     "moderne_datenbankkonzepte": {
+      "klausur": [
+        "Beispiele_Klausuraufgaben_des_Dozenten.pdf"
+      ],
       "lernzettel": [
         "praktische_umsetzung.pdf",
         "theoretische_konzepte.pdf"
+      ],
+      "openbook": [
+        "Chinook_Relationenmodell.pdf",
+        "SQL_Befehlsuebersicht.pdf"
+      ],
+      "uebungsaufgaben": [
+        "00_ERM_Uebungsaufgabe.pdf",
+        "00_Normalisierung_Uebungsaufgaben.pdf",
+        "00_Normalisierung_Uebungsaufgaben_Loesung.pdf",
+        "01_Einfuehrung_Musterloesung.pdf",
+        "02_Challenge_SQL_DDL_DB_Erstellung.pdf",
+        "02_Chinook_Einfuehrung.pdf",
+        "02_Teil1_Chinook_SQL_DDL_DML.pdf",
+        "02_Teil2_Chinook_SQL_DDL_DML.pdf",
+        "03_Teil1_Chinook_SQL_DQL.pdf",
+        "03_Teil2_Chinook_SQL_DQL.pdf",
+        "04_Chinook_SQL_Zusatzthemen.pdf",
+        "05_Programmierung_DB_intern_und_Transaktionen.pdf",
+        "06_Challenge_JDBC_JPA_IoT_Device.pdf",
+        "06_JDBC_Aufgaben.pdf",
+        "08_Challenge_Redis_und_MongoDB.pdf",
+        "08_Redis_und_MongoDB_Aufgaben.pdf"
       ]
     },
     "numerische_methoden": {
@@ -293,8 +318,18 @@
       ]
     },
     "systems_engineering": {
+      "klausur": [
+        "2020-06_Klausur_60_Punkte.pdf",
+        "2021-09_Klausur_60_Punkte.pdf",
+        "2022-06_Wiederholungsklausur_60_Punkte.pdf",
+        "2024-01_Wiederholungsklausur_60_Punkte.pdf",
+        "2024-12_Klausur_100_Punkte_aktuelles_Format.pdf"
+      ],
       "lernzettel": [
         "systems_engineering.pdf"
+      ],
+      "uebungsaufgaben": [
+        "Entscheidungstabellen_Musterloesung.pdf"
       ]
     },
     "theoretische_informatik": {
